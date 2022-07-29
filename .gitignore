@@ -1,0 +1,11 @@
+.idea/
+vendor/
+redis/
+servers/node_modules/
+config/config.php
+includes/head.html
+includes/scripts.php
+assets/js/fa.js
+robots.txt
+.htaccess
+favicon.png
