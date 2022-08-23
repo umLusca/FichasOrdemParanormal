@@ -156,7 +156,7 @@ require_once RootDir."/sessao/personagem/ficha/aconfig_ficha.php";
         let pea = <?=$pea?>;
         let mor = <?=$morrendo?>;
         let foto = "<?=$morrendo?$urlphotomor:($enlouquecendo?$urlphotoenl:($ppv<50?($urlphotofer?:$urlphoto):$urlphoto));?>";
-        let marca = "<?=$marca?:"https://fichasop.com/assets/img/marca_mount.png"?>";
+        let marca = "<?=$marca?:"https://fichasop.com/assets/img/marca_mount.webp"?>";
         let morto = '<?=$morrendo?' morto':''?>';
         let elemento = '<?=$elemento?>';
         let dado = '';
@@ -231,10 +231,10 @@ require_once RootDir."/sessao/personagem/ficha/aconfig_ficha.php";
                     </div>
                     <div>
                         <div style={{width: 275 + '%',position: 'absolute',height: 1 + 'px'}}></div>
-                        <img className="fundo" src='/assets/img/fundo3.png' />
+                        <img className="fundo" src='/assets/img/fundo3.webp' />
                         <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca} />
                         <img className={"personagem pri" + morto} src={foto} />
-                        <img className="pef " src='/assets/img/fundo2.png' />
+                        <img className="pef " src='/assets/img/fundo2.webp' />
                         <div className="pea">
                             <span className="text-warning font8">{pea}</span>
                         </div>

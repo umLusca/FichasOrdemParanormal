@@ -46,7 +46,7 @@
                     </div>
                     <div class="col text-center">
                         <div id="prevsimbolo">
-                            <img src="/assets/img/desconhecido.png" width="200" height="200" alt="Ritual">
+                            <img src="/assets/img/desconhecido.webp" width="200" height="200" alt="Ritual">
                         </div>
                         <div id="warningsimbolo"></div>
                         <div class="container-fluid">
@@ -91,12 +91,20 @@
                                 <input type="text"  maxlength="<?=$Ritu_dura?>" class="form-control bg-black text-white border-start-0" id="ardur" name="duracao"/>
                             </div>
                             <div class="input-group m-1">
-                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard1">Dano 1:</label>
-                                <input type="text" maxlength="<?=$Ritu_dan1?>" class="form-control bg-black text-white border-start-0" id="ard1" name="dano1" placeholder="2d8+4"/>
+                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="arres">Resistência:</label>
+                                <input type="text"  maxlength="<?=$Ritu_resi?>" class="form-control bg-black text-white border-start-0" id="arres" name="resistencia"/>
                             </div>
                             <div class="input-group m-1">
-                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard2">Dano 2:</label>
-                                <input type="text"  maxlength="<?=$Ritu_dan2?>" class="form-control bg-black text-white border-start-0" id="ard2" name="dano2" placeholder="1d8+4"/>
+                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard1">Normal:</label>
+                                <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard1" name="dano1" placeholder="2d8+4"/>
+                            </div>
+                            <div class="input-group m-1">
+                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard2">Discente:</label>
+                                <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard2" name="dano2" placeholder="1d8+4"/>
+                            </div>
+                            <div class="input-group m-1">
+                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard2">Verdadeiro:</label>
+                                <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard2" name="dano2" placeholder="1d8+4"/>
                             </div>
                             <label class="fs-4" for="arefe">Descrição: (coloque também o que estiver a faltar acima.)</label>
                             <textarea id="arefe" name="efeito" class="form-control form-control-sm bg-black text-white"></textarea>
@@ -166,7 +174,7 @@
                                     </div>
                                     <div class="col text-center">
                                         <div class="prevsimbolo">
-                                            <img src="/assets/img/desconhecido.png" width="200" height="200" alt="Ritual">
+                                            <img src="/assets/img/desconhecido.webp" width="200" height="200" alt="Ritual">
                                         </div>
                                         <div class="warningsimbolo"></div>
                                     </div>
@@ -200,12 +208,20 @@
                                     <input type="text" maxlength="<?=$Ritu_dura?>" class="form-control bg-black text-white border-start-0" id="ardur<?= $r["id"] ?>" name="duracao[]" value="<?= $r["duracao"] ?>"/>
                                 </div>
                                 <div class="input-group m-1">
-                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="eard1<?= $r["id"] ?>">Dano 1:</label>
-                                    <input type="text" maxlength="<?=$Ritu_dan1?>" class="form-control bg-black text-white border-start-0" id="eard1<?= $r["id"] ?>" name="dano1[]" value="<?= $r["dano"] ?>" placeholder="2d8+4"/>
+                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="arres<?= $r["id"] ?>">Resistência:</label>
+                                    <input type="text" maxlength="<?=$Ritu_dura?>" class="form-control bg-black text-white border-start-0" id="arres<?= $r["id"] ?>" name="resistencia[]" value="<?= $r["resistencia"] ?>"/>
                                 </div>
                                 <div class="input-group m-1">
-                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="eard2<?= $r["id"] ?>">Dano 2:</label>
-                                    <input type="text" maxlength="<?=$Ritu_dan2?>" class="form-control bg-black text-white border-start-0" id="eard2<?= $r["id"] ?>" name="dano2[]" value="<?= $r["dano2"] ?>" placeholder="1d8+4"/>
+                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="eard1<?= $r["id"] ?>">Normal:</label>
+                                    <input type="text" maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="eard1<?= $r["id"] ?>" name="dano1[]" value="<?= $r["dano"] ?>" placeholder="2d8+4"/>
+                                </div>
+                                <div class="input-group m-1">
+                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="eard2<?= $r["id"] ?>">Discente:</label>
+                                    <input type="text" maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="eard2<?= $r["id"] ?>" name="dano2[]" value="<?= $r["dano2"] ?>" placeholder="1d8+4"/>
+                                </div>
+                                <div class="input-group m-1">
+                                    <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="eard3<?= $r["id"] ?>">Verdadeiro:</label>
+                                    <input type="text" maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="eard3<?= $r["id"] ?>" name="dano3[]" value="<?= $r["dano3"] ?>" placeholder="1d8+4"/>
                                 </div>
                                 <div class="m-1">
                                     <label class="fs-4" for="arefe<?= $r["id"] ?>">Descrição:</label>

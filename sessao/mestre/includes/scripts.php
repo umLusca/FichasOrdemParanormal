@@ -60,7 +60,6 @@
             $('#eataque').val(data.ataques);
             $('#ehabilidades').val(data.habilidades);
             $('#edetalhes').val(data.detalhes);
-            $('#editarmonstro').prop("checked",data.categoria);
             editnpcmodal.toggle();
             console.log(data)
         })
@@ -141,9 +140,17 @@
             url: "",
             data: sync,
         }).done(function () {
-            $("#syncnotes").attr("class", "text-success fa-regular fa-cloud-check");
+
+            $("#syncnotes").attr("class", "text-success").children("i")
+                .find('[data-fa-i2svg]')
+                .removeClass('fa-arrow-rotate-right fa-spin')
+                .addClass("fa-regular fa-cloud-check");
         }).fail(function () {
-            $("#syncnotes").attr("class", "text-danger fa-regular fa-cloud-x");
+            $("#syncnotes").attr("class", "text-danger").children("i")
+                .find('[data-fa-i2svg]')
+                .removeClass('fa-arrow-rotate-right fa-spin')
+                .addClass("fa-regular fa-cloud-xmark");
+
         })
     }
     function addnote() {
@@ -167,13 +174,12 @@
         if (confirm(text) === true) {
             $.post({
                 data: {status: "desp", p: p},
-                url: "",
-            }).done(function () {
-                location.reload();
+                url: " ",
+            }).done(function (data) {
+                console.log(data);
             });
         }
     }
-
     function UmPorUm(data){
         var retorno = '';
         const dado = data.dado;
@@ -195,25 +201,42 @@
             }
         }
         retorno += '</span>';
-        retorno += data.ficha;
         return retorno;
     }
-
     function dadojogador(data){
-
+        if(data.foto == ''){
+            data.foto = '/assets/img/Man.webp';
+        }
         $("#dados_recentes").prepend(
-            '<div class="row align-self-start">' +
-            '<div class="col-auto text-center">' +
-            '<img alt="Foto perfil" src="HTTPS://fichasop.com/assets/img/Mauro%20-%20up%20.png" id="fotopersonagem" height="50" class="rounded-circle border border-1 border-white"> ' +
+            '<div class="row align-self-start g-1 m-1">' +
+                '<div class="col-auto text-center">' +
+                    '<div class="d-flex flex-column">' +
+                        '<div>' +
+                            '<img alt="Foto perfil" src="'+ data.foto +'" id="fotopersonagem" height="50" width="50" class="rounded-circle border border-1 border-white">' +
+                        '</div>' +
+                        '<div class="text-truncate">'+data.nome+'</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="col text-start">'+ UmPorUm(data)+ '</div>' +
             '</div>' +
-            '<div class="col text-start">'+ UmPorUm(data)+ '</div>' +
-            '</div><hr>'
-        );
+            '</div><hr>');
     }
     $(document).ready(function () {
-        const jogadores_token = [<?php foreach($jogadores as $i => $token){if(!$i == 0)echo','; echo "'".$token["token"]."'";}?>];
-        socket = io('https://<?=$_SERVER["HTTP_HOST"]?>', {
+        const players = [
+		    <?php
+		    foreach($jogadores as $i => $token) {
+			    echo "{
+                nome:'".$token["nome"]."',
+                token:'".$token["token"]."',
+                foto:'".$token["foto"]."'
+                },
+                ";
+		    }
+		    ?>
+        ]
+        socket = io('https://api.fichasop.com', {
             reconnectionDelay: 5000,
+            transports: ['websocket', 'polling', 'flashsocket']
         });
         socket.on('connect', function () {
             console.log("Conectado.")
@@ -224,31 +247,35 @@
         socket.emit('create', '<?=$missao_token?>');
         socket.on('<?=$missao_token?>', function(msg) {
             console.log(msg);
-            if(msg.check){
-                if(jogadores_token.includes(data.ficha)){
-                    console.log("true");
+            let index = players.findIndex(function (player) {
+                return player.token === msg.ficha;
+            });
+
+            if(msg.auth){
+                let index = players.findIndex(function (player) {
+                    return player.token === msg.auth;
+                });
+                if(index => 0){
+                    socket.emit('<?=$missao_token?>',{authr: true,uid:msg.uid})
                 } else {
-                    console.log("false");
+                    socket.emit('<?=$missao_token?>',{authr: false,uid:msg.uid})
                 }
-                console.log(['joe', 'jane', 'mary'].includes('jane')); //true
             }
-            if(msg.dado) {
-                if(jogadores_token.includes(msg.ficha)){
-                    console.log("true");
-                } else {
-                    console.log("false");
+            if(index => 0){
+                if(msg.dado) {
+                    if (players[index]) {
+                        msg.foto = players[index]["foto"];
+                        msg.nome = players[index]["nome"];
+                    } else {
+                        if (msg.foto == null || msg.foto == '') {
+                            msg.foto = '/assets/img/Man.webp';
+                            msg.nome = 'Mestre';
+                        }
+                    }
+                    dadojogador(msg);
+                    console.log(msg);
+                    console.log("s");
                 }
-                valordado = msg.dado.result;
-                dadojogador(msg)
-            }
-            if(msg.vida) {
-                combate = msg.vida.combate;
-                pv = msg.vida.pv;
-                pva = msg.vida.pva;
-                san = msg.vida.san;
-                sana = msg.vida.sana;
-                pea = msg.vida.pea;
-                mor = msg.vida.mor
             }
         });
 
@@ -334,9 +361,13 @@
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });
+
         $note.on('keydown', function () {
             clearTimeout(typingTimer);
-            $("#syncnotes").attr("class", "text-warning fa-solid fa-arrows-rotate fa-spin");
+            $("#syncnotes").attr("class", "text-warning").children("i")
+                .find('[data-fa-i2svg]')
+                .addClass('fa-arrow-rotate-right fa-spin')
+                .removeClass('fa-regular fa-cloud-x fa-cloud')
         });
         $(".iniciativa").dblclick(function () {
             $(this).children("input").attr('readonly', false).toggleClass('border-0').delay(200).focus();

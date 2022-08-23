@@ -42,7 +42,7 @@ if(isset($_POST["reset"])){
                 $msg = "Senha não pode conter espaços!";
                 $success = false;
             }
-            $senha = md5(md5($pass));
+            $senha = cryptthis($pass);
 
         } else {
             $msg = "As Senhas não Coincidem";

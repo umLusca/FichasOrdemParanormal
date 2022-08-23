@@ -12,7 +12,7 @@
     function mostrarresultado(data){
             var retorno = '';
             retorno += '<h3>'+data.nome+': '+ data.print +'='+ data.resultado +' </h3><span class="text-secondary">';
-            for (let i = 0 ; i < (Object.keys(data).length - 5); i++){
+            for (let i = 0 ; i < (Object.keys(data).length - 4); i++){
 
                 retorno += ''+ data[i]["dado"] +': ';
 
@@ -25,7 +25,7 @@
 
                     }
                 }
-                if (i !== (Object.keys(data).length - 5)) {
+                if (i !== (Object.keys(data).length - 4)) {
                     retorno += '<br>';
                 }
             }
@@ -35,7 +35,10 @@
         new bootstrap.Toast($('#Toastdados')).show();
         $("main button").attr("disabled", false)
     }
-    function rolar(dado, dano = 0, nome = "teste") {
+    function rolar(dado, dano = 0, nome = "Teste") {
+        if (dano && nome == "teste"){
+            nome = "Dano";
+        }
         let ficha = '<?=$fichat?:''?>'
         $("main button").attr("disabled", true)
         $.post({

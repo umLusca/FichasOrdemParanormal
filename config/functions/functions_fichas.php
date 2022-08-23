@@ -1,5 +1,35 @@
 <?php
 
+
+//yep
+function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max = 10): string
+{
+	if (!$input){
+		$return = "
+            <div class='containera mx-auto'>
+		        <button class='atributos for hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($for) . 'd20", 0,"Força");    \'' : 'disabled') . "><span>".$for."</span></button>
+		        <button class='atributos agi hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($agi) . 'd20", 0,"Agilidade");\'' : 'disabled') . "><span>".$agi."</span></button>
+		        <button class='atributos int hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($int) . 'd20", 0,"Intelecto");\'' : 'disabled') . "><span>".$int."</span></button>
+		        <button class='atributos pre hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($pre) . 'd20", 0,"Presença"); \'' : 'disabled') . "><span>".$pre."</span></button>
+		        <button class='atributos vig hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($vig) . 'd20", 0,"Vigor");    \'' : 'disabled') . "><span>".$vig."</span></button>
+		        <img src='/assets/img/Atributes.webp' alt='Atributos'>
+	        </div>";
+	} else {
+		$return ="
+            <div class='containera mx-auto'>
+                <input required class='atributos for atributos-input hex font2' type='number' min='$min' max='$max' value='$for' name='forca'     title='Força'/>
+                <input required class='atributos agi atributos-input hex font2' type='number' min='$min' max='$max' value='$agi' name='agilidade' title='Agilidade'/>
+                <input required class='atributos int atributos-input hex font2' type='number' min='$min' max='$max' value='$int' name='intelecto' title='Intelecto'/>
+                <input required class='atributos pre atributos-input hex font2' type='number' min='$min' max='$max' value='$pre' name='presenca'  title='Presença'/>
+                <input required class='atributos vig atributos-input hex font2' type='number' min='$min' max='$max' value='$vig' name='vigor'     title='Vigor'/>
+                <img src='/assets/img/Atributes.webp' alt='Atributos'>
+            </div>";
+	}
+	return $return;
+}
+
+
+
 //Calculo bases
 function calcularvida($nex, $classe, $vigor, $trilha = 0 , $origem = 0 , $extra = 0): int
 {
@@ -48,7 +78,11 @@ function calcularsan($nex, $classe, $trilha = 0 , $origem = 0 , $extra = 0, $ext
 	// Type 1: Start only;
 	// Type 2: Start and nex;
 	// Type 3: Nex Only
+	$esp = 1;
 	switch ($origem){
+		case 7:
+			$esp = 2;
+			break;
 		case 26:
 			$extra += 1;
 			break;
@@ -56,13 +90,13 @@ function calcularsan($nex, $classe, $trilha = 0 , $origem = 0 , $extra = 0, $ext
 	}
 	switch ($classe) {
 		default:
-			$san = (12 + $extra) + ((3 + $extra) * (floor(($nex / 5)) - 1));
+			$san = ((12/ $esp) + $extra) + ((3 + $extra) * (floor(($nex / 5)) - 1));
 			break;
 		case 2:
-			$san = (16 + $extra) + ((4 + $extra) * (floor(($nex / 5)) - 1));
+			$san = ((16/ $esp) + $extra) + ((4 + $extra) * (floor(($nex / 5)) - 1));
 			break;
 		case 3:
-			$san = (20 + $extra) + ((5 + $extra) * (floor(($nex / 5)) - 1));
+			$san = ((20/ $esp) + $extra) + ((5 + $extra) * (floor(($nex / 5)) - 1));
 			break;
 	}
 	return $san;
@@ -144,13 +178,13 @@ function ClearRolar($dado, $Return_Error = false): bool|array
 						if (!empty($dados)) {
 							$b = explode('d', $dados);
 							$b[0] = intval($b[0]);
-							if (($b[0] > 10 || $b[0] < -10) and isset($b[1])) {
+							if (($b[0] > 20 || $b[0] < -20) and isset($b[1])) {
 								$success = false;
-								$msg = "Não pode rolar mais de 10 dados de uma vez.";
+								$msg = "Não pode rolar mais de 20 dados de uma vez.";
 							}
-							if (($b[0] > 30 || $b[0] < -30) and !isset($b[1])) {
+							if (($b[0] > 100 || $b[0] < -100) and !isset($b[1])) {
 								$success = false;
-								$msg = "Não pode somar além de 30 absolutamente.";
+								$msg = "Não pode somar além de 100 absolutamente.";
 							}
 							if ($b[1] > 100) {
 								$success = false;
@@ -232,10 +266,14 @@ function Rolar($dado, $dano = false): array
 	}
 	return ($result);
 }
+
+
+
 function RolarMkII($dado_bruto, $dano = false): array
 {
 	$index=0;
 	$resultado = $print = $soma = null;
+
 	$saida = [];	$dado_bruto = str_replace("-", "+-", $dado_bruto);
 	$dado_fragmentado = explode('+', $dado_bruto);
 	foreach ($dado_fragmentado as $valor_dado) {

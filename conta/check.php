@@ -1,9 +1,5 @@
 <?php
 
-use League\OAuth2\Client\Provider\Google;
-use PHPMailer\PHPMailer\OAuth;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
 
 $con = con();
@@ -34,17 +30,17 @@ function logar(string $login): bool
 
 function CheckName($nome): bool
 {
-    $nome = test_input($nome);
+    $nome = cleanstring($nome);
     return (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙ]*$/', $nome));
 }
 function CheckLogin($login): bool
 {
-    $login = test_input($login);
+    $login = cleanstring($login);
     return (preg_match('/^[a-zA-Z-\'_\d]*$/', $login));
 }
 function CheckEmail($email): bool
 {
-    $email = test_input($email);
+    $email = cleanstring($email);
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 
 }
@@ -55,9 +51,9 @@ if(isset($_POST["status"])){
 	switch ($_POST['status']){
 		case 'addmarca':
 			$userid = $_SESSION["UserID"];
-			preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', test_input($_POST["urlmarca"]), $marca);
+			preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', cleanstring($_POST["urlmarca"]), $marca);
 			if ($marca){
-				$marca = test_input($_POST["urlmarca"]);
+				$marca = cleanstring($_POST["urlmarca"]);
 				$q = $con->query("SELECT * FROM `usuarios` WHERE `id` = '".$_SESSION["UserID"]."';");
 				$rq = mysqli_fetch_array($q);
 				if($marca != $rq["marca"]) {
@@ -66,7 +62,7 @@ if(isset($_POST["status"])){
 					$a->execute();
 					$data["success"] = (bool)$con->affected_rows;
 					if ($data["success"]) {
-						$_SESSION["UserMarca"] = test_input($_POST["urlmarca"]);
+						$_SESSION["UserMarca"] = cleanstring($_POST["urlmarca"]);
 						$msg = "Marca alterada com Sucesso";
 					}
 				} else {
@@ -91,7 +87,7 @@ if(isset($_POST["status"])){
 if (isset($_POST["cadastrar"])) {
     $success = true;
     if (!empty($_POST["nome"])) {
-        $nome = test_input($_POST["nome"]);
+        $nome = cleanstring($_POST["nome"]);
         if (!CheckName($nome)) {
             $msg = "Apenas Letras e Espaços são permitidos no nome!";
             $success = false;
@@ -103,7 +99,7 @@ if (isset($_POST["cadastrar"])) {
 
 
     if (!empty($_POST["login"])) {
-        $login = test_input($_POST["login"]);
+        $login = cleanstring($_POST["login"]);
         if(!CheckLogin($login)){
             $success = false;
             $msg = "O username será usado para entrar em sua conta. (Apenas letras e Underlines)";
@@ -118,7 +114,7 @@ if (isset($_POST["cadastrar"])) {
     }
 
     if (!empty($_POST["email"])) {
-        $email = test_input($_POST["email"]);
+        $email = cleanstring($_POST["email"]);
         if (!CheckEmail($email)) {
             $msg = "Email inserido não é valido.";
             $success = false;
@@ -130,7 +126,7 @@ if (isset($_POST["cadastrar"])) {
 
     if (!empty($_POST["senha"] || $_POST["csenha"])) {
         if ($_POST["senha"] === $_POST["csenha"]) {
-            $pass = test_input($_POST["senha"]);
+            $pass = cleanstring($_POST["senha"]);
             if (strlen($pass) < 8 || strlen($pass) > 50) {
                 $msg = "Senha deve conter entre 8 e 50 digitos.";
                 $success = false;
@@ -212,13 +208,13 @@ if (isset($_POST["cadastrar"])) {
 if (isset($_POST["logar"])) {
 	$success = true;
 	if (!empty($_POST["login"])) {
-		$login = test_input($_POST["login"]);
+		$login = cleanstring($_POST["login"]);
 	} else {
 		$success = false;
 		$msg = "Preencha todos os campos!";
 	}
 	if (!empty($_POST["senha"])) {
-		$pass = test_input($_POST["senha"]);
+		$pass = cleanstring($_POST["senha"]);
 		$senha = cryptthis($pass);
 	} else {
 		$success = false;
@@ -264,7 +260,7 @@ if (isset($_POST["update"])) {
             break;
         case 'recuperar':
             if (!empty($_POST["email"])) {
-                $email = test_input($_POST["email"]);
+                $email = cleanstring($_POST["email"]);
                 if (!CheckEmail($email)) {
                     $msg = "Email inserido não é valido.";
                     $success = false;
@@ -281,6 +277,8 @@ if (isset($_POST["update"])) {
 
                     $k = $con->query("INSERT INTO `recuperar_senha` (`id_usuario`,`hash`,`email`,`data`) VALUES ('".$ds["id"]."','".$hash."','".$email."',NOW())");
                     if($k) {
+
+
                         $link = "https://fichasop.com/conta/recuperar?recovery=" . $hash;
                         $emailmsg = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
            <head>
@@ -326,7 +324,7 @@ if (isset($_POST["update"])) {
                                       <tbody>
                                         <tr>
                                           <td style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                            <img class="w-24 rounded" src="https://fichasop.com/assets/img/fichasop.png" style="height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border-radius: 4px; width: 96px; border-style: none; border-width: 0;" width="96">
+                                            <img class="w-24 rounded" src="https://fichasop.com/assets/img/fichasop.webp" style="height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border-radius: 4px; width: 96px; border-style: none; border-width: 0;" width="96">
                                           </td>
                                         </tr>
                                       </tbody>
@@ -426,37 +424,13 @@ if (isset($_POST["update"])) {
         </html>';// Link -> Recuperar Senha.
                         $fromname = 'FichasOP';
                         $subject = 'Recuperar Conta';
-						
 
-	                    $mail = new PHPMailer();
-	                    $mail->setFrom('fichasop@gmail.com', 'Suporte');
-	                    $mail->Subject = $subject;
-	                    $mail->addAddress($email);
-	                    $mail->IsHTML(true);
-	                    $mail->isSMTP();
-	                    $mail->SMTPAuth = true;
-	                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-	                    $mail->Host = 'smtp.gmail.com';
-	                    $mail->Port = 587;
-	                    $mail->Body = $emailmsg;
-	                    $mail->SMTPDebug = SMTP::DEBUG_OFF;
-	                    $mail->AuthType = 'XOAUTH2';
-	                    $provider = new Google([
-		                    'clientId' => sscid,
-		                    'clientSecret' => sscsid,
-	                    ]);
-	                    $mail->setOAuth(
-		                    new OAuth(
-			                    [
-				                    'provider' => $provider,
-				                    'clientId' => sscid,
-				                    'clientSecret' => sscsid,
-				                    'refreshToken' => sscrt,
-				                    'userName' => sscmail,
-			                    ]
-		                    )
-	                    );
-	                    if ($mail->send()) {
+	                    $headers  = 'MIME-Version: 1.0' . "\r\n";
+	                    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+	                    $headers .= 'From: suporte@fichasop.com' . "\r\n". 'Cc: Admin@fichasop.com' . "\r\n";
+
+
+	                    if (mail($email,$subject,$emailmsg,$headers)) {
 		                    $success = true;
 		                    $msg = 'Email enviado, Verifique sua caixa de email';
 	                    } else {
@@ -474,7 +448,7 @@ if (isset($_POST["update"])) {
         case 'email':
             if (!empty($_POST["email"])) {
                 if ($_POST["email"] === $_POST["conemail"]) {
-                    $email = test_input($_POST["email"]);
+                    $email = cleanstring($_POST["email"]);
                     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                         $msg = "Email inserido não é valido.";
                         $success = false;
@@ -564,7 +538,7 @@ if (isset($_POST["update"])) {
                 $msg = "Preencha todos os campos!";
                 $success = false;
             } else {
-                $login = test_input($_POST["login"]);
+                $login = cleanstring($_POST["login"]);
                 preg_match('/^[a-zA-Z-\'_\d]*$/', $login);
                 if (isset($_SESSION["UserID"])) {
                     $v = $con->query("SELECT * FROM `usuarios` WHERE `login` = '" . $login . "';");
@@ -594,7 +568,7 @@ if (isset($_POST["update"])) {
                 $msg = "Preencha todos os campos!";
                 $success = false;
             } else {
-                $nome = test_input($_POST["nome"]);
+                $nome = cleanstring($_POST["nome"]);
                 if (!preg_match("/^[a-zA-Z-' ]*$/", $nome)) {
                     $msg = "Apenas Letras e Espaços são permitidos no nome!";
                     $success = false;

@@ -19,14 +19,7 @@
         <div class="card-body p-0 ">
             <h1 class="text-center font6">Atributos</h1>
             <div class="container-fluid p-0 mb-2">
-                <div class="containera mx-auto font4">
-                    <button class="atributos p-0 for btn rounded-circle text-white" <?=$edit?"onclick='rolar(".'"'.(ValorParaRolarDado($forca)).'d20");'."'":'disabled'?>><?=$forca?></button>
-                    <button class="atributos p-0 agi btn rounded-circle text-white" <?=$edit?"onclick='rolar(".'"'.(ValorParaRolarDado($agilidade)).'d20");'."'":'disabled'?>><?=$agilidade?></button>
-                    <button class="atributos p-0 int btn rounded-circle text-white" <?=$edit?"onclick='rolar(".'"'.(ValorParaRolarDado($intelecto)).'d20");'."'":'disabled'?>><?=$intelecto?></button>
-                    <button class="atributos p-0 pre btn rounded-circle text-white" <?=$edit?"onclick='rolar(".'"'.(ValorParaRolarDado($presenca)).'d20");'."'":'disabled'?>><?=$presenca?></button>
-                    <button class="atributos p-0 vig btn rounded-circle text-white" <?=$edit?"onclick='rolar(".'"'.(ValorParaRolarDado($vigor)).'d20");'."'":'disabled'?>><?=$vigor?></button>
-                    <img src="/assets/img/Atributos.png" alt="Atributos">
-                </div>
+                <?=atributos($forca,$agilidade,$intelecto,$vigor,$presenca)?>
             </div>
         </div>
         <div class="mx-1 bottom-0">

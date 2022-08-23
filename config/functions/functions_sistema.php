@@ -1,10 +1,10 @@
 <?php
 
-function minmax($int, $min = 0, $max = 99)
+function minmax($int, $min = 0, $max = 99, $float = 0)
 {
-	return min(max(intval($int), $min), $max);
+	return $float?min(max(intval($int), $min), $max):min(max(floatval($int), $min), $max);
 }
-function test_input($data, $limit = 1000): string
+function cleanstring($data, $limit = 1000): string
 {
 	return substr(htmlspecialchars(stripslashes(trim($data))),0,$limit);
 }
@@ -22,12 +22,14 @@ function getUserIpAddr(){
 	}
 	return $ip;
 }
+
 function generate_tokens(): array
 {
 	$selector = bin2hex(random_bytes(16));
 	$validator = bin2hex(random_bytes(32));
 	return [$selector, $validator, $selector . ':' . $validator];
 }
+
 function parse_token(string $token): ?array
 {
 	$parts = explode(':', $token);

@@ -17,7 +17,30 @@
             <?php } ?>
         </div>
         <div class="card-body p-0">
-            <div class="row m-0">
+            <div class="row g-0 m-2 justify-content-center row-cols-sm-2">
+	            <?php if($edit){?>
+                    <div class="col" id="butmor">
+                        <div class="d-flex align-self-center flex-column card border-info bg-black">
+                            <div class="card-header text-center p-0">
+                                <h3 class="m-0"><span>Portrait</span>/<span>Missão</span></h3>
+                            </div>
+                            <div class="card-body p-1">
+                                <div class="m-2">
+                                    <input type="checkbox" class="btn-check" id="portrait" <?=$edit?:"disabled"?>>
+                                    <label class="d-grid btn btn-outline-success fw-bolder" for="portrait">Online</label>
+                                </div>
+                                <div class="m-2">
+                                    <input type="checkbox" class="btn-check" id="combate" <?=$edit?:"disabled"?>>
+                                    <label class="d-grid btn btn-outline-warning fw-bolder" for="combate">Combate</label>
+                                </div>
+                                <div class="m-2">
+                                    <input type="checkbox" class="btn-check" id="morrendo" <?=$morrendo?"checked":''?> <?=$edit?:"disabled"?>>
+                                    <label class="d-grid btn btn-outline-danger fw-bolder" for="morrendo">Morto</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+	            <?php }?>
                 <div class="col text-center">
                     <img data-bs-toggle="modal" data-bs-target="#trocarficha" alt="Foto perfil" src="<?php
                     if($pva <= 0){
@@ -33,22 +56,7 @@
                             }
                         }
                     }
-
-                    ?>" id="fotopersonagem" width="150" height="150" class="<?php if (intval($rqs["foto"]) > 0 && intval($rqs["foto"]) < 3) echo "bg-secondary"; ?> rounded-circle mx-3 border border-1 border-white"/>
-                </div>
-                <div class="col d-flex align-self-center flex-column" id="butmor">
-                    <div class="m-2">
-                        <input type="checkbox" class="btn-check" id="portrait" autocomplete="off" <?=$edit?:"disabled"?>>
-                        <label class="d-grid btn btn-outline-info fw-bolder" for="portrait">Portrait</label>
-                    </div>
-                    <div class="m-2">
-                        <input type="checkbox" class="btn-check" id="combate" <?=$edit?:"disabled"?>>
-                        <label class="d-grid btn btn-outline-warning fw-bolder" for="combate">Combate</label>
-                    </div>
-                    <div class="m-2">
-                        <input type="checkbox" class="btn-check" id="morrendo" <?=$morrendo?"checked":''?> <?=$edit?:"disabled"?>>
-                        <label class="d-grid btn btn-outline-danger fw-bolder" for="morrendo">Morto</label>
-                    </div>
+                    ?>" id="fotopersonagem" class="rounded-circle mx-3 border border-1 border-white" style="width: -webkit-fill-available; max-width: 190px;"/>
                 </div>
             </div>
             <div class="m-2">

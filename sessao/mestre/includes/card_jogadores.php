@@ -9,7 +9,7 @@
             <div class="card-header border-0">
                 <div class="card-title fs-2 text-center font6">Fichas Personagens</div>
             </div>
-            <div class="row row-cols-lg-2 row-cols-1 g-2 p-2" id="fichasperson">
+            <div class="row row-cols-lg-2 row-cols-xxl-3 row-cols-1 g-2 p-2" id="fichasperson">
                 <?php
                 foreach ($jogadores as $ficha) {
                         $s = $con->query("Select SUM(espaco) AS pesototal From `inventario` where `id_ficha` = '" . $ficha["id"] . "';");
@@ -194,7 +194,7 @@
                                 <div class="card h-100 bg-black border-light">
                                     <div class="clearfix ms-1 my-1">
                                         <a class="btn btn-sm btn-outline-info float-start" href="./../personagem/portrait/<?=($id==5887)?"Espiral/":''?>?token=<?=$ficha["token"]?>">Portrait</a>
-                                        <button type="button" class="btn float-end text-danger fa-solid fa-link-slash" onclick="desvincular(<?= $fichaa["id"] ?>)" title="Desvincular ficha"></button>
+                                        <button type="button" class="btn float-end text-danger fa-solid fa-link-slash" onclick="desvincular(<?= $ficha["id"] ?>)" title="Desvincular ficha"></button>
                                     </div>
                                     <div class="card-header border-0 text-center p-0">
                                         <a class="card-title fs-5 text-decoration-none" href="./../personagem/?token=<?= $ficha["token"] ?>">

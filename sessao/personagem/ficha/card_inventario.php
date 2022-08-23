@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="card-title">
-            <h1 class="text-center">Inventario</h1>
+            <h1 class="text-center">Inventário</h1>
         </div>
         <h4 class="text-center">Peso carregado: <?= $espacosusados ?>/<?= $invmax ?></h4>
         <div class="card-body p-0">
@@ -50,7 +50,9 @@
                                     <td class="trocavision" style="display: none;"><?=$row['tipo']?></td>
                                     <td class="trocavision">
                                         <button class="btn btn-sm fw-bolder text-info" title="Rolar Ataque"
-                                            <?=$edit?'onclick=rolar("'.DadoDinamico($row['ataque'],$forca,$agilidade,$intelecto,$presenca,$vigor).'")':"disabled";?>>
+                                            <?php if($edit){?>
+                                                onclick='rolar("<?=DadoDinamico($row['ataque'],$forca,$agilidade,$intelecto,$presenca,$vigor)?>", 0, "Ataque Arma")'
+                                                <?php }else { ?>disabled<?php }?>>
                                             <i class="fa-regular fa-dice"></i><?=$row["ataque"]?>
                                         </button>
                                     </td>
@@ -58,7 +60,7 @@
                                     <td class="trocavision">
                                         <button class="btn btn-sm fw-bolder text-danger" title="Rolar Dano"
                                             <?php if ($edit) { ?>
-                                                onclick="rolar('<?=$row['dano']?>',1)"
+                                                onclick="rolar('<?=$row['dano']?>', 1, 'Dano Arma')"
                                             <?php } else { ?>
                                                 disabled
                                             <?php } ?>>
@@ -69,7 +71,7 @@
                                     <td class="trocavision">
                                         <button class="btn btn-sm fw-bolder text-danger" title="Rolar Dano critico"
                                             <?php if ($edit) { ?>
-                                                onclick="rolar('<?=$row['critico']?>',1)"
+                                                onclick="rolar('<?=$row['critico']?>', 1, 'Crítico Arma')"
                                             <?php } else { ?>
                                                 disabled
                                             <?php } ?>>

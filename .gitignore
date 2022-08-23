@@ -1,4 +1,9 @@
 .idea/
+assets/img/
+creditos
+error/
+termos/
+composer.lock/
 vendor/
 servers/node_modules/
 config/config.php
@@ -8,3 +13,5 @@ assets/js/fa.js
 robots.txt
 .htaccess
 favicon.png
+sitemap.xml
+test.php

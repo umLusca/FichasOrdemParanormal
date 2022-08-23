@@ -19,76 +19,72 @@
                 <?php } ?>
             </div>
         </div>
-        <div class="card-body p-0 font1">
+        <div class="card-body p-0 font4">
             <h1 class="text-center font6">Rituais</h1>
-            <div class="row g-3 m-2 font4">
-                <?php
-                foreach ($s[6] as $r):?>
-                    <div class="col text-center col-md-6">
-                        <div class="container-fluid font2 text-start">
-                            <div class="row g-1 justify-content-center">
-                                <div class="col-auto text-start p-0">
-                                    <img class="border border-light" src="<?=($r["foto"]==='1')?"/assets/img/desconhecido.png":$r["foto"]?>" width="200" height="200" alt="Ritual">
-                                </div>
-                                <div class="col-12 col-xl p-0 fs-6">
-                                    <div class="row m-2 g-1">
-                                        <div class="col-12">
-                                            <div class="row m-0 border border-light rounded rounded-1">
+            <div class="m-2">
+                <nav class="m-2">
+                    <div class="nav nav-tabs" role="tablist">
+                        <?php foreach ($s[6] as $i => $r):?>
+                            <button class="text-light nav-link <?=($i==0)?'active':''?>" id="but-ritual-tab-<?=$r["id"]?>" data-bs-toggle="tab" data-bs-target="#but-ritual-<?=$r["id"]?>" type="button" role="tab"><?=$r["nome"]?></button>
+                        <?php endforeach;?>
+                    </div>
+                </nav>
+                <div class="tab-content">
+                        <?php foreach ($s[6] as $i => $r):?>
+                            <div class="tab-pane fade <?=($i==0)?'show active':''?>" id="but-ritual-<?=$r["id"]?>" role="tabpanel">
+                                <div class="container-fluid font2 text-start">
+                                    <div class="row g-1">
+                                        <div class="col-12 col-sm-3 col-xxl-2 text-start p-0 align-content-center">
+                                            <img class="border border-light w-100" src="<?=($r["foto"]==='1')?"/assets/img/desconhecido.webp":$r["foto"]?>" alt="Ritual">
+                                        </div>
+                                        <div class="col row row-cols-2 align-content-center g-1 p-2">
+                                            <div class="col-12 row m-0 border border-light rounded rounded-1">
                                                 <span class="col border-0 form-control form-control-sm bg-black text-light">Nome: <?= $r["nome"] ?></span>
-
-	                                            <?php if ($edit) { ?>
-                                                <button class="col-auto border-0 float-end btn btn-sm btn-outline-light text-danger rounded-0" onclick="deletar(<?= $r["id"] ?>,'<?=$r["nome"]?>','deleteritual')">
-                                                    <i class="fa-regular fa-trash"></i>
-                                                </button>
-	                                            <?php } ?>
+                                                <?php if ($edit) { ?>
+                                                    <button class="col-auto border-0 float-end btn btn-sm btn-outline-light text-danger rounded-0" onclick="deletar(<?= $r["id"] ?>,'<?=$r["nome"]?>','deleteritual')">
+                                                        <i class="fa-regular fa-trash"></i>
+                                                    </button>
+                                                <?php } ?>
+                                            </div>
+                                            <div class="col">
+                                                <span class="form-control form-control-sm bg-black text-light">Circulo: <?=$r["circulo"]?></span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="form-control form-control-sm bg-black text-light">Elemento: <?=$r["elemento"]?></span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="bg-black form-control form-control-sm bg-black text-light">Execução: <?=$r["conjuracao"]?></span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="bg-black form-control form-control-sm bg-black text-light">Alcance: <?=$r["alcance"]?></span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="bg-black form-control form-control-sm bg-black text-light">Alvo: <?=$r["alvo"]?></span>
+                                            </div>
+                                            <div class="col">
+                                                <span class="bg-black form-control form-control-sm bg-black text-light">Duração: <?=$r["duracao"]?></span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span class="bg-black form-control form-control-sm bg-black text-light">Resistência: <?=$r["resistencia"]?></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row m-2 g-1">
-                                        <div class="col col-lg-auto">
-                                            <span class="form-control form-control-sm bg-black text-light">Circulo: <?=$r["circulo"]?></span>
+                                        <div class="row col-12 m-2 g-1">
+                                            <div class="col-4 d-grid">
+                                                <button class="btn btn-sm btn-outline-light" onclick="rolar('<?=$r["dano"]?>',1)" <?=$edit?:"disabled"?>>Normal</button>
+                                            </div>
+                                            <div class="col-4 d-grid">
+                                                <button class="btn btn-sm btn-outline-light" onclick="rolar('<?=$r["dano2"]?>',2)" <?=$edit?:"disabled"?>>Discente</button>
+                                            </div>
+                                            <div class="col-4 d-grid">
+                                                <button class="btn btn-sm btn-outline-light" onclick="rolar('<?=$r["dano3"]?>',2)" <?=$edit?:"disabled"?>>Verdadeiro</button>
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <span class="form-control form-control-sm bg-black text-light">Elemento: <?=$r["elemento"]?></span>
-                                        </div>
-                                    </div>
-                                    <div class="row m-2 g-1">
-                                        <div class="col col-lg-auto">
-                                            <span class="bg-black form-control form-control-sm bg-black text-light">Execução: <?=$r["conjuracao"]?></span>
-                                        </div>
-                                        <div class="col">
-                                            <span class="bg-black form-control form-control-sm bg-black text-light">Alcance: <?=$r["alcance"]?></span>
-                                        </div>
-                                    </div>
-                                    <div class="row m-2 g-1">
-                                        <div class="col col-lg-auto">
-                                            <span class="bg-black form-control form-control-sm bg-black text-light">Alvo: <?=$r["alvo"]?></span>
-                                        </div>
-                                        <div class="col">
-                                            <span class="bg-black form-control form-control-sm bg-black text-light">Duração: <?=$r["duracao"]?></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row m-2 g-1">
-                                        <div class="col-6 d-grid">
-                                            <?php if(!empty($r["dano"])){?>
-                                                <button class="btn btn-sm btn-outline-light" onclick="rolar('<?=$r["dano"]?>',1)" <?=$edit?:"disabled"?>><?=$r["dano"]?></button>
-                                            <?php }?>
-                                        </div>
-                                        <div class="col-6 d-grid">
-                                            <?php if(!empty($r["dano2"])){?>
-                                                <button class="btn btn-sm btn-outline-light" onclick="rolar('<?=$r["dano2"]?>',2)" <?=$edit?:"disabled"?>><?=$r["dano2"]?></button>
-                                            <?php }?>
-                                        </div>
+                                        <textarea aria-label="Descrição" class="col-12 form-control form-control-sm bg-black text-white fs-5" rows="6" disabled>Descrição: <?= $r["efeito"] ?></textarea>
                                     </div>
                                 </div>
-                                <textarea aria-label="Descrição" class="col-12 form-control form-control-sm bg-black text-white fs-5" rows="6" disabled>Descrição: <?= $r["efeito"] ?></textarea>
                             </div>
-                        </div>
+                        <?php endforeach;?>
                     </div>
-                <?php
-                endforeach;
-                ?>
             </div>
         </div>
     </div>

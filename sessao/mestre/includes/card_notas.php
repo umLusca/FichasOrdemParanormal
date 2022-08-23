@@ -1,9 +1,8 @@
-
-<div class="col-md-6" id="notas">
+<div class="col-12" id="notas">
     <div class="card h-100 w-100 bg-black border-light">
         <div class="card-body p-0">
             <div class="card-header border-0">
-                <div class="card-title fs-2 text-center font6">Anotações <i id="syncnotes" class=""></i></div>
+                <div class="card-title fs-2 text-center font6">Anotações <span id="syncnotes" class="invisible"><i class="fas"></i></span></div>
             </div>
             <form class="container-fluid p-0" id="noteform">
                 <ul class="nav nav-pills justify-content-center mb-3" id="notestitle" role="tablist">
@@ -35,9 +34,8 @@
                                 <button type="button" onclick="deletenote(<?= $r["id"] ?>)"
                                         class="btn text-danger fa-regular fa-trash"></button>
                             </div>
-                            <textarea aria-label="a<?= $r["id"] ?>" name="nota[]"
-                                      class="note form-control bg-black text-light"
-                                      maxlength="3000"><?= $r["notas"] ?></textarea>
+                            <textarea aria-label="a<?= $r["id"] ?>" id="editor1" name="nota[]" class="note form-control bg-black text-light"
+                                      rows="10" cols="80" maxlength="5000"><?= $r["notas"] ?></textarea>
                         </div>
                     <?php endforeach; ?>
                 </div>

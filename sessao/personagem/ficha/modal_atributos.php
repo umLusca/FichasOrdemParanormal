@@ -5,12 +5,7 @@
             <form class="modal-body" id="formeditatr">
                 <div class="text-center"><h2>Editar Atributos.</h2></div>
                 <div class="containera text-white" id="atributos" title="Atributos, clique para editar">
-                    <input required class="atributos for form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=<?= $forca; ?> name="forca" title="Força"/>
-                    <input required class="atributos agi form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=<?= $agilidade; ?> name="agilidade" title="Agilidade"/>
-                    <input required class="atributos int form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=<?= $intelecto; ?> name="intelecto" title="Intelecto"/>
-                    <input required class="atributos pre form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=<?= $presenca; ?> name="presenca" title="Presença"/>
-                    <input required class="atributos vig form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=<?= $vigor; ?> name="vigor" title="Vigor"/>
-                    <img src="/assets/img/Atributos.png" alt="Atributos">
+	                <?=atributos($forca,$agilidade,$intelecto,$vigor,$presenca,1,1)?>
                 </div>
                 <div class="clearfix">
                     <input name="status" value="editattr" type="hidden"/>

@@ -11,6 +11,7 @@ $url.= $_SERVER['HTTP_HOST'];
         <div class="col">
             <a class="btn btn-sm fw-bolder text-light" href='/'><i class="fa-regular fa-house-blank"></i> Inicio</a><!--
             --><a class="btn btn-sm fw-bolder text-light" href='/creditos'><i class="fa-regular fa-bars"></i> Créditos</a><!--
+            --><a class="btn btn-sm fw-bolder text-light" href='https://jamboeditora.com.br/'><i class="fa-regular fa-heart"></i> Jambo</a><!--
             --><a class="btn btn-sm fw-bolder text-white" data-bs-toggle="modal" data-bs-target="#doar"><i class="fa-regular fa-heart"></i> Doar</a>
             </div>
         <div class="col-auto d-none d-md-block">
@@ -40,11 +41,6 @@ $url.= $_SERVER['HTTP_HOST'];
             </div>
         </div>
     </div>
-    <?php if($url =='https://fichasop.cf'){?>
-    <div class="border-bottom border-light m-0 p-0 text-center font4">
-        <span>Estamos de mudança, Agora estamos em <a href="https://fichasop.com">https://fichasop.COM</a>!</span>
-    </div>
-    <?php }?>
 </header>
 
 <div class="modal fade" id="doar" tabindex="-1" aria-labelledby="titledoar" aria-hidden="true">

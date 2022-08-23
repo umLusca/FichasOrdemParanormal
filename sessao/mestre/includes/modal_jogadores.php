@@ -1,4 +1,3 @@
-
 <div class="modal" id="adicionar" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <form class="modal-content bg-black border-light" id="formadd" method="post" autocomplete="off">

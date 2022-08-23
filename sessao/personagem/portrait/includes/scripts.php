@@ -17,32 +17,35 @@
         });
     });
     */
-    socket = io('https://<?=$_SERVER["HTTP_HOST"]?>', {
+    socket = io('https://api.fichasop.com', {
         reconnectionDelay: 5000,
+        transports: ['websocket', 'polling', 'flashsocket']
     });
     socket.on('connect', function () {
-        console.log("Conectado.")
+        console.log("Conectado.");
     });
     socket.on('disconnect', function () {
-        console.log("Desconectado.")
+        console.log("Desconectado.");
     });
     socket.emit('create', '<?=$missao_token?:$fichat?>');
     socket.on('<?=$missao_token?:$fichat?>', function(msg) {
-        if(msg.dado) {
-            valordado = msg.dado.result;
-            subtimer();
+        if(msg.ficha == '<?=$fichat?>') {
+            if (msg.dado) {
+                valordado = msg.dado.resultado;
+                subtimer();
+            }
+            if (msg.vida) {
+                combate = msg.vida.combate;
+                pv = msg.vida.pv;
+                pva = msg.vida.pva;
+                san = msg.vida.san;
+                sana = msg.vida.sana;
+                pea = msg.vida.pea;
+                mor = msg.vida.mor
+                tick();
+            }
+            console.log(msg);
         }
-        if(msg.vida) {
-            combate = msg.vida.combate;
-            pv = msg.vida.pv;
-            pva = msg.vida.pva;
-            san = msg.vida.san;
-            sana = msg.vida.sana;
-            pea = msg.vida.pea;
-            mor = msg.vida.mor
-            tick();
-        }
-        console.log(msg);
     });
 </script>
 <script src="https://unpkg.com/babel-standalone@6/babel.min.js" data-cfasync="false"></script>

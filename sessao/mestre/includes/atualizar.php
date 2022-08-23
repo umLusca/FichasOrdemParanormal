@@ -35,7 +35,7 @@ if (isset($_POST["status"])) {
 
 
 		    if (!empty($_POST["email"])) {
-			    $email = test_input($_POST["email"]);
+			    $email = cleanstring($_POST["email"]);
 			    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 				    $msg = "Email inserido não é valido.";
 				    $success = false;
@@ -123,7 +123,7 @@ if (isset($_POST["status"])) {
                               <tbody>
                                 <tr>
                                   <td style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                    <img class="w-24 rounded" src="https://fichasop.com/assets/img/fichasop.png" style="height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border-radius: 4px; width: 96px; border-style: none; border-width: 0;" width="96">
+                                    <img class="w-24 rounded" src="https://fichasop.com/assets/img/fichasop.webp" style="height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border-radius: 4px; width: 96px; border-style: none; border-width: 0;" width="96">
                                   </td>
                                 </tr>
                               </tbody>
@@ -334,7 +334,7 @@ if (isset($_POST["status"])) {
             $con->query("DELETE FROM `fichas_npc` WHERE `missao` = '$id' AND `id` = '$npc';");
             break;
         case 'addnpc':
-            $nome = test_input($_POST["nome"]);
+            $nome = cleanstring($_POST["nome"]);
             $pv = minmax($_POST["pv"], 1, 999);
             $categoria = minmax($_POST["monstro"], 0, 1);
             $san = minmax($_POST["san"], 0, 999);
@@ -383,9 +383,9 @@ if (isset($_POST["status"])) {
             $tati = minmax($_POST["tatica"]);
             $tecn = minmax($_POST["tecnologia"]);
             $vont = minmax($_POST["vontade"]);
-            $ataq = test_input($_POST["ataques"],5000);
-            $habs = test_input($_POST["habilidades"],5000);
-            $deta = test_input($_POST["detalhes"],5000);
+            $ataq = cleanstring($_POST["ataques"],5000);
+            $habs = cleanstring($_POST["habilidades"],5000);
+            $deta = cleanstring($_POST["detalhes"],5000);
             if (strlen($nome) > 30) {
                 $nome = "NPC";
             }
@@ -400,7 +400,7 @@ if (isset($_POST["status"])) {
             $t->execute();
             break;
         case 'editnpc':
-            $nome = test_input($_POST["nome"]);
+            $nome = cleanstring($_POST["nome"]);
 	        $categoria = minmax($_POST["monstro"], 0, 1);
             $pv = minmax($_POST["pv"], 0, 999);
             $san = minmax($_POST["san"], 0, 999);
@@ -447,9 +447,9 @@ if (isset($_POST["status"])) {
             $tati = minmax($_POST["tatica"]);
             $tecn = minmax($_POST["tecnologia"]);
             $vont = minmax($_POST["vontade"]);
-            $ata = test_input($_POST["ataques"],5000);
-            $habs = test_input($_POST["habilidades"],5000);
-            $dets = test_input($_POST["detalhes"],5000);
+            $ata = cleanstring($_POST["ataques"],5000);
+            $habs = cleanstring($_POST["habilidades"],5000);
+            $dets = cleanstring($_POST["detalhes"],5000);
             if (strlen($nome) > 30) {
                 $nome = "NPC";
             }
@@ -478,7 +478,7 @@ if (isset($_POST["status"])) {
                 if (strlen($tit) > 30) {
                     $tit = "Títuloasc";
                 }
-                $des = test_input($_POST["nota"][$b]);
+                $des = cleanstring($_POST["nota"][$b]);
                 $nota = intval($_POST["id"][$b]);
                 $y = $con->query("UPDATE `notes` SET `nome` = '$tit', `notas` = '$des' WHERE `missao` = '$id' AND `id`='$nota';");
                 $b++;
@@ -488,11 +488,11 @@ if (isset($_POST["status"])) {
             $y = $con->query("INSERT INTO `notes`(`id`,`nome`,`notas`,`missao`) VALUES ('','Título','È Recomendado usar notas externas!','$id');");
             break;
         case 'addd':
-            $nome = test_input($_POST["nome"]);
-            $dado = test_input($_POST["dado"]);
+            $nome = cleanstring($_POST["nome"]);
+            $dado = cleanstring($_POST["dado"]);
             $dano = intval(($_POST["dano"]=='on' or $_POST["dano"] == 1)?1:0);
             if(empty($nome)){
-                $dado = $nome;
+				$nome = $dado;
             }
             $foto = minmax(intval($_POST["icone"]),0,13);
             $y = $con->prepare("INSERT INTO `dados_mestre`(`nome`,`foto`,`dado`,`dano`,`id_missao`) VALUES ( ? , ? , ? , ? , ? );");
@@ -502,9 +502,9 @@ if (isset($_POST["status"])) {
             exit;
             break;
         case 'editd':
-            $nome = test_input($_POST["nome"]);
-            $dado = test_input($_POST["dado"]);
-            $dano = test_input(($_POST["dano"]=='on' or $_POST["dano"] == 1)?1:0);
+            $nome = cleanstring($_POST["nome"]);
+            $dado = cleanstring($_POST["dado"]);
+            $dano = cleanstring(($_POST["dano"]=='on' or $_POST["dano"] == 1)?1:0);
             $foto = minmax(intval($_POST["icone"]),0,13);
             $did = intval($_POST["did"]);
             if(empty($nome)){
@@ -515,19 +515,19 @@ if (isset($_POST["status"])) {
             $y->execute();
             break;
         case 'deld':
-            $did = test_input($_POST["did"]);
+            $did = cleanstring($_POST["did"]);
             $y = $con->query("DELETE FROM `dados_mestre` WHERE `id` = '".$did."' AND `id_missao` = '".$id."';");
             break;
         case 'desp':
             $p = intval($_POST["p"]);
-            $y = $con->query("DELETE FROM `ligacoes` WHERE `id_missao`='".$id."' AND `id`='".$p."';");
+            $con->query("DELETE FROM `ligacoes` WHERE `id_missao`='$id' AND `id_ficha`='$p';");
             break;
         case 'deletenote':
             $nid = intval($_POST["note"]);
             $y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
             break;
 	    case 'roll':
-		    $dado = DadoDinamico(test_input($_POST["dado"], 50));
+		    $dado = DadoDinamico(cleanstring($_POST["dado"], 50));
 		    $dano = intval(minmax($_POST["dano"],0,1));
 		    if(ClearRolar($dado)) {
 			    $data["success"] = true;

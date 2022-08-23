@@ -1,4 +1,6 @@
-<?php require_once "./../config/includes.php";
+<?php
+
+require_once "./../config/includes.php";
 $con = con();
 
 if (!isset($_SESSION["UserID"])) {
@@ -13,7 +15,7 @@ if (isset($_POST["status"])) {
     switch ($_POST["status"]) {
         case 'criarmissao':
             if (!empty($_POST["title"])) {
-                $title = test_input($_POST["title"]);
+                $title = cleanstring($_POST["title"]);
                 if (strlen($title) < 5) {
                     $success = false;
                     $msg = "Seu titulo precisa conter no minimo 5 caracteres.";
@@ -23,7 +25,7 @@ if (isset($_POST["status"])) {
                 $msg = "Sua missão precisa de um titulo";
             }
             if (!empty($_POST["desc"])) {
-                $desc = test_input($_POST["desc"]);
+                $desc = cleanstring($_POST["desc"]);
                 if (strlen($desc) < 50) {
                     $success = false;
                     $msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
@@ -33,7 +35,7 @@ if (isset($_POST["status"])) {
                 $msg = "Sua missão precisa de uma descrição";
             }
             if ($success) {
-                $q = $con->prepare("INSERT INTO `missoes` (`nome`, `descricao`, `mestre`) VALUES (?, ?, ?);");
+                $q = $con->prepare("INSERT INTO `missoes` (`nome`, `descricao`, `mestre`,`token`) VALUES (?, ?, ?, md5(UUID_SHORT()));");
                 $q->bind_param("ssi", $title, $desc, $_SESSION["UserID"]);
                 $q->execute();
                 if ($con->affected_rows) {
@@ -61,7 +63,7 @@ if (isset($_POST["status"])) {
             break;
         case 'editmis':
             if (!empty($_POST["title"])) {
-                $title = test_input($_POST["title"]);
+                $title = cleanstring($_POST["title"]);
                 if (strlen($title) < 5) {
                     $success = false;
                     $msg = "Seu titulo precisa conter no minimo 5 caracteres.";
@@ -71,7 +73,7 @@ if (isset($_POST["status"])) {
                 $msg = "Sua missão precisa de um titulo";
             }
             if (!empty($_POST["desc"])) {
-                $desc = test_input($_POST["desc"]);
+                $desc = cleanstring($_POST["desc"]);
                 if (strlen($desc) < 50) {
                     $success = false;
                     $msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
@@ -102,10 +104,10 @@ if (isset($_POST["status"])) {
             $idm = intval($_POST["idm"]);
             $acc=$con->query("DELETE FROM `ligacoes` WHERE `ligacoes`.`id` = '$idm' AND `id_usuario` = '$userid';");
             break;
-	   // case 'desp':
-		//    $p = intval($_POST["p"]);
-		//    $con->query("DELETE FROM `ligacoes` WHERE `id_usuario`='$userid' AND `id_ficha`='".$p."';");
-		 //   break;
+	    case 'desp':
+            $p = intval($_POST["p"]);
+		   $con->query("DELETE FROM `ligacoes` WHERE `id_usuario`='$userid' AND `id_ficha`='".$p."';");
+		   break;
     }
 }
 ?>
@@ -115,7 +117,7 @@ if (isset($_POST["status"])) {
         <?php require_once "./../includes/head.html"; ?>
         <title>Sessões - FichasOP</title>
     </head>
-    <body class="bg-black text-light font7">
+    <body class="bg-black text-light font6">
         <main class="container-flex mx-0 py-5 justify-content-center">
             <div class="row m-3">
                 <div class="col-md my-2 justify-content-center">

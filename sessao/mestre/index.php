@@ -8,7 +8,7 @@ function proibido() {
 }
 
 if (!empty($_GET["token"])) {
-	$token = test_input($_GET["token"]);
+	$token = cleanstring($_GET["token"]);
 } else {
 	$token = null;
 };
@@ -25,7 +25,7 @@ if (VerificarMestre($token) || VerificarMestre($id) || $_SESSION["UserAdmin"]) {
     $rmi = $mi->get_result();
     if ($rmi->num_rows) {
 	    $missao = mysqli_fetch_array($rmi);
-	    $mt = $missao["token"];
+	    $token = $missao["token"];
 	    $id = $missao["id"];
     } else {
         proibido();
@@ -42,12 +42,15 @@ $a = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` = '" . $id . "' 
 
 $jogadores = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '".$id."');");
 
-require_once './includes/atualizar.php';
 $m = $con->query("SELECT * FROM `dados_mestre` WHERE `id_missao` = '".$id."';");
 $fichanpcs = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id' AND `categoria` = 0;");
 $fichasmonstro = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id' AND `categoria` = 1;");
 
 $missao_token = $token;
+require_once './includes/atualizar.php';
+if(isset($_GET["id"])){
+	header("Location: ./?token=".$token);
+}
 ?>
 <!DOCTYPE html>
 <html lang="br">
@@ -60,11 +63,11 @@ $missao_token = $token;
         <div class="row g-2">
             <?php
             require_once "./includes/card_jogadores.php";
-            require_once "./includes/card_iniciativas.php";
-            require_once "./includes/card_notas.php";
-            require_once "./../include_geral/card_dice.php";
-            require_once "./includes/card_npc.php";
             require_once "./includes/card_dadosjogadores.php";
+            require_once "./includes/card_iniciativas.php";
+            require_once "./../include_geral/card_dice.php";
+            require_once "./includes/card_notas.php";
+            require_once "./includes/card_npc.php";
             ?>
         </div>
     </main>

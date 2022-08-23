@@ -1,5 +1,5 @@
 <div class="col-md-6" id="card_rolar">
-    <div class="card h-100 bg-black border-light">
+    <div class="card h-100 bg-black border-light" style="min-height: 360px;">
         <div class="clearfix">
             <div class="float-start">
                 <button class="btn btn-sm text-info fa-lg" title="Como rolar dados. " data-bs-toggle="modal" data-bs-target="#rolardados">
@@ -24,9 +24,9 @@
                         <button class="col-auto btn btn-sm btn-outline-light border-0 rounded-0" id="rolardadosbutton"><i class="fa-regular fa-paper-plane-top"></i></button>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <span class="text-center card-title font6 fs-2 font6">Dados salvos</span>
-                    <div class="row row-cols-auto p-2 justify-content-center" id="dados">
+                <div class="my-2">
+                    <span class="text-center card-title font6 fs-2">Dados salvos</span>
+                    <div class="row row-cols-auto g-2 justify-content-center" id="dados">
                         <?php
                         foreach ($m as $dado): switch ($dado["foto"]) {
                                 default:
@@ -67,7 +67,7 @@
                                     break;
                             }
                             ?>
-                            <div class="col dado" aria-foto="<?= $dado["foto"]; ?>" aria-dado="<?= $dado["dado"]; ?>" aria-id="<?= $dado["id"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>)">
+                            <div class="col dado" aria-foto="<?= $dado["foto"]; ?>" aria-dado="<?= $dado["dado"]; ?>" aria-id="<?= $dado["id"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>,'<?= $dado["nome"]?>')">
                                 <button class="btn text-light" <?=(!isset($edit) OR $edit)?:"disabled"?>>
                                     <i class="fa-light <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"]; ?>
                                 </button>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <i class="text-info position-absolute bottom-0"><i class=" fa-regular fa-info-circle"></i> Segure para mais opções nos dados.</i>
         </div>
+        <i class="text-info position-absolute bottom-0"><i class=" fa-regular fa-info-circle"></i> Segure para mais opções nos dados.</i>
     </div>
 </div>

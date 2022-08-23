@@ -27,36 +27,40 @@
                 <div class="row">
                     <?php
 
+                    $dadode["acrobacias"] = 2;
                     $dadode["adestramento"] = 4;
                     $dadode["atletismo"] = 1;
                     $dadode["artes"] = 4;
                     $dadode["atualidades"] = 3;
                     $dadode["ciencia"] = 3;
+
                     $dadode["crime"] = 2;
                     $dadode["diplomacia"] = 4;
                     $dadode["enganacao"] = 4;
                     $dadode["fortitude"] = 5;
                     $dadode["furtividade"] = 2;
+
                     $dadode["iniciativa"] = 2;
                     $dadode["intimidacao"] = 4;
                     $dadode["intuicao"] = 4;
                     $dadode["investigacao"] = 3;
                     $dadode["luta"] = 1;
+
                     $dadode["medicina"] = 3;
                     $dadode["ocultismo"] = 3;
                     $dadode["percepcao"] = 4;
                     $dadode["pilotagem"] = 2;
                     $dadode["pontaria"] = 2;
+
                     $dadode["profissao"] = 3;
                     $dadode["reflexos"] = 2;
                     $dadode["religiao"] = 4;
-                    //$dadode["prestidigitacao"] = 2;
                     $dadode["sobrevivencia"] = 3;
                     $dadode["tatica"] = 3;
+
                     $dadode["tecnologia"] = 3;
                     $dadode["vontade"] = 4;
 
-                    $dadode["acrobacias"] = 2;
                     foreach ($dadode as $r => $a) {
                         switch ($a) {
                             case 1:
@@ -260,7 +264,6 @@
                         </button>
                         <h3 class="text-<?=Trenado($vontade)?>">Vontade</h3>
                     </div>
-
                 </div>
             </div>
         </div>

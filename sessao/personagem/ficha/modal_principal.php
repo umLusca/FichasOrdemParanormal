@@ -98,7 +98,7 @@
                     </div>
                     <div class="input-group input-group-sm m-1">
                         <label for="equi" class="input-group-text bg-black text-white border-end-0">Química:</label>
-                        <input id="equi" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="quimica" value="<?=$quimica?>"/>
+                        <input id="equi" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="quimico" value="<?=$quimica?>"/>
                     </div>
 
 

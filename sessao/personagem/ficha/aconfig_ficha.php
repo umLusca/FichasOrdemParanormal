@@ -23,7 +23,7 @@ if(isset($_GET["id"])) {
 		exit;
 	}
 } else {
-	$fichat = test_input($_GET["token"] ?: 0);
+	$fichat = cleanstring($_GET["token"] ?: 0);
 	if (empty($fichat)){
 		header("Location: ./..");
 	}
@@ -48,15 +48,14 @@ if ($lig->num_rows) {
 
 
 
-error_reporting(E_ALL);
 if ((isset($_SESSION["UserAdmin"]) && $_SESSION["UserAdmin"])){
 	$edit = true;
 } else if ((isset($dados_missao) and $dados_missao["mestre"] == $userid)) {
 	$edit = true;
 } else if (VerificarID($id)){
 	$edit = true;
-} else IF (isset($portrait) AND $portrait == "public") {
-	$edit = true;
+} else IF (isset($portrait) AND $portrait) {
+	$edit = false;
 } else IF (!$rqs["public"]) {
 	header("Location: ./..");
 	exit;
@@ -90,37 +89,6 @@ if (isset($rqs)) {
 	$favoritos = $rqs["favoritos"];
 	$anotacao = $rqs["anotacoes"];
 	$urlphoto = $rqs["foto"];
-	if (intval($rqs["foto"]) > 0) {
-		switch (intval($rqs["foto"])) {
-			default:
-				$urlphoto = $rqs["foto"];
-				break;
-			case 1:
-				$urlphoto = 'https://fichasop.com/assets/img/Man.png';
-				break;
-			case 2:
-				$urlphoto = 'https://fichasop.com/assets/img/Woman.png';
-				break;
-			case 3:
-				$urlphoto = 'https://fichasop.com/assets/img/Mauro%20-%20up%20.png';
-				break;
-			case 4:
-				$urlphoto = 'https://fichasop.com/assets/img/Maya%20-%20Upscale.png';
-				break;
-			case 5:
-				$urlphoto = 'https://fichasop.com/assets/img/Bruna%20-%20Upscale.png';
-				break;
-			case 6:
-				$urlphoto = 'https://fichasop.com/assets/img/Leandro%20-%20Upscale.png';
-				break;
-			case 7:
-				$urlphoto = 'https://fichasop.com/assets/img/Jaime%20-%20Upscale.png';
-				break;
-			case 8:
-				$urlphoto = 'https://fichasop.com/assets/img/Aniela%20-%20Upscale.png';
-				break;
-		}
-	}
 	$urlphotomor = $rqs["foto_morrendo"] ?: $urlphoto;
 	$urlphotoenl = $rqs["foto_enlouquecendo"]?: $urlphoto;
 	$urlphotofer = $rqs["foto_ferido"] ?: $urlphoto;
@@ -408,61 +376,15 @@ $ddinv = mysqli_fetch_array($s[5]);
 
 
 $espacosusados = $ddinv["pesototal"] ?: 0;
+if ($espacosusados < 0){
+	$espacosusados = 0;
+}
+
 $invmax = pesoinv($rqs["forca"],$rqs["inteligencia"],$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
 
 $missao_token = isset($dados_missao["token"])?$dados_missao["token"]:false;
 //Pega todos os dados da ficha:...
 
-
-
-$minpva = -20;
-$minsana = 0;
-$minpea = 0;
-$minpv = 1;
-$minsan =  1;
-$minpe = 1;
-$maxpv = 20;
-$maxsan =  20;
-$maxpe = 20;
-
-//Config de limites gerais:
-
-$Inv_nome = $Arma_nome = 50;
-$Arma_tipo = 25;
-$Arma_ataq = 50;
-$Arma_alca = 30;
-$Arma_dano = 30;
-$Arma_crit = 30;
-$Arma_reca = 50;
-$Arma_espe = 30;
-$Dado_nome = 50;
-$Dado_dado = 50;
-$Inv_desc = 300;
-$Hab_nome = 50;
-$Hab_desc = 5000;
-$Pro_nome = 100;
-$Ritu_nome = 50;
-$Ritu_elem = 50;
-$Ritu_circ = 30;
-$Ritu_conj = 30;
-$Ritu_alca = 50;
-$Ritu_alvo = 50;
-$Ritu_dura = 15;
-$Ritu_resi = 100;
-$Ritu_dan1 = 50;
-$Ritu_dan2 = 50;
-$Ritu_efei = 5000;
-$fich_nome = 50;
-$Fich_fotos = 500;
-$Fich_loca = 100;
-$Fich_hist = 5000;
-$Fich_prim = 1000;
-$Fich_apar = 1000;
-$Fich_medo = 1000;
-$Fich_pesa = 1000;
-$Fich_fras = 1000;
-$Fich_favo = 1000;
-$Fich_note = 5000;
 
 if ($edit) {
 	require_once RootDir."/sessao/personagem/ficha/atualizar.php";

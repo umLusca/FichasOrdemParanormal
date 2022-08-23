@@ -275,8 +275,9 @@ require_once RootDir . "includes/scripts.php";
 			refresh();
 		*/
     });
-    socket = io('https://<?=$_SERVER["HTTP_HOST"]?>', {
+    socket = io('https://api.fichasop.com', {
         reconnectionDelay: 5000,
+        transports: ['websocket', 'polling', 'flashsocket']
     });
     socket.on('connect', function () {
         console.log("Conectado.")
@@ -313,7 +314,7 @@ require_once RootDir . "includes/scripts.php";
     let pea = <?=$pea?>;
     let mor = <?=$morrendo?>;
     let foto = "<?=$morrendo ? $urlphotomor : ($enlouquecendo ? $urlphotoenl : ($ppv < 50 ? ($urlphotofer ?: $urlphoto) : $urlphoto));?>";
-    let marca = "https://fichasop.com/assets/img/Espiral.png";
+    let marca = "https://fichasop.com/assets/img/Espiral.webp";
     let morto = '<?=$morrendo ? ' morto' : ''?>';
     let elemento = '<?=$elemento?>';
     let dado;
@@ -395,20 +396,20 @@ require_once RootDir . "includes/scripts.php";
                         <div className="progress-bar bg-danger-a text-end" id="progresssan" role="progressbar"
                              style={{height: 150 + 'px', width: percent(pva, pv) + '%'}}></div>
                         <img className={"position-absolute start-50 top-50 translate-middle sec" + morto}
-                             style={{width: "120%"}} src='/assets/img/vida.png'/>
+                             style={{width: "120%"}} src='/assets/img/vida.webp'/>
                     </div>
                     <span className="pva text-center text-white fs-0">{pva}/{pv}</span>
                     <div className="san progress h-auto bg-primary-dark border-dark" style={{width: 150 + '%'}}>
                         <div className="progress-bar bg-primary-a text-end" id="progresssan" role="progressbar"
                              style={{height: 150 + 'px', width: percent(sana, san) + '%'}}></div>
                         <img className={"position-absolute start-50 top-50 translate-middle sec" + morto}
-                             style={{width: "120%"}} src='/assets/img/sanidade.png'/>
+                             style={{width: "120%"}} src='/assets/img/sanidade.webp'/>
                     </div>
                     <span className="sana text-center text-white fs-0">{sana}/{san}</span>
-                    <img className="fundo" src='/assets/img/fundo1.png'/>
+                    <img className="fundo" src='/assets/img/fundo1.webp'/>
                     <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca}/>
                     <img className={"breath personagem pri" + morto} src={foto}/>
-                    <img className="pef " src='/assets/img/fundo2.png'/>
+                    <img className="pef " src='/assets/img/fundo2.webp'/>
                     <div className="pea">
                         <span className="text-warning font8">{pea}</span>
                     </div>

@@ -111,7 +111,7 @@
                         <div class="input-group">
                             <label for="enome"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="enome" maxlength="<?=$Arma_nome?>" name="nome" type="text" class="form-control border-start-0 border-light bg-black text-white"/>
+                            <input id="enome" maxlength="<?=$limite_nome_inv?>" name="nome" type="text" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-12">
@@ -185,6 +185,56 @@
     </div>
 </div>
 
+<!-- Modal ADD ITEM -->
+<div class="modal fade" id="additem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content bg-black border-light">
+            <form class="modal-body" method="post" autocomplete="off" id="formadditem">
+                <div class="border-0 modal-header fs-1">Adicionar Item</div>
+                <div class="row my-5 g-2">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <label for="anom"
+                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
+                            <input id="anom" name="nome" type="text" maxlength="<?=$limite_nome_inv?>"
+                                   class="form-control border-start-0 border-light bg-black text-white"/>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <label for="ades"
+                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Descrição:</label>
+                            <input id="ades" name="descricao" type="text" maxlength="<?=$Inv_desc?>"
+                                   class="form-control border-start-0 border-light bg-black text-white"/>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group">
+                            <label for="apes"
+                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Peso/Espaço:</label>
+                            <input id="apes" name="peso" min="-10" max="30" class="form-control border-start-0 border-light bg-black text-white"/>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group">
+                            <label for="apre"
+                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Categoria:</label>
+                            <input id="apre" name="prestigio" type="number" min="-50" max="50"
+                                   class="form-control border-start-0 border-light bg-black text-white"/>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="status" value="additem"/>
+                <div class="clearfix mx-5">
+                    <button type="button" class="btn btn-secondary float-start" data-bs-dismiss="modal"
+                            onclick="cleanedit()">Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success float-end" data-bs-dismiss="modal">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Modal EDITAR ITEM -->
 <div class="modal fade" id="edititem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
@@ -195,7 +245,7 @@
                     <div class="col-12">
                         <div class="input-group">
                             <label for="enom" class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="enom" name="nome" type="text" maxlength="<?=$Inv_nome?>" class="form-control border-start-0 border-light bg-black text-white"/>
+                            <input id="enom" name="nome" type="text" maxlength="<?=$limite_nome_inv?>" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-12">
@@ -236,56 +286,6 @@
     </div>
 </div>
 
-<!-- Modal ADD ITEM -->
-<div class="modal fade" id="additem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content bg-black border-light">
-            <form class="modal-body" method="post" autocomplete="off" id="formadditem">
-                <div class="border-0 modal-header fs-1">Adicionar Item</div>
-                <div class="row my-5 g-2">
-                    <div class="col-12">
-                        <div class="input-group">
-                            <label for="anom"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="anom" name="nome" type="text" maxlength="<?=$Inv_nome?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="input-group">
-                            <label for="ades"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Descrição:</label>
-                            <input id="ades" name="descricao" type="text" maxlength="<?=$Inv_desc?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <label for="apes"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Peso/Espaço:</label>
-                            <input id="apes" name="peso" type="number" min="-50" max="50" class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <label for="apre"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Categoria:</label>
-                            <input id="apre" name="prestigio" type="number" min="-50" max="50"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" name="status" value="additem"/>
-                <div class="clearfix mx-5">
-                    <button type="button" class="btn btn-secondary float-start" data-bs-dismiss="modal"
-                            onclick="cleanedit()">Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-success float-end" data-bs-dismiss="modal">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 <!--------------------------ADD ARMAS---------------------------------------------------------------->
@@ -299,7 +299,7 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="anome"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input autocomplete="" id="anome" name="nome" type="text" maxlength="<?=$Arma_nome?>"
+                            <input autocomplete="" id="anome" name="nome" type="text" maxlength="<?=$limite_nome_inv?>"
                                    class="rounded-end form-control border-start-0 border-light bg-black text-white"
                                    required/>
                             <div class="invalid-feedback">Coloque o Nome.(Apenas letras e espaços)</div>

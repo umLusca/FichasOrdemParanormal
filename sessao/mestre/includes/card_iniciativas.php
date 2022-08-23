@@ -1,4 +1,3 @@
-
 <div class="col-md-6" id="rodada">
     <div class="card h-100 w-100 bg-black border-light">
         <div class="card-body p-0">

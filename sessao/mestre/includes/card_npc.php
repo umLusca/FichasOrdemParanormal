@@ -1,5 +1,4 @@
-
-<div class="col" id="npc">
+<div class="col-12" id="npc">
     <div class="card h-100 w-100 bg-black border-light">
         <div class="card-body p-0">
             <div class="position-absolute end-0">
@@ -18,9 +17,9 @@
                     </div>
                 </nav>
                 <div class="d-flex align-items-start">
-                    <div class="tab-content">
+                    <div class="tab-content container-fluid">
                         <div class="tab-pane fade show active" id="guia-npc" role="tabpanel" aria-labelledby="aba-npc" tabindex="0">
-                            <div class="row m-2" id="fichasnpc">
+                            <div class="row m-2 g-1" id="fichasnpc">
 	                            <?php
 	                            foreach ($fichanpcs as $r) {
 		                            ?>

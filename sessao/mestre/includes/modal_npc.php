@@ -51,13 +51,8 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-attr" role="tabpanel" aria-labelledby="pills-attr-tab">
-                        <div class="containera text-white" id="atributos" title="Atributos, clique para editar">
-                            <input required class="atributos for form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="forca" aria-label="Força"/>
-                            <input required class="atributos agi form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="agilidade" aria-label="Agilidade"/>
-                            <input required class="atributos int form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="intelecto" aria-label="Intelecto"/>
-                            <input required class="atributos pre form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="presenca" aria-label="Presença"/>
-                            <input required class="atributos vig form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="vigor" aria-label="Vigor"/>
-                            <img src="https://fichasop.cf/assets/img/Atributos.png" alt="Atributos">
+                        <div class="containera text-white">
+                            <?=atributos(0,0,0,0,0,1,1)?>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-per" role="tabpanel" aria-labelledby="pills-per-tab">
@@ -358,13 +353,8 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-eattr" role="tabpanel" aria-labelledby="pills-eattr-tab">
-                        <div class="containera text-white" id="editattr" title="Atributos, clique para editar">
-                            <input required class="atributos for form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="forca" aria-label="Força"/>
-                            <input required class="atributos agi form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="agilidade" aria-label="Agilidade"/>
-                            <input required class="atributos int form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="intelecto" aria-label="Intelecto"/>
-                            <input required class="atributos pre form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="presenca" aria-label="Presença"/>
-                            <input required class="atributos vig form-control rounded-circle bg-transparent text-white font4" type="number" min="-20" max="20" value='1' name="vigor" aria-label="Vigor"/>
-                            <img src="https://fichasop.com/assets/img/Atributos.png" alt="Atributos">
+                        <div class="containera text-white" id="editattr">
+	                        <?=atributos(0,0,0,0,0,1,1)?>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-eper" role="tabpanel" aria-labelledby="pills-eper-tab">

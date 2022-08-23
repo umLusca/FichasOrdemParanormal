@@ -171,12 +171,7 @@ $id = intval($_GET["convite"]);
                                     <div class="container p-0">
                                         <i class="text-info"><i class="fa-regular fa-circle-info"></i> Clique nos circulos</i>
                                         <div class="containera text-white" id="atributos" title="Atributos, clique para editar">
-                                            <input required class="atributos for form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=1 name="forca" title="Força"/>
-                                            <input required class="atributos agi form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=1 name="agilidade" title="Agilidade"/>
-                                            <input required class="atributos int form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=1 name="intelecto" title="Intelecto"/>
-                                            <input required class="atributos pre form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=1 name="presenca" title="Presença"/>
-                                            <input required class="atributos vig form-control rounded-circle bg-transparent text-white font4" type="number" min="-10" max="10" value=1 name="vigor" title="Vigor"/>
-                                            <img src="/assets/img/Atributos.png" alt="Atributos">
+	                                        <?=atributos(1,1,1,1,1,1,1)?>
                                         </div>
                                         <div class="p-2 m-1">
                                             <label for="pv" class="fs-4 fw-bold">Vida Maxima (PV)</label><span>(Deixe 1 para calcular automaticamente)</span>

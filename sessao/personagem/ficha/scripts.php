@@ -66,6 +66,16 @@
             $('#saude .pea').val(<?=$minpea?>);
         }
 
+        if($('#saude .pva').val() > <?=$pv + $maxpv?>){
+            $('#saude .pva').val(<?=$pv + $maxpv?>);
+        }
+        if($('#saude .sana').val() > <?=$san + $maxsan?>){
+            $('#saude .sana').val(<?=$san + $maxsan?>);
+        }
+        if($('#saude .pea').val() > <?=$pe + $maxpe?>){
+            $('#saude .pea').val(<?=$pe + $maxpe?>);
+        }
+
         $("#barra"+atual).css('width', percent(saude,per)+'%');
         subtimer();
     }
@@ -83,33 +93,28 @@
             dataType: 'json',
             data: data,
         }).done(function (data){
-            updatesaude(data)
+            console.log(data);
+            const msg = {};
+            if ($('#combate').is(":checked")) {
+                y = true;
+            } else {
+                y = false;
+            }
+            msg["vida"] = data;
+            msg["vida"]["combate"] = y;
+            msg["ficha"] = '<?=$fichat?>';
+            console.log(msg.vida.pv);
+            $('#saude .pv').val(msg.vida.pv);
+            $('#saude .san').val(msg.vida.san);
+            $('#saude .pe').val(msg.vida.pe);
+            console.log($('#saude .pe').val());
+            updatefoto()
+            socket.emit('<?=$missao_token?:$fichat?>', msg);
         });
     }
     $('#morrendo,#combate').change(function () {
         subtimer();
     })
-    function updatesaude(data){
-        $("#pv").load(location.href + " #pv>*");
-        $("#san").load(location.href + " #san>*");
-        $("#pe").load(location.href + " #pe>*");
-        $("#saude .vidaatual").val(data.pva)
-        $("#saude .vidamaxima").val(data.pv)
-        $("#saude .sanatual").val(data.sana)
-        $("#saude .sanmaxima").val(data.san)
-        $("#saude .peatual").val(data.pea)
-        $("#saude .pemaxima").val(data.pe)
-        updatefoto()
-        const msg = {};
-        if ($('#combate').is(":checked")) {
-            y = true;
-        } else {
-            y = false;
-        }
-        msg["vida"] = data;
-        msg["vida"]["combate"] = y;
-        socket.emit('<?=$missao_token?:$fichat?>', msg);
-    }
 
     function updatefoto() {
         let pv = parseInt($('#saude .pv').val());
@@ -131,38 +136,34 @@
             }
         }
     }
-    function checksync(){
-    }
-
     $(document).ready(function () {
 
-        socket = io.connect('https://<?=$_SERVER["HTTP_HOST"]?>', {reconnectionDelay: 2500, 'forceNew': true});
-        socket.on("connect", function () {
-            console.log("Conectado");
-        });
-        socket.on("disconnect", function () {
-            console.log("Desconectado");
-        });
-	    <?php if($dados_missao["id"]==5887){?>
+
+    socket = io.connect('https://api.fichasop.com', {
+        reconnectionDelay: 2500,
+        transports: ['websocket', 'polling', 'flashsocket']
+    });
+    socket.on("connect", function () {
+        console.log("Conectado");
+    });
+    socket.on("disconnect", function () {
+        console.log("Desconectado");
+    });
+	    <?php if(isset($dados_missao) AND $dados_missao["id"]==5887){?>
         $('#portrait').prop('checked', true);
         socket.emit('create', '<?=$missao_token?:$fichat?>');
+        socket.emit('auth', '<?=$missao_token?:$fichat?>');
 	    <?php }?>
 
         $('#portrait').change(function () {
             if ($('#portrait').is(":checked")) {
-                socket = io.connect('https://<?=$_SERVER["HTTP_HOST"]?>', {reconnectionDelay: 2500, 'forceNew': true});
-                socket.emit('create', '<?=$missao_token?:$fichat?>');
+                socket = io.connect('https://api.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
+                socket.emit('create', '<?=$missao_token ?: $fichat?>');
+                socket.emit('<?=$missao_token ?: $fichat?>', {auth: '<?=$fichat?>'});
             } else {
                 socket.disconnect();
             }
         })
-
-        $('textarea').each(function () {
-            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;');
-        }).on('input', function () {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
 
         $("#enex").val(<?=$nex?>)
         $("#eelemento").val(<?=$rqs["afinidade"]?>)
@@ -228,7 +229,7 @@
 
             $("button, input:checkbox").on("click", function (){
                 $(this).blur();
-        })
+            })
 
         $("#enex").on('input', function () {
             $("#etrilha .trilha").hide();
@@ -277,7 +278,7 @@
 
             if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
                 $("#warningsimbolo").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
-                $('#prevsimbolo').html(' <img src="/assets/img/desconhecido.png" width="200" height="200" alt="Ritual">');
+                $('#prevsimbolo').html(' <img src="/assets/img/desconhecido.webp" width="200" height="200" alt="Ritual">');
                 return false;
             } else {
                 $("#warningsimbolo").html("");
@@ -302,7 +303,7 @@
             var src = $('#' + thisid + ' input.simbolourl').val();
             if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
                 $('#' + thisid + ' div.warningsimbolo').html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
-                $('#' + thisid + ' div.prevsimbolo').html(' <img src="/assets/img/desconhecido.png" width="200" height="200" alt="Ritual">');
+                $('#' + thisid + ' div.prevsimbolo').html(' <img src="/assets/img/desconhecido.webp" width="200" height="200" alt="Ritual">');
                 return false;
             } else {
                 $('#' + thisid + ' div.warningsimbolo').html("");
@@ -376,22 +377,21 @@
         });
         $("#verp").click(function () {
             $("#pericias .destreinado").toggle();
-            $(this).children().toggleClass("fa-eye fa-eye-slash");
+            $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
         $("#vera").click(function () {
-            $('#inv .trocavision').toggle();
-            $(this).children().toggleClass("fa-eye fa-eye-slash");
+            $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
     });
     <?php } else {?>
     $(document).ready(function () {
         $("#verp").click(function () {
             $("#pericias .destreinado").toggle();
-            $(this).toggleClass("fa-eye fa-eye-slash");
+            $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
         $("#vera").click(function () {
             $('#inv .trocavision').toggle();
-            $(this).toggleClass("fa-eye fa-eye-slash");
+            $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
     });
     <?php
