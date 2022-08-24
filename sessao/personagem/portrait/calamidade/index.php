@@ -20,7 +20,7 @@ require_once RootDir."/sessao/personagem/ficha/aconfig_ficha.php";
                 height: 100%;
                 width: 100%;
                 margin: -10% 2%;
-                border-radius: 50%;
+                border-radius: 0 0 50% 50%;
             }
 
             .fundo {
