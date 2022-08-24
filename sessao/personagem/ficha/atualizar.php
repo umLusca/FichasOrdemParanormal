@@ -42,7 +42,7 @@ if ($edit) {
             case 'additem':
                 $nome = cleanstring($_POST["nome"],$limite_nome_inv);
                 $desc = cleanstring($_POST["descricao"],$Inv_desc);
-                $peso = minmax($_POST["peso"], $minimo_peso,$maximo_peso);
+                $peso = minmax($_POST["peso"], $minimo_peso,$maximo_peso,$inv_float);
                 $quantidade = minmax($_POST["quantidade"], 0,$maximo_peso);
                 $pres = minmax($_POST["prestigio"],0,10);
                 $rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`espaco`,`prestigio`,`quantidade`) VALUES ( ? , ? , ? , ? , ?, ?)");
@@ -273,7 +273,7 @@ if ($edit) {
                 $iid = intval($_POST["did"]);
                 $nome = cleanstring($_POST["nome"],$limite_nome_inv);
                 $desc = cleanstring($_POST["descricao"],$Inv_desc);
-                $peso = minmax($_POST["peso"],$minimo_peso,$maximo_peso,1);
+                $peso = minmax($_POST["peso"],$minimo_peso,$maximo_peso, $inv_float);
                 $pres = minmax($_POST["prestigio"],0,10);
                 $rr = $con->prepare("UPDATE `inventario` SET `nome` = ? , `descricao` = ?, `espaco` = ?, `prestigio` = ? WHERE `inventario`.`id` = ? AND `id_ficha` = '$id';;");
                 $rr->bind_param("ssdii", $nome, $desc, $peso, $pres, $iid);
