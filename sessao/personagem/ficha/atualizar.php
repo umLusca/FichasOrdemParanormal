@@ -15,13 +15,13 @@ if ($edit) {
                 $r = cleanstring($_POST["recarga"],$Arma_reca);
                 $e = cleanstring($_POST["especial"],$Arma_espe);
 	            $desc = cleanstring($_POST["desc"],$Inv_desc);
-	            $peso = minmax($_POST["peso"], $minimo_peso,$maximo_peso,$inv_float);
+	            $peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
 	            $pres = minmax($_POST["prestigio"], 0,10);//Categorias
                 $rr = $con->prepare("INSERT INTO `armas`(`id_ficha`,`arma`,`tipo`,`ataque`,`alcance`,`dano`,`critico`, `margem`,`recarga`,`especial`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
                 $rr->bind_param("issssssiss", $id, $n, $t, $at, $al, $d, $c, $m, $r, $e);
                 $rr->execute();
                 if ($_POST["opc"] == 'addinvtoo') {
-                    $p = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`prestigio`,`espaco`,`quantidade`,`id`) VALUES ( ?, ?, ?, ?, ?, 1, '');");
+                    $p = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`prestigio`,`espaco`,`id`) VALUES ( ?, ?, ?, ?, ?, '');");
                     $p->bind_param("issid", $id, $n, $desc, $pres, $peso);
                     $p->execute();
                 }
@@ -43,9 +43,10 @@ if ($edit) {
                 $nome = cleanstring($_POST["nome"],$limite_nome_inv);
                 $desc = cleanstring($_POST["descricao"],$Inv_desc);
                 $peso = minmax($_POST["peso"], $minimo_peso,$maximo_peso);
+                $quantidade = minmax($_POST["quantidade"], 0,$maximo_peso);
                 $pres = minmax($_POST["prestigio"],0,10);
-                $rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`espaco`,`prestigio`) VALUES ( ? , ? , ? , ? , ?)");
-                $rr->bind_param("issii", $id, $nome, $desc, $peso, $pres);
+                $rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`espaco`,`prestigio`,`quantidade`) VALUES ( ? , ? , ? , ? , ?, ?)");
+                $rr->bind_param("issiii", $id, $nome, $desc, $peso, $pres,$quantidade);
                 $rr->execute();
                 break;
             case 'addhab':
@@ -558,12 +559,12 @@ if ($edit) {
                 $sq = $con->query("Select * From `fichas_personagem` where `id` = '$id';");
                 $rs = mysqli_fetch_array($sq);
 				$mor = minmax($_POST["mor"],0,1);
-                $pv =  minmax(($_POST["pv"]),1,999);
-                $pva = minmax(($_POST["pva"]),-99,999);
-                $san = minmax(($_POST["san"]),1,999);
-                $sana =minmax(($_POST["sana"]),0,999);
-                $pe =  minmax(($_POST["pe"]),1,999);
-                $pea = minmax(($_POST["pea"]),0,999);
+                $pv =  minmax(($_POST["pv"]),1,$maximo_PV);
+                $pva = minmax(($_POST["pva"]),-99,$maximo_PV);
+                $san = minmax(($_POST["san"]),1,$maximo_SAN);
+                $sana =minmax(($_POST["sana"]),0,$maximo_SAN);
+                $pe =  minmax(($_POST["pe"]),1,$maximo_PE);
+                $pea = minmax(($_POST["pea"]),0,$maximo_PE);
                 if($pv == 1){
 					$pv = calcularvida($nex,$rqs["classe"],$vigor,$rqs["trilha"],$rqs["origem"]);
 				}

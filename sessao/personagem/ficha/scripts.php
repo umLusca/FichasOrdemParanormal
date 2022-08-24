@@ -139,7 +139,7 @@
     $(document).ready(function () {
 
 
-    socket = io.connect('https://api.fichasop.com', {
+    socket = io.connect('https://portrait.fichasop.com', {
         reconnectionDelay: 2500,
         transports: ['websocket', 'polling', 'flashsocket']
     });
@@ -157,7 +157,7 @@
 
         $('#portrait').change(function () {
             if ($('#portrait').is(":checked")) {
-                socket = io.connect('https://api.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
+                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
                 socket.emit('create', '<?=$missao_token ?: $fichat?>');
                 socket.emit('<?=$missao_token ?: $fichat?>', {auth: '<?=$fichat?>'});
             } else {
@@ -245,9 +245,7 @@
                 $("#etrilha").val(0);
             }
         })
-        $(".fa-dice-d20").hover(function () {
-            $(this).toggleClass("fa-spin");
-        });
+
         $('#prev').html('<img class="position-absolute rounded-circle border border-light" width="100" height="100" style="max-width:100px;" src="' + $('#fotourl').val() + '">');
         $('#fotos .foto-perfil').on('input', function () {
             var src = jQuery(this).val();

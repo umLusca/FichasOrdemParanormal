@@ -17,7 +17,7 @@
         });
     });
     */
-    socket = io('https://api.fichasop.com', {
+    socket = io('https://portrait.fichasop.com', {
         reconnectionDelay: 5000,
         transports: ['websocket', 'polling', 'flashsocket']
     });

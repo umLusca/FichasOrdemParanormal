@@ -103,8 +103,8 @@
                                 <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard2" name="dano2" placeholder="1d8+4"/>
                             </div>
                             <div class="input-group m-1">
-                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard2">Verdadeiro:</label>
-                                <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard2" name="dano2" placeholder="1d8+4"/>
+                                <label class="input-group-text input-group-sm bg-black text-white border-end-0" for="ard3">Verdadeiro:</label>
+                                <input type="text"  maxlength="<?=$Ritu_dan?>" class="form-control bg-black text-white border-start-0" id="ard3" name="dano3" placeholder="1d8+4"/>
                             </div>
                             <label class="fs-4" for="arefe">Descrição: (coloque também o que estiver a faltar acima.)</label>
                             <textarea id="arefe" name="efeito" class="form-control form-control-sm bg-black text-white"></textarea>

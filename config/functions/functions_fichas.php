@@ -153,7 +153,6 @@ function VerificarMestre($mid): bool
 		return false;
 	}
 }
-
 //Functions Gerais
 function ValorParaRolarDado($Atributo): int
 {
@@ -210,8 +209,6 @@ function ClearRolar($dado, $Return_Error = false): bool|array
 		return $success;
 	}
 }
-
-
 function Rolar($dado, $dano = false): array
 {
 	$result = [];
@@ -328,10 +325,6 @@ function RolarMkII($dado_bruto, $dano = false): array
 	return ($saida);
 
 }
-
-
-
-
 
 function TirarPorcento($Valor_Atual, $Valor_Maximo)
 {
