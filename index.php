@@ -25,7 +25,6 @@ if($_POST["status"] == 'roll'){
 <head>
     <!-- Required meta tags -->
     <title>Fichas Ordem Paranormal</title>
-    <link rel="stylesheet" href="/assets/css/carousel.css">
     <?php require_once './includes/head.html'; ?>
 </head>
 <body class="bg-black text-light">
@@ -159,17 +158,6 @@ if($_POST["status"] == 'roll'){
                      class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
             </div>
         </div>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6313203873487938"
-                crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block; text-align:center;"
-             data-ad-layout="in-article"
-             data-ad-format="fluid"
-             data-ad-client="ca-pub-6313203873487938"
-             data-ad-slot="6594392300"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
         <hr class="featurette-divider">
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
@@ -180,17 +168,7 @@ if($_POST["status"] == 'roll'){
                 <img src="/assets/img/principal.webp" width="500" height="500"
                      class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
             </div>
-        </div><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6313203873487938"
-                      crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block; text-align:center;"
-             data-ad-layout="in-article"
-             data-ad-format="fluid"
-             data-ad-client="ca-pub-6313203873487938"
-             data-ad-slot="6594392300"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+        </div>
         <hr class="featurette-divider">
         <div class="row featurette">
             <div class="col-md-7">
@@ -204,26 +182,7 @@ if($_POST["status"] == 'roll'){
 
             </div>
         </div>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6313203873487938"
-                crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block; text-align:center;"
-             data-ad-layout="in-article"
-             data-ad-format="fluid"
-             data-ad-client="ca-pub-6313203873487938"
-             data-ad-slot="6594392300"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
         <hr class="featurette-divider">
-        <amp-ad width="100vw" height="320"
-                type="adsense"
-                data-ad-client="ca-pub-6313203873487938"
-                data-ad-slot="9589588282"
-                data-auto-format="mcrspv"
-                data-full-width="">
-            <div overflow=""></div>
-        </amp-ad>
     </div>
 </main>
 
