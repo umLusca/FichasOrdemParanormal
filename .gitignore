@@ -1,5 +1,7 @@
 .idea/
 assets/img/
+assets/js/fa.js
+assets/js/all.min.js
 creditos
 error/
 termos/
@@ -9,7 +11,6 @@ servers/node_modules/
 config/config.php
 includes/head.html
 includes/scripts.php
-assets/js/fa.js
 robots.txt
 .htaccess
 favicon.png
