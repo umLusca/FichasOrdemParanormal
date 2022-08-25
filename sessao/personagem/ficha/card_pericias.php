@@ -271,7 +271,7 @@
             <span class="text-secondary">Não treinadas</span>
             <span class="text-success"  >Treinadas</span>
             <span class="text-primary"  >Veterano</span>
-            <span class="text-warning"  >Especialista</span>
+            <span class="text-warning"  >Expert</span>
         </div>
     </div>
 </div>
