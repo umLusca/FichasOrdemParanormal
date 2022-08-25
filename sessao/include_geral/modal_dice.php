@@ -160,7 +160,8 @@
     </form>
 </div>
 
-<div class="position-absolute top-50 start-50 translate-middle">
+
+<div class="position-fixed top-50 start-50 translate-middle">
     <div class="toast bg-black text-light border-dark" id="Toastdados" role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-dark">
             <strong class="me-auto">Resultado</strong>

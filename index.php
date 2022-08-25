@@ -119,7 +119,9 @@ if($_POST["status"] == 'roll'){
             margin-top: 7rem;
         }
     }
-
+    body {
+        background-image: url("/assets/img/background2.png");
+    }
 </style>
 <?php require_once RootDir."includes/top.php"; ?>
 <main>

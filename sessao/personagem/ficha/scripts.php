@@ -389,6 +389,7 @@
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
         $("#vera").click(function () {
+
             $('#card_inventario .trocavision').toggle();
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
