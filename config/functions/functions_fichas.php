@@ -12,7 +12,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
 		        <button class='atributos int hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($int) . 'd20", 0,"Intelecto");\'' : 'disabled') . "><span>".$int."</span></button>
 		        <button class='atributos pre hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($pre) . 'd20", 0,"Presença"); \'' : 'disabled') . "><span>".$pre."</span></button>
 		        <button class='atributos vig hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($vig) . 'd20", 0,"Vigor");    \'' : 'disabled') . "><span>".$vig."</span></button>
-		        <img src='/assets/img/Atributes.webp' alt='Atributos'>
+		        <img src='/assets/img/Atributes.webp' height='512' width='516' alt='Atributos'>
 	        </div>";
 	} else {
 		$return ="
@@ -22,7 +22,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
                 <input required class='atributos int atributos-input hex font2' type='number' min='$min' max='$max' value='$int' name='intelecto' title='Intelecto'/>
                 <input required class='atributos pre atributos-input hex font2' type='number' min='$min' max='$max' value='$pre' name='presenca'  title='Presença'/>
                 <input required class='atributos vig atributos-input hex font2' type='number' min='$min' max='$max' value='$vig' name='vigor'     title='Vigor'/>
-                <img src='/assets/img/Atributes.webp' alt='Atributos'>
+                <img src='/assets/img/Atributes.webp' height='512' width='516' alt='Atributos'>
             </div>";
 	}
 	return $return;
@@ -177,13 +177,13 @@ function ClearRolar($dado, $Return_Error = false): bool|array
 						if (!empty($dados)) {
 							$b = explode('d', $dados);
 							$b[0] = intval($b[0]);
-							if (($b[0] > 20 || $b[0] < -20) and isset($b[1])) {
+							if (($b[0] > 50 || $b[0] < -50) and isset($b[1])) {
 								$success = false;
-								$msg = "Não pode rolar mais de 20 dados de uma vez.";
+								$msg = "Não pode rolar mais de 50 dados de uma vez.";
 							}
-							if (($b[0] > 100 || $b[0] < -100) and !isset($b[1])) {
+							if (($b[0] > 9999 || $b[0] < -9999) and !isset($b[1])) {
 								$success = false;
-								$msg = "Não pode somar além de 100 absolutamente.";
+								$msg = "Não pode somar mais de 1000 absolutamente.";
 							}
 							if ($b[1] > 100) {
 								$success = false;
