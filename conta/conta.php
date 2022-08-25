@@ -10,7 +10,7 @@
                     <div id="messagelogin"></div>
                     <div class="row">
                         <div class="col-md input-group my-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="llogin">Username:</label>
+                            <label class="input-group-text bg-black text-white border-light border-end-0" for="llogin">Email/User:</label>
                             <input class="form-control bg-black text-white border-light border-start-0" id="llogin" name="login" type="text"/>
                         </div>
                         <div class="col-md input-group my-1">
