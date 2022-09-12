@@ -181,25 +181,28 @@ require_once RootDir."/sessao/personagem/ficha/aconfig_ficha.php";
             setTimeout(hide,3000);
             tick();
         }
+
         function updtsaude(){
             if (mor === 1){
                 morto = ' morto';
-            } else {
-                morto = '';
-            }
-            if (pva === 0) {
                 foto = "<?=$urlphotomor?>"
             } else {
-                if (sana <= 0) {
-                    foto = "<?=$urlphotoenl?>";
-                } else {
+                morto = '';
+                if (pva <= 0) {
+                    foto = "<?=$urlphotomor?>"
+                } else if (sana <= 0) {
                     if (percent(pva, pv) < 50) {
-                        foto = "<?=$urlphotofer?>";
+                        foto = "<?=$urlphotoef?>";
                     } else {
-                        foto = "<?=$urlphoto?>";
+                        foto = "<?=$urlphotoenl?>";
                     }
+                } else if (percent(pva, pv) < 50) {
+                    foto = "<?=$urlphotofer?>";
+                } else {
+                    foto = "<?=$urlphoto?>";
                 }
             }
+
         }
 
         function percent(max,min = 0){

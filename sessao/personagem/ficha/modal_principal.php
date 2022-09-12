@@ -4,8 +4,7 @@
         <div class="modal-content bg-black border-light">
             <form class="modal-body" id="formeditpri">
                 <div class="clearfix">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
-                            data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     <div class="float-start m-2">
                         <span class="text-info fa-solid fa-circle-info"> Os campos em azuis pode ser calculados automaticamente colocando 1.</span>
                     </div>

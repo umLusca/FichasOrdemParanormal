@@ -63,3 +63,23 @@ $Fich_pesa = 1000;
 $Fich_fras = 1000;
 $Fich_favo = 1000;
 $Fich_note = 5000;
+
+
+
+
+
+////////////////////////////////// PAINEL DO MESTRE ///////////////////////////////////////
+
+$PV_maxima_npc = 999999999;
+$PV_minima_npc = 1;
+$SAN_maxima_npc = 999999999;
+$SAN_minima_npc = 0;
+$PE_maxima_npc = 999999999;
+$PE_minima_npc = 0;
+
+$Atributo_maximo_npc = 10;
+$Atributo_minimo_npc = -10;
+
+$Descricao_maximo_linhas_npc = 20000;
+
+

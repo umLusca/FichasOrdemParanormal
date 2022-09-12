@@ -28,22 +28,6 @@ function logar(string $login): bool
     }
 } //Inicia a sessão
 
-function CheckName($nome): bool
-{
-    $nome = cleanstring($nome);
-    return (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙ]*$/', $nome));
-}
-function CheckLogin($login): bool
-{
-    $login = cleanstring($login);
-    return (preg_match('/^[a-zA-Z-\'_\d]*$/', $login));
-}
-function CheckEmail($email): bool
-{
-    $email = cleanstring($email);
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-
-}
 
 $data = [];
 
@@ -97,7 +81,6 @@ if (isset($_POST["cadastrar"])) {
         $msg = "Preencha todos os campos!";
     }
 
-
     if (!empty($_POST["login"])) {
         $login = cleanstring($_POST["login"]);
         if(!CheckLogin($login)){
@@ -108,6 +91,9 @@ if (isset($_POST["cadastrar"])) {
             $success = false;
             $msg = "O username não pode ter mais de 16 caracteres.";
         }
+
+
+
     } else {
         $success = false;
         $msg = "Preencha todos os campos!";
@@ -125,43 +111,49 @@ if (isset($_POST["cadastrar"])) {
     }
 
     if (!empty($_POST["senha"] || $_POST["csenha"])) {
-        if ($_POST["senha"] === $_POST["csenha"]) {
-            $pass = cleanstring($_POST["senha"]);
-            if (strlen($pass) < 8 || strlen($pass) > 50) {
-                $msg = "Senha deve conter entre 8 e 50 digitos.";
-                $success = false;
-            }
-            if (!preg_match("/[A-Z]/", $pass)) {
-                $msg = "Senha precisa conter letras maiúsculas.";
-                $success = false;
-            }
-            if (!preg_match("/[a-z]/", $pass)) {
-                $msg = "Senha precisa conter letras minúsculas.";
-                $success = false;
-            }
-            if (preg_match("/\s/", $pass)) {
-                $msg = "Senha não pode conter espaços!";
-                $success = false;
-            }
-            $senha = cryptthis($pass);
-
-        } else {
-            $msg = "As senhas não são iguais.";
-            $success = false;
-        }
+		if(Check_Pass($_POST["senha"],$_POST["csenha"])){
+			$senha = cryptthis(cleanstring($_POST["senha"]));
+		} else {
+			$er = Check_Pass($_POST["senha"],$_POST["csenha"],true);
+			$success = $er["success"];
+			$msg = $er["msg"];
+		}
     } else {
         $success = false;
         $msg = "Preencha todos os campos!";
     }
+
+
+	$a = $con->prepare("SELECT `id` FROM `usuarios` WHERE `login` = ?");
+	$a->bind_param("s",$login);
+	$a->execute();
+	$a = $a->get_result();
+	$b = $con->prepare("SELECT `id` FROM `usuarios` WHERE `email` = ?");
+	$b->bind_param("s",$email);
+	$b->execute();
+	$b = $b->get_result();
+
+	if ($a->num_rows) {
+		$success = false;
+		$msg = "Username já existente.";
+	}
+	if ($b->num_rows) {
+		$success = false;
+		$msg = "Email já existente.";
+	}
     if ($success) {
         $a = $con->prepare("SELECT * FROM `usuarios` WHERE `email` = ? AND `status` = 1");
         $a->bind_param("s", $email);
         $a->execute();
         $a = $a->get_result();
+
+
         $ab = $con->prepare("SELECT * FROM `usuarios` WHERE `email` = ? AND `status` = 0");
         $ab->bind_param("s", $email);
         $ab->execute();
         $ab = $ab->get_result();
+
+
         if ($a->num_rows == 0) {
             if ($ab->num_rows == 0) {
                 $b = $con->query("SELECT * FROM `usuarios` WHERE `login` = '" . $login . "';");

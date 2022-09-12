@@ -9,6 +9,10 @@ header('Access-Control-Allow-Origin: https://fichasop.com', false);
 require_once "config.php";
 $con = con();
 
+if(isset($_POST["tc"])){
+	$_SESSION["tc"] = true;
+}//todo remove 25/09
+
 
 
 require_once RootDir."config/fichas/limites.php";//Limites e Variaveis

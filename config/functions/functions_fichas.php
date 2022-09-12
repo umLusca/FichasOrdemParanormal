@@ -331,7 +331,11 @@ function TirarPorcento($Valor_Atual, $Valor_Maximo)
 	if(($Valor_Maximo==0 AND $Valor_Atual == 0) OR $Valor_Maximo == 0){return 0;}
 	return minmax((($Valor_Atual/$Valor_Maximo) * 100),0,100);
 }
-function DadoDinamico($dado, $FOR=0, $AGI=0, $INT=0, $PRE=0, $VIG=0): string
+
+
+
+
+function DadoDinamico($dado, $FOR=1, $AGI=1, $INT=1, $PRE=1, $VIG=1,): string
 {
 	$FOR = minmax($FOR,0,10);
 	$AGI = minmax($AGI,0,10);
@@ -349,3 +353,8 @@ function DadoDinamico($dado, $FOR=0, $AGI=0, $INT=0, $PRE=0, $VIG=0): string
 	}
 	return $dado;
 }
+
+
+
+
+

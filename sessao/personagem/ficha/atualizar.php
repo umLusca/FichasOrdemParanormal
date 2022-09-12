@@ -220,6 +220,9 @@ if ($edit) {
 		            if (preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp|gif)$/', cleanstring($_POST["fotoenl"]))) {
 			            $fotoenl = cleanstring($_POST["fotoenl"], $Fich_fotos);
 		            }
+		            if (preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp|gif)$/', cleanstring($_POST["fotoef"]))) {
+			            $fotoef = cleanstring($_POST["fotoef"], $Fich_fotos);
+		            }
 	            } else {
 		            switch ($fotos) {
 			            default:
@@ -256,6 +259,7 @@ if ($edit) {
                 $classe = minmax($_POST["classe"], 0, 3);
                 $patente = minmax($_POST["patente"], 0, 5);
                 $desco = minmax($_POST["deslocamento"],0,50);
+                $per = minmax($_POST["pr"],0,127);
                 $idade = minmax($_POST["idade"],0,150);
                 $local = cleanstring($_POST["local"],$Fich_loca);
 
@@ -265,8 +269,8 @@ if ($edit) {
 					$nome = cleanstring($_POST["nome"]);
 	            }
 
-                $rr = $con->prepare("UPDATE `fichas_personagem` SET `foto` = ? , `nome` = ? , `afinidade` = ? , `nex` = ?, `pp` = ? , `classe` = ? , `trilha` = ? , `origem` = ? , `patente` = ? , `idade` = ?, `deslocamento` = ? , `local` = ? , `foto_morrendo` = ?, `foto_enlouquecendo` = ?, `foto_ferido` = ? WHERE `id` = '$id';");
-                $rr->bind_param("ssiiiiiiiiissss",  $urlphoto,$nome, $elemento ,  $nex, $pp, $classe, $trilha, $origem, $patente, $idade, $desco, $local, $fotomor, $fotoenl, $fotofer);
+                $rr = $con->prepare("UPDATE `fichas_personagem` SET `foto` = ? , `nome` = ? , `afinidade` = ? , `nex` = ?, `pe_rodada` = ?, `pp` = ? , `classe` = ? , `trilha` = ? , `origem` = ? , `patente` = ? , `idade` = ?, `deslocamento` = ? , `local` = ? , `foto_morrendo` = ?, `foto_enlouquecendo` = ?, `foto_ferido` = ?, `foto_ferenl` = ? WHERE `id` = '$id';");
+                $rr->bind_param("ssiiiiiiiiiisssss",  $urlphoto,$nome, $elemento, $nex, $per, $pp, $classe, $trilha, $origem, $patente, $idade, $desco, $local, $fotomor, $fotoenl, $fotofer,$fotoef);
                 $rr->execute();
                 break;
             case 'edititem':
@@ -357,13 +361,14 @@ if ($edit) {
                 $pv = minmax(intval($_POST["pv"]), $minimo_PV, $maximo_PV);
                 if ($pv == 1) $pv = calcularvida($nex, $rqs["classe"],$rqs["vigor"],$rqs["trilha"],$rqs["origem"]);
 
-                $pe = minmax(intval($_POST["pe"]), $minimo_SAN, $maximo_SAN);
+	            $san = minmax(intval($_POST["san"]), $minimo_SAN, $maximo_SAN);
+	            if($san == 1){
+		            $san = calcularsan($nex,$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
+	            }
+
+                $pe = minmax(intval($_POST["pe"]), $minimo_PE, $maximo_PE);
                 if ($pe == 1) $pe = calcularpe($nex, $rqs["classe"], $rqs["presenca"],$rqs["trilha"],$rqs["origem"]);
 
-                $san = minmax(intval($_POST["san"]), $minimo_PE, $maximo_PE);
-	            if($san == 1){
-					$san = calcularsan($nex,$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
-	            }
                 //Defesas
                 $pa = minmax(intval($_POST["passiva"]));
                 $es = minmax(intval($_POST["esquiva"]));
@@ -561,9 +566,9 @@ if ($edit) {
 				$mor = minmax($_POST["mor"],0,1);
                 $pv =  minmax(($_POST["pv"]),1,$maximo_PV);
                 $pva = minmax(($_POST["pva"]),-99,$maximo_PV);
-                $san = minmax(($_POST["san"]),1,$maximo_SAN);
+                $san = minmax(($_POST["san"]),0,$maximo_SAN);
                 $sana =minmax(($_POST["sana"]),0,$maximo_SAN);
-                $pe =  minmax(($_POST["pe"]),1,$maximo_PE);
+                $pe =  minmax(($_POST["pe"]),0,$maximo_PE);
                 $pea = minmax(($_POST["pea"]),0,$maximo_PE);
                 if($pv == 1){
 					$pv = calcularvida($nex,$rqs["classe"],$vigor,$rqs["trilha"],$rqs["origem"]);

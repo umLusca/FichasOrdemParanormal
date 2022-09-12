@@ -156,7 +156,7 @@
                                                             </div><?php }
 
 
-							                            if (!$r["morte"] == 0 and !$r["sangue"] == 0 and !$r["energia"] == 0 and !$r["conhecimento"] == 0 and !$r["mental"] == 0 and !$r["fisica"] == 0 and !$r["balistica"] == 0) {?>
+							                            if (!$r["morte"] == 0 || !$r["sangue"] == 0 || !$r["energia"] == 0 || !$r["conhecimento"] == 0 || !$r["mental"] == 0 || !$r["fisica"] == 0 || !$r["balistica"] == 0) {?>
                                                             <div class="my-2">
                                                             <h4>Resistências</h4>
                                                             <div class="row m-2 g-2 justify-content-center">

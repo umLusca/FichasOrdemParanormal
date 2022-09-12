@@ -45,17 +45,22 @@
                     <img data-bs-toggle="modal" data-bs-target="#trocarficha" alt="Foto perfil" src="<?php
                     if($pva <= 0){
                         echo $urlphotomor;
-                    } else {
+                    } else
                         if($sana <= 0){
-                            echo$urlphotoenl;
+	                        if (TirarPorcento($pva,$pv) < 50){
+		                        echo $urlphotoef;
+	                        } else {
+		                        echo $urlphotoenl;
+	                        }
                         } else {
-                            if (TirarPorcento($pva,$pva) < 50){
+                            if (TirarPorcento($pva,$pv) < 50){
                                 echo $urlphotofer;
                             } else {
                                 echo $urlphoto;
                             }
                         }
-                    }
+
+
                     ?>" id="fotopersonagem" class="rounded-circle mx-3 border border-1 border-white" style="width: -webkit-fill-available; max-width: 190px;"/>
                 </div>
             </div>
@@ -101,6 +106,7 @@
 
 
                         <h4 class="font6 pt-4 fs-4 fw-bold text-center">Sanidade</h4>
+                    <?php if ($san > 0){?>
                         <div class="d-flex justify-content-between">
 	                        <?php if ($edit) { ?>
                             <div class="col-auto">
@@ -137,6 +143,10 @@
                                 <div class="progress-bar bg-primary text-end" id="barrasana" role="progressbar" title="Vida" style="width:<?= $psan; ?>%;height: 30px" aria-valuenow="<?= $sana ?>" aria-valuemin="0" aria-valuemax="<?= $san ?>"></div>
                             </div>
                         </div>
+                    <?php }
+
+                    if ($pe > 0){
+                    ?>
 
                         <h4 class="font6 pt-4 fw-bold text-center">Esforço</h4>
                         <div class="d-flex justify-content-between">
@@ -175,6 +185,7 @@
                                 <div class="progress-bar bg-warning text-end" id="barrapea" role="progressbar" title="Esforço" style="width:<?= $ppe; ?>%;height: 30px" aria-valuenow="<?= $pea ?>" aria-valuemin="0" aria-valuemax="<?= $pe ?>"></div>
                             </div>
                         </div>
+                    <?php }?>
                 </div>
 
                 <?php

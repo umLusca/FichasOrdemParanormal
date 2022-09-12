@@ -5,17 +5,10 @@ require_once "./../ficha/aconfig_ficha.php";
 <html lang="br">
 <!DOCTYPE html>
 <head>
-    <?php require_once './../../../includes/head.html'; ?>
+	<?php require_once './../../../includes/head.html'; ?>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title><?php echo $nome ?: "Desconhecido"; ?> - Ficha</title>
     <style>
-        @font-face {
-            font-family: 'daisywheelregular';
-            src: url('../../../assets/css/daisywhl-webfont.woff2') format('woff2'),
-            url('../../../assets/css/daisywhl-webfont.woff') format('woff');
-
-        }
 
         .image-container {
             width: 695px;
@@ -31,42 +24,42 @@ require_once "./../ficha/aconfig_ficha.php";
 
         .nome {
             position: absolute;
-            text-align: left;
-            width: 310px;
-            margin: 5% 0 0 10%;
-            font-size: 30px;
+            text-align: center;
+            width: 200px;
+            margin: 5.75% 0 0 12%;
+            font-size: 20px;
         }
+
         .jogador {
             position: absolute;
             text-align: left;
             font-size: 15px;
-            width: 165px;
-            margin: 14.5% 19%;
+            width: 95px;
+            margin: 6.5% 42.25%;
+        }
+        .nex {
+            position: absolute;
+            text-align: left;
+            margin: 75% 18%;
+            font-size: 30px;
+            width: 45px;
         }
 
         .origem {
             position: absolute;
             text-align: left;
-            font-size: 15px;
-            width: 172px;
-            margin: 17.25% 15.25%;
+            font-size: 18px;
+            width: 230px;
+            margin: 62% 23.5%;
         }
 
-        .nex {
-            position: absolute;
-            text-align: center;
-            margin-top: 6%;
-            margin-left: 58%;
-            font-size: 30px;
-            width: 70px;
-        }
 
         .classe {
             position: absolute;
             text-align: left;
-            font-size: 15px;
-            width: 165px;
-            margin: 20.5% 15.25%;
+            font-size: 13.9px;
+            width: 236px;
+            margin: 70% 22%;
         }
 
         .patente {
@@ -77,19 +70,20 @@ require_once "./../ficha/aconfig_ficha.php";
             margin: 23.25% 16%;
         }
 
-        .pex {
+        .pex {/**/
             position: absolute;
             text-align: left;
             font-size: 15px;
             width: 100px;
             margin: 15.25% 56%;
+            display:none;
         }
 
 
         /*ATRIBUTOS*/
         .attr {
-            margin: 21% 33%;
-            width: 266px;
+            margin: 16% 15%;
+            width: 277px;
             height: 277px;
             position: absolute;
             text-align: center;
@@ -99,43 +93,59 @@ require_once "./../ficha/aconfig_ficha.php";
 
         .agi {
             position: absolute;
-            width: 72px;
+            width: 74px;
             height: 48px;
-            margin: 8% -14%;
+            margin: 4% -14%;
         }
 
         .for {
             position: absolute;
             width: 72px;
             height: 48px;
-            margin: 35% 0 0 -48%;
+            margin: 29% 0 0 -48%;
         }
 
         .int {
             position: absolute;
             width: 72px;
             height: 48px;
-            margin: 35% 0 0 20%;
+            margin: 29% 0 0 20%;
         }
 
         .pre {
             position: absolute;
             width: 72px;
             height: 48px;
-            margin: 79% 0 0 -38%;
+            margin: 72% 0 0 -38%;
         }
 
         .vig {
             position: absolute;
             width: 72px;
             height: 48px;
-            margin: 79% 8%;
+            margin: 72% 11%;
         }
 
         .PV {
             position: absolute;
             text-align: center;
-            margin: 52.5% 23.75%;
+            margin: 84% 14%;
+            font-size: 25px;
+            width: 55px;
+        }
+
+        .SAN {
+            position: absolute;
+            text-align: center;
+            margin: 97% 41.5%;
+            font-size: 26px;
+            width: 54px;
+        }
+
+        .PE {
+            position: absolute;
+            text-align: center;
+            margin: 84% 36%;
             font-size: 25px;
             width: 56px;
         }
@@ -143,303 +153,253 @@ require_once "./../ficha/aconfig_ficha.php";
         .SAN {
             position: absolute;
             text-align: center;
-            margin: 64.5% 42.75%;
-            font-size: 25px;
-            width: 56px;
-        }
-
-        .PE {
-            position: absolute;
-            text-align: center;
-            margin: 52.5% 72.75%;
-            font-size: 25px;
-            width: 56px;
+            margin: 97% 41.5%;
+            font-size: 26px;
+            width: 54px;
         }
 
         .passiva {
             position: absolute;
             text-align: center;
-            margin: 30% 77.5%;
-            font-size: 30px;
-            width: 45px;
+            margin: 97% 14%;
+            font-size: 25px;
+            width: 50px;
         }
 
-        .esquiva {
+        .esquiva {/**/
             position: absolute;
             text-align: center;
             margin: 40.5% 77%;
             font-size: 15px;
             width: 35px;
+            display:none;
         }
 
-        .bloqueio {
+        .bloqueio {/**/
             position: absolute;
             text-align: center;
             margin: 46.75% 77%;
             font-size: 15px;
             width: 35px;
+            display:none;
         }
-        .deslocamento {
+
+        .deslocamento {/**/
             position: absolute;
             text-align: center;
             margin: 67% 65%;
             font-size: 20px;
             width: 33px;
+            display:none;
         }
-        .corte {
+
+        .corte {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 33px;
             margin: 31.25% 13%;
+            display:none;
         }
-        .impacto {
+
+        .impacto {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 33px;
             margin: 31.25% 18%;
+            display:none;
         }
-        .perfuracao {
+
+        .perfuracao {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 33px;
             margin: 31.25% 23%;
+            display:none;
         }
-        .balistico {
+
+        .balistico {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 33px;
             margin: 37% 13.25%;
+            display:none;
         }
-        .mental {
+
+        .mental {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 51px;
             margin: 37% 20%;
+            display:none;
         }
-        .morte {
+
+        .morte {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 30px;
             margin: 45.75% 11.75%;
+            display:none;
         }
-        .sangue {
+
+        .sangue {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 30px;
             margin: 45.75% 16.75%;
+            display:none;
         }
-        .energia {
+
+        .energia {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 30px;
             margin: 45.75% 21.75%;
+            display:none;
         }
-        .conhecimento {
+
+        .conhecimento {/**/
             position: absolute;
             text-align: center;
             font-size: 18px;
             width: 30px;
             margin: 45.75% 26.75%;
+            display:none;
         }
 
+
+        .pericias {
+            position: absolute;
+            text-align: center;
+            width: 28px !important;
+            margin: 27.3% 81.53%;
+            height: 59%;
+        }
+
+        .pericia {
+            position: absolute;
+            width: 100%;
+            margin-left: -50%;
+        }
 
         .acrobacia {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 81.5% 22.1%;
+            margin-top: -8%;
         }
+
         .adestramento {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 81.5% 72.5%;
+            margin-top: 66%;
         }
+
         .artes {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 84.5% 72.5%;
+            margin-top: 140%;
         }
+
         .atletismo {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 81.25% 38%;
+            margin-top: 214%;
         }
 
         .atualidade {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 81.5% 56.25%;
+            margin-top: 288%;
         }
 
         .ciencia {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 84.5% 56.25%;
+            margin-top: 362%;
         }
+
         .crime {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 84.5% 22.1%;
+            margin-top: 436%;
         }
 
         .diplomacia {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 87.5% 72.5%;
+            margin-top: 510%;
         }
 
         .enganacao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 90.5% 72.5%;
+            margin-top: 584%;
         }
 
         .fortitude {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 81.5% 89.8%;
+            margin-top: 658%;
         }
 
         .furtividade {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 87.5% 22.1%;
+            margin-top: 732%;
         }
 
         .intimidacao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 93.5% 72.5%;
+            margin-top: 806%;
         }
 
         .intuicao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 87.5% 56.25%;
+            margin-top: 880%;
         }
 
         .investigacao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 90.5% 56.25%;
+            margin-top: 954%;
         }
+
         .iniciativa {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 90.5% 22.1%;
+            margin-top: 1028%;
         }
 
         .luta {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 84.25% 38%;
+            margin-top: 1102%;
         }
 
         .medicina {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 93.5% 56.25%;
+            margin-top: 1176%;
         }
 
         .ocultismo {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 96.5% 56.25%;
+            margin-top: 1250%;
         }
 
         .percepcao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 96.5% 72.5%;
+            margin-top: 1324%;
         }
 
         .pilotagem {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 93.5% 22.1%;
+            margin-top: 1398%;
         }
 
         .pontaria {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 96.5% 22.1%;
+            margin-top: 1472%;
         }
 
 
         .profissao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 99.5% 56.25%;
+            margin-top: 1546%;
         }
 
         .reflexos {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 99.5% 22.1%;
+            margin-top: 1620%;
         }
 
         .religiao {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 99.7% 72.5%;
+            margin-top: 1694%;
         }
+
         .sobrevivencia {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 102.5% 56.25%;
+            margin-top: 1768%;
         }
 
         .tatica {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 105.75% 56.25%;
+            margin-top: 1842%;
         }
 
         .tecnologia {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 108.75% 56.25%;
+            margin-top: 1916%;
         }
 
         .vontade {
-            position: absolute;
-            text-align: center;
-            width: 19px;
-            margin: 102.7% 72.5%;
+            margin-top: 1990%;
         }
 
         /*Armas*/
@@ -462,6 +422,7 @@ require_once "./../ficha/aconfig_ficha.php";
             position: absolute;
             margin-top: 126.25%;
         }
+
         .Slot5 {
             position: absolute;
             margin-top: 128.75%;
@@ -592,58 +553,72 @@ require_once "./../ficha/aconfig_ficha.php";
             position: absolute;
             margin-top: 34.5%;
         }
+
         .Inv12 {
             position: absolute;
             margin-top: 36.25%;
         }
+
         .Inv13 {
             position: absolute;
             margin-top: 38%;
         }
+
         .Inv14 {
             position: absolute;
             margin-top: 39.75%;
         }
+
         .Inv15 {
             position: absolute;
             margin-top: 41.5%;
         }
+
         .Inv16 {
             position: absolute;
             margin-top: 43.25%;
         }
+
         .Inv17 {
             position: absolute;
             margin-top: 45%;
         }
+
         .Inv18 {
             position: absolute;
             margin-top: 46.75%;
         }
+
         .Inv19 {
             position: absolute;
             margin-top: 48.5%;
         }
+
         .Inv20 {
             position: absolute;
             margin-top: 48.5%;
         }
+
         .Inv21 {
             position: absolute;
             margin-top: 50.25%;
         }
+
         .Inv22 {
             position: absolute;
             margin-top: 52%;
         }
+
         .Inv23 {
             position: absolute;
             margin-top: 53.75%;
         }
+
         .Inv24 {
             position: absolute;
             margin-top: 55.5%;
         }
+
         .Item {
             margin-left: 8%;
             text-align: left;
@@ -675,11 +650,16 @@ require_once "./../ficha/aconfig_ficha.php";
             margin: 39.9% 0 0 58%;
             font-size: 85px;
         }
-        @media print
-        {
-            .page-break  { display:block; page-break-before:always; }
 
+        @media print {
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
         }
+
+
+
     </style>
 </head>
 <body>
@@ -687,112 +667,114 @@ require_once "./../ficha/aconfig_ficha.php";
 <div class="container-fluid">
     <div class="image-container">
         <div class="dados">
-            <div class="nome font4"><?=$nome?></div>
-            <div class="jogador font6"><?=$usuario?></div>
-            <span class="nex font6"><?=$nex?></span>
-            <span class="nex pex font6"><?=$pex?></span>
-            <span class="origem font6"><?=$origem?></span>
-            <span class="classe font6"><?=$classe?></span>
-            <span class="patente font6"><?=$patente?></span>
+            <div class="nome font6"><?= $nome ?></div>
+            <div class="jogador font6"><?= $usuario ?></div>
+            <span class="nex font6"><?= $nex ?></span>
+            <span class="nex pex font6"><?= $pex ?></span>
+            <span class="origem font6"><?= $origem ?></span>
+            <span class="classe font6"><?= $classe ?></span>
+            <span class="patente font6"><?= $patente ?></span>
         </div>
         <div class="attr font1">
-            <span class="for"><?=$forca?></span>
-            <span class="agi"><?=$agilidade?></span>
-            <span class="int"><?=$intelecto?></span>
-            <span class="vig"><?=$vigor?></span>
-            <span class="pre"><?=$presenca?></span>
+            <span class="for"><?= $forca ?></span>
+            <span class="agi"><?= $agilidade ?></span>
+            <span class="int"><?= $intelecto ?></span>
+            <span class="vig"><?= $vigor ?></span>
+            <span class="pre"><?= $presenca ?></span>
         </div>
         <div class="Saude font4">
-            <span class="PV"><?=$pv?></span>
-            <span class="PE"><?=$pe?></span>
-            <span class="SAN"><?=$san?></span>
-            <span class="passiva"><?=$passiva?></span>
-            <span class="bloqueio"><?=$fortitude?></span>
-            <span class="esquiva"><?=$esquiva?></span>
-            <span class="deslocamento"><?=$deslocamento?></span>
-            <span class="corte"><?=$corte?></span>
-            <span class="impacto"><?=$impacto?></span>
-            <span class="perfuracao"><?=$perfuracao?></span>
-            <span class="balistico"><?=$balistica?></span>
-            <span class="mental"><?=$insanidade?></span>
-            <span class="morte"><?=$morte?></span>
-            <span class="sangue"><?=$sangue?></span>
-            <span class="energia"><?=$energia?></span>
-            <span class="conhecimento"><?=$conhecimento?></span>
+            <span class="PV"><?= $pv ?></span>
+            <span class="PE"><?= $pe ?></span>
+            <span class="SAN"><?= $san ?></span>
+            <span class="passiva"><?= $passiva ?></span>
+            <span class="bloqueio"><?= $fortitude ?></span>
+            <span class="esquiva"><?= $esquiva ?></span>
+            <span class="deslocamento"><?= $deslocamento ?></span>
+            <span class="corte"><?= $corte ?></span>
+            <span class="impacto"><?= $impacto ?></span>
+            <span class="perfuracao"><?= $perfuracao ?></span>
+            <span class="balistico"><?= $balistica ?></span>
+            <span class="mental"><?= $insanidade ?></span>
+            <span class="morte"><?= $morte ?></span>
+            <span class="sangue"><?= $sangue ?></span>
+            <span class="energia"><?= $energia ?></span>
+            <span class="conhecimento"><?= $conhecimento ?></span>
         </div>
         <div class="pericias">
-            <span class="pericia acrobacia"><?=$acrobacias?></span>
-            <span class="pericia adestramento"><?=$adestramento?></span>
-            <span class="pericia artes"><?=$artes?></span>
-            <span class="pericia atletismo"><?=$atletismo?></span>
-            <span class="pericia atualidade"><?=$atualidades?></span>
-            <span class="pericia ciencia"><?=$ciencia?></span>
-            <span class="pericia crime"><?=$crime?></span>
-            <span class="pericia diplomacia"><?=$diplomacia?></span>
-            <span class="pericia enganacao"><?=$enganacao?></span>
-            <span class="pericia fortitude"><?=$fortitude?></span>
-            <span class="pericia furtividade"><?=$furtividade?></span>
-            <span class="pericia intimidacao"><?=$intimidacao?></span>
-            <span class="pericia intuicao"><?=$intuicao?></span>
-            <span class="pericia investigacao"><?=$investigacao?></span>
-            <span class="pericia iniciativa"><?=$iniciativa?></span>
-            <span class="pericia luta"><?=$luta?></span>
-            <span class="pericia medicina"><?=$medicina?></span>
-            <span class="pericia ocultismo"><?=$ocultismo?></span>
-            <span class="pericia percepcao"><?=$percepcao?></span>
-            <span class="pericia pilotagem"><?=$pilotagem?></span>
-            <span class="pericia pontaria"><?=$pontaria?></span>
-            <span class="pericia profissao"><?=$profissao?></span>
-            <span class="pericia reflexos"><?=$reflexos?></span>
-            <span class="pericia religiao"><?=$religiao?></span>
-            <span class="pericia sobrevivencia"><?=$sobrevivencia?></span>
-            <span class="pericia tatica"><?=$tatica?></span>
-            <span class="pericia tecnologia"><?=$tecnologia?></span>
-            <span class="pericia vontade"><?=$vontade?></span>
+            <span class="pericia acrobacia"><?= $acrobacias ?></span>
+            <span class="pericia adestramento"><?= $adestramento ?></span>
+            <span class="pericia artes"><?= $artes ?></span>
+            <span class="pericia atletismo"><?= $atletismo ?></span>
+            <span class="pericia atualidade"><?= $atualidades ?></span>
+            <span class="pericia ciencia"><?= $ciencia ?></span>
+            <span class="pericia crime"><?= $crime ?></span>
+            <span class="pericia diplomacia"><?= $diplomacia ?></span>
+            <span class="pericia enganacao"><?= $enganacao ?></span>
+            <span class="pericia fortitude"><?= $fortitude ?></span>
+            <span class="pericia furtividade"><?= $furtividade ?></span>
+            <span class="pericia intimidacao"><?= $intimidacao ?></span>
+            <span class="pericia intuicao"><?= $intuicao ?></span>
+            <span class="pericia investigacao"><?= $investigacao ?></span>
+            <span class="pericia iniciativa"><?= $iniciativa ?></span>
+            <span class="pericia luta"><?= $luta ?></span>
+            <span class="pericia medicina"><?= $medicina ?></span>
+            <span class="pericia ocultismo"><?= $ocultismo ?></span>
+            <span class="pericia percepcao"><?= $percepcao ?></span>
+            <span class="pericia pilotagem"><?= $pilotagem ?></span>
+            <span class="pericia pontaria"><?= $pontaria ?></span>
+            <span class="pericia profissao"><?= $profissao ?></span>
+            <span class="pericia reflexos"><?= $reflexos ?></span>
+            <span class="pericia religiao"><?= $religiao ?></span>
+            <span class="pericia sobrevivencia"><?= $sobrevivencia ?></span>
+            <span class="pericia tatica"><?= $tatica ?></span>
+            <span class="pericia tecnologia"><?= $tecnologia ?></span>
+            <span class="pericia vontade"><?= $vontade ?></span>
         </div>
         <div class="Armas">
-            <?php
-            if($s[1]->num_rows){
-            for($i = 0;(($i < count($rs[1])) && ($i < 6)); $i++): ?>
-                <span class="Slot<?=$i+1?> Arma"><?=$rs[1][$i]["arma"]?></span>
-                <span class="Slot<?=$i+1?> Tipo"><?=$rs[1][$i]["tipo"]?></span>
-                <span class="Slot<?=$i+1?> Ataque"><?=$rs[1][$i]["ataque"]?></span>
-                <span class="Slot<?=$i+1?> Alcance"><?=$rs[1][$i]["alcance"]?></span>
-                <span class="Slot<?=$i+1?> Dano"><?=$rs[1][$i]["dano"]?></span>
-                <span class="Slot<?=$i+1?> Critico"><?=$rs[1][$i]["margem"]?>/<?=$rs[1][$i]["critico"]?></span>
-                <span class="Slot<?=$i+1?> Especial"><?=$rs[1][$i]["especial"]?></span>
-            <?php endfor;}?>
+			<?php
+			if ($s[1]->num_rows) {
+				for ($i = 0; (($i < count($rs[1])) && ($i < 6)); $i++): ?>
+                    <span class="Slot<?= $i + 1 ?> Arma"><?= $rs[1][$i]["arma"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Tipo"><?= $rs[1][$i]["tipo"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Ataque"><?= $rs[1][$i]["ataque"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Alcance"><?= $rs[1][$i]["alcance"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Dano"><?= $rs[1][$i]["dano"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Critico"><?= $rs[1][$i]["margem"] ?>/<?= $rs[1][$i]["critico"] ?></span>
+                    <span class="Slot<?= $i + 1 ?> Especial"><?= $rs[1][$i]["especial"] ?></span>
+				<?php endfor;
+			} ?>
         </div>
-        <img alt="Ficha frontal" src="../../../assets/img/Print1.png"/>
+        <img alt="Ficha frontal" src="/assets/img/print_frente.webp"/>
     </div>
     <div class="page-break"></div>
     <div class="image-container">
         <div class="Inventario">
-            <?php
-            if($s[4]->num_rows > 0){
-            for ($i = 0; ($i < count($rs[4])&& $i<=17); $i++):?>
-                <div class="Inv<?=$i+1?> Item text-truncate"><?=$rs[4][$i]["nome"]?></div>
-                <div class="Inv<?=$i+1?> Detalhes text-truncate"><?=$rs[4][$i]["descricao"]?></div>
-                <div class="Inv<?=$i+1?> Espacos text-truncate"><?=$rs[4][$i]["espaco"]?></div>
-                <div class="Inv<?=$i+1?> Prestigio text-truncate"><?=$rs[4][$i]["prestigio"]?></div>
-            <?php endfor;}?>
+			<?php
+			if ($s[4]->num_rows > 0) {
+				for ($i = 0; ($i < count($rs[4]) && $i <= 17); $i++):?>
+                    <div class="Inv<?= $i + 1 ?> Item text-truncate"><?= $rs[4][$i]["nome"] ?></div>
+                    <div class="Inv<?= $i + 1 ?> Detalhes text-truncate"><?= $rs[4][$i]["descricao"] ?></div>
+                    <div class="Inv<?= $i + 1 ?> Espacos text-truncate"><?= $rs[4][$i]["espaco"] ?></div>
+                    <div class="Inv<?= $i + 1 ?> Prestigio text-truncate"><?= $rs[4][$i]["prestigio"] ?></div>
+				<?php endfor;
+			} ?>
         </div>
         <div>
             <span class="Proeficiencias">
-                <?php foreach ($s[3] as $r):?>
-                    <?=$r["nome"]?><br>
+                <?php foreach ($s[3] as $r): ?>
+	                <?= $r["nome"] ?><br>
                 <?php endforeach; ?>
             </span>
         </div>
         <div class="Habilidades">
-	        <?php foreach ($s[2] as $r):?>
-                <span><span class="fw-bold"><?=$r["nome"]?></span> <?=$r["descricao"]?></span><br>
-            <?php endforeach; ?><br>
-	        <?php foreach ($s[7] as $r):?>
-                <span><span class="fw-bold"><?=$r["nome"]?></span> <?=$r["descricao"]?></span><br>
-            <?php endforeach; ?>
+			<?php foreach ($s[2] as $r): ?>
+                <span><span class="fw-bold"><?= $r["nome"] ?></span> <?= $r["descricao"] ?></span><br>
+			<?php endforeach; ?><br>
+			<?php foreach ($s[7] as $r): ?>
+                <span><span class="fw-bold"><?= $r["nome"] ?></span> <?= $r["descricao"] ?></span><br>
+			<?php endforeach; ?>
         </div>
-        <img alt="Ficha frontal" src="../../../assets/img/Print2.png"/>
+        <img alt="Ficha frontal" src="/assets/img/Print2.webp"/>
     </div>
 </div>
 

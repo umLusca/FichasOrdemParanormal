@@ -32,7 +32,7 @@ if($_POST["status"] == 'roll'){
     body {
         padding-top: 3rem;
         padding-bottom: 3rem;
-        color: #5a5a5a;
+        background-image: url("https://beta.fichasop.com/assets/img/background2.webp");
     }
 
     /* Carousel base class */
@@ -119,9 +119,6 @@ if($_POST["status"] == 'roll'){
             margin-top: 7rem;
         }
     }
-    body {
-        background-image: url("/assets/img/background2.png");
-    }
 </style>
 <?php require_once RootDir."includes/top.php"; ?>
 <main>
@@ -156,8 +153,7 @@ if($_POST["status"] == 'roll'){
                 <p class="lead">Tudo isso para você se sentir o mais confortavel.</p>
             </div>
             <div class="col-md-5">
-                <img src="/assets/img/pericias.webp" width="500" height="500"
-                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+                <img src="/assets/img/pericias.webp" width="500" height="500" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
             </div>
         </div>
         <hr class="featurette-divider">
@@ -167,8 +163,7 @@ if($_POST["status"] == 'roll'){
                 <p class="lead">tudo é bem autoexplicativo e pensado em ajudar-lhe a usar.</p>
             </div>
             <div class="col-md-5 order-md-1">
-                <img src="/assets/img/principal.webp" width="500" height="500"
-                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+                <img src="/assets/img/principal.webp" width="500" height="500" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
             </div>
         </div>
         <hr class="featurette-divider">
@@ -178,9 +173,7 @@ if($_POST["status"] == 'roll'){
                 <p class="lead">Não tem como deixar o principal de lado, sistema de rolar dados completissimo para você.</p>
             </div>
             <div class="col-md-5">
-                <video src="/assets/video/video_atributos.webm" preload="none" width="500" height="500" playsinline autoplay
-                       muted loop
-                       class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+                <video src="/assets/video/video_atributos.webm" preload="none" width="500" height="500" playsinline autoplay muted loop class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
 
             </div>
         </div>
@@ -188,7 +181,7 @@ if($_POST["status"] == 'roll'){
     </div>
 </main>
 
-<footer class="container-fluid fixed-bottom text-white border-light border-top">
+<!--<footer class="container-fluid fixed-bottom text-white border-light border-top">
     <div class="clearfix">
         <div class="float-start text-start">
             <a href="https://getbootstrap.com/" class="text-decoration-none">
@@ -196,7 +189,7 @@ if($_POST["status"] == 'roll'){
             </a>
         </div>
     </div>
-</footer>
+</footer>-->
 <?php require_once RootDir."sessao/include_geral/modal_dice.php"; ?>
 <?php require_once RootDir."includes/scripts.php"; ?>
 <?php require_once RootDir."sessao/include_geral/scripts.php"; ?>

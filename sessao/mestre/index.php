@@ -2,10 +2,6 @@
 require_once "./../../config/includes.php";
 $con = con();
 $uid = $_SESSION["UserID"];
-function proibido() {
-	header("Location: ./..");
-    exit;
-}
 
 if (!empty($_GET["token"])) {
 	$token = cleanstring($_GET["token"]);

@@ -17,7 +17,7 @@ if (isset($_POST["status"])) {
 			    $nome = $_POST['nome'][$c];
 			    $idi = intval($_POST['id'][$c]);
 			    $prioridade = intval($_POST['prioridade'][$c]);
-			    $iniciativa = minmax($_POST['iniciativa'][$c], -50, 50);
+			    $iniciativa = minmax($_POST['iniciativa'][$c], -99, 999);
 			    $dano = minmax($_POST['dano'][$c], -999, 999);
 
 			    $z = $con->prepare("UPDATE iniciativas SET `nome`= ?,`iniciativa`= ?,`prioridade`= ?,`dano`= ? WHERE iniciativas.id = ?");
@@ -335,10 +335,10 @@ if (isset($_POST["status"])) {
             break;
         case 'addnpc':
             $nome = cleanstring($_POST["nome"]);
-            $pv = minmax($_POST["pv"], 1, 999);
+            $pv = minmax($_POST["pv"], 1, 999999999);
             $categoria = minmax($_POST["monstro"], 0, 1);
-            $san = minmax($_POST["san"], 0, 999);
-            $pe = minmax($_POST["pe"], 0, 999);
+            $san = minmax($_POST["san"], 0, 999999999);
+            $pe = minmax($_POST["pe"], 0, 999999999);
             $for = minmax($_POST["forca"], -10, 10);
             $agi = minmax($_POST["agilidade"], -10, 10);
             $int = minmax($_POST["intelecto"], -10, 10);
@@ -402,9 +402,9 @@ if (isset($_POST["status"])) {
         case 'editnpc':
             $nome = cleanstring($_POST["nome"]);
 	        $categoria = minmax($_POST["monstro"], 0, 1);
-            $pv = minmax($_POST["pv"], 0, 999);
-            $san = minmax($_POST["san"], 0, 999);
-            $pe = minmax($_POST["pe"], 0, 999);
+            $pv = minmax($_POST["pv"], 0, 999999999);
+            $san = minmax($_POST["san"], 0, 999999999);
+            $pe = minmax($_POST["pe"], 0, 999999999);
             $for = minmax($_POST["forca"], -10, 10);
             $agi = minmax($_POST["agilidade"], -10, 10);
             $int = minmax($_POST["intelecto"], -10, 10);

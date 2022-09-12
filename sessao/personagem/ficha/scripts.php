@@ -124,20 +124,70 @@
 
         if (pva <= 0) {
             $("#fotopersonagem").attr("src", "<?=$urlphotomor;?>");
-        } else {
-            if (sana <= 0) {
-                $("#fotopersonagem").attr("src", "<?=$urlphotoenl;?>");
-            } else {
-                if (percent(pva,pv) < 50) {
-                    $("#fotopersonagem").attr("src", "<?=$urlphotofer;?>");
+            console.log("morrendo")
+        } else if (sana <= 0) {
+            if (percent(pva,pv) < 50) {
+                console.log("enlouquecendo + ferido")
+                    $("#fotopersonagem").attr("src", "<?=$urlphotoef;?>");
                 } else {
-                    $("#fotopersonagem").attr("src", "<?=$urlphoto;?>");
+                console.log("enlouquecendo")
+                    $("#fotopersonagem").attr("src", "<?=$urlphotoenl;?>");
                 }
-            }
+        } else if (percent(pva,pv) < 50) {
+            console.log("ferido")
+            $("#fotopersonagem").attr("src", "<?=$urlphotofer;?>");
+        } else {
+            console.log("normal")
+            $("#fotopersonagem").attr("src", "<?=$urlphoto;?>");
         }
     }
+
     $(document).ready(function () {
 
+        $("#form_editar_principal .nex").on('input', function () {
+            $("#form_editar_principal .trilha .trilha").hide();
+            if($("#form_editar_principal .nex").val() > 9){
+                if($('#form_editar_principal .classe').val() == 1) {
+                    $("#form_editar_principal .trilha .trilha-combatente").show();
+                }else if($('#form_editar_principal .classe').val() == 2) {
+                    $("#form_editar_principal .trilha .trilha-especialista").show();
+                }else if($('#form_editar_principal .classe').val() == 3) {
+                    $("#form_editar_principal .trilha .trilha-ocultista").show();
+                }
+            } else {
+                $("#form_editar_principal .trilha").val(0);
+            }
+        })
+
+        $("#form_editar_principal .nex").val(<?=$nex?>)
+        $("#form_editar_principal .elemento").val(<?=$rqs["afinidade"]?>)
+        $("#form_editar_principal .origem").val(<?=$rqs["origem"]?>);
+        $("#form_editar_principal .patente").val(<?= $rqs["patente"];?>);
+        $("#form_editar_principal .classe").val(<?=$rqs["classe"]?>)
+
+        if ($('#enex').val() > 9){
+            if($('#eclasse').val() == 1) {
+                $("#etrilha .trilha-combatente").show();
+            }else if($('#eclasse').val() == 2) {
+                $("#etrilha .trilha-especialista").show();
+            }else if($('#eclasse').val() == 3) {
+                $("#etrilha .trilha-ocultista").show();
+            }
+        }
+
+        $("#eclasse").change(function (){
+            $("#etrilha .trilha").hide();
+            $("#etrilha").val(0);
+            if($("#enex").val() > 9){
+                if($(this).val() == 1) {
+                    $("#etrilha .trilha-combatente").show();
+                }else if($(this).val() == 2) {
+                    $("#etrilha .trilha-especialista").show();
+                }else if($(this).val() == 3) {
+                    $("#etrilha .trilha-ocultista").show();
+                }
+            }
+        });
 
     socket = io.connect('https://portrait.fichasop.com', {
         reconnectionDelay: 2500,
@@ -164,36 +214,6 @@
                 socket.disconnect();
             }
         })
-
-        $("#enex").val(<?=$nex?>)
-        $("#eelemento").val(<?=$rqs["afinidade"]?>)
-        $("#eorigem").val(<?=$rqs["origem"]?>);
-        $("#epatente").val(<?= $rqs["patente"];?>);
-        $("#eclasse").val(<?=$rqs["classe"]?>)
-
-        if ($('#enex').val() > 9){
-            if($('#eclasse').val() == 1) {
-                $("#etrilha .trilha-combatente").show();
-            }else if($('#eclasse').val() == 2) {
-                $("#etrilha .trilha-especialista").show();
-            }else if($('#eclasse').val() == 3) {
-                $("#etrilha .trilha-ocultista").show();
-            }
-        }
-
-        $("#eclasse").change(function (){
-            $("#etrilha .trilha").hide();
-            $("#etrilha").val(0);
-            if($("#enex").val() > 9){
-                if($(this).val() == 1) {
-                    $("#etrilha .trilha-combatente").show();
-                }else if($(this).val() == 2) {
-                    $("#etrilha .trilha-especialista").show();
-                }else if($(this).val() == 3) {
-                    $("#etrilha .trilha-ocultista").show();
-                }
-            }
-        });
 
         $.fn.isValid = function () {
             return this[0].checkValidity()
@@ -231,22 +251,8 @@
                 $(this).blur();
             })
 
-        $("#enex").on('input', function () {
-            $("#etrilha .trilha").hide();
-            if($("#enex").val() > 9){
-                if($('#eclasse').val() == 1) {
-                    $("#etrilha .trilha-combatente").show();
-                }else if($('#eclasse').val() == 2) {
-                    $("#etrilha .trilha-especialista").show();
-                }else if($('#eclasse').val() == 3) {
-                    $("#etrilha .trilha-ocultista").show();
-                }
-            } else {
-                $("#etrilha").val(0);
-            }
-        })
 
-        $('#prev').html('<img class="position-absolute rounded-circle border border-light" width="100" height="100" style="max-width:100px;" src="' + $('#fotourl').val() + '">');
+        $('#prev').html('<img class="rounded-circle border border-light" style="max-width: 172px;width: -webkit-fill-available;" src="' + $('#fotourl').val() + '" alt="">');
         $('#fotos .foto-perfil').on('input', function () {
             var src = jQuery(this).val();
             if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {

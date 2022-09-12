@@ -72,36 +72,38 @@ $id = intval($_GET["convite"]);
                                         <input id="localnascimento" class="form-control bg-black text-light border-light" name="local"/>
                                     </div>
                                     <div class="pt-3">
-                                        <label class="fs-4 fw-bold" for="origem">Origem</label>
-                                        <select class="form-select bg-black text-light border-light" id="origem" name="origem">
-                                            <option value="0" selected>Desconhecido</option>
-                                            <option value="1">Acadêmico</option>
-                                            <option value="2">Agente de Saúde</option>
-                                            <option value="3">Amnésico</option>
-                                            <option value="4">Artista</option>
-                                            <option value="5">Atleta</option>
-                                            <option value="25">Chef</option>
-                                            <option value="6">Criminoso</option>
-                                            <option value="7">Cultista Arrependido</option>
-                                            <option value="8">Desgarrado</option>
-                                            <option value="9">Engenheiro</option>
-                                            <option value="10">Executivo</option>
-                                            <option value="11">Investigador</option>
-                                            <option value="12">Lutador</option>
-                                            <option value="13">Magnata</option>
-                                            <option value="14">Mercenário</option>
-                                            <option value="15">Militar</option>
-                                            <option value="16">Operário</option>
-                                            <option value="17">Policial</option>
-                                            <option value="18">Religioso</option>
-                                            <option value="19">Servidor Público</option>
-                                            <option value="20">Teórico da Conspiração</option>
-                                            <option value="21">T.I.</option>
-                                            <option value="22">Trabalhador Rural</option>
-                                            <option value="23">Trambiqueiro</option>
-                                            <option value="24">Universitário</option>
-                                            <option value="26">Vítima</option>
-                                        </select>
+                                        <label class="fs-4 w-100" for="origem">Origem
+                                            <input type="text" class="form-control bg-black text-light" maxlength="50" list="origens" name="origem" required>
+                                            <datalist id="origens">
+                                                <option selected>Desconhecido</option>
+                                                <option>Acadêmico</option>
+                                                <option>Agente de Saúde</option>
+                                                <option>Amnésico</option>
+                                                <option>Artista</option>
+                                                <option>Atleta</option>
+                                                <option>Chef</option>
+                                                <option>Criminoso</option>
+                                                <option>Cultista Arrependido</option>
+                                                <option>Desgarrado</option>
+                                                <option>Engenheiro</option>
+                                                <option>Executivo</option>
+                                                <option>Investigador</option>
+                                                <option>Lutador</option>
+                                                <option>Magnata</option>
+                                                <option>Mercenário</option>
+                                                <option>Militar</option>
+                                                <option>Operário</option>
+                                                <option>Policial</option>
+                                                <option>Religioso</option>
+                                                <option>Servidor Público</option>
+                                                <option>Teórico da Conspiração</option>
+                                                <option>T.I.</option>
+                                                <option>Trabalhador Rural</option>
+                                                <option>Trambiqueiro</option>
+                                                <option>Universitário</option>
+                                                <option>Vítima</option>
+                                            </datalist>
+                                        </label>
                                     </div>
 
                                     <div class="pt-3">
@@ -114,37 +116,44 @@ $id = intval($_GET["convite"]);
                                     <div class="pt-3">
                                         <div class="row">
                                             <div class="col">
-                                                <label class="fs-4 fw-bold" for="classe">Classe</label>
-                                                <select class="form-select bg-black text-light border-light" id="classe" name="classe" required>
-                                                    <option value="0" selected>Desconhecido</option>
-                                                    <option value="1">Combatente</option>
-                                                    <option value="2">Especialista</option>
-                                                    <option value="3">Ocultista</option>
-                                                </select>
-                                                <div class="invalid-feedback">
-                                                    Selecione a Classe do seu Personagem.
-                                                </div>
+                                                <label class="fs-4 w-100" for="classe">Classe
+                                                <input type="text" class="form-control bg-black text-light" maxlength="50" list="classes" name="classe" required>
+                                                    <span class="invalid-feedback">
+                                                        Preencha a Classe do seu personagem
+                                                    </span>
+                                                    <datalist id="classes">
+                                                        <option selected>Mundano</option>
+                                                        <option>Combatente</option>
+                                                        <option>Especialista</option>
+                                                        <option>Ocultista</option>
+                                                    </datalist>
+                                                </label>
                                             </div>
                                             <div class="col">
-                                                <label class="fs-4 fw-bold" for="trilha">Trilha (Necessário 10% NEX)</label>
-                                                <select class="form-select bg-black text-light border-light" id="trilha" name="trilha">
-                                                    <option value="0" class="">Nenhuma</option>
-                                                    <option value="1" class="trilha trilha-combatente" style="display: none;">Aniquilador</option>
-                                                    <option value="2" class="trilha trilha-combatente" style="display: none;">Comandante de Campo</option>
-                                                    <option value="3" class="trilha trilha-combatente" style="display: none;">Guerreiro</option>
-                                                    <option value="4" class="trilha trilha-combatente" style="display: none;">Operações Especiais</option>
-                                                    <option value="5" class="trilha trilha-combatente" style="display: none;">Tropa de Choque</option>
-                                                    <option value="1" class="trilha trilha-especialista" style="display: none;">Atirador de Elite</option>
-                                                    <option value="2" class="trilha trilha-especialista" style="display: none;">Infiltrador</option>
-                                                    <option value="3" class="trilha trilha-especialista" style="display: none;">Médico de Campo</option>
-                                                    <option value="4" class="trilha trilha-especialista" style="display: none;">Negociador</option>
-                                                    <option value="5" class="trilha trilha-especialista" style="display: none;">Técnico</option>
-                                                    <option value="1" class="trilha trilha-ocultista" style="display: none;">Conduíte</option>
-                                                    <option value="2" class="trilha trilha-ocultista" style="display: none;">Flagelador</option>
-                                                    <option value="3" class="trilha trilha-ocultista" style="display: none;">Graduado</option>
-                                                    <option value="4" class="trilha trilha-ocultista" style="display: none;">Intuitivo</option>
-                                                    <option value="5" class="trilha trilha-ocultista" style="display: none;">Lâmina Paranormal</option>
-                                                </select>
+                                                <label class="fs-4 w-100" for="trilha">Trilha
+                                                <input type="text" class="form-control bg-black text-light" maxlength="50" list="trilhas" name="trilha" required>
+                                                    <span class="invalid-feedback">
+                                                        Preencha a Classe do seu personagem
+                                                    </span>
+                                                    <datalist id="trilhas">
+                                                        <option>Nenhuma</option>
+                                                        <option>Aniquilador</option>
+                                                        <option>Comandante de Campo</option>
+                                                        <option>Guerreiro</option>
+                                                        <option>Operações Especiais</option>
+                                                        <option>Tropa de Choque</option>
+                                                        <option>Atirador de Elite</option>
+                                                        <option>Infiltrador</option>
+                                                        <option>Médico de Campo</option>
+                                                        <option>Negociador</option>
+                                                        <option>Técnico</option>
+                                                        <option>Conduíte</option>
+                                                        <option>Flagelador</option>
+                                                        <option>Graduado</option>
+                                                        <option>Intuitivo</option>
+                                                        <option>Lâmina Paranormal</option>
+                                                    </datalist>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -174,12 +183,16 @@ $id = intval($_GET["convite"]);
 	                                        <?=atributos(1,1,1,1,1,1,1)?>
                                         </div>
                                         <div class="p-2 m-1">
-                                            <label for="pv" class="fs-4 fw-bold">Vida Maxima (PV)</label><span>(Deixe 1 para calcular automaticamente)</span>
-                                            <input class="form-control bg-black text-light border-light" id="pv" type="number" min="1" max="999" value="1" name="pv" required/>
-                                            <label class="fs-4 fw-bold" for="san">Sanidade Maxima (SAN)</label><span>(Deixe 1 para calcular automaticamente)</span>
-                                            <input class="form-control bg-black text-light border-light" id="san" type="number" min="1" max="999" value="1" name="san" required/>
-                                            <label for="pe" class="fs-4 fw-bold">Pontos de Esforço (PE)</label><span>(Deixe 1 para calcular automaticamente)</span>
-                                            <input id="pe" class="form-control bg-black text-light border-light" type="number" min="1" max="999" value="1" name="pe" required/>
+                                            <label class="fs-4 fw-bold w-100">Vida Maxima (PV)<span>(Deixe 1 para calcular automaticamente)</span>
+                                                <input class="form-control bg-black text-light border-light" type="number" min="1" max="999" value="1" name="pv" required/>
+                                            </label>
+                                            <label class="fs-4 fw-bold w-100">Sanidade Maxima (SAN)<span>(Deixe 1 para calcular automaticamente)</span>
+                                                <input class="form-control bg-black text-light border-light" type="number" min="0" max="999" value="1" name="san" required/>
+                                            </label>
+
+                                            <label class="fs-4 fw-bold w-100">Pontos de Esforço (PE)<span>(Deixe 1 para calcular automaticamente)</span>
+                                                <input class="form-control bg-black text-light border-light" type="number" min="0" max="999" value="1" name="pe" required/>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>

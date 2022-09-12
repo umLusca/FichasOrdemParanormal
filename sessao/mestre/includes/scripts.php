@@ -1,3 +1,5 @@
+<script src="/assets/js/ckeditor/ckeditor.js"></script>
+<script src="/assets/js/ckeditor/adapters/jquery.js"></script>
 <script>
     var typingTimer;                //timer identifier
     var doneTypingInterval = 2500;  //time in ms, 5 seconds for example
@@ -222,6 +224,7 @@
             '</div><hr>');
     }
     $(document).ready(function () {
+
         const players = [
 		    <?php
 		    foreach($jogadores as $i => $token) {

@@ -39,15 +39,15 @@
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="pv">Pontos de Vida</label>
-                            <input id="pv" class="form-control bg-black text-light" name="pv" type="number" min="1" max="999" value="1"/>
+                            <input id="pv" class="form-control bg-black text-light" name="pv" type="number" min="<?=$PV_minima_npc?>" max="<?=$PV_maxima_npc;?>" value="1"/>
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="san">Pontos de Sanidade</label>
-                            <input id="san" class="form-control bg-black text-light" name="san" type="number" min="0" max="999" value="0"/>
+                            <input id="san" class="form-control bg-black text-light" name="san" type="number" min="<?=$SAN_minima_npc?>" max="<?=$SAN_maxima_npc?>" value="0"/>
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="pe">Pontos de Esforço</label>
-                            <input id="pe" class="form-control bg-black text-light" name="pe" type="number" min="0" max="999" value="0"/>
+                            <input id="pe" class="form-control bg-black text-light" name="pe" type="number" min="<?=$SAN_minima_npc?>" max="<?=$PE_maxima_npc?>" value="0"/>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-attr" role="tabpanel" aria-labelledby="pills-attr-tab">

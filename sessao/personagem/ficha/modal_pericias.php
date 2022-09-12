@@ -1,12 +1,16 @@
 <!-- Modal PERICIAS-->
 <div class="modal fade" id="editper" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-fullscreen-lg-down modal-xl">
         <div class="modal-content bg-black border-light">
             <form class="modal-body font1" id="formaddper">
+                <div class="clearfix">
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
                 <div class="card-header text-center">
                     <h2>Editar Pericias</h2>
                 </div>
-                <div class="row">
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
                     <div class="col">
                         <label class="fs-4 fw-bold" for="Acrobacias">Acrobacias</label>
                         <input id="Acrobacias" class="form-control m-1 bg-black text-light border-light" type="number"

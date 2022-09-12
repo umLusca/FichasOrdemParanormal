@@ -75,7 +75,6 @@ if (isset($rqs)) {
 	$nome = $rqs["nome"];
 	$elemento = $rqs["afinidade"];
 	$nex = $rqs["nex"];
-	$pex = $rqs["pex"];
 	$pp = $rqs["pp"];
 	$deslocamento = $rqs["deslocamento"];
 	$idade = $rqs["idade"] ?: "Desconhecida.";
@@ -92,7 +91,7 @@ if (isset($rqs)) {
 	$urlphotomor = $rqs["foto_morrendo"] ?: $urlphoto;
 	$urlphotoenl = $rqs["foto_enlouquecendo"]?: $urlphoto;
 	$urlphotofer = $rqs["foto_ferido"] ?: $urlphoto;
-	$urlphotoalt = $rqs["foto_alternativa"];
+	$urlphotoef = $rqs["foto_ferenl"] ?: $urlphoto;
 
 	$forca = $rqs["forca"];
 	$agilidade = $rqs["agilidade"];
@@ -166,10 +165,12 @@ if (isset($rqs)) {
 	$tatica = $rqs["tatica"];
 	$tecnologia = $rqs["tecnologia"];
 	$vontade = $rqs["vontade"];
+	$pe_rodada = $rqs["pe_rodada"];
+
 
 	switch ($rqs["origem"]) {
 		default:
-			$origem = "Não indentificada";
+			$origem = $rqs["origem"];
 			break;
 		case 1:
 			$origem = "Acadêmico.";
@@ -252,14 +253,18 @@ if (isset($rqs)) {
 	}
 	switch ($rqs["classe"]) {
 		default:
-			$classe = "Não indentificado.";
-			$trilha = "Não indentificada.";
+			$classe = $rqs["classe"];
+			$trilha = $rqs["trilha"];
+			break;
+		case 0:
+			$classe = $rqs["classe"];
+			$trilha = "Nenhuma";
 			break;
 		case 1:
 			$classe = "Combatente";
 			switch ($rqs["trilha"]) {
 				default:
-					$trilha = "Não indentificada.";
+					$trilha = $rqs["trilha"];
 					break;
 				case 1:
 					$trilha = "Aniquilador";
@@ -282,7 +287,7 @@ if (isset($rqs)) {
 			$classe = "Especialista";
 			switch ($rqs["trilha"]) {
 				default:
-					$trilha = "Não indentificada.";
+					$trilha = $rqs["trilha"];
 					break;
 				case 1:
 					$trilha = "Atirador de Elite";
@@ -305,9 +310,8 @@ if (isset($rqs)) {
 			$classe = "Ocultista";
 			switch ($rqs["trilha"]) {
 				default:
-					$trilha = "Não indentificada.";
+					$trilha = $rqs["trilha"];
 					break;
-
 				case 1:
 					$trilha = "Conduíte";
 					break;
@@ -328,7 +332,7 @@ if (isset($rqs)) {
 	}
 	switch ($rqs["patente"]) {
 		default:
-			$patente = "Não indentificada.";
+			$patente = $rqs["patente"];
 			break;
 		case 1:
 			$patente = "Recruta.";

@@ -68,9 +68,9 @@ if (isset($_SESSION["UserID"])) {
     } else {
 	    $foto = 'https://fichasop.com/assets/img/Man.webp';
     }
-    $origem = minmax($_POST["origem"], 0, 26);
-    $classe = minmax($_POST["classe"], 0, 3);
-    $trilha = minmax($_POST["trilha"], 0, 5);
+    $origem = cleanstring($_POST["origem"], 50);
+    $classe = cleanstring($_POST["classe"], 50);
+    $trilha = cleanstring($_POST["trilha"], 50);
     $nex = minmax($_POST["nex"],0,100);
     $patente = minmax($_POST["patente"], 0, 5);
     $idade = minmax($_POST["idade"],0,150);
@@ -140,152 +140,148 @@ if (isset($_SESSION["UserID"])) {
 
     switch ($origem) {
         default:
-            $habnam = "";
-            $habdes = "";
-            break;
-        case 1: //Academico
+			break;
+        case "Acadêmico": //Academico
             $habnam = "Saber é Poder (Origem)";
             $habdes = "Quando faz um teste usando Intelecto, você pode gastar 2 PE para receber +5 nesse teste.";
             $ciencia = $investigacao = 5;
             break;
-        case 2: // Agente de Sáudeo
+        case "Agente de Saúde": // Agente de Sáudeo
             $habnam = "Técnicas Medicinais (Origem)";
             $habdes = "Sempre que você cura um personagem, você adiciona seu Intelecto no total de PV curados.";
             $intuicao = $medicina = 5;
             break;
-        case 3:// Amnésico
+        case "Amnésico":// Amnésico
             $habnam ='Vislumbres do Passado. (Origem)';
             $habdes =' Uma vez por missão, você pode fazer um teste de Intelecto (DT 10) para reconhecer pessoas ou lugares familiares, que tenha encontrado antes de perder a memória. Se passar, recebe 1d4 PE temporários e, a critério do mestre, uma informação útil.';
 		break;
-        case 4: // Artista
+        case "Artista": // Artista
             $habnam = "Magnum Opus (Origem)";
             $habdes = "Você é famoso por uma de suas obras. Uma vez por missão, pode determinar que um personagem envolvido em uma cena de Interação o reconheça. Você recebe +5 em testes de Diplomacia, Enganação, Intuição e Intimidação contra aquele personagem. A critério do mestre, pode receber esses bônus em outras situações nas quais seria reconhecido.";
             $artes = $enganacao = 5;
             break;
-        case 5: // Atleta
+        case "Atleta": // Atleta
             $habnam = "110% (Origem)";
             $habdes = "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste.";
 			$atletismo = $acrobacia = 5;
             break;
-        case 25: // Chef
+        case "Chef": // Chef
             $habnam = "Ingrediente Secreto (Origem)";
             $habdes = "Em cenas de interlúdio, você pode gastar uma ação para cozinhar um prato gostoso. Cada membro do grupo (incluindo você) que gastar uma ação para se alimentar recebe o benefício de dois pratos (caso o mesmo benefício seja escolhido duas vezes, seus efeitos se acumulam).";
             $fortitude = $profissao = 5;
             break;
-        case 6: // criminalidades
+        case "Criminoso": // criminalidades
             $habnam = "O Crime Compensa (Origem)";
             $habdes = "No final de uma missão, escolha um item encontrado na missão. Em sua próxima missão, você pode incluir esse item em seu inventário sem que ele conte em seu limite de itens por patente.";
             $crime = $furtividade = 5;
             break;
-        case 7: // Cultista Arrependido
+        case "Cultista Arrependido": // Cultista Arrependido
             $habnam = "Traços do Outro Lado. (Origem)";
             $habdes = "Você possui um poder paranormal à sua escolha. Porém, começa o jogo com metade da Sanidade normal para sua classe.";
             $religiao = $ocultismo = 5;
             break;
-        case 8: // Desgarradp
+        case "Desgarrado": // Desgarradp
             $habnam = "Calejado. (Origem)";
             $habdes = "Você recebe +1 PV para cada 5% de NEX. (Adicionado Automáticamente!)";
             $fortitude = $sobrevivencia = 5;
             break;
-        case 9: // Engenheiro
+        case "Engenheiro": // Engenheiro
             $habnam = "Ferramentas Favoritas. (Origem)";
             $habdes = "Um item a sua escolha (exceto armas) conta como uma categoria abaixo (por exemplo, um item de categoria II conta como categoria I para você).";
             $profissao = $tecnologia = 5;
             break;
-        case 10: //Executivo
+        case "Executivo": //Executivo
             $habnam = "Processo Otimizado. (Origem)";
             $habdes = "Sempre que faz um teste de perícia durante um teste estendido, pode pagar 2 PE para receber +5 nesse teste.";
             $diplomacia = $profissao = 5;
             break;
-        case 11: //Inbestigador
+        case "Investigador": //Inbestigador
             $habnam = "Faro para Pistas. (Origem)";
             $habdes = "Uma vez por cena, quando fizer um teste para procurar pistas, você pode gastar 1 PE para receber +5 nesse teste.";
             $investigacao = $percepcao = 5;
             break;
-        case 12: // Lutador
+        case "Lutador": // Lutador
             $habnam = "Mão Pesada. (Origem)";
             $habdes = "Você recebe +2 em rolagens de dano com ataques corpo a corpo.";
             $luta = $reflexo = 5;
             break;
-        case 13: // Magnata
+        case "Magnata": // Magnata
             $habnam = "Patrocinador da Ordem. (Origem)";
             $habdes = "Seu limite de crédito é sempre considerado um acima do atual.";
             $diplomacia = $pilotagem = 5;
             break;
-        case 14: // Mercenário
+        case "Mercenário": // Mercenário
             $habnam = "Posição de Combate (Origem)";
             $habdes = " No primeiro turno de cada cena de ação, você pode gastar 2 PE para receber uma ação de movimento adicional.";
             $iniciativa = $intimidacao = 5;
             break;
-        case 15: // mlitar
+        case "Militar": // mlitar
             $habnam = "Para Bellum. (Origem)";
             $habdes = "Você recebe +2 em rolagens de dano com armas de fogo.";
             $tatica = $pontaria = 5;
             break;
-        case 16: // Operário
+        case "Operário": // Operário
             $habnam = "Ferramenta de Trabalho. (Origem)";
 	        $habdes = "Escolha uma arma simples ou tática que, a critério do mestre, poderia ser usada como ferramenta em sua profissão (como uma marreta para um pedreiro). Você sabe usar a arma escolhida e recebe +1 em testes de ataque, rolagens de dano e margem de ameaça com ela.";
             $fortitude = $profissao = 5;
             break;
-        case 17: // Policiaçl
+        case "Policial": // Policiaçl
             $habnam = "Patrulha (Origem)";
             $habdes = "Você recebe +2 em Defesa.";
             $percepcao = $pontaria = 5;
             break;
-        case 18: // Religioso
+        case "Religioso": // Religioso
             $habnam = "Acalentar. (Origem)";
             $habdes = "Você recebe +5 em testes de Religião para acalmar. Além disso, quando acalma uma pessoa, ela recebe um número de pontos de Sanidade igual a 1d6 + a sua Presença.";
             $religiao = $vontade = 5;
             break;
-        case 19: // Servidor Público
+        case "Servidor Público": // Servidor Público
             $habnam = "Espírito Cívico. (Origem)";
             $habdes = "Sempre que faz um teste para ajudar, você pode gastar 1 PE para aumentar o bônus concedido em +2.";
             $intuicao = $vontade = 5;
             break;
-        case 20: // Teórico
+        case "Teórico": // Teórico
             $habnam = "Eu Já Sabia. (Origem)";
             $habdes = "Você não se abala com entidades ou anomalias. Afinal, sempre soube que isso tudo existia. Você recebe resistência a dano mental igual ao seu Intelecto.";
 			$investigacao = $ocultismo = 5;
             break;
-        case 21: // ti
+        case "T.I.": // ti
             $habnam = "Motor de Busca (Origem)";
             $habdes = "A critério do Mestre, sempre que tiver acesso a internet, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Tecnologia.";
             $investigacao = $tecnologia = 5;
             break;
-        case 22: // trabaiador
+        case "Trabalhador Rural": // trabaiador
             $habnam = "Desbravador. (Origem)";
             $habdes = "Quando faz um teste de Adestramento ou Sobrevivência, você pode gastar 2 PE para receber +5 nesse teste. Além disso, você não sofre penalidade em deslocamento por terreno dif ícil.";
             $adestramento = $sobrevivencia = 5;
             break;
-        case 23: // rambiqueiro
+        case "Trambiqueiro": // rambiqueiro
             $habnam = "Impostor. (Origem)";
             $habdes = "Uma vez por cena, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Enganação.";
             $crime = $enganacao = 5;
             break;
-        case 24: // Universitário
+        case "Universitário": // Universitário
             $habnam = "Dedicação. (Origem)";
             $habdes = "ocê recebe +1 PE, e mais 1 PE adicional a cada NEX ímpar (15%, 25%...). Além disso, seu limite de PE por turno aumenta em 1 (em NEX 5% seu limite é 2, em NEX 10% é 3 e assim por diante).";
             $investigacao = $atualidades = 5;
             break;
-        case 26: // Vítima
+        case "Vítima": // Vítima
             $habnam = "Cicatrizes Psicológicas. (Origem)";
             $habdes = "Você recebe +1 de Sanidade para cada 5% de NEX (Adicionado automaticamente.)";
-            $fortitude = $vontade = 5;
+            $reflexo = $vontade = 5;
             break;
     }
     switch ($classe){
         default:
-            $hcn = "";
-            $hcd = "";
             break;
-        case 1: //Combatente
+        case "Combatente": //Combatente
             $hcn = "Ataque Especial (Classe)";
             $hcd = "Quando faz um ataque, você pode gastar 2 PE para receber +5 no teste de ataque ou na rolagem de dano.";
             $pt[0] = "Armas Simples";
             $pt[3] = "Armas de táticas";
             $pt[4] = "Proteções leves";
             break;
-        case 2:
+        case "Especialista":
             $hcn = "Perito (Classe)";
             $hcd = "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. ";
             $hcn2 = "Eclético (Classe)";
@@ -293,7 +289,7 @@ if (isset($_SESSION["UserID"])) {
             $pt[0] = "Armas Simples";
             $pt[2] = "Proteções leves";
             break;
-        case 3:
+        case "Ocultista":
             $hcn = "Escolhido pelo Outro Lado (Classe)";
             $hcd = "Você pode lançar rituais de 1º círculo.";
             $ocultismo = $vontade = 5;
@@ -311,7 +307,7 @@ if (isset($_SESSION["UserID"])) {
             $vl = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario`='$iduser' AND `id` = '" . $convite . "' AND `id_ficha` is null;");
                 $qp = $con->prepare("INSERT INTO `fichas_personagem` (`id`, `token`, `public`, `usuario`, `nome`, `foto`, `origem`, `classe`, `trilha`, `nex`, `patente`, `idade`, `local`, `historia`, `forca`, `agilidade`, `inteligencia`, `presenca`, `vigor`, `pv`, `pva`, `san`, `sana`, `pe`, `pea`, `morrendo`, `enlouquecendo`, `passiva`, `bloqueio`, `esquiva`, `mental`, `sangue`, `morte`, `energia`, `conhecimento`, `fisica`, `balistica`,`acrobacias`,`adestramento`,`artes`,`atualidades`,`atletismo`,`ciencia`,`crime`,`diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,`ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,`vontade`) 
                                                                     VALUES ('', UUID() ,'0', ? , ?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );");
-                $qp->bind_param("issiiiiiissiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", $iduser, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $passiva, $bloqueio, $esquiva, $sanidade, $sangue, $morte, $energia, $conhecimento, $fisico, $balistico, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao,$reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade);
+                $qp->bind_param("isssssiiissiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", $iduser, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $passiva, $bloqueio, $esquiva, $sanidade, $sangue, $morte, $energia, $conhecimento, $fisico, $balistico, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao,$reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade);
                 $sucesso = $qp->execute();
                 $id = mysqli_insert_id($con);
                 if (!empty($hcn)) {
