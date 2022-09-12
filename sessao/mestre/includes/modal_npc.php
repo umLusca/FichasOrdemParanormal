@@ -341,15 +341,15 @@
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="epv">Pontos de Vida</label>
-                            <input id="epv" class="form-control bg-black text-light" name="pv" type="number" min="1" max="999" value="1"/>
+                            <input id="epv" class="form-control bg-black text-light" name="pv" type="number" min="1" max="999999999" value="1"/>
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="esan">Pontos de Sanidade</label>
-                            <input id="esan" class="form-control bg-black text-light" name="san" type="number" min="0" max="999" value="0"/>
+                            <input id="esan" class="form-control bg-black text-light" name="san" type="number" min="0" max="999999999" value="0"/>
                         </div>
                         <div class="m-2">
                             <label class="fs-4" for="epe">Pontos de Esforço</label>
-                            <input id="epe" class="form-control bg-black text-light" name="pe" type="number" min="0" max="999" value="0"/>
+                            <input id="epe" class="form-control bg-black text-light" name="pe" type="number" min="0" max="999999999" value="0"/>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="pills-eattr" role="tabpanel" aria-labelledby="pills-eattr-tab">
