@@ -21,21 +21,3 @@ function cryptthis($string): string
 const RootDir = "/";
 
 
-
-
-
-
-
-
-
-
-
-$rinom = '';//nome
-$riele = '';//elemento
-$ricir = '';//circulo
-$riexe = '';//execução
-$rialc = '';//alcance
-$rialv = '';//alvo
-$ridur = '';//duração
-$rides = '';//descrição
-
