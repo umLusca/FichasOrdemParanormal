@@ -4,7 +4,6 @@ ini_set('display_startup_errors', true);
 ini_set('display_errors', true);
 session_save_path("/tmp");
 session_start();
-header('Access-Control-Allow-Origin: https://fichasop.com', false);
 require_once "config.php";
 $con = con();
 

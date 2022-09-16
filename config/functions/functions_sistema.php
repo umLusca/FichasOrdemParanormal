@@ -1,5 +1,20 @@
 <?php
 
+function checktoken(string $sid): bool
+{
+	$con = con();
+	$q = $con->prepare("SELECT * FROM `auth` WHERE `token` = ?  AND expire > NOW();");
+	$q->bind_param("s",$sid);
+	$q->execute();
+	$q = $q->get_result();
+	if ($q->num_rows){
+		return true;
+
+	} else {
+		return false;
+	}
+}
+
 function CheckName($nome): bool
 {
 	$nome = cleanstring($nome);

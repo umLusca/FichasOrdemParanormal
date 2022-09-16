@@ -315,7 +315,7 @@
                             <label for="aataque"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Ataque:</label>
                             <input id="aataque" name="ataque" type="text" maxlength="<?=$Arma_ataq?>"
-                                   placeholder="Caso não saiba, olhe no como rolar dados!" value="2d20+|FOR|" class="form-control border-start-0 border-light bg-black text-white"/>
+                                   placeholder="Caso não saiba, olhe no como rolar dados!" value="2d20+/FOR/" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <label for="aalcance"
@@ -328,7 +328,7 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="adano"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Dano:</label>
-                            <input id="adano" name="dano" type="text" placeholder="1d4+|FOR|" maxlength="<?=$Arma_dano?>"
+                            <input id="adano" name="dano" type="text" placeholder="1d4+/FOR/" maxlength="<?=$Arma_dano?>"
                                    class="form-control border-start-0 border-light bg-black text-white rounded-end"
                                    required/>
                             <div class="invalid-feedback">(Apenas valores dos dados ex: 2d20+5)</div>
@@ -336,7 +336,7 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="acritico"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Critico:</label>
-                            <input id="acritico" name="critico" type="text" placeholder="2d4+|2*FOR|" maxlength="<?=$Arma_crit?>"
+                            <input id="acritico" name="critico" type="text" placeholder="2d4+/2*FOR/" maxlength="<?=$Arma_crit?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                             <input title="margem" name="margem" type="number" placeholder="19" min="0" max="20" maxlength="<?=$Arma_crit?>"
                                    class="form-control border-light bg-black text-white"/>
