@@ -105,27 +105,16 @@ if (isset($_POST["status"])) {
             break;
         case 'acc':
             $token = cleanstring($_POST["token"]);
-            $idm = intval($_POST["idm"]);
-
-            $c = $con->prepare("SELECT * FROM fichas_personagem WHERE token = ? and usuario = ?;");
-            $c->bind_param("si", $token, $_SESSION["UserID"]);
-            $c->execute();
-            $c = $c->get_result();
-            $rc = mysqli_fetch_array($c);
-
-
-            $b = $con->prepare("UPDATE `ligacoes` SET `id_ficha` = ? WHERE `id` = ? AND `id_usuario` = ? ;");
-            $b->bind_param("iii", $rc["id"], $idm, $_SESSION["UserID"]);
+            $idt = cleanstring($_POST["idt"]);
+            $b = $con->prepare("UPDATE `ligacoes` SET `id_ficha` = (SELECT id from fichas_personagem where token = ?) WHERE `token` = ? AND `id_usuario` = ? ;");
+            $b->bind_param("ssi", $token, $idt, $_SESSION["UserID"]);
             $b->execute();
-
-
             break;
         case 'rcc':
-            $idm = intval($_POST["idm"]);
-            $a = $con->prepare("DELETE FROM ligacoes WHERE id = ? and id_usuario = ? ;");
-            $a->bind_param("ii", $idm, $_SESSION["UserID"]);
+            $idt = cleanstring($_POST["idt"]);
+            $a = $con->prepare("DELETE FROM ligacoes WHERE token = ? and id_usuario = ? ;");
+            $a->bind_param("si", $idt, $_SESSION["UserID"]);
             $a->execute();
-
             break;
         case 'desp':
             $token = cleanstring($_POST["token"]);
@@ -137,6 +126,10 @@ if (isset($_POST["status"])) {
 }
 $a = $con->query("Select * from `missoes` WHERE `mestre` = '" . $_SESSION["UserID"] . "';");
 $b = $con->query("Select * from `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "';");
+
+$c = $con->query("SELECT L.*, m.nome,m.descricao as m_token FROM ligacoes L INNER JOIN missoes m on L.id_missao = m.id AND L.id_usuario = '".$_SESSION["UserID"]."' AND L.id_ficha is null;");
+
+$z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_ficha from ligacoes WHERE id_ficha is not null) AND usuario = '" . $_SESSION["UserID"] . "';");
 ?>
 <!DOCTYPE html>
 <html lang="br">
@@ -150,6 +143,69 @@ $b = $con->query("Select * from `fichas_personagem` WHERE `usuario` = '" . $_SES
 
 <main class="container-flex justify-content-center m-4">
     <div class="row row-cols-1 g-3">
+
+	    <?php if($c->num_rows){
+		    ?>
+            <div>
+                <div class="card bg-black border-light">
+                    <div class="card-header text-center font10"><h3>Convites de Missões</h3></div>
+                    <div class="card-body">
+                        <div class="row g-3 row-cols-1 row-cols-lg-2">
+						    <?php foreach ($c as $p) { ?>
+                                <div class="col">
+                                    <div class="card bg-black border-dashed border-info" id="<?= $p["token"] ?>">
+                                        <div class="card-header text-info">
+                                            <span class="fs-4 font10 title"><?= $p["nome"] ?></span>
+                                        </div>
+                                        <div class="card-body overflow-auto" style="height: 150px;">
+                                            <p class="m-1 font7 desc"><?= $p["descricao"] ?></p>
+                                        </div>
+                                        <div class="card-footer d-grid">
+                                            <button type="button"
+                                                    class="border-dashed border-info btn btn-outline-info dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                Convite de missão
+                                            </button>
+
+                                            <ul class="dropdown-menu dropdown-menu-dark bg-black border border-light">
+                                                <li><a class="dropdown-item"
+                                                       href='personagem/criar?convite=<?= $p["token"]; ?>'>Aceitar
+                                                        e Criar uma ficha</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+		                                        <?php
+		                                        foreach ($z as $ficha) {
+			                                        ?>
+                                                    <li>
+                                                        <button class="dropdown-item"
+                                                                onclick="aceitarconvite('<?= $p["token"] ?>','<?= $ficha["token"] ?>')">
+                                                            Aceitar - <?= $ficha["nome"] ?></button>
+                                                    </li>
+			                                        <?php
+		                                        }
+		                                        ?>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item"
+                                                            onclick="recusarconvite('<?= $p["token"] ?>')">
+                                                        Recusar Pedido
+                                                    </button>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+						    <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+	    <?php }?>
         <div>
             <div class="card bg-black border-light">
                 <div class="card-header text-center font10"><h3>Missões/Sessões</h3></div>
@@ -460,12 +516,12 @@ $b = $con->query("Select * from `fichas_personagem` WHERE `usuario` = '" . $_SES
                                         </div>
                                     </div>
                                     <div class="card-body" style="height: 150px;">
-                                        <div class="row justify-content-between m-1">
+                                        <div class="row justify-content-between">
                                             <div class="d-none d-sm-inline   col-auto align-self-center p-0">
                                                 <img src="<?= $f["foto"] ?>" class="border rounded-circle"
                                                      style="aspect-ratio: 1/1; height: 115px">
                                             </div>
-                                            <div class="col align-self-center p-0">
+                                            <div class="col align-self-center">
                                                 <div class="row g-0 p-0 row-cols-2 justify-content-center">
 
                                                     <div class="">
@@ -640,20 +696,19 @@ $b = $con->query("Select * from `fichas_personagem` WHERE `usuario` = '" . $_SES
         }
     }
 
-    function aceitarconvite(idm, idf) {
+    function aceitarconvite(idt, idf) {
         $.post({
             url: '',
-            data: {status: 'acc', idm: idm, token: idf},
-        }).done(function (d) {
-            console.log(d);
-//                location.reload();
+            data: {status: 'acc', idt: idt, token: idf},
+        }).done(function () {
+            location.reload();
         })
     }
 
-    function recusarconvite(idm) {
+    function recusarconvite(idt) {
         $.post({
             url: '',
-            data: {status: 'rcc', idm: idm},
+            data: {status: 'rcc', idt: idt},
         }).done(function () {
             location.reload();
         })

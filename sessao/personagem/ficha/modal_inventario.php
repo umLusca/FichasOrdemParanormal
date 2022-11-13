@@ -8,8 +8,7 @@
                             data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="text-center">
-                    <span class="text-center fs-4">Peso carregado: <?= $espacosusados ?>
-                        /<?= $invmax ?></span>
+                    <span class="text-center fs-4"><?= $espacosusados ?>/<?= $invmax ?></span>
                     <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
                         <i class="fas fa-pencil"></i></button>
                 </div>

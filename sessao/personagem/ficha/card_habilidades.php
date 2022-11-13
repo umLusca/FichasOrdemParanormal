@@ -1,23 +1,23 @@
 <div class="col">
     <div class="card h-100 bg-black border-light" id="card_habilidades">
         <div class="card-header clearfix p-0">
+	        <?php if (!isset($_GET["popout"]) AND $edit) { ?>
             <div class="float-start">
-	            <?php if (!isset($_GET["popout"]) AND $edit) { ?>
                     <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
-	            <?php }?>
             </div>
+            <?php }?>
+	        <?php if ($edit) { ?>
             <div class="float-end">
-                <?php if ($edit) { ?>
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#edithab" title="Editar Habilidades">
                         <i class="fa-regular fa-pencil"></i>
                     </button>
                     <button class="btn btn-sm text-success fa-lg" data-bs-toggle="modal" data-bs-target="#addhab" title="Adicionar Habilidade">
                         <i class="fa-regular fa-square-plus"></i>
                     </button>
-                <?php }?>
             </div>
+            <?php }?>
         </div>
         <div class="card-body p-0 font1">
             <nav>

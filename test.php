@@ -1,30 +1,14 @@
-<?php
-
-function verificarcpf(string $cpf): bool
-{
-	$cn = str_split($cpf);
-	$cv = [];
-	$csv = 0;
-	for ($i = 0; $i < 9; $i++) {
-		$cv[$i] = $cn[$i] * ($i + 1);
-	}
-	foreach ($cv as $somando) {
-		$csv += $somando;
-	}
-	$dv1 = ($csv % 11 == 10) ? 0 : ($csv % 11); //Primeiro digito verificador
-	$cv = [];
-	$cn[9] = $dv1;
-	$csv = 0;
-	for ($i = 0; $i < 10; $i++) {
-		$cv[$i] = $cn[$i] * $i;
-	}
-	foreach ($cv as $somando) {
-		$csv += $somando;
-	}
-	$dv2 = ($csv % 11 == 10) ? 0 : ($csv % 11); //segundo digito verificador
-	$dv = $dv1 . $dv2; // digito verificador
-	$cdv = $cn[9] . $cn[10]; // digito verificador do cpf dado
-	return ($cdv === $dv);
-}
-
-
+<form class="modal" id="adicionar" tabindex="-1" aria-hidden="true" method="post" autocomplete="off">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content text-bg-dark rounded-3 shadow">
+			<div class="modal-body p-4 text-center">
+				<h5 class="mb-0">Enable this setting?</h5>
+				<p class="mb-0">You can always change your mind in your account settings.</p>
+			</div>
+			<div class="modal-footer flex-nowrap p-0">
+				<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"><strong>Yes, enable</strong></button>
+				<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No thanks</button>
+			</div>
+		</div>
+	</div>
+</form>

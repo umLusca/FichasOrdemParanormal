@@ -1,15 +1,17 @@
 <div class="col">
     <div class="card h-100 bg-black border-light" id="card_rituais">
-        <div class="card-header clearfix p-0">
+        <div class="card-header clearfix text-center p-0">
+	        <?php if (!isset($_GET["popout"]) and $edit) { ?>
             <div class="float-start">
-                <?php if (!isset($_GET["popout"]) and $edit) { ?>
                     <button class="btn btn-sm text-white popout fa-lg" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
-                <?php } ?>
             </div>
+            <?php } ?>
+            <span class="font6 fs-4">Rituais</span>
+
+	        <?php if ($edit) { ?>
             <div class="float-end">
-                <?php if ($edit) { ?>
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editritual"
                             title="Editar Rituais">
                         <i class="fa-regular fa-pencil"></i>
@@ -18,11 +20,10 @@
                             title="Adicionar Ritual">
                         <i class="fa-regular fa-square-plus"></i>
                     </button>
-                <?php } ?>
             </div>
+            <?php } ?>
         </div>
         <div class="card-body p-0 font4">
-            <h1 class="text-center font6">Rituais</h1>
             <nav class="">
                 <div class="nav nav-tabs px-2" role="tablist">
                     <?php foreach ($s[6] as $i => $r): ?>

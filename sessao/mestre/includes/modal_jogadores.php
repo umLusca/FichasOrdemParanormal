@@ -1,23 +1,22 @@
-<div class="modal" id="adicionar" tabindex="-1" aria-hidden="true">
+<form class="modal" id="adicionar" tabindex="-1" aria-hidden="true" method="post" autocomplete="off">
     <div class="modal-dialog modal-dialog-centered">
-        <form class="modal-content bg-black border-light" id="formadd" method="post" autocomplete="off">
+        <div class="modal-content bg-black border-light">
+            <div class="modal-header border-0 text-center">
+                <span class="modal-title fs-4">Adicionar jogador</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body">
-                <div class="modal-header border-0 text-center">
-                    <h4 class="modal-title">Adicionar jogador</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="my-1" id="msgadd"></div>
-                <div class="container-fluid">
-                    <p class="text-info">Para convidar um jogador, coloque o email do mesmo.</p>
-                    <label class="fs-5 m-1" for="email">Email do jogador</label>
-                    <input type="email" id="email" name="email" class="form-control bg-black text-light" required/>
+                <div class="return"></div>
+                <div class="m-2">
+                <label class="form-floating w-100">
+                    <input type="text" name="user" placeholder="Email ou Username do jogador" class="form-control bg-black text-light" required/>
+                    <label>Email / User</label>
+                </label>
                 </div>
             </div>
-            <div class="modal-footer border-0">
+            <div class="modal-footer border-0 d-grid">
                 <button type="submit" class="btn btn-primary">Enviar</button>
-                <input type="hidden" name="status" value="addplayer"/>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>

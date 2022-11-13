@@ -1,12 +1,15 @@
 <!-- Modal ATRIBUTOS-->
 <div class="modal fade" id="rolardados" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
+    <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
         <div class="modal-content bg-black border-light">
+            <div class="modal-header">
+                <div class="text-center fs-1">Como Criar/Rolar Dados.</div>
+                <button class="btn-close btn-close-white" data-bs-dimiss="modal"></button>
+            </div>
             <div class="modal-body">
-                <div class="text-center fs-1">Como Criar/Rolar Dados.</h2></div>
                 <div class="m-3 text-center">
                     <h3>Principios Basicos</h3>
-                    <p>Um dado é composto por <var>N</var> faces depedendo do dado, esse valor fica depois do <code>d</code>.<br>
+                    <p>Um dado é composto por <var>N</var> faces. Esse valor fica depois do <code>d</code>.<br>
                         Exemplo: Um dado de 20 lados, será "<code>d20</code>".
                     </p>
                     <br>
@@ -16,11 +19,11 @@
                     </p>
                     <br>
                     <p>
-                        Agora para poder adicionar um valor fixo depois do resultado do dado, devemos por um "<code>+</code>" depois de tudo.<br>
+                        Agora para poder adicionar um valor fixo depois do resultado do dado, devemos por um "<code>+</code>". Depois de tudo.<br>
                         Exemplo: Rolar 1 dado de 20 lados e somar 5 do resultado, ficará "<code>1d20+5</code>" OU "<code>d20+5</code>". (é importante não ter espaços).
                     </p>
                     <br><br>
-                    <h5>Aprofundado nos principios</h5>
+                    <h5>Aprofundado nos princípios</h5>
                     <p>
                         Para rolar dois ou mais dados de lados diferentes, é só usar "<code>+</code>" Entre cada um, deixando a soma para o final.<br>
                         Exemplo: Um dado de 6 lados, somado com um dado de 10 lados, ficará "<code>1d6+1d10</code>" OU "<code>d6+d10</code>".
@@ -47,12 +50,22 @@
                         Exemplos: AGI = 2, FOR = 3, INT = 4: "<code>/AGI/d/FOR/+/INT/</code>" -> "<code>2d3+4</code>".<br>
                         Pode parecer confuso, mas é bem explicátivo.<br>
                     </p>
+                    <br>
+                    <p>
+                        Para fazer com perícias, é importante lembrar que são as 4 letras iniciais.<br>
+                        Exemplos: FOR = 2, "<code>/PONT/d20</code>" -> "<code>5d20</code>".<br>
+                        Também é possível rolar uma quantidade de lados usando os atributos<br>
+                        Exemplos: AGI = 4, "<code>1d/INIC/</code>" -> "<code>1d5</code>".<br>
+                        E claro usar tudo de uma vez.<br>
+                        Exemplos: AGI = 2, FOR = 3, INT = 4: "<code>/AGI/d/FOR/+/LUTA/</code>" -> "<code>2d3+4</code>".<br>
+                        Pode parecer confuso, mas é bem explicativo.<br>
+                    </p>
                     <br><br>
                     <h5>Lembrando que:</h5>
                     <ol>
                         <li>Dados podem ter lados, quantidades, e soma customizados.</li>
                         <li>Não pode rolar mais de 10 dados em cada item. (Errado:"<code>15d10</code>" Certo:"<code>10d10+5d10</code>").</li>
-                        <li>Não pode rolar dados com mais de 100 lados, o limite é 100.</li>
+                        <li>Não pode rolar dados que tenham mais de 100 lados, o limite é 100.</li>
                         <li>Não pode somar mais de 30 absolutamente(Negativo ou possitivo)</li>
                     </ol>
                 </div>

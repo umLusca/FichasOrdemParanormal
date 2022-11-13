@@ -1,79 +1,82 @@
 <?php
 
 if (isset($_POST["status"])) {
-    $success = true;
-    $msg = '';
-    switch ($_POST["status"]) {
-	    case 'updtini':
-		    $data = [];
-		    $c = 0;
-		    while ($c != count($_POST["id"])) {
-			    $nome = $_POST['nome'][$c];
-			    $idi = intval($_POST['id'][$c]);
-			    $prioridade = intval($_POST['prioridade'][$c]);
-			    $iniciativa = minmax($_POST['iniciativa'][$c], -99, 999);
-			    $dano = minmax($_POST['dano'][$c], -999, 999);
+	$success = true;
+	$msg = '';
+	switch ($_POST["status"]) {
+		case 'updtini':
+			$data = [];
+			$c = 0;
+			while ($c != count($_POST["id"])) {
+				$nome = $_POST['nome'][$c];
+				$idi = intval($_POST['id'][$c]);
+				$prioridade = intval($_POST['prioridade'][$c]);
+				$iniciativa = minmax($_POST['iniciativa'][$c], -99, 999);
+				$dano = minmax($_POST['dano'][$c], -999, 999);
 
-			    $z = $con->prepare("UPDATE iniciativas SET `nome`= ?,`iniciativa`= ?,`prioridade`= ?,`dano`= ? WHERE iniciativas.id = ?");
-			    $z->bind_param("siiii", $nome, $iniciativa, $prioridade, $dano, $idi);
-			    $z->execute();
-			    $c++;
-		    }
-		    $data["missao"] = $id;
-		    $data["count"] = count($_POST["iniciativa"]);
-		    $data["post"] = $_POST;
-		    break;
-	    case 'addplayer':
-		    $type = 1;
-		    $success = true;
-
-
-		    if (!empty($_POST["email"])) {
-			    $email = cleanstring($_POST["email"]);
-			    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				    $msg = "Email inserido não é valido.";
-				    $success = false;
-			    }
-		    } else {
-			    $success = false;
-			    $msg = "Preencha o campo de email!";
-		    }
+				$z = $con->prepare("UPDATE iniciativas SET `nome`= ?,`iniciativa`= ?,`prioridade`= ?,`dano`= ? WHERE iniciativas.id = ?");
+				$z->bind_param("siiii", $nome, $iniciativa, $prioridade, $dano, $idi);
+				$z->execute();
+				$c++;
+			}
+			$data["missao"] = $id;
+			$data["count"] = count($_POST["iniciativa"]);
+			$data["post"] = $_POST;
+			break;
+		case 'addplayer':
+			$type = 1;
+			$success = true;
 
 
-		    if ($success) {
-			    $z = $con->prepare("SELECT * FROM `usuarios` WHERE `email`= ? ;"); // verifica se a conta existe
-			    $z->bind_param("s", $email);
-			    $z->execute();
-				$rz = $z->get_result();
-			    if ($rz->num_rows) { //Conta EXISTE!
-				    $a = mysqli_fetch_array($rz);
-				    if (!$qa->num_rows) { // Não EXISTE convite PEDENTE.
-					    $aq = $con->query("INSERT INTO `ligacoes`(`id_missao`,`id_usuario`) VALUES ('" . $id . "','" . $a["id"] . "') ");
-					    if ($aq) { // CONVITE CRIADO
-							if($a["status"]) {
-								$msg = "Jogador convidado! (Conta Existente)";
-							}else {
-								$msg = "Jogador convidado! (Conta Inexistente)";
-							}
-					    } else { // JÀ EXISTE CONVITE
-						    $success = false;
-						    $msg = "Falha ao convidar! (Erro na Database)";
-					    }
-				    } else {
-					    $msg = "Jogador convidado! (Conta Existente)";
-				    }
-			    } else { // CONTA Não EXISTE
-				    $aq = $con->query("INSERT INTO `usuarios` (`status`, `email`) VALUES ( 0 , '$email' );"); // cria conta
-				    $qa = $con->query("INSERT INTO `ligacoes`(`id_missao`,`id_usuario`,`id_ficha`) VALUES ('" . $id . "','" . $con->insert_id . "',NULL);"); //cria ligações
-				    if ($aq) {
-					    $msg = "Jogador convidado! (Conta Inexistente)";
-				    } else {
-					    $success = false;
-					    $msg = "Falha ao convidar! (Erro na Database)";
-				    }
-				    $type = 2;
-				    $link = 'https://fichasop.com/?convite=1&email=' . $email;
-				    $emailmsg = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
+			if (!empty($_POST["user"])) {
+				$email = cleanstring($_POST["user"]);
+			} else {
+				$success = false;
+				$msg = "Preencha o campo!";
+			}
+
+
+			if ($success) {
+				$z = $con->prepare("SELECT * FROM `usuarios` WHERE `email`= ? OR login = ?;"); // verifica se a conta existe
+				$z->bind_param("ss", $email,$email);
+				$z->execute();
+				$z = $z->get_result();
+				if ($z->num_rows) { //Conta EXISTE!
+					$user = mysqli_fetch_assoc($z);
+
+					$x = $con->prepare("SELECT * FROM ligacoes WHERE id_usuario in (SELECT id from usuarios where email = ? OR login=?) AND id_missao = ?");
+					$x->bind_param("ssi", $email,$email,$id);
+					$x->execute();
+					$x = $x->get_result();
+					if (!$x->num_rows) { // Não existe convite PENDENTE.
+						$y = $con->prepare("INSERT INTO `ligacoes`(token,id_missao,id_usuario) VALUES (UUID(),?,?);");
+						$y->bind_param("ii", $id, $user["id"]);
+						$y->execute();
+					}
+					if ($user["status"]) {
+						$msg = "Jogador convidado! (Conta Existente)";
+					} else {
+						$msg = "Jogador convidado! (Conta Inexistente)";
+					}
+
+				} else { // CONTA Não EXISTE
+					$type = 2;
+
+					if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+					$x = $con->prepare("INSERT INTO usuarios(status,email) VALUES (0,?)");
+					$x->bind_param("s", $email);
+					$x->execute();
+					$xid = $con->insert_id;
+
+					$y = $con->prepare("INSERT INTO ligacoes(token, id_missao, id_usuario) VALUES (uuid(),?,?)");
+					$y->bind_param("ii", $id, $xid);
+					$y->execute();
+
+					$msg = "Jogador convidado! (Conta Inexistente)";
+					$link = 'https://fichasop.com/?convite=1&email=' . $email;
+
+					$emailmsg = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
   <head>
     <!-- Compiled with Bootstrap Email version: 1.2.0 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -215,308 +218,311 @@ if (isset($_POST["status"])) {
     </table>
   </body>
 </html>';
+					$fromname = 'FichasOP';
+					$subject = 'Convite - FichasOP';
+					($success && Send_Email($subject, $email, $emailmsg)) ? $msg .= ' (Email enviado com sucesso.)' : $msg .= '(Email não enviado.)';
 
-				    $fromname = 'FichasOP';
-				    $subject = 'Convite - FichasOP';
+					} else {
 
-				    ($success && Send_Email($subject,$email,$emailmsg)) ? $msg .= ' (Email enviado com sucesso.)' : $msg .= '(Email não enviado.)';
+						$msg = "Nenhuma conta encontrada, tente usando um Email.";
+						$success = false;
+					}
+				}
+			}
+			$data["msg"] = $msg;
+			$data["success"] = $success;
+			$data["email"] = $email;
+			$data["type"] = $type;
+			echo json_encode($data);
+			exit;
+			break;
+		case 'criariniciativa':
+			$con->query("INSERT INTO `iniciativas` (`id_missao`) VALUES ('$id');");
+			break;
+		case 'deleteini':
+			$con->query("DELETE FROM `iniciativas` WHERE `id_missao`='" . $id . "' AND `id`='" . intval($_POST["iniciativa_id"]) . "';");
+			break;
+		case 'upv':
+			$ficha_id = intval($_POST["ficha"]);
+			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
+			$rs = mysqli_fetch_array($sq);
+			$pva = $rs["pva"] + intval($_POST["value"]);
+			$ppva = $rs["pv"] + 20;
+			if ($pva >= $ppva) {
+				$pva = intval($rs["pv"] + 20);
+			} elseif ($pva <= 0) {
+				$pva = 0;
+			}
+			$con->query("UPDATE `fichas_npc` SET `pva` = '" . $pva . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
+			if ($con->affected_rows) {
+				$msg = "Vida alterada!";
+			} else {
+				$success = false;
+				$msg = "Vida NÃO alterada!";
+			}
+			break;
+		case 'usan':
+			$ficha_id = intval($_POST["ficha"]);
+			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
+			$rs = mysqli_fetch_array($sq);
+			$sana = $rs["sana"] + intval($_POST["value"]);
+			$psana = $rs["san"] + 20;
+			if ($sana >= $psana) {
+				$sana = intval($rs["san"] + 20);
+			} elseif ($sana <= 0) {
+				$sana = 0;
+			}
+			$con->query("UPDATE `fichas_npc` SET `sana` = '" . $sana . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
+			if ($con->affected_rows) {
+				$msg = "Sanidade alterada!";
+			} else {
+				$success = false;
+				$msg = "Sanidade NÃO alterada!";
+			}
+			break;
+		case 'upe':
+			$ficha_id = intval($_POST["ficha"]);
+			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
+			$rs = mysqli_fetch_array($sq);
+			$pe = $rs["pe"];
+			$pea = $rs["pea"] + intval($_POST["value"]);
+			$pea = ($pea > $pe) ? $pe : (($pea < 0) ? 0 : $pea);
+			if ($pea > $pe) {
+				$pea = $pe;
+			}
+			$con->query("UPDATE `fichas_npc` SET `pea` = '" . $pea . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
+			break;
+		case 'pe':
+			$npc = intval($_POST["npc"]);
+			$sq = $con->query("Select `pe` From `fichas_npc` where `id` = '$npc' AND `missao`='$id';");
+			$rs = mysqli_fetch_array($sq);
+			$pea = $rs["pe"] - intval($_POST["value"]);
+			$con->query("Update `fichas_npc` SET `pea` = '$pea' WHERE `id`='$npc' AND `missao`='$id';");
+			break;
+		case 'deletenpc':
+			$npc = intval($_POST["npc"]);
+			$con->query("DELETE FROM `fichas_npc` WHERE `missao` = '$id' AND `id` = '$npc';");
+			break;
+		case 'addnpc':
+			$nome = cleanstring($_POST["nome"]);
+			$pv = minmax($_POST["pv"], 1, 999999999);
+			$categoria = minmax($_POST["monstro"], 0, 1);
+			$san = minmax($_POST["san"], 0, 999999999);
+			$pe = minmax($_POST["pe"], 0, 999999999);
+			$for = minmax($_POST["forca"], -10, 10);
+			$agi = minmax($_POST["agilidade"], -10, 10);
+			$int = minmax($_POST["intelecto"], -10, 10);
+			$pre = minmax($_POST["presenca"], -10, 10);
+			$vig = minmax($_POST["vigor"], -10, 10);
+			$passiva = minmax($_POST["passiva"]);
+			$esquiva = minmax($_POST["esquiva"]);
+			$morte = minmax($_POST["morte"]);
+			$sangue = minmax($_POST["sangue"]);
+			$energia = minmax($_POST["energia"]);
+			$conhecimento = minmax($_POST["conhecimento"]);
+			$fisica = minmax($_POST["fisica"]);
+			$balistica = minmax($_POST["balistica"]);
+			$mental = minmax($_POST["mental"]);
 
-
-			    }
-		    }
-            $data["msg"] = $msg;
-            $data["success"] = $success;
-            $data["email"] = $email;
-            $data["type"] = $type;
-            echo json_encode($data);
-            exit;
-            break;
-        case 'criariniciativa':
-            $con->query("INSERT INTO `iniciativas` (`id_missao`) VALUES ('$id');");
-            break;
-        case 'deleteini':
-            $con->query("DELETE FROM `iniciativas` WHERE `id_missao`='" . $id . "' AND `id`='" . intval($_POST["iniciativa_id"]) . "';");
-            break;
-        case 'upv':
-            $ficha_id = intval($_POST["ficha"]);
-            $sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-            $rs = mysqli_fetch_array($sq);
-            $pva = $rs["pva"] + intval($_POST["value"]);
-            $ppva = $rs["pv"] + 20;
-            if ($pva >= $ppva) {
-                $pva = intval($rs["pv"] + 20);
-            } elseif ($pva <= 0) {
-                $pva = 0;
-            }
-            $con->query("UPDATE `fichas_npc` SET `pva` = '" . $pva . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-            if ($con->affected_rows) {
-                $msg = "Vida alterada!";
-            } else {
-                $success = false;
-                $msg = "Vida NÃO alterada!";
-            }
-            break;
-        case 'usan':
-            $ficha_id = intval($_POST["ficha"]);
-            $sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-            $rs = mysqli_fetch_array($sq);
-            $sana = $rs["sana"] + intval($_POST["value"]);
-            $psana = $rs["san"] + 20;
-            if ($sana >= $psana) {
-                $sana = intval($rs["san"] + 20);
-            } elseif ($sana <= 0) {
-                $sana = 0;
-            }
-            $con->query("UPDATE `fichas_npc` SET `sana` = '" . $sana . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-            if ($con->affected_rows) {
-                $msg = "Sanidade alterada!";
-            } else {
-                $success = false;
-                $msg = "Sanidade NÃO alterada!";
-            }
-            break;
-        case 'upe':
-            $ficha_id = intval($_POST["ficha"]);
-            $sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-            $rs = mysqli_fetch_array($sq);
-            $pe = $rs["pe"];
-            $pea = $rs["pea"] + intval($_POST["value"]);
-            $pea = ($pea>$pe)?$pe:(($pea<0)?0:$pea);
-            if($pea>$pe){
-                $pea=$pe;
-            }
-            $con->query("UPDATE `fichas_npc` SET `pea` = '" . $pea . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-            break;
-        case 'pe':
-            $npc = intval($_POST["npc"]);
-            $sq = $con->query("Select `pe` From `fichas_npc` where `id` = '$npc' AND `missao`='$id';");
-            $rs = mysqli_fetch_array($sq);
-            $pea = $rs["pe"] - intval($_POST["value"]);
-            $con->query("Update `fichas_npc` SET `pea` = '$pea' WHERE `id`='$npc' AND `missao`='$id';");
-            break;
-        case 'deletenpc':
-            $npc = intval($_POST["npc"]);
-            $con->query("DELETE FROM `fichas_npc` WHERE `missao` = '$id' AND `id` = '$npc';");
-            break;
-        case 'addnpc':
-            $nome = cleanstring($_POST["nome"]);
-            $pv = minmax($_POST["pv"], 1, 999999999);
-            $categoria = minmax($_POST["monstro"], 0, 1);
-            $san = minmax($_POST["san"], 0, 999999999);
-            $pe = minmax($_POST["pe"], 0, 999999999);
-            $for = minmax($_POST["forca"], -10, 10);
-            $agi = minmax($_POST["agilidade"], -10, 10);
-            $int = minmax($_POST["intelecto"], -10, 10);
-            $pre = minmax($_POST["presenca"], -10, 10);
-            $vig = minmax($_POST["vigor"], -10, 10);
-            $passiva = minmax($_POST["passiva"]);
-            $esquiva = minmax($_POST["esquiva"]);
-            $morte = minmax($_POST["morte"]);
-            $sangue = minmax($_POST["sangue"]);
-            $energia = minmax($_POST["energia"]);
-            $conhecimento = minmax($_POST["conhecimento"]);
-            $fisica = minmax($_POST["fisica"]);
-            $balistica = minmax($_POST["balistica"]);
-            $mental = minmax($_POST["mental"]);
-
-            $acro = minmax($_POST["acrobacia"]);
-            $ades = minmax($_POST["adestramento"]);
-            $arte = minmax($_POST["artes"]);
-            $atle = minmax($_POST["atletismo"]);
-            $atua = minmax($_POST["atualidades"]);
-            $cien = minmax($_POST["ciencia"]);
-            $crim = minmax($_POST["crime"]);
-            $dipl = minmax($_POST["diplomacia"]);
-            $enga = minmax($_POST["enganacao"]);
-            $fort = minmax($_POST["fortitude"]);
-            $furt = minmax($_POST["furtividade"]);
-            $inic = minmax($_POST["iniciativa"]);
-            $inti = minmax($_POST["intimidacao"]);
-            $intu = minmax($_POST["intuicao"]);
-            $inve = minmax($_POST["investigacao"]);
-            $luta = minmax($_POST["luta"]);
-            $medi = minmax($_POST["medicina"]);
-            $ocul = minmax($_POST["ocultismo"]);
-            $perc = minmax($_POST["percepcao"]);
-            $pilo = minmax($_POST["pilotagem"]);
-            $pont = minmax($_POST["pontaria"]);
-            //$pres = minmax($_POST["prestidigitacao"]);
-            $prof = minmax($_POST["profissao"]);
-            $refl = minmax($_POST["reflexos"]);
-            $reli = minmax($_POST["religiao"]);
-            $sobr = minmax($_POST["sobrevivencia"]);
-            $tati = minmax($_POST["tatica"]);
-            $tecn = minmax($_POST["tecnologia"]);
-            $vont = minmax($_POST["vontade"]);
-            $ataq = cleanstring($_POST["ataques"],5000);
-            $habs = cleanstring($_POST["habilidades"],5000);
-            $deta = cleanstring($_POST["detalhes"],5000);
-            if (strlen($nome) > 30) {
-                $nome = "NPC";
-            }
-            $t = $con->prepare("INSERT INTO `fichas_npc`(`missao`,`nome`,`categoria`,`pv`,`pva`,`san`,`sana`,`pe`,`pea`,`forca`,`agilidade`,
+			$acro = minmax($_POST["acrobacia"]);
+			$ades = minmax($_POST["adestramento"]);
+			$arte = minmax($_POST["artes"]);
+			$atle = minmax($_POST["atletismo"]);
+			$atua = minmax($_POST["atualidades"]);
+			$cien = minmax($_POST["ciencia"]);
+			$crim = minmax($_POST["crime"]);
+			$dipl = minmax($_POST["diplomacia"]);
+			$enga = minmax($_POST["enganacao"]);
+			$fort = minmax($_POST["fortitude"]);
+			$furt = minmax($_POST["furtividade"]);
+			$inic = minmax($_POST["iniciativa"]);
+			$inti = minmax($_POST["intimidacao"]);
+			$intu = minmax($_POST["intuicao"]);
+			$inve = minmax($_POST["investigacao"]);
+			$luta = minmax($_POST["luta"]);
+			$medi = minmax($_POST["medicina"]);
+			$ocul = minmax($_POST["ocultismo"]);
+			$perc = minmax($_POST["percepcao"]);
+			$pilo = minmax($_POST["pilotagem"]);
+			$pont = minmax($_POST["pontaria"]);
+			//$pres = minmax($_POST["prestidigitacao"]);
+			$prof = minmax($_POST["profissao"]);
+			$refl = minmax($_POST["reflexos"]);
+			$reli = minmax($_POST["religiao"]);
+			$sobr = minmax($_POST["sobrevivencia"]);
+			$tati = minmax($_POST["tatica"]);
+			$tecn = minmax($_POST["tecnologia"]);
+			$vont = minmax($_POST["vontade"]);
+			$ataq = cleanstring($_POST["ataques"], 5000);
+			$habs = cleanstring($_POST["habilidades"], 5000);
+			$deta = cleanstring($_POST["detalhes"], 5000);
+			if (strlen($nome) > 30) {
+				$nome = "NPC";
+			}
+			$t = $con->prepare("INSERT INTO `fichas_npc`(`missao`,`nome`,`categoria`,`pv`,`pva`,`san`,`sana`,`pe`,`pea`,`forca`,`agilidade`,
                          `inteligencia`,`presenca`,`vigor`,`passiva`,`esquiva`,`morte`,`sangue`,`energia`,`conhecimento`,
                          `balistica`,`fisica`,`mental`,`acrobacia`,`adestramento`,`artes`,`atletismo`,`atualidade`,`ciencia`,`crime`,
                          `diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,
                          `ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,
                          `vontade`,`ataques`,`habilidades`,`detalhes`) VALUES 
                         ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )");
-            $t->bind_param('isiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisss',$id,$nome,$categoria,$pv,$pv,$san,$san,$pe,$pe,$for,$agi,$int,$pre,$vig,$passiva,$esquiva,$morte,$sangue,$energia,$conhecimento,$balistica,$fisica,$mental,$acro,$ades,$arte,$atle,$atua,$cien,$crim,$dipl,$enga,$fort,$furt,$inic,$inti,$intu,$inve,$luta,$medi,$ocul,$perc,$pilo,$pont,$prof,$refl,$reli,$sobr,$tati,$tecn,$vont,$ataq,$habs,$deta);
-            $t->execute();
-            break;
-        case 'editnpc':
-            $nome = cleanstring($_POST["nome"]);
-	        $categoria = minmax($_POST["monstro"], 0, 1);
-            $pv = minmax($_POST["pv"], 0, 999999999);
-            $san = minmax($_POST["san"], 0, 999999999);
-            $pe = minmax($_POST["pe"], 0, 999999999);
-            $for = minmax($_POST["forca"], -10, 10);
-            $agi = minmax($_POST["agilidade"], -10, 10);
-            $int = minmax($_POST["intelecto"], -10, 10);
-            $pre = minmax($_POST["presenca"], -10, 10);
-            $vig = minmax($_POST["vigor"], -10, 10);
-            $passiva = minmax($_POST["passiva"]);
-            $esquiva = minmax($_POST["esquiva"]);
-            $morte = minmax($_POST["morte"]);
-            $sangue = minmax($_POST["sangue"]);
-            $energia = minmax($_POST["energia"]);
-            $conhecimento = minmax($_POST["conhecimento"]);
-            $fisica = minmax($_POST["fisica"]);
-            $balistica = minmax($_POST["balistica"]);
-            $mental = minmax($_POST["mental"]);
-            $acro = minmax($_POST["acrobacia"]);
-            $ades = minmax($_POST["adestramento"]);
-            $arte = minmax($_POST["artes"]);
-            $atle = minmax($_POST["atletismo"]);
-            $atua = minmax($_POST["atualidades"]);
-            $cien = minmax($_POST["ciencia"]);
-            $crim = minmax($_POST["crime"]);
-            $dipl = minmax($_POST["diplomacia"]);
-            $enga = minmax($_POST["enganacao"]);
-            $fort = minmax($_POST["fortitude"]);
-            $furt = minmax($_POST["furtividade"]);
-            $inic = minmax($_POST["iniciativa"]);
-            $inti = minmax($_POST["intimidacao"]);
-            $intu = minmax($_POST["intuicao"]);
-            $inve = minmax($_POST["investigacao"]);
-            $luta = minmax($_POST["luta"]);
-            $medi = minmax($_POST["medicina"]);
-            $ocul = minmax($_POST["ocultismo"]);
-            $perc = minmax($_POST["percepcao"]);
-            $pilo = minmax($_POST["pilotagem"]);
-            $pont = minmax($_POST["pontaria"]);
-            $prof = minmax($_POST["profissao"]);
-            $refl = minmax($_POST["reflexos"]);
-            $reli = minmax($_POST["religiao"]);
-            $sobr = minmax($_POST["sobrevivencia"]);
-            $tati = minmax($_POST["tatica"]);
-            $tecn = minmax($_POST["tecnologia"]);
-            $vont = minmax($_POST["vontade"]);
-            $ata = cleanstring($_POST["ataques"],5000);
-            $habs = cleanstring($_POST["habilidades"],5000);
-            $dets = cleanstring($_POST["detalhes"],5000);
-            if (strlen($nome) > 30) {
-                $nome = "NPC";
-            }
-            $fid = intval($_POST['efni']);
-            $t = $con->prepare("UPDATE `fichas_npc` SET `nome` = ?, `categoria` = ? ,`pv` = ? ,`pva` = ? ,`san` = ? ,`sana` = ? ,`pe` = ? ,`pea` = ? ,`forca` = ? ,`agilidade` = ? ,
+			$t->bind_param('isiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisss', $id, $nome, $categoria, $pv, $pv, $san, $san, $pe, $pe, $for, $agi, $int, $pre, $vig, $passiva, $esquiva, $morte, $sangue, $energia, $conhecimento, $balistica, $fisica, $mental, $acro, $ades, $arte, $atle, $atua, $cien, $crim, $dipl, $enga, $fort, $furt, $inic, $inti, $intu, $inve, $luta, $medi, $ocul, $perc, $pilo, $pont, $prof, $refl, $reli, $sobr, $tati, $tecn, $vont, $ataq, $habs, $deta);
+			$t->execute();
+			break;
+		case 'editnpc':
+			$nome = cleanstring($_POST["nome"]);
+			$categoria = minmax($_POST["monstro"], 0, 1);
+			$pv = minmax($_POST["pv"], 0, 999999999);
+			$san = minmax($_POST["san"], 0, 999999999);
+			$pe = minmax($_POST["pe"], 0, 999999999);
+			$for = minmax($_POST["forca"], -10, 10);
+			$agi = minmax($_POST["agilidade"], -10, 10);
+			$int = minmax($_POST["intelecto"], -10, 10);
+			$pre = minmax($_POST["presenca"], -10, 10);
+			$vig = minmax($_POST["vigor"], -10, 10);
+			$passiva = minmax($_POST["passiva"]);
+			$esquiva = minmax($_POST["esquiva"]);
+			$morte = minmax($_POST["morte"]);
+			$sangue = minmax($_POST["sangue"]);
+			$energia = minmax($_POST["energia"]);
+			$conhecimento = minmax($_POST["conhecimento"]);
+			$fisica = minmax($_POST["fisica"]);
+			$balistica = minmax($_POST["balistica"]);
+			$mental = minmax($_POST["mental"]);
+			$acro = minmax($_POST["acrobacia"]);
+			$ades = minmax($_POST["adestramento"]);
+			$arte = minmax($_POST["artes"]);
+			$atle = minmax($_POST["atletismo"]);
+			$atua = minmax($_POST["atualidades"]);
+			$cien = minmax($_POST["ciencia"]);
+			$crim = minmax($_POST["crime"]);
+			$dipl = minmax($_POST["diplomacia"]);
+			$enga = minmax($_POST["enganacao"]);
+			$fort = minmax($_POST["fortitude"]);
+			$furt = minmax($_POST["furtividade"]);
+			$inic = minmax($_POST["iniciativa"]);
+			$inti = minmax($_POST["intimidacao"]);
+			$intu = minmax($_POST["intuicao"]);
+			$inve = minmax($_POST["investigacao"]);
+			$luta = minmax($_POST["luta"]);
+			$medi = minmax($_POST["medicina"]);
+			$ocul = minmax($_POST["ocultismo"]);
+			$perc = minmax($_POST["percepcao"]);
+			$pilo = minmax($_POST["pilotagem"]);
+			$pont = minmax($_POST["pontaria"]);
+			$prof = minmax($_POST["profissao"]);
+			$refl = minmax($_POST["reflexos"]);
+			$reli = minmax($_POST["religiao"]);
+			$sobr = minmax($_POST["sobrevivencia"]);
+			$tati = minmax($_POST["tatica"]);
+			$tecn = minmax($_POST["tecnologia"]);
+			$vont = minmax($_POST["vontade"]);
+			$ata = cleanstring($_POST["ataques"], 5000);
+			$habs = cleanstring($_POST["habilidades"], 5000);
+			$dets = cleanstring($_POST["detalhes"], 5000);
+			if (strlen($nome) > 30) {
+				$nome = "NPC";
+			}
+			$fid = intval($_POST['efni']);
+			$t = $con->prepare("UPDATE `fichas_npc` SET `nome` = ?, `categoria` = ? ,`pv` = ? ,`pva` = ? ,`san` = ? ,`sana` = ? ,`pe` = ? ,`pea` = ? ,`forca` = ? ,`agilidade` = ? ,
                          `inteligencia` = ? ,`presenca` = ? ,`vigor` = ? ,`passiva` = ? ,`esquiva` = ? ,`morte` = ? ,`sangue` = ? ,`energia` = ? ,`conhecimento` = ? ,
                          `balistica` = ? ,`fisica` = ? ,`mental` = ? ,`acrobacia` = ? ,`adestramento` = ? ,`artes` = ? ,`atletismo` = ? ,`atualidade` = ? ,`ciencia` = ? ,`crime` = ? ,
                          `diplomacia` = ? ,`enganacao` = ? ,`fortitude` = ? ,`furtividade` = ? ,`iniciativa` = ? ,`intimidacao` = ? ,`intuicao` = ? ,`investigacao` = ? ,`luta` = ? ,`medicina` = ? ,
                          `ocultismo` = ? ,`percepcao` = ? ,`pilotagem` = ? ,`pontaria` = ? ,`profissao` = ? ,`reflexos` = ? ,`religiao` = ? ,`sobrevivencia` = ? ,`tatica` = ? ,`tecnologia` = ? ,
                          `vontade` = ? , `ataques` = ? ,`habilidades` = ? ,`detalhes` = ? WHERE `id` = ? AND `missao` = ? ;");
-            $t->bind_param('siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisssii',$nome,$categoria,$pv,$pv,$san,$san,$pe,$pe,$for,$agi,$int,$pre,$vig,$passiva,$esquiva,$morte,$sangue,$energia,$conhecimento,$balistica,$fisica,$mental,$acro,$ades,$arte,$atle,$atua,$cien,$crim,$dipl,$enga,$fort,$furt,$inic,$inti,$intu,$inve,$luta,$medi,$ocul,$perc,$pilo,$pont,$prof,$refl,$reli,$sobr,$tati,$tecn,$vont,$ata,$habs,$dets,$fid,$id);
-            $t->execute();
-            break;
-        case 'syncnotes':
-            $a = count($_POST["titulo"]);
-            $b = 0;
-            while ($b < $a) {
-                if (!empty($_POST["titulo"])) {
-                    $tit = $_POST["titulo"][$b];
-                    if (!preg_match("/^[áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑa-zA-Z-' 0-9]*$/", $tit)) {
-                        $tit = "Títulob";
-                    }
-                } else {
-                    $tit = "Títuloa";
-                }
-                if (strlen($tit) > 30) {
-                    $tit = "Títuloasc";
-                }
-                $des = cleanstring($_POST["nota"][$b]);
-                $nota = intval($_POST["id"][$b]);
-                $y = $con->query("UPDATE `notes` SET `nome` = '$tit', `notas` = '$des' WHERE `missao` = '$id' AND `id`='$nota';");
-                $b++;
-            }
-            break;
-        case 'addnote':
-            $y = $con->query("INSERT INTO `notes`(`id`,`nome`,`notas`,`missao`) VALUES ('','Título','È Recomendado usar notas externas!','$id');");
-            break;
-        case 'addd':
-            $nome = cleanstring($_POST["nome"]);
-            $dado = cleanstring($_POST["dado"]);
-            $dano = intval(($_POST["dano"]=='on' or $_POST["dano"] == 1)?1:0);
-            if(empty($nome)){
+			$t->bind_param('siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisssii', $nome, $categoria, $pv, $pv, $san, $san, $pe, $pe, $for, $agi, $int, $pre, $vig, $passiva, $esquiva, $morte, $sangue, $energia, $conhecimento, $balistica, $fisica, $mental, $acro, $ades, $arte, $atle, $atua, $cien, $crim, $dipl, $enga, $fort, $furt, $inic, $inti, $intu, $inve, $luta, $medi, $ocul, $perc, $pilo, $pont, $prof, $refl, $reli, $sobr, $tati, $tecn, $vont, $ata, $habs, $dets, $fid, $id);
+			$t->execute();
+			break;
+		case 'syncnotes':
+			$a = count($_POST["titulo"]);
+			$b = 0;
+			while ($b < $a) {
+				if (!empty($_POST["titulo"])) {
+					$tit = $_POST["titulo"][$b];
+					if (!preg_match("/^[áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑa-zA-Z-' 0-9]*$/", $tit)) {
+						$tit = "Títulob";
+					}
+				} else {
+					$tit = "Títuloa";
+				}
+				if (strlen($tit) > 30) {
+					$tit = "Títuloasc";
+				}
+				$des = cleanstring($_POST["nota"][$b]);
+				$nota = intval($_POST["id"][$b]);
+				$y = $con->query("UPDATE `notes` SET `nome` = '$tit', `notas` = '$des' WHERE `missao` = '$id' AND `id`='$nota';");
+				$b++;
+			}
+			break;
+		case 'addnote':
+			$y = $con->query("INSERT INTO `notes`(`id`,`nome`,`notas`,`missao`) VALUES ('','Título','È Recomendado usar notas externas!','$id');");
+			break;
+		case 'addd':
+			$nome = cleanstring($_POST["nome"]);
+			$dado = cleanstring($_POST["dado"]);
+			$dano = intval(($_POST["dano"] == 'on' or $_POST["dano"] == 1) ? 1 : 0);
+			if (empty($nome)) {
 				$nome = $dado;
-            }
-            $foto = minmax(intval($_POST["icone"]),0,13);
-            $y = $con->prepare("INSERT INTO `dados_mestre`(`nome`,`foto`,`dado`,`dano`,`id_missao`) VALUES ( ? , ? , ? , ? , ? );");
-            $y->bind_param("sisii", $nome, $foto, $dado, $dano, $id);
-            $y->execute();
-            echo $_POST["dano"];
-            exit;
-            break;
-        case 'editd':
-            $nome = cleanstring($_POST["nome"]);
-            $dado = cleanstring($_POST["dado"]);
-            $dano = cleanstring(($_POST["dano"]=='on' or $_POST["dano"] == 1)?1:0);
-            $foto = minmax(intval($_POST["icone"]),0,13);
-            $did = intval($_POST["did"]);
-            if(empty($nome)){
-                $dado = $nome;
-            }
-            $y = $con->prepare("UPDATE `dados_mestre` SET `nome` = ?, `dado` = ?, `foto` = ?, `dano` = ? where `id` = ? AND `id_missao` = ?;");
-            $y->bind_param("ssiiii", $nome, $dado, $foto, $dano, $did, $id);
-            $y->execute();
-            break;
-        case 'deld':
-            $did = cleanstring($_POST["did"]);
-            $y = $con->query("DELETE FROM `dados_mestre` WHERE `id` = '".$did."' AND `id_missao` = '".$id."';");
-            break;
-        case 'desp':
-            $p = intval($_POST["p"]);
-            $con->query("DELETE FROM `ligacoes` WHERE `id_missao`='$id' AND `id_ficha`='$p';");
-            break;
-        case 'deletenote':
-            $nid = intval($_POST["note"]);
-            $y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
-            break;
-	    case 'roll':
-		    $dado = cleanstring($_POST["dado"], 50);
-	    $dano = intval(minmax($_POST["dano"],0,1));
-		    if(ClearRolar($dado)) {
-			    $data["success"] = true;
-			    $data = RolarMkII($dado,$dano);
-		    } else {
-			    $data = ClearRolar($dado,true);
-		    }
-		    $data["dado"] = $dado;
-		    echo json_encode($data);
-		    exit;
-        case 'npc':
-            $ss = $con->query('SELECT * FROM `fichas_npc` WHERE `id` = ' . intval($_POST["ficha"]) . ' AND `missao` = ' . $id . ';');
-            $ss = $con->query('SELECT * FROM fichas_npc WHERE id = '.intval($_POST["ficha"]).' AND missao = '.intval($id).';');
+			}
+			$foto = minmax(intval($_POST["icone"]), 0, 13);
+			$y = $con->prepare("INSERT INTO `dados_mestre`(`nome`,`foto`,`dado`,`dano`,`id_missao`) VALUES ( ? , ? , ? , ? , ? );");
+			$y->bind_param("sisii", $nome, $foto, $dado, $dano, $id);
+			$y->execute();
+			echo $_POST["dano"];
+			exit;
+			break;
+		case 'editd':
+			$nome = cleanstring($_POST["nome"]);
+			$dado = cleanstring($_POST["dado"]);
+			$dano = cleanstring(($_POST["dano"] == 'on' or $_POST["dano"] == 1) ? 1 : 0);
+			$foto = minmax(intval($_POST["icone"]), 0, 13);
+			$did = intval($_POST["did"]);
+			if (empty($nome)) {
+				$dado = $nome;
+			}
+			$y = $con->prepare("UPDATE `dados_mestre` SET `nome` = ?, `dado` = ?, `foto` = ?, `dano` = ? where `id` = ? AND `id_missao` = ?;");
+			$y->bind_param("ssiiii", $nome, $dado, $foto, $dano, $did, $id);
+			$y->execute();
+			break;
+		case 'deld':
+			$did = cleanstring($_POST["did"]);
+			$y = $con->query("DELETE FROM `dados_mestre` WHERE `id` = '" . $did . "' AND `id_missao` = '" . $id . "';");
+			break;
+		case 'desp':
+			$p = intval($_POST["p"]);
+			$con->query("DELETE FROM `ligacoes` WHERE `id_missao`='$id' AND `id_ficha`='$p';");
+			break;
+		case 'deletenote':
+			$nid = intval($_POST["note"]);
+			$y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
+			break;
+		case 'roll':
+			$dado = cleanstring($_POST["dado"], 50);
+			$dano = intval(minmax($_POST["dano"], 0, 1));
+			if (ClearRolar($dado)) {
+				$data["success"] = true;
+				$data = RolarMkII($dado, $dano);
+			} else {
+				$data = ClearRolar($dado, true);
+			}
+			$data["dado"] = $dado;
+			echo json_encode($data);
+			exit;
+		case 'npc':
+			$ss = $con->query('SELECT * FROM `fichas_npc` WHERE `id` = ' . intval($_POST["ficha"]) . ' AND `missao` = ' . $id . ';');
+			$ss = $con->query('SELECT * FROM fichas_npc WHERE id = ' . intval($_POST["ficha"]) . ' AND missao = ' . intval($id) . ';');
 			print(json_encode(mysqli_fetch_array(utf8ize($ss))));
-            exit;
-            break;
-    }
+			exit;
+			break;
+	}
 }
-function utf8ize($d) {
+function utf8ize($d)
+{
 	if (is_array($d)) {
 		foreach ($d as $k => $v) {
 			$d[$k] = utf8ize($v);
 		}
-	} else if (is_string ($d)) {
+	} else if (is_string($d)) {
 		return utf8_encode($d);
 	}
 	return $d;

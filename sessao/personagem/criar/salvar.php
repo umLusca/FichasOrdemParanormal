@@ -19,7 +19,7 @@ $sucesso = true;
 
 if (isset($_SESSION["UserID"])) {
     $iduser = $_SESSION["UserID"];
-    $convite = intval($_POST["convite"] ?: $_GET["convite"]);
+    $convite = cleanstring($_POST["convite"] ?: $_GET["convite"]);
     if (!empty($_POST["nome"])) {
         $nome = cleanstring($_POST["nome"]);
         if (!preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙçÇ]*$/', $nome)) {
@@ -309,7 +309,7 @@ if (isset($_SESSION["UserID"])) {
         $rvp = $vp->get_result();
         if ($rvp->num_rows == 0) {
             $vapo = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '$iduser' Limit 1;");
-            $vl = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario`='$iduser' AND `id` = '" . $convite . "' AND `id_ficha` is null;");
+            $vl = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario`='$iduser' AND `token` = '" . $convite . "' AND `id_ficha` is null;");
                 $qp = $con->prepare("INSERT INTO `fichas_personagem` (`id`, `token`, `public`, `usuario`, `nome`, `foto`, `origem`, `classe`, `trilha`, `nex`, `patente`, `idade`, `local`, `historia`, `forca`, `agilidade`, `inteligencia`, `presenca`, `vigor`, `pv`, `pva`, `san`, `sana`, `pe`, `pea`, `morrendo`, `enlouquecendo`, `passiva`, `bloqueio`, `esquiva`, `mental`, `sangue`, `morte`, `energia`, `conhecimento`, `fisica`, `balistica`,`acrobacias`,`adestramento`,`artes`,`atualidades`,`atletismo`,`ciencia`,`crime`,`diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,`ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,`vontade`) 
                                                                     VALUES ('', UUID() ,'0', ? , ?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );");
                 $qp->bind_param("isssssiiissiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", $iduser, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $passiva, $bloqueio, $esquiva, $sanidade, $sangue, $morte, $energia, $conhecimento, $fisico, $balistico, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao,$reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade);
@@ -331,7 +331,7 @@ if (isset($_SESSION["UserID"])) {
                         }
                     }
                 }
-                $al = $con->query("UPDATE `ligacoes` SET `id_ficha` = '" . $id . "' WHERE `ligacoes`.`id` = '" . $convite . "' AND `ligacoes`.`id_usuario` = '" . $iduser . "' LIMIT 1;");
+                $al = $con->query("UPDATE `ligacoes` SET `id_ficha` = '" . $id . "' WHERE `ligacoes`.`token` = '" . $convite . "' AND `ligacoes`.`id_usuario` = '" . $iduser . "' LIMIT 1;");
                 $msg = $sucesso ? "Personagem Criado com sucesso!" : "Houve uma falha ao adicionar personagem na database, contate um administrador!";
         } else {
             $sucesso = false;

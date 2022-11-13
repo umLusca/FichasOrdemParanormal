@@ -1,6 +1,6 @@
 <div class="col">
     <div class="card h-100 bg-black border-light" id="card_pericias">
-        <div class="card-header clearfix p-0">
+        <div class="card-header clearfix text-center p-0">
             <?php if (!isset($_GET["popout"]) AND $edit) { ?>
             <div class="float-start">
                     <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
@@ -8,11 +8,12 @@
                     </button>
             </div>
             <?php } ?>
-            <div class="float-start text-center">
+            <div class="float-start">
                 <button class="btn btn-sm text-info fa-lg" title="Visualisar todos" id="verp">
                     <i class="fa-regular fa-eye"></i>
                 </button>
             </div>
+            <span class="font6 fs-4">Pericias</span>
 	        <?php if ($edit) { ?>
                 <div class="float-end">
                         <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editper" title="Editar Pericias">
@@ -22,7 +23,6 @@
             <?php } ?>
         </div>
         <div class="card-body p-0 font10">
-            <h1 class="font6 text-center">Pericias</h1>
             <div class="mt-2 container-fluid" id="pericias" disabled>
                 <div class="row">
                     <?php

@@ -1,13 +1,14 @@
 <div class="col">
     <div class="card h-100 bg-black border-light" id="card_personagem">
-        <div class="card-header clearfix p-0">
+        <div class="card-header clearfix text-center p-0">
+	        <?php if (!isset($_GET["popout"]) AND $edit) { ?>
             <div class="float-start">
-                <?php if (!isset($_GET["popout"]) AND $edit) { ?>
                     <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
-                <?php } ?>
             </div>
+            <?php } ?>
+            <span class="font6 fs-4">Personagem</span>
 	        <?php if ($edit) { ?>
                 <div class="float-end">
                         <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editpersonagem" title="Editar Personagem">
@@ -17,9 +18,6 @@
             <?php } ?>
         </div>
         <div class="card-body p-0">
-            <div class="card-title">
-                <h1 class="font6 text-center">Personagem</h1>
-            </div>
             <div class="m-2">
                 <nav>
                     <div class="nav nav-tabs justify-content-center" role="tablist">

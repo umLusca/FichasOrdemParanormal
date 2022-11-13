@@ -5,7 +5,7 @@ $con = con();
 if (!isset($_SESSION['UserID'])) {
     echo "<script>window.location.href='/'</script>";
 }
-$id = intval($_GET["convite"]);
+$id = cleanstring($_GET["convite"]);
 ?>
 <!DOCTYPE html>
 <html lang="br">

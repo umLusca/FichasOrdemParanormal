@@ -12,7 +12,7 @@ require_once "./ficha/aconfig_ficha.php";
         <title><?= $nome?: "Desconhecido"; ?> - FichasOP</title>
         <?php require_once "./../../includes/scripts.php";?>
     </head>
-    <body class="bg-black text-light font6">
+    <body class="bg-black text-light">
         <?php if (!isset($_GET["popout"])) {
             include_once "./../../includes/top.php";
             }?>
