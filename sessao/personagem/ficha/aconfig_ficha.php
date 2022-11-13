@@ -72,12 +72,16 @@ if (isset($rqs)) {
 	$rnu = mysqli_fetch_array($nu);
 	$usuario = $rnu["nome"];
 	$marca = $rnu["marca"];
+
 	$nome = $rqs["nome"];
 	$elemento = $rqs["afinidade"];
+    $classe = $rqs["classe"];
+	$origem = $rqs["origem"];
 	$nex = $rqs["nex"];
 	$pp = $rqs["pp"];
 	$deslocamento = $rqs["deslocamento"];
-	$idade = $rqs["idade"] ?: "Desconhecida.";
+	$idade = $rqs["idade"];
+	$patente = $rqs["patente"];
 	$local = $rqs["local"];
 	$historia = $rqs["historia"];
 	$encontro = $rqs["encontro"];
@@ -168,188 +172,41 @@ if (isset($rqs)) {
 	$pe_rodada = $rqs["pe_rodada"];
 
 
-	switch ($rqs["origem"]) {
-		default:
-			$origem = $rqs["origem"];
-			break;
-		case 1:
-			$origem = "Acadêmico.";
-			break;
-		case 2:
-			$origem = "Agente de Saúde.";
-			break;
-		case 3:
-			$origem = "Amnésico.";
-			break;
-		case 4:
-			$origem = "Artista.";
-			break;
-		case 5:
-			$origem = "Atleta.";
-			break;
-		case 6:
-			$origem = "Criminoso.";
-			break;
-		case 7:
-			$origem = "Cultista Arrependido.";
-			break;
-		case 8:
-			$origem = "Desgarrado.";
-			break;
-		case 9:
-			$origem = "Engenheiro.";
-			break;
-		case 10:
-			$origem = "Executivo.";
-			break;
-		case 11:
-			$origem = "Investigador(a).";
-			break;
-		case 12:
-			$origem = "Lutador.";
-			break;
-		case 13:
-			$origem = "Magnata";
-			break;
-		case 14:
-			$origem = "Mercenário.";
-			break;
-		case 15:
-			$origem = "Militar.";
-			break;
-		case 16:
-			$origem = "Operário.";
-			break;
-		case 17:
-			$origem = "Policial.";
-			break;
-		case 18:
-			$origem = "Religioso.";
-			break;
-		case 19:
-			$origem = "Servidor Público.";
-			break;
-		case 20:
-			$origem = "Teórico da Conspiração.";
-			break;
-		case 21:
-			$origem = "Técnico de Informatica.";
-			break;
-		case 22:
-			$origem = "Trabalhador Rural.";
-			break;
-		case 23:
-			$origem = "Trambiqueiro.";
-			break;
-		case 24:
-			$origem = "Universitário.";
-			break;
-		case 25:
-			$origem = "Chef.";
-			break;
-		case 26:
-			$origem = "Vítima.";
-			break;
-	}
-	switch ($rqs["classe"]) {
-		default:
-			$classe = $rqs["classe"];
-			$trilha = $rqs["trilha"];
-			break;
-		case 0:
-			$classe = $rqs["classe"];
-			$trilha = "Nenhuma";
-			break;
-		case 1:
-			$classe = "Combatente";
-			switch ($rqs["trilha"]) {
-				default:
-					$trilha = $rqs["trilha"];
-					break;
-				case 1:
-					$trilha = "Aniquilador";
-					break;
-				case 2:
-					$trilha = "Comandante de Campo";
-					break;
-				case 3:
-					$trilha = "Guerreiro";
-					break;
-				case 4:
-					$trilha = "Operações Especiais";
-					break;
-				case 5:
-					$trilha = "Tropa de Choque";
-					break;
-			}
-			break;
-		case 2:
-			$classe = "Especialista";
-			switch ($rqs["trilha"]) {
-				default:
-					$trilha = $rqs["trilha"];
-					break;
-				case 1:
-					$trilha = "Atirador de Elite";
-					break;
-				case 2:
-					$trilha = "Infiltrador";
-					break;
-				case 3:
-					$trilha = "Médico de Campo";
-					break;
-				case 4:
-					$trilha = "Negociador";
-					break;
-				case 5:
-					$trilha = "Técnico";
-					break;
-			}
-			break;
-		case 3:
-			$classe = "Ocultista";
-			switch ($rqs["trilha"]) {
-				default:
-					$trilha = $rqs["trilha"];
-					break;
-				case 1:
-					$trilha = "Conduíte";
-					break;
-				case 2:
-					$trilha = "Flagelador";
-					break;
-				case 3:
-					$trilha = "Graduado";
-					break;
-				case 4:
-					$trilha = "Intuitivo";
-					break;
-				case 5:
-					$trilha = "Lâmina Paranormal";
-					break;
-			}
-			break;
-	}
-	switch ($rqs["patente"]) {
-		default:
-			$patente = $rqs["patente"];
-			break;
-		case 1:
-			$patente = "Recruta.";
-			break;
-		case 2:
-			$patente = "Operador.";
-			break;
-		case 3:
-			$patente = "Agente Especial.";
-			break;
-		case 4:
-			$patente = "Oficial de Operações.";
-			break;
-		case 5:
-			$patente = "Agente de Elite.";
-			break;
-	}
+	$dc = array(
+		"FOR" =>  $rqs["forca"],
+		"AGI" =>  $rqs["agilidade"],
+		"INT" =>  $rqs["inteligencia"],
+		"PRE" =>  $rqs["presenca"],
+		"VIG" =>  $rqs["vigor"],
+		"ACRO" =>  $rqs["acrobacias"],
+		"ADES" =>  $rqs["adestramento"],
+		"ARTE" =>  $rqs["artes"],
+		"ATLE" =>  $rqs["atletismo"],
+		"ATUA" =>  $rqs["atualidades"],
+		"CIEN" =>  $rqs["ciencia"],
+		"CRIM" =>  $rqs["crime"],
+		"DIPL" =>  $rqs["diplomacia"],
+		"ENGA" =>  $rqs["enganacao"],
+		"FORT" =>  $rqs["fortitude"],
+		"FURT" =>  $rqs["furtividade"],
+		"INIT" =>  $rqs["iniciativa"],
+		"INTI" =>  $rqs["intimidacao"],
+		"INTU" =>  $rqs["intuicao"],
+		"INVE" =>  $rqs["investigacao"],
+		"LUTA" =>  $rqs["luta"],
+		"MEDI" =>  $rqs["medicina"],
+		"OCUL" =>  $rqs["ocultismo"],
+		"PERC" =>  $rqs["percepcao"],
+		"PILO" =>  $rqs["pilotagem"],
+		"PONT" =>  $rqs["pontaria"],
+		"PROF" =>  $rqs["profissao"],
+		"REFL" =>  $rqs["reflexos"],
+		"SOBR" =>  $rqs["sobrevivencia"],
+		"TATi" =>  $rqs["tatica"],
+		"TECN" =>  $rqs["tecnologia"],
+		"VONT" =>  $rqs["vontade"],
+	);
+
 } else {
 	header("Location: ./..");
 }
@@ -383,10 +240,13 @@ $espacosusados = $ddinv["pesototal"] ?: 0;
 if ($espacosusados < 0){
 	$espacosusados = 0;
 }
+if($rqs["peso_inv"] > 1){
+    $invmax = $rqs["peso_inv"];
+} else {
+    $invmax = pesoinv($rqs["forca"], $rqs["inteligencia"], $rqs["classe"], $rqs["trilha"], $rqs["origem"]);
+}
 
-$invmax = pesoinv($rqs["forca"],$rqs["inteligencia"],$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
-
-$missao_token = isset($dados_missao["token"])?$dados_missao["token"]:false;
+$missao_token = $dados_missao["token"] ?? false;
 //Pega todos os dados da ficha:...
 
 

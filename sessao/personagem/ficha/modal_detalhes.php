@@ -68,97 +68,51 @@
                             </label>
                         </div>
                         <div class="">
-                            <label class="fs-4 w-100">Nivel de Exposição Paranormal.
-                                <input class="form-control bg-black text-light nex" id="enex" name="nex" type="number" min="0" max="100" value="" required/>
+                            <label class="fs-4 w-100">NEX.
+                                <input class="form-control bg-black text-light nex" id="enex" name="nex" type="number" min="0" max="100"  value="<?=$rqs["nex"]?>" required/>
                                 <span class="invalid-feedback">Coloque um número entre 0 e 100.</span>
                             </label>
                         </div>
                         <div class="">
                             <label class="fs-4 w-100">Elemento
-                                <select class="form-select bg-black text-light border-light elemento" name="elemento">
-                                    <option value="0" SELECTED>Nenhum</option>
-                                    <option value="1">Morte</option>
-                                    <option value="2">Sangue</option>
-                                    <option value="3">Energia</option>
-                                    <option value="4">Conhecimento</option>
-                                    <option value="5">Medo</option>
-                                </select>
+                                <input type="text" class="form-control bg-black text-light elemento" maxlength="50" list="elementos" name="elemento" value="<?=$rqs["afinidade"]?>">
+                                <datalist id="elementos">
+                                    <?=Super_options("elementos",$rqs["afinidade"])?>
+                                </datalist>
                             </label>
                         </div>
                         <div class="">
-                            <label class="fs-4 fw-bold w-100">Classe
-                                <select class="form-select bg-black text-light border-light classe" id="eclasse" name="classe" required>
-                                    <option value="0">Mundano</option>
-                                    <option value="1">Combatente</option>
-                                    <option value="2">Especialista</option>
-                                    <option value="3">Ocultista</option>
-                                </select>
+
+                            <label class="fs-4 w-100">Classe
+                                <input type="text" class="form-control bg-black text-light classe" maxlength="50" list="classes" name="classe" value="<?=$rqs["classe"]?>" required>
+                                <datalist id="classes">
+                                    <?=Super_options("classes",$rqs["classe"])?>
+                                </datalist>
                             </label>
                         </div>
                         <div class="">
-                            <label class="fs-4 fw-bold w-100">Trilha (10% NEX!)
-                                <select class="form-select bg-black text-light border-light trilha" id="etrilha" name="trilha" required>
-                                    <option value="0" class="" <?=($rqs["classe"] == 0 AND $rqs["trilha"]== 0)?'SELECTED':''?>>Nenhuma</option>
-                                    <option value="1" class="trilha trilha-combatente" style="display: none;" <?=($rqs["classe"] == 1 AND $rqs["trilha"]== 1)?'SELECTED':''?>>Aniquilador</option>
-                                    <option value="2" class="trilha trilha-combatente" style="display: none;" <?=($rqs["classe"] == 1 AND $rqs["trilha"]== 2)?'SELECTED':''?>>Comandante de Campo</option>
-                                    <option value="3" class="trilha trilha-combatente" style="display: none;" <?=($rqs["classe"] == 1 AND $rqs["trilha"]== 3)?'SELECTED':''?>>Guerreiro</option>
-                                    <option value="4" class="trilha trilha-combatente" style="display: none;" <?=($rqs["classe"] == 1 AND $rqs["trilha"]== 4)?'SELECTED':''?>>Operações Especiais</option>
-                                    <option value="5" class="trilha trilha-combatente" style="display: none;" <?=($rqs["classe"] == 1 AND $rqs["trilha"]== 5)?'SELECTED':''?>>Tropa de Choque</option>
-                                    <option value="1" class="trilha trilha-especialista" style="display: none;" <?=($rqs["classe"] == 2 AND $rqs["trilha"]== 1)?'SELECTED':''?>>Atirador de Elite</option>
-                                    <option value="2" class="trilha trilha-especialista" style="display: none;" <?=($rqs["classe"] == 2 AND $rqs["trilha"]== 2)?'SELECTED':''?>>Infiltrador</option>
-                                    <option value="3" class="trilha trilha-especialista" style="display: none;" <?=($rqs["classe"] == 2 AND $rqs["trilha"]== 3)?'SELECTED':''?>>Médico de Campo</option>
-                                    <option value="4" class="trilha trilha-especialista" style="display: none;" <?=($rqs["classe"] == 2 AND $rqs["trilha"]== 4)?'SELECTED':''?>>Negociador</option>
-                                    <option value="5" class="trilha trilha-especialista" style="display: none;" <?=($rqs["classe"] == 2 AND $rqs["trilha"]== 5)?'SELECTED':''?>>Técnico</option>
-                                    <option value="1" class="trilha trilha-ocultista" style="display: none;" <?=($rqs["classe"] == 3 AND $rqs["trilha"]== 1)?'SELECTED':''?>>Conduíte</option>
-                                    <option value="2" class="trilha trilha-ocultista" style="display: none;" <?=($rqs["classe"] == 3 AND $rqs["trilha"]== 2)?'SELECTED':''?>>Flagelador</option>
-                                    <option value="3" class="trilha trilha-ocultista" style="display: none;" <?=($rqs["classe"] == 3 AND $rqs["trilha"]== 3)?'SELECTED':''?>>Graduado</option>
-                                    <option value="4" class="trilha trilha-ocultista" style="display: none;" <?=($rqs["classe"] == 3 AND $rqs["trilha"]== 4)?'SELECTED':''?>>Intuitivo</option>
-                                    <option value="5" class="trilha trilha-ocultista" style="display: none;" <?=($rqs["classe"] == 3 AND $rqs["trilha"]== 5)?'SELECTED':''?>>Lâmina Paranormal</option>
-                                </select>
+                            <label class="fs-4 w-100">Trilha
+                                <input type="text" class="form-control bg-black text-light trilha" maxlength="50" list="trilhas" name="trilha" value="<?=$rqs["trilha"]?>">
+                                <datalist id="trilhas">
+                                    <?=Super_options("trilhas",$rqs["trilha"])?>
+                                </datalist>
                             </label>
                         </div>
                         <div class="">
-                            <label class="fs-4 fw-bold w-100">Origem
-                            <select class="form-select bg-black text-light border-light origem" name="origem" required="required">
-                                <option value="0" selected>Desconhecido</option>
-                                <option value="1">Acadêmico</option>
-                                <option value="2">Agente de Saúde</option>
-                                <option value="3">Amnésico</option>
-                                <option value="4">Artista</option>
-                                <option value="5">Atleta</option>
-                                <option value="25">Chef</option>
-                                <option value="6">Criminoso</option>
-                                <option value="7">Cultista Arrependido</option>
-                                <option value="8">Desgarrado</option>
-                                <option value="9">Engenheiro</option>
-                                <option value="10">Executivo</option>
-                                <option value="11">Investigador</option>
-                                <option value="12">Lutador</option>
-                                <option value="13">Magnata</option>
-                                <option value="14">Mercenário</option>
-                                <option value="15">Militar</option>
-                                <option value="16">Operário</option>
-                                <option value="17">Policial</option>
-                                <option value="18">Religioso</option>
-                                <option value="19">Servidor Público</option>
-                                <option value="20">Teórico da Conspiração</option>
-                                <option value="21">T.I.</option>
-                                <option value="22">Trabalhador Rural</option>
-                                <option value="23">Trambiqueiro</option>
-                                <option value="24">Universitário</option>
-                                <option value="26">Vítima</option>
-                            </select></label>
+                            <label class="fs-4 w-100">Origem
+                                <input type="text" class="form-control bg-black text-light origem" maxlength="50" list="origens" name="origem" value="<?=$rqs["origem"]?>" required>
+                                <datalist id="origens">
+                                    <?=Super_options("origens",$rqs["origem"])?>
+                                </datalist>
+                            </label>
                         </div>
                         <div class="">
-                            <label class="fs-4 fw-bold w-100">Patente
-                                <select class="form-select bg-black text-light border-light patente" name="patente" required>
-                                    <option value="0" SELECTED>Desconhecido</option>
-                                    <option value="1">Recruta</option>
-                                    <option value="2">Operador</option>
-                                    <option value="3">Agente Especial</option>
-                                    <option value="4">Oficial de Operações</option>
-                                    <option value="5">Agente de Elite</option>
-                                </select>
+
+                            <label class="fs-4 w-100">Patente
+                                <input type="text" class="form-control bg-black text-light elemento" maxlength="50" list="patentes" name="patente" value="<?=$rqs["patente"]?>">
+                                <datalist id="patentes">
+                                    <?=Super_options("patentes",$rqs["patente"])?>
+                                </datalist>
                             </label>
                         </div>
                         <div>
@@ -168,11 +122,9 @@
                             </label>
                         </div>
                         <div>
-                            <label class="fs-4 w-100">Limite de PE por Rodada.
+                            <label class="fs-4 w-100">PE/Rodada.
                                 <input class="form-control bg-black text-light perodada" name="pr" type="number" min="0" max="127" value="<?= $pe_rodada ?>" required/>
-                                <span class="invalid-feedback">
-                                    Um número entre 0 e 127
-                                </span>
+                                <span class="invalid-feedback">Um número entre 0 e 127</span>
                             </label>
                         </div>
                         <div class="">

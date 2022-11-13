@@ -28,7 +28,8 @@
                     <span class="text-center card-title font6 fs-2">Dados salvos</span>
                     <div class="row row-cols-auto g-2 justify-content-center" id="dados">
                         <?php
-                        foreach ($m as $dado): switch ($dado["foto"]) {
+                        foreach ($m as $dado):
+							switch ($dado["foto"]) {
                                 default:
                                     $iconedado = "fa-dice-d20";
                                     break;

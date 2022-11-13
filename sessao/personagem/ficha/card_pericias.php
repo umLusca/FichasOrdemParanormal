@@ -1,14 +1,14 @@
 <div class="col">
     <div class="card h-100 bg-black border-light" id="card_pericias">
         <div class="card-header clearfix p-0">
+            <?php if (!isset($_GET["popout"]) AND $edit) { ?>
             <div class="float-start">
-                <?php if (!isset($_GET["popout"]) AND $edit) { ?>
                     <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
-                <?php } ?>
             </div>
-            <div class="float-start text-center p-1">
+            <?php } ?>
+            <div class="float-start text-center">
                 <button class="btn btn-sm text-info fa-lg" title="Visualisar todos" id="verp">
                     <i class="fa-regular fa-eye"></i>
                 </button>

@@ -1,13 +1,21 @@
 <?php
+
 $maximo_PV = 10000;
+$maximo_PVA = 20;//temporario
 $maximo_SAN = 10000;
+$maximo_SANA =  20;//temporario
 $maximo_PE = 10000;
 $maximo_atributo = 10;
+$maximo_PEA = 20;//temporario
 $minimo_atributo = -10;
 
 $minimo_PV = 1;//Mínimo de vida máxima possível
-$minimo_SAN =  1;//
-$minimo_PE = 1;//
+$minimo_PVA = -20;//Mínimo de vida possível
+$minimo_SAN =  0;//
+$minimo_SANA = 0;//
+$minimo_PE = 0;//
+$minimo_PEA = 0;//
+
 
 
 $minimo_peso = -10;
@@ -20,12 +28,6 @@ $maximo_pericia = 99;
 $minimo_resistencia = 0;
 $maximo_resistencia = 99;
 
-$minpva = -20;//Mínimo de vida possível
-$minsana = 0;//
-$minpea = 0;//
-$maxpv = 20;//Máximo de vida temporaria
-$maxsan =  20;//
-$maxpe = 20;//
 
 //Config de limites gerais:
 //Limites de input

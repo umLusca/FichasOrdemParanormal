@@ -1,7 +1,5 @@
 <?php
 require_once "./../config/includes.php";
-logout();
+logout("WEB");
 header("X-Robots-Tag: none");
-
-echo "<script>window.location.href='/'</script>";
-?>
+header("location: /");

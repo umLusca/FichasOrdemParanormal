@@ -25,7 +25,7 @@
         <div class="card-title">
             <h1 class="text-center">Inventário</h1>
         </div>
-        <h4 class="text-center">Peso carregado: <?= $espacosusados ?>/<?= $invmax ?></h4>
+        <h4 class="text-center">Peso carregado: <?= $espacosusados ?>/<?= ($rqs["peso_inv"] > 0) ? $invmax : $rqs["peso_inv"]?></h4>
         <div class="card-body p-0">
             <div class="py-2" id="inv">
 				<?php if ($s[1]->num_rows > 0) { ?>
@@ -52,7 +52,7 @@
                                 <td class="trocavision">
                                     <button class="btn btn-sm fw-bolder text-info" title="Rolar Ataque"
 										<?php if ($edit) { ?>
-                                            onclick='rolar("<?= DadoDinamico($row['ataque'], $forca, $agilidade, $intelecto, $presenca, $vigor) ?>", 0, "Ataque Arma")'
+                                            onclick='rolar("<?= DadoDinamico($row['ataque'],$dc) ?>", 0, "Ataque Arma")'
 										<?php } else { ?>disabled<?php } ?>>
                                         <i class="fa-regular fa-dice"></i><?= $row["ataque"] ?>
                                     </button>

@@ -172,7 +172,7 @@ require_once "./../../ficha/aconfig_ficha.php";
         let pea = <?=$pea?>;
         let mor = <?=$morrendo?>;
         let foto = "<?=$morrendo?$urlphotomor:($enlouquecendo?$urlphotoenl:($ppv<50?($urlphotofer?:$urlphoto):$urlphoto));?>";
-        let marca = "<?=$marca?:"/assets/img/marca_mount.webp"?>";
+        let marca = "<?=$marca?:false?>";
         let morto = '<?=$morrendo?' morto':''?>';
         let elemento = '<?=$elemento?>';
         let dado = '';
@@ -255,7 +255,9 @@ require_once "./../../ficha/aconfig_ficha.php";
                             </div>
                         <span className="sana text-center text-white fs-0">{sana}/{san}</span>
                         <img className="fundo" src='/assets/img/fundo1.webp' />
-                        <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca} />
+                        {
+                            (marca)? <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca} /> : ""
+                        }
                         <img className={"personagem pri" + morto} src={foto} />
                         <img className="pef " src='/assets/img/fundo2.webp' />
                         <div className="pea">

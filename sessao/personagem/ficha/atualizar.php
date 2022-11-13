@@ -67,90 +67,8 @@ if ($edit) {
 				$t->execute();
                 break;
             case 'addritual':
-                $foto = intval($_POST["foto"]);
-                if ($foto == 2) {
-                    $foto = cleanstring($_POST["simbolourl"]);
-                }
-                switch ($foto){
-                    default:
-                        $foto = 'https://fichasop.com/assets/img/desconhecido.webp';
-                        break;
-                    case 3:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Amaldicoar_Tecnologia.webp';
-                        break;
-                    case 4:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Assombracao_Forcada.webp';
-                        break;
-                    case 5:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Camuflagem.webp';
-                        break;
-                    case 6:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Cicatrizacao_Acelerada.webp';
-                        break;
-                    case 7:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Coincidencia_Forcada.webp';
-                        break;
-                    case 8:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Compreensao_Paranormal.webp';
-                        break;
-                    case 9:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Comunicacao_com_Espiritos.webp';
-                        break;
-                    case 10:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_da_Dama_de_Sangue.webp';
-                        break;
-                    case 11:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_decadenzia.webp';
-                        break;
-                    case 12:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Derreter_Criaturas_De_Sangue.webp';
-                        break;
-                    case 13:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Descarnar.webp';
-                        break;
-                    case 14:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Destruicao.webp';
-                        break;
-                    case 15:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Dissipar_Espiritos.webp';
-                        break;
-                    case 16:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Invocar_Nevoa.webp';
-                        break;
-                    case 17:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Leitura_Psiquica.webp';
-                        break;
-                    case 18:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_odio_Incontrolavel.webp';
-                        break;
-                    case 19:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Papel_Graduacao.webp';
-                        break;
-                    case 20:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Paralisia_Anormal.webp';
-                        break;
-                    case 21:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Passagem_de_Conhecimento.webp';
-                        break;
-                    case 22:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Pavor_Anormal.webp';
-                        break;
-                    case 23:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Reacao.webp';
-                        break;
-                    case 24:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Ritual_Espelho.webp';
-                        break;
-                    case 25:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Sentir_Atraves_dois_em_um.webp';
-                        break;
-                    case 26:
-                        $foto = 'https://fichasop.com/assets/img/Simbolo_Sugada_Mortal.webp';
-                        break;
-                    case 27:
-                        $foto = 'https://fichasop.com/assets/img/simbolo_transcender.webp';
-                        break;
-                }
+                $foto = cleanstring($_POST["simbolourl"]);
+
                 $ritual = cleanstring($_POST["ritual"],$Ritu_nome);
                 $cir = cleanstring($_POST["circulo"],$Ritu_circ);
                 $conj = cleanstring($_POST["conjuracao"],$Ritu_conj);
@@ -254,24 +172,32 @@ if ($edit) {
 	            }
                 $nex = minmax($_POST["nex"], 0, 100);
                 $pp = minmax($_POST["pp"], 0, 99999999);//pontos de prestigio
-                $origem = minmax($_POST["origem"], 0, 26);
-                $trilha = minmax($_POST["trilha"],0,5);
-                $classe = minmax($_POST["classe"], 0, 3);
-                $patente = minmax($_POST["patente"], 0, 5);
+
+                $origem = cleanstring($_POST["origem"]);
+                $trilha = cleanstring($_POST["trilha"]);
+                $classe = cleanstring($_POST["classe"]);
+                $elemento = cleanstring($_POST["elemento"]);
+                $patente = cleanstring($_POST["patente"]);
+
+
+
                 $desco = minmax($_POST["deslocamento"],0,50);
                 $per = minmax($_POST["pr"],0,127);
                 $idade = minmax($_POST["idade"],0,150);
                 $local = cleanstring($_POST["local"],$Fich_loca);
 
-				$elemento = minmax($_POST["elemento"],0,5);
 
 	            if(preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙçÇ]*$/', cleanstring($_POST["nome"]))){
 					$nome = cleanstring($_POST["nome"]);
 	            }
 
-                $rr = $con->prepare("UPDATE `fichas_personagem` SET `foto` = ? , `nome` = ? , `afinidade` = ? , `nex` = ?, `pe_rodada` = ?, `pp` = ? , `classe` = ? , `trilha` = ? , `origem` = ? , `patente` = ? , `idade` = ?, `deslocamento` = ? , `local` = ? , `foto_morrendo` = ?, `foto_enlouquecendo` = ?, `foto_ferido` = ?, `foto_ferenl` = ? WHERE `id` = '$id';");
-                $rr->bind_param("ssiiiiiiiiiisssss",  $urlphoto,$nome, $elemento, $nex, $per, $pp, $classe, $trilha, $origem, $patente, $idade, $desco, $local, $fotomor, $fotoenl, $fotofer,$fotoef);
+                $rr = $con->prepare("UPDATE `fichas_personagem` SET `foto` = ? , `nome` = ? , `afinidade` = ? , `nex` = ?, `pe_rodada` = ?, `pp` = ? ,
+                               `classe` = ? , `trilha` = ? , `origem` = ? , `patente` = ? , `idade` = ?, `deslocamento` = ? ,
+                               `local` = ? , `foto_morrendo` = ?, `foto_enlouquecendo` = ?, `foto_ferido` = ?, `foto_ferenl` = ?
+                           WHERE `id` = '$id';");
+                $rr->bind_param("sssiiissssiisssss",  $urlphoto,$nome, $elemento, $nex, $per, $pp, $classe, $trilha, $origem, $patente, $idade, $desco, $local, $fotomor, $fotoenl, $fotofer,$fotoef);
                 $rr->execute();
+                exit;
                 break;
             case 'edititem':
                 $iid = intval($_POST["did"]);
@@ -358,47 +284,62 @@ if ($edit) {
 					$nex = 100;
 				}
                 //Saúde
-                $pv = minmax(intval($_POST["pv"]), $minimo_PV, $maximo_PV);
-                if ($pv == 1) $pv = calcularvida($nex, $rqs["classe"],$rqs["vigor"],$rqs["trilha"],$rqs["origem"]);
+                $pv = minmax((int)$_POST["pv"], $minimo_PV, $maximo_PV);
+                if ($pv == 1) {
+                    $pv = calcularvida($nex, $rqs["classe"], $rqs["vigor"], $rqs["trilha"], $rqs["origem"]);
+                    if($pva < ($pv + $maximo_PVA)){
+                        $pva = $pv;
+                    }
+                }
 
-	            $san = minmax(intval($_POST["san"]), $minimo_SAN, $maximo_SAN);
+	            $san = minmax((int)$_POST["san"], $minimo_SAN, $maximo_SAN);
 	            if($san == 1){
 		            $san = calcularsan($nex,$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
+                    if($sana < ($san + $maximo_SANA)){
+                        $sana = $san;
+                    }
 	            }
 
-                $pe = minmax(intval($_POST["pe"]), $minimo_PE, $maximo_PE);
-                if ($pe == 1) $pe = calcularpe($nex, $rqs["classe"], $rqs["presenca"],$rqs["trilha"],$rqs["origem"]);
+                $pe = minmax((int)$_POST["pe"], $minimo_PE, $maximo_PE);
+                if ($pe == 1) {
+                    $pe = calcularpe($nex, $rqs["classe"], $rqs["presenca"], $rqs["trilha"], $rqs["origem"]);
+                    if($pea < ($pe + $maximo_PEA)){
+                        $pea = $pe;
+                    }
+                }
+
 
                 //Defesas
-                $pa = minmax(intval($_POST["passiva"]));
-                $es = minmax(intval($_POST["esquiva"]));
+                $pa = minmax((int)$_POST["passiva"]);
+                $es = minmax((int)$_POST["esquiva"]);
+                $bl = minmax((int)$_POST["bloqueio"]);
                 //Resistencias
-                $fisi = minmax(intval($_POST["fisica"]),$minimo_resistencia,$maximo_resistencia);
-                $bali = minmax(intval($_POST["balistica"]),$minimo_resistencia,$maximo_resistencia);
-                $fogo = minmax(intval($_POST["fogo"]),$minimo_resistencia,$maximo_resistencia);
+                $fisi = minmax((int)$_POST["fisica"],$minimo_resistencia,$maximo_resistencia);
+                $bali = minmax((int)$_POST["balistica"],$minimo_resistencia,$maximo_resistencia);
+                $fogo = minmax((int)$_POST["fogo"],$minimo_resistencia,$maximo_resistencia);
 
 
-                $mort = minmax(intval($_POST["morte"]),$minimo_resistencia,$maximo_resistencia);
-                $sang = minmax(intval($_POST["sangue"]),$minimo_resistencia,$maximo_resistencia);
-                $conh = minmax(intval($_POST["conhecimento"]),$minimo_resistencia,$maximo_resistencia);
-                $ener = minmax(intval($_POST["energia"]),$minimo_resistencia,$maximo_resistencia);
-                $ment = minmax(intval($_POST["mental"]),$minimo_resistencia,$maximo_resistencia);
+                $mort = minmax((int)$_POST["morte"],$minimo_resistencia,$maximo_resistencia);
+                $sang = minmax((int)$_POST["sangue"],$minimo_resistencia,$maximo_resistencia);
+                $conh = minmax((int)$_POST["conhecimento"],$minimo_resistencia,$maximo_resistencia);
+                $ener = minmax((int)$_POST["energia"],$minimo_resistencia,$maximo_resistencia);
+                $ment = minmax((int)$_POST["mental"],$minimo_resistencia,$maximo_resistencia);
 
 
-                $cort = minmax(intval($_POST["corte"]),$minimo_resistencia,$maximo_resistencia);
-                $impa = minmax(intval($_POST["impacto"]),$minimo_resistencia,$maximo_resistencia);
-                $elet = minmax(intval($_POST["eletricidade"]),$minimo_resistencia,$maximo_resistencia);
-                $frio = minmax(intval($_POST["frio"]),$minimo_resistencia,$maximo_resistencia);
-                $perf = minmax(intval($_POST["perfuracao"]),$minimo_resistencia,$maximo_resistencia);
-                $quim = minmax(intval($_POST["quimico"]),$minimo_resistencia,$maximo_resistencia);
+                $cort = minmax((int)$_POST["corte"],$minimo_resistencia,$maximo_resistencia);
+                $impa = minmax((int)$_POST["impacto"],$minimo_resistencia,$maximo_resistencia);
+                $elet = minmax((int)$_POST["eletricidade"],$minimo_resistencia,$maximo_resistencia);
+                $frio = minmax((int)$_POST["frio"],$minimo_resistencia,$maximo_resistencia);
+                $perf = minmax((int)$_POST["perfuracao"],$minimo_resistencia,$maximo_resistencia);
+                $quim = minmax((int)$_POST["quimico"],$minimo_resistencia,$maximo_resistencia);
 
                 $b = $con->prepare("UPDATE `fichas_personagem` SET 
-                               `passiva`= ?,`mental` = ?, `esquiva` = ?,`fisica`= ?,`balistica` = ?,
+                               `passiva`= ?, `esquiva` = ?, bloqueio = ?,`mental` = ?,`fisica`= ?,`balistica` = ?,
                                `fogo`= ?,`morte`= ?, `sangue` = ?,`conhecimento`= ?,`energia` = ?, 
                                `perfuracao` = ?,`eletricidade`= ?, `frio` = ?,`impacto` = ?,`corte` = ?,
                                `pea` = ?, `pe` = ?,`san` = ?, `sana` = ?, `quimico` = ?, `pv` = ?, `pva` = ?
                           		WHERE `id` = ?;");
-				$b->bind_param("iiiiiiiiiiiiiiiiiiiiiii",$pa,$ment,$es,$fisi,$bali,$fogo,$mort,$sang,$conh,$ener,$perf,$elet,$frio,$impa,$cort,$pe,$pe,$san,$san,$quim,$pv,$pv,$id);
+				$b->bind_param("iiiiiiiiiiiiiiiiiiiiiiii",$pa,$es,$bl,$ment,$bali,$fisi,$fogo,$mort,$sang,$conh,$ener,$perf,$elet,$frio,$impa,$cort,$pea,$pe,$san,$sana,$quim,$pv,$pva,$id);
 				$b->execute();
                 break;
             case 'editpro':
@@ -526,6 +467,12 @@ if ($edit) {
                 $y->bind_param("ii",$did,$id);
                 $y->execute();
                 break;
+            case 'peso_inv':
+                $did = minmax($_POST["peso"],1,99);
+                $y = $con->prepare("UPDATE fichas_personagem SET peso_inv = ? WHERE id = ?;");
+                $y->bind_param("ii",$did,$id);
+                $y->execute();
+                break;
             case 'delitem':
                 $iid = intval($_POST["did"]);
                 $con->query("DELETE FROM `inventario` WHERE `inventario`.`id` = '$iid' AND `id_ficha` = '$id';");
@@ -549,8 +496,7 @@ if ($edit) {
                 exit;
                 break;
             case 'roll':
-				$dado = DadoDinamico(cleanstring($_POST["dado"], 50),$forca,$agilidade,$intelecto,$presenca,$vigor);
-				$dano = intval(minmax($_POST["dano"],0,1));
+				$dado = DadoDinamico(cleanstring($_POST["dado"], 50),$dc);				$dano = intval(minmax($_POST["dano"],0,1));
                 if(ClearRolar($dado)) {
 	                $data["success"] = true;
                     $data = RolarMkII($dado,$dano);
@@ -561,30 +507,40 @@ if ($edit) {
                 echo json_encode($data);
                 exit;
             case 'usau':
-                $sq = $con->query("Select * From `fichas_personagem` where `id` = '$id';");
-                $rs = mysqli_fetch_array($sq);
 				$mor = minmax($_POST["mor"],0,1);
+
+
                 $pv =  minmax(($_POST["pv"]),1,$maximo_PV);
+
                 $pva = minmax(($_POST["pva"]),-99,$maximo_PV);
+
+
+
+
                 $san = minmax(($_POST["san"]),0,$maximo_SAN);
                 $sana =minmax(($_POST["sana"]),0,$maximo_SAN);
                 $pe =  minmax(($_POST["pe"]),0,$maximo_PE);
                 $pea = minmax(($_POST["pea"]),0,$maximo_PE);
+
+
+
+
+
                 if($pv == 1){
-					$pv = calcularvida($nex,$rqs["classe"],$vigor,$rqs["trilha"],$rqs["origem"]);
+					$pv = calcularvida($rqs["nex"],$rqs["classe"],$vigor,$rqs["trilha"],$rqs["origem"]);
 				}
                 if($san == 1){
-					$san = calcularsan($nex,$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
+					$san = calcularsan($rqs["nex"],$rqs["classe"],$rqs["trilha"],$rqs["origem"]);
 				}
                 if($pe == 1) {
-					$pe = calcularpe($nex,$rqs["classe"],$presenca,$rqs["trilha"],$rqs["origem"]);
+					$pe = calcularpe($rqs["nex"],$rqs["classe"],$presenca,$rqs["trilha"],$rqs["origem"]);
 				}
-                if($pva > ($pv+$maxpv)){$pva = $pv+$maxpv;}
-                if($sana > ($san+$maxsan)){$sana = $san+$maxsan;}
-                if($pea > ($pe + $maxpe)){$pea = $pe + $maxpe;}
-                if($pva < $minpva){$pva = $minpva;}
-                if($sana < $minsana){$sana = $minsana;}
-                if($pea < $minpea){$pea = $minpea;}
+                if($pva > ($pv+$maximo_PVA)){$pva = $pv+$maximo_PVA;}
+                if($sana > ($san+$maximo_SANA)){$sana = $san+$maximo_SANA;}
+                if($pea > ($pe + $maximo_PEA)){$pea = $pe + $maximo_PEA;}
+                if($pva < $minimo_PVA){$pva = $minimo_PVA;}
+                if($sana < $minimo_SANA){$sana = $minimo_SANA;}
+                if($pea < $minimo_PEA){$pea = $minimo_PEA;}
                 $fg = $con->prepare("UPDATE `fichas_personagem` SET `morrendo`= ? , `pv` = ?, `pva` = ?, `san` = ?, `sana` = ?, `pe` = ?, `pea` = ? where `id` = ?");
                 $fg->bind_param("iiiiiiii",$mor,$pv,$pva,$san,$sana,$pe,$pea,$id);
                 $fg->execute();

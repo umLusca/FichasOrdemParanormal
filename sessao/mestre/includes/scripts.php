@@ -282,10 +282,6 @@
             }
         });
 
-        // Hold Event
-        $.fn.isValid = function () {
-            return this[0].checkValidity()
-        } // Função para checar validade de formularios
         $("form").not("#formadd").submit(function (event) {
             $(this).addClass('was-validated');
             if (!$(this).isValid()) {

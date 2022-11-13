@@ -13,7 +13,9 @@ require_once "./ficha/aconfig_ficha.php";
         <?php require_once "./../../includes/scripts.php";?>
     </head>
     <body class="bg-black text-light font6">
-        <?php if (!isset($_GET["popout"])) {include_once "./../../includes/top.php";echo'<div class="w-100 mt-5"></div>';}?>
+        <?php if (!isset($_GET["popout"])) {
+            include_once "./../../includes/top.php";
+            }?>
         <main>
             <div class="container-fluid">
                 <div class="row g-2 m-md-2 row-cols-1 row-cols-md-2">

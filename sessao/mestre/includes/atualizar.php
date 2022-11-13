@@ -1,11 +1,5 @@
 <?php
 
-use League\OAuth2\Client\Provider\Google;
-use PHPMailer\PHPMailer\OAuth;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-
-
 if (isset($_POST["status"])) {
     $success = true;
     $msg = '';
@@ -225,36 +219,7 @@ if (isset($_POST["status"])) {
 				    $fromname = 'FichasOP';
 				    $subject = 'Convite - FichasOP';
 
-				    $mail = new PHPMailer();
-				    $mail->FromName = $fromname;
-				    $mail->Subject = $subject;
-				    $mail->addAddress($email);
-				    $mail->Body = $emailmsg;
-				    $mail->SMTPDebug = SMTP::DEBUG_OFF;
-				    $mail->Host = 'smtp.gmail.com';
-				    $mail->Port = 465;
-				    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-				    $mail->SMTPAuth = true;
-				    $mail->IsHTML(true);
-				    $mail->isSMTP();
-				    $mail->AuthType = 'XOAUTH2';
-				    $provider = new Google([
-					    'clientId' => sscid,
-					    'clientSecret' => sscsid,
-				    ]);
-				    $mail->setOAuth(
-					    new OAuth(
-						    [
-							    'provider' => $provider,
-							    'clientId' => sscid,
-							    'clientSecret' => sscsid,
-							    'refreshToken' => sscrt,
-							    'userName' => sscmail,
-						    ]
-					    )
-				    );
-
-				    ($success && !$mail->send()) ? $msg .= ' (Email enviado com sucesso.)' : $msg .= '(Email não enviado.)';
+				    ($success && Send_Email($subject,$email,$emailmsg)) ? $msg .= ' (Email enviado com sucesso.)' : $msg .= '(Email não enviado.)';
 
 
 			    }
@@ -527,8 +492,8 @@ if (isset($_POST["status"])) {
             $y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
             break;
 	    case 'roll':
-		    $dado = DadoDinamico(cleanstring($_POST["dado"], 50));
-		    $dano = intval(minmax($_POST["dano"],0,1));
+		    $dado = cleanstring($_POST["dado"], 50);
+	    $dano = intval(minmax($_POST["dano"],0,1));
 		    if(ClearRolar($dado)) {
 			    $data["success"] = true;
 			    $data = RolarMkII($dado,$dano);

@@ -371,7 +371,9 @@ require_once "./../includes/scripts.php";
                     </div>
                     <span className="sana text-center text-white fs-0">{sana}/{san}</span>
                     <img className="fundo" src='/assets/img/fundo1.webp'/>
-                    <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca}/>
+                    {
+                        (marca)? <img className={"marca start-50 top-50 translate-middle pri" + morto} src={marca} /> : ""
+                    }
                     <img className={"breath personagem pri" + morto} src={foto}/>
                     <img className="pef " src='/assets/img/fundo2.webp'/>
                     <div className="pea">

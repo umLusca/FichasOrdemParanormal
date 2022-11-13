@@ -75,33 +75,7 @@ $id = intval($_GET["convite"]);
                                         <label class="fs-4 w-100" for="origem">Origem
                                             <input type="text" class="form-control bg-black text-light" maxlength="50" list="origens" name="origem" required>
                                             <datalist id="origens">
-                                                <option selected>Desconhecido</option>
-                                                <option>Acadêmico</option>
-                                                <option>Agente de Saúde</option>
-                                                <option>Amnésico</option>
-                                                <option>Artista</option>
-                                                <option>Atleta</option>
-                                                <option>Chef</option>
-                                                <option>Criminoso</option>
-                                                <option>Cultista Arrependido</option>
-                                                <option>Desgarrado</option>
-                                                <option>Engenheiro</option>
-                                                <option>Executivo</option>
-                                                <option>Investigador</option>
-                                                <option>Lutador</option>
-                                                <option>Magnata</option>
-                                                <option>Mercenário</option>
-                                                <option>Militar</option>
-                                                <option>Operário</option>
-                                                <option>Policial</option>
-                                                <option>Religioso</option>
-                                                <option>Servidor Público</option>
-                                                <option>Teórico da Conspiração</option>
-                                                <option>T.I.</option>
-                                                <option>Trabalhador Rural</option>
-                                                <option>Trambiqueiro</option>
-                                                <option>Universitário</option>
-                                                <option>Vítima</option>
+                                                <?=Super_options("origens")?>
                                             </datalist>
                                         </label>
                                     </div>
@@ -122,10 +96,7 @@ $id = intval($_GET["convite"]);
                                                         Preencha a Classe do seu personagem
                                                     </span>
                                                     <datalist id="classes">
-                                                        <option selected>Mundano</option>
-                                                        <option>Combatente</option>
-                                                        <option>Especialista</option>
-                                                        <option>Ocultista</option>
+                                                        <?=Super_options("classes")?>
                                                     </datalist>
                                                 </label>
                                             </div>
@@ -136,37 +107,19 @@ $id = intval($_GET["convite"]);
                                                         Preencha a Classe do seu personagem
                                                     </span>
                                                     <datalist id="trilhas">
-                                                        <option>Nenhuma</option>
-                                                        <option>Aniquilador</option>
-                                                        <option>Comandante de Campo</option>
-                                                        <option>Guerreiro</option>
-                                                        <option>Operações Especiais</option>
-                                                        <option>Tropa de Choque</option>
-                                                        <option>Atirador de Elite</option>
-                                                        <option>Infiltrador</option>
-                                                        <option>Médico de Campo</option>
-                                                        <option>Negociador</option>
-                                                        <option>Técnico</option>
-                                                        <option>Conduíte</option>
-                                                        <option>Flagelador</option>
-                                                        <option>Graduado</option>
-                                                        <option>Intuitivo</option>
-                                                        <option>Lâmina Paranormal</option>
+                                                        <?=Super_options("trilhas")?>
                                                     </datalist>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="pt-3">
-                                        <label for="patente" class="fs-4 fw-bold">Patente</label>
-                                        <select class="form-select bg-black text-light border-light" id="patente" name="patente" required>
-                                            <option value="0">Desconhecido</option>
-                                            <option value="1">Recruta</option>
-                                            <option value="2">Operador</option>
-                                            <option value="3">Agente Especial</option>
-                                            <option value="4">Oficial de Operações</option>
-                                            <option value="5">Agente de Elite</option>
-                                        </select>
+                                        <label class="fs-4 w-100" for="patente">Patentes
+                                            <input type="text" class="form-control bg-black text-light" maxlength="50" list="patentes" name="patente">
+                                            <datalist id="patentes">
+                                                <?=Super_options("patentes")?>
+                                            </datalist>
+                                        </label>
                                     </div>
                                     <div class="pt-3">
                                         <label class="fs-4 fw-bold" for="historia">Resumo da História de como entrou para Ordem (Opcional)</label>
@@ -294,23 +247,28 @@ $id = intval($_GET["convite"]);
                         url: "salvar.php",
                         data: $(this).serialize(),
                         dataType: "JSON",
-                    }).done(function (data) {
-                        if (data.msg) {
-                            if (data.success) {
-                                $('#msg').html('<div class="alert alert-success">' + data.msg + '</div>');
-                                $('#modalfooter').html('<a class="btn btn-success" href="./../?id=' + data.id + '" >Abrir Ficha</a><a class="btn btn-success">Fechar</a>');
-                                $("#submit input").attr('disabled', true);
-                            } else {
-                                $("#tudo").show();
-                                $('#msg').html('<div class="alert alert-danger">' + data.msg + '</div>');
-                                $("#submit input").attr('disabled', false)
+                        complete:(d)=>{
+                            console.log(d);
+                        },
+                        success:(data)=>{
+                            if (data.msg) {
+                                if (data.success) {
+                                    $('#msg').html('<div class="alert alert-success">' + data.msg + '</div>');
+                                    $('#modalfooter').html('<a class="btn btn-success" href="./../?id=' + data.id + '" >Abrir Ficha</a><a class="btn btn-success">Fechar</a>');
+                                    $("#submit input").attr('disabled', true);
+                                } else {
+                                    $("#tudo").show();
+                                    $('#msg').html('<div class="alert alert-danger">' + data.msg + '</div>');
+                                    $("#submit input").attr('disabled', false)
+                                }
+                                myModal.show();
                             }
+                        },
+                        error:()=>{
+                            $("#tudo").show();
+                            $('#msg').html('<div class="alert alert-danger">Falha ao criar personagem, contate um administrador!</div>');
                             myModal.show();
                         }
-                    }).fail(function () {
-                        $("#tudo").show();
-                        $('#msg').html('<div class="alert alert-danger">Falha ao criar personagem, contate um administrador!</div>');
-                        myModal.show();
                     })
                 }
             })

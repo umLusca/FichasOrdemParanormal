@@ -49,31 +49,30 @@
         clearTimeout(changingtimer);
         changingtimer = setTimeout(subsaude, donetimer);
     }
-
     function updtsaude(valor,type) {
         let atual = type + 'a';
         let maxim = type;
         let saude = parseInt($("#saude ."+atual).val()) + valor;
         $("#saude ."+atual).val(saude);
         let per = parseInt($("#saude ."+maxim).val());
-        if($('#saude .pva').val() < <?=$minpva?>){
-            $('#saude .pva').val(<?=$minpva?>);
+        if($('#saude .pva').val() < <?=$minimo_PVA?>){
+            $('#saude .pva').val(<?=$minimo_PVA?>);
         }
-        if($('#saude .sana').val() < <?=$minsana?>){
-            $('#saude .sana').val(<?=$minsana?>);
+        if($('#saude .sana').val() < <?=$minimo_SANA?>){
+            $('#saude .sana').val(<?=$minimo_SANA?>);
         }
-        if($('#saude .pea').val() < <?=$minpea?>){
-            $('#saude .pea').val(<?=$minpea?>);
+        if($('#saude .pea').val() < <?=$minimo_PEA?>){
+            $('#saude .pea').val(<?=$minimo_PEA?>);
         }
 
-        if($('#saude .pva').val() > <?=$pv + $maxpv?>){
-            $('#saude .pva').val(<?=$pv + $maxpv?>);
+        if($('#saude .pva').val() > <?=$pv + $maximo_PVA?>){
+            $('#saude .pva').val(<?=$pv + $maximo_PVA?>);
         }
-        if($('#saude .sana').val() > <?=$san + $maxsan?>){
-            $('#saude .sana').val(<?=$san + $maxsan?>);
+        if($('#saude .sana').val() > <?=$san + $maximo_SANA?>){
+            $('#saude .sana').val(<?=$san + $maximo_SANA?>);
         }
-        if($('#saude .pea').val() > <?=$pe + $maxpe?>){
-            $('#saude .pea').val(<?=$pe + $maxpe?>);
+        if($('#saude .pea').val() > <?=$pe + $maximo_PEA?>){
+            $('#saude .pea').val(<?=$pe + $maximo_PEA?>);
         }
 
         $("#barra"+atual).css('width', percent(saude,per)+'%');
@@ -92,6 +91,7 @@
             url: '?token=<?=$fichat?>',
             dataType: 'json',
             data: data,
+			complete:(d)=>{console.log(d)},
         }).done(function (data){
             console.log(data);
             const msg = {};
@@ -115,7 +115,6 @@
     $('#morrendo,#combate').change(function () {
         subtimer();
     })
-
     function updatefoto() {
         let pv = parseInt($('#saude .pv').val());
         let pva = parseInt($('#saude .pva').val());
@@ -142,52 +141,113 @@
         }
     }
 
+    function updateritualfoto(e) {
+        let src = $(e).val();
+        console.log(src)
+        src = src.trim();
+        if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
+            $("#addritual .aviso").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
+            $('#prevsimbolo').html(' <img src="/assets/img/desconhecido.webp" width="150" height="150" alt="Ritual">');
+            return false;
+        } else {
+            $("#warningsimbolo").html("");
+            $('#prevsimbolo').html('<img src="' + src + '" width="150" height="150" alt="Ritual">');
+        }
+    }
     $(document).ready(function () {
+        $('#addritual .selectosimbolo').change(function () {
+            console.log("ok")
+            let $foto = $('#addritual .selectosimbolo').val()
 
-        $("#form_editar_principal .nex").on('input', function () {
-            $("#form_editar_principal .trilha .trilha").hide();
-            if($("#form_editar_principal .nex").val() > 9){
-                if($('#form_editar_principal .classe').val() == 1) {
-                    $("#form_editar_principal .trilha .trilha-combatente").show();
-                }else if($('#form_editar_principal .classe').val() == 2) {
-                    $("#form_editar_principal .trilha .trilha-especialista").show();
-                }else if($('#form_editar_principal .classe').val() == 3) {
-                    $("#form_editar_principal .trilha .trilha-ocultista").show();
-                }
+            if ($foto === "Customizada") {
+                $("#simbolourl input").attr("readonly", false)
             } else {
-                $("#form_editar_principal .trilha").val(0);
+                $("#simbolourl input").attr("readonly", true);
+                switch ($foto){
+                    default:
+                        $foto = 'https://fichasop.com/assets/img/desconhecido.webp';
+                        break;
+                    case '3':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Amaldicoar_Tecnologia.webp';
+                        break;
+                    case '4':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Assombracao_Forcada.webp';
+                        break;
+                    case '5':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Camuflagem.webp';
+                        break;
+                    case '6':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Cicatrizacao_Acelerada.webp';
+                        break;
+                    case '7':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Coincidencia_Forcada.webp';
+                        break;
+                    case '8':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Compreensao_Paranormal.webp';
+                        break;
+                    case '9':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Comunicacao_com_Espiritos.webp';
+                        break;
+                    case '10':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_da_Dama_de_Sangue.webp';
+                        break;
+                    case '11':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_decadenzia.webp';
+                        break;
+                    case '12':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Derreter_Criaturas_De_Sangue.webp';
+                        break;
+                    case '13':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Descarnar.webp';
+                        break;
+                    case '14':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Destruicao.webp';
+                        break;
+                    case '15':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Dissipar_Espiritos.webp';
+                        break;
+                    case '16':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Invocar_Nevoa.webp';
+                        break;
+                    case '17':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Leitura_Psiquica.webp';
+                        break;
+                    case '18':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_odio_Incontrolavel.webp';
+                        break;
+                    case '19':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Papel_Graduacao.webp';
+                        break;
+                    case '20':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Paralisia_Anormal.webp';
+                        break;
+                    case '21':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Passagem_de_Conhecimento.webp';
+                        break;
+                    case '22':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Pavor_Anormal.webp';
+                        break;
+                    case '23':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Reacao.webp';
+                        break;
+                    case '24':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Ritual_Espelho.webp';
+                        break;
+                    case '25':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Sentir_Atraves_dois_em_um.webp';
+                        break;
+                    case '26':
+                        $foto = 'https://fichasop.com/assets/img/Simbolo_Sugada_Mortal.webp';
+                        break;
+                    case '27':
+                        $foto = 'https://fichasop.com/assets/img/simbolo_transcender.webp';
+                        break;
+                }
+                $("#addritual #simbolourl input").val($foto)
+                updateritualfoto($("#addritual #simbolourl input"));
             }
         })
 
-        $("#form_editar_principal .nex").val(<?=$nex?>)
-        $("#form_editar_principal .elemento").val(<?=$rqs["afinidade"]?>)
-        $("#form_editar_principal .origem").val(<?=$rqs["origem"]?>);
-        $("#form_editar_principal .patente").val(<?= $rqs["patente"];?>);
-        $("#form_editar_principal .classe").val(<?=$rqs["classe"]?>)
-
-        if ($('#enex').val() > 9){
-            if($('#eclasse').val() == 1) {
-                $("#etrilha .trilha-combatente").show();
-            }else if($('#eclasse').val() == 2) {
-                $("#etrilha .trilha-especialista").show();
-            }else if($('#eclasse').val() == 3) {
-                $("#etrilha .trilha-ocultista").show();
-            }
-        }
-
-        $("#eclasse").change(function (){
-            $("#etrilha .trilha").hide();
-            $("#etrilha").val(0);
-            if($("#enex").val() > 9){
-                if($(this).val() == 1) {
-                    $("#etrilha .trilha-combatente").show();
-                }else if($(this).val() == 2) {
-                    $("#etrilha .trilha-especialista").show();
-                }else if($(this).val() == 3) {
-                    $("#etrilha .trilha-ocultista").show();
-                }
-            }
-        });
 
     socket = io.connect('https://portrait.fichasop.com', {
         reconnectionDelay: 2500,
@@ -215,9 +275,6 @@
             }
         })
 
-        $.fn.isValid = function () {
-            return this[0].checkValidity()
-        } // Função para checar validade de formularios
 
         $("form").submit(function (event) {
             $(this).addClass('was-validated');
@@ -229,11 +286,13 @@
                 $.post({
                     url: '?token=<?=$fichat?>',
                     data: $(this).serialize(),
+                    complete:(d)=>{console.log(d)},
                 }).done(function (data) {
                     location.reload();
                 })
             }
         })// Enviar qualquer formulario via jquery
+
 
         $("#saude .dblclick input").dblclick(function () {
             $(this).attr('readonly', false).toggleClass('border-0');
@@ -266,6 +325,8 @@
 
         })
 
+
+
         $('#foto').change(function () {
             let fotovalor = $('#foto').val()
             if (fotovalor == '9') {
@@ -277,30 +338,10 @@
             }
         })
 
-        $('#simbolourl').on('input', function () {
-            var src = $(this).val();
 
-            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
-                $("#warningsimbolo").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
-                $('#prevsimbolo').html(' <img src="/assets/img/desconhecido.webp" width="200" height="200" alt="Ritual">');
-                return false;
-            } else {
-                $("#warningsimbolo").html("");
-                $('#prevsimbolo').html('<img src="' + src + '" width="200" height="200" alt="Ritual">');
-            }
 
-        })
 
-        $('#fotosimbolo').change(function () {
-            let fotovalor = $('#fotosimbolo').val()
-            if (fotovalor == '2') {
-                $('#divfotosimbolourl').show();
-                $("#simbolourl").attr("disabled", false)
-            } else {
-                $('#divfotosimbolourl').hide();
-                $("#simbolourl").attr("disabled", true)
-            }
-        })
+
 
         $('.teedfa').on('input', function () {
             thisid = $(this).attr("id");

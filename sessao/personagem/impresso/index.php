@@ -57,9 +57,9 @@ require_once "./../ficha/aconfig_ficha.php";
         .classe {
             position: absolute;
             text-align: left;
-            font-size: 13.9px;
+            font-size: 18px;
             width: 236px;
-            margin: 70% 22%;
+            margin: 69% 22%;
         }
 
         .patente {

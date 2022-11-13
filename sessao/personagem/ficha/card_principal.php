@@ -80,7 +80,7 @@
 	                        <?php } ?>
                             <div class="col fs-4 justify-content-center align-items-center font4 row g-0 dblclick">
                                 <div class="col me-0">
-                                    <input type="number" title="Vida Atual" min="<?=$minpva?>" max="<?=$maximo_PV?>" name="pva" value="<?=$pva?>" class="pva border-0 vidaatual form-control form-control-sm bg-black text-light text-end" readonly>
+                                    <input type="number" title="Vida Atual" min="<?=$minimo_PVA?>" max="<?=$maximo_PV?>" name="pva" value="<?=$pva?>" class="pva border-0 vidaatual form-control form-control-sm bg-black text-light text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col ms-0">
@@ -120,7 +120,7 @@
 	                        <?php } ?>
                             <div class="col fs-4 justify-content-center align-items-center font4 row g-0 dblclick">
                                 <div class="col me-0">
-                                    <input type="number" title="Vida Atual" name="sana" min="<?=$minsana?>" max="<?=$maximo_SAN?>" value="<?=$sana?>" class="sana border-0 sanatual form-control form-control-sm bg-black text-light text-end" readonly>
+                                    <input type="number" title="Vida Atual" name="sana" min="<?=$minimo_SANA?>" max="<?=$maximo_SAN?>" value="<?=$sana?>" class="sana border-0 sanatual form-control form-control-sm bg-black text-light text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col ms-0">
@@ -162,7 +162,7 @@
 	                        <?php } ?>
                             <div class="fs-4 justify-content-center mx-auto align-items-center font4 row g-0 dblclick">
                                 <div class="col-5 me-0">
-                                    <input type="number" title="Vida Atual" name="pea" min="<?=$minpea?>" max="<?=$maximo_PE?>" value="<?=$pea?>" class="pea border-0 peatual form-control form-control-sm bg-black text-light text-end" readonly>
+                                    <input type="number" title="Vida Atual" name="pea" min="<?=$minimo_PEA?>" max="<?=$maximo_PE?>" value="<?=$pea?>" class="pea border-0 peatual form-control form-control-sm bg-black text-light text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col-5 ms-0">
@@ -189,19 +189,26 @@
                 </div>
 
                 <?php
-                if ($passiva > 0 or $esquiva > 0) {
+                if ($passiva > 0 || $esquiva > 0 || $bloqueio > 0) {
                     ?>
                     <h4 class="font6 pt-4 text-center">Defesas</h4>
                     <div class="row justify-content-center">
                         <?php if ($passiva > 0) { ?>
                             <div class="col-auto">
-                                <span class="input-group-text bg-black text-light fw-bolder">Passiva: <?= $passiva; ?></span>
+                                <span class="input-group-text bg-black text-light fw-bolder">Passiva: <?= $passiva ?></span>
                             </div>
                         <?php }
                         if ($esquiva > 0) {
                             ?>
                             <div class="col-auto">
-                                <span class="input-group-text bg-black text-light fw-bolder">Esquiva: <?= $esquiva; ?></span>
+                                <span class="input-group-text bg-black text-light fw-bolder">Esquiva: <?= $esquiva ?></span>
+                            </div>
+                            <?php
+                        }
+                        if ($bloqueio > 0) {
+                            ?>
+                            <div class="col-auto">
+                                <span class="input-group-text bg-black text-light fw-bolder">Bloqueio: <?= $bloqueio ?></span>
                             </div>
                             <?php
                         }

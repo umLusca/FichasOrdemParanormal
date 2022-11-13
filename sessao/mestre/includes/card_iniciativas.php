@@ -1,8 +1,8 @@
 <div class="col-md-6" id="rodada">
     <div class="card h-100 w-100 bg-black border-light">
         <div class="card-body p-0">
-            <div class="card-header border-0">
-                <div class="card-title fs-2 text-center font6">Iniciativas.</div>
+            <div class="card-header text-center">
+                <h3 class="font6">Iniciativas.</h3>
             </div>
             <div class="container-fluid p-0">
                 <table class="table table-black text-white" id="iniciativa">

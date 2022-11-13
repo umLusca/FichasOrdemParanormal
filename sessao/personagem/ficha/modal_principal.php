@@ -1,103 +1,172 @@
 <!-- Modal proeficiencias-->
-<div class="modal fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+<div class="modal modal-xl fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen-md-down">
         <div class="modal-content bg-black border-light">
             <form class="modal-body" id="formeditpri">
                 <div class="clearfix">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
+                            data-bs-dismiss="modal" aria-label="Fechar"></button>
                     <div class="float-start m-2">
                         <span class="text-info fa-solid fa-circle-info"> Os campos em azuis pode ser calculados automaticamente colocando 1.</span>
                     </div>
                 </div>
                 <h1 class="text-center">Editar Principal</h1>
-                <div class="m-2">
-                    <h4 class="text-center">Saúde</h4>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="epvtotal" class="border-info input-group-text bg-black text-white border-end-0 ">Vida: total</label>
-                        <input id="epvtotal" class="border-info form-control bg-black text-white border-start-0" min="1" max="999" type="number" name="pv" value="<?=$pv?>"/>
+                <h4 class="text-center">Saúde</h4>
+                <div class="row row-cols-1 row-cols-md-3 g-2">
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="border-info input-group-text bg-black text-white border-end-0">Vida: total</span>
+                            <input class="border-info form-control bg-black text-white border-start-0"
+                                   min="1" max="999" type="number" name="pv" value="<?= $pv ?>"/>
+                        </label>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="esantotal" class="border-info input-group-text bg-black text-white border-end-0">Sanidade: total</label>
-                        <input id="esantotal" class="border-info form-control bg-black text-white border-start-0" type="number" min=1 max="999" name="san" value="<?=$san?>"/>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="border-info input-group-text bg-black text-white border-end-0">Sanidade: total</span>
+                            <input class="border-info form-control bg-black text-white border-start-0"
+                                   type="number" min=1 max="999" name="san" value="<?= $san ?>"/>
+                        </label>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="epetotal" class="border-info input-group-text bg-black text-white border-end-0">Esforço: total</label>
-                        <input id="epetotal" class="border-info form-control bg-black text-white border-start-0" min="0" max="200" type="number" name="pe" value="<?=$pe?>"/>
-                    </div>
-                </div>
-                <div class="m-2">
-                    <h4 class="text-center">Defesas</h4>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="epass" class="input-group-text bg-black text-white border-end-0">Passiva:</label>
-                        <input id="epass" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="passiva" value="<?=$passiva?>"/>
-                    </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="eesqui" class="input-group-text border-light bg-black text-white border-end-0">Esquiva:</label>
-                        <input id="eesqui" class="form-control border-light bg-black text-white border-start-0" min="0" max="50" type="number" name="esquiva" value="<?=$esquiva?>"/>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="border-info input-group-text bg-black text-white border-end-0">Esforço: total</span>
+                            <input class="border-info form-control bg-black text-white border-start-0"
+                                   min="0" max="200" type="number" name="pe" value="<?= $pe ?>"/>
+                        </label>
                     </div>
                 </div>
-                <div class="m-2">
-                    <h4 class="text-center">Resistencias</h4>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="efis" class="input-group-text bg-black text-white border-end-0">Física:</label>
-                        <input id="efis" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="fisica" value="<?=$fisica?>"/>
-                    </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="ebal" class="input-group-text bg-black text-white border-end-0">Balística:</label>
-                        <input id="ebal" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="balistica" value="<?=$balistica?>"/>
-                    </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="emen" class="input-group-text bg-black text-white border-end-0">Mental:</label>
-                        <input id="emen" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="mental" value="<?=$insanidade?>"/>
-                    </div>
 
+                <h4 class="text-center mt-3">Defesas</h4>
+                <div class="row row-cols-1 row-cols-md-3 g-2">
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Passiva:</span>
+                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="passiva" value="<?= $passiva ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Esquiva:</span>
+                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="esquiva" value="<?= $esquiva ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Bloqueio:</span>
+                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="bloqueio" value="<?= $bloqueio ?>"/>
+                        </label>
+                    </div>
+                </div>
 
+                <h4 class="text-center mt-3">Resistencias a Elementos</h4>
+                <div class="row row-cols-1 row-cols-md-2 g-1">
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Mental:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="mental" value="<?= $insanidade ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Morte:</span>
+                            <input class="form-control bg-black text-white border-start-0" type="number" min="0"
+                                   max="50" name="morte" value="<?= $morte ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Conhecimento:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="conhecimento" value="<?= $conhecimento ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Sangue:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="sangue" value="<?= $sangue ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Energia:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="energia" value="<?= $energia ?>"/>
+                        </label>
+                    </div>
+                    <div class="">
+                    </div>
+                </div>
+                <h4 class="text-center mt-3">Outras Resistências</h4>
+                <div class="row row-cols-md-2 row-cols-1 g-1">
 
-                    <div class="input-group input-group-sm m-1">
-                        <label for="emor" class="input-group-text bg-black text-white border-end-0">Morte:</label>
-                        <input id="emor" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="morte" value="<?=$morte?>"/>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Física:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="fisica" value="<?= $fisica ?>"/>
+                        </label>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="econ" class="input-group-text bg-black text-white border-end-0">Conhecimento:</label>
-                        <input id="econ" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="conhecimento" value="<?=$conhecimento?>"/>
+                    <div class="">
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Balística:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="balistica" value="<?= $balistica ?>"/>
+                        </label>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="esan" class="input-group-text bg-black text-white border-end-0">Sangue:</label>
-                        <input id="esan" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="sangue" value="<?=$sangue?>"/>
-                    </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="eene" class="input-group-text bg-black text-white border-end-0">Energia:</label>
-                        <input id="eene" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="energia" value="<?=$energia?>"/>
-                    </div>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Corte:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="corte" value="<?= $corte ?>"/>
+                        </label>
 
+                    </div>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Impacto:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="impacto" value="<?= $impacto ?>"/>
+                        </label>
 
-                    <div class="input-group input-group-sm m-1">
-                        <label for="ecor" class="input-group-text bg-black text-white border-end-0">Corte:</label>
-                        <input id="ecor" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="corte" value="<?=$corte?>"/>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="eimp" class="input-group-text bg-black text-white border-end-0">Impacto:</label>
-                        <input id="eimp" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="impacto" value="<?=$impacto?>"/>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Perfuração:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="perfuracao" value="<?= $perfuracao ?>"/>
+                        </label>
+
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="eper" class="input-group-text bg-black text-white border-end-0">Perfuração:</label>
-                        <input id="eper" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="perfuracao" value="<?=$perfuracao?>"/>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Eletricidade:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="eletricidade" value="<?= $eletricidade ?>"/>
+                        </label>
+
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="eele" class="input-group-text bg-black text-white border-end-0">Eletricidade:</label>
-                        <input id="eele" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="eletricidade" value="<?=$eletricidade?>"/>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Fogo:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="fogo" value="<?= $fogo ?>"/>
+                        </label>
+
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="efog" class="input-group-text bg-black text-white border-end-0">Fogo:</label>
-                        <input id="efog" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="fogo" value="<?=$fogo?>"/>
+                    <div>
+                        <label class="input-group input-group-sm"><span
+                                    class="input-group-text bg-black text-white border-end-0">Frio:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="frio" value="<?= $frio ?>"/></label>
                     </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="efri" class="input-group-text bg-black text-white border-end-0">Frio:</label>
-                        <input id="efri" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="frio" value="<?=$frio?>"/>
-                    </div>
-                    <div class="input-group input-group-sm m-1">
-                        <label for="equi" class="input-group-text bg-black text-white border-end-0">Química:</label>
-                        <input id="equi" class="form-control bg-black text-white border-start-0" type="number" min="0" max="50" name="quimico" value="<?=$quimica?>"/>
+                    <div>
+                        <label class="input-group input-group-sm">
+                            <span class="input-group-text bg-black text-white border-end-0">Química:</span>
+                            <input class="form-control bg-black text-white border-start-0"
+                                   type="number" min="0" max="50" name="quimico" value="<?= $quimica ?>"/>
+                        </label>
                     </div>
 
 
@@ -127,7 +196,7 @@
                         $rs = mysqli_fetch_array($ks);
                         ?>
                         <div class="d-grid gap-2 m-2">
-                            <a class="btn btn-primary" href="./?token=<?=$rs["token"]?>"><?= $rs["nome"] ?></a>
+                            <a class="btn btn-primary" href="./?token=<?= $rs["token"] ?>"><?= $rs["nome"] ?></a>
                         </div>
                     <?php
                     endforeach;

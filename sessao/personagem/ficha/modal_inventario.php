@@ -7,6 +7,12 @@
                     <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
                             data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
+                <div class="text-center">
+                    <span class="text-center fs-4">Peso carregado: <?= $espacosusados ?>
+                        /<?= $invmax ?></span>
+                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
+                        <i class="fas fa-pencil"></i></button>
+                </div>
                 <h1 class="text-center">Armas</h1>
                 <table class="table table-sm bg-black text-white table-borderless font2 mb-5 border border-light">
                     <thead>
@@ -48,7 +54,7 @@
                             <td class="recarga"><?= $row['recarga']; ?></td>
                             <td class="especial"><?= $row['especial']; ?></td>
                             <td>
-                                <button onclick="deletar(<?=$row["id"]?>, '<?=$row["arma"]?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
+                                <button onclick="deletar(<?= $row["id"] ?>, '<?= $row["arma"] ?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
                                     <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
@@ -87,7 +93,7 @@
                             <td class="espaco"><?= $row['espaco']; ?></td>
                             <td class="prestigio"><?= $row['prestigio']; ?></td>
                             <td>
-                                <button onclick="deletar(<?= $row["id"]; ?>,'<?=$row['nome']?>','delitem')" title="Deletar <?=$row['nome']?>" class="btn btn-sm text-danger">
+                                <button onclick="deletar(<?= $row["id"]; ?>,'<?= $row['nome'] ?>','delitem')" title="Deletar <?= $row['nome'] ?>" class="btn btn-sm text-danger">
                                     <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
@@ -111,19 +117,19 @@
                         <div class="input-group">
                             <label for="enome"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="enome" maxlength="<?=$limite_nome_inv?>" name="nome" type="text" class="form-control border-start-0 border-light bg-black text-white"/>
+                            <input id="enome" maxlength="<?= $limite_nome_inv ?>" name="nome" type="text" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="input-group">
                             <label for="etipo" class="p-1 input-group-text border-light bg-black text-white border-end-0">Tipo:</label>
-                            <input id="etipo" name="tipo" type="text" maxlength="<?=$Arma_tipo?>" class="form-control border-start-0 border-light bg-black text-white"/>
+                            <input id="etipo" name="tipo" type="text" maxlength="<?= $Arma_tipo ?>" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-group">
                             <label for="eataque" class="p-1 input-group-text border-light bg-black text-white border-end-0">Ataque:</label>
-                            <input id="eataque" name="ataque" type="text" minlength="0" maxlength="<?=$Arma_ataq?>" placeholder="1d20"
+                            <input id="eataque" name="ataque" type="text" minlength="0" maxlength="<?= $Arma_ataq ?>" placeholder="1d20"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -131,7 +137,7 @@
                         <div class="input-group">
                             <label for="ealcance"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Alcance:</label>
-                            <input id="ealcance" name="alcance" type="text" maxlength="<?=$Arma_alca?>"
+                            <input id="ealcance" name="alcance" type="text" maxlength="<?= $Arma_alca ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -139,7 +145,7 @@
                         <div class="input-group">
                             <label for="edano"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Dano:</label>
-                            <input id="edano" name="dano" type="text" maxlength="<?=$Arma_dano?>" placeholder="1d4"
+                            <input id="edano" name="dano" type="text" maxlength="<?= $Arma_dano ?>" placeholder="1d4"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -147,9 +153,9 @@
                         <div class="input-group">
                             <label for="ecritico"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Critico:</label>
-                            <input id="ecritico" name="critico" type="text" maxlength="<?=$Arma_crit?>" placeholder="2d4"
+                            <input id="ecritico" name="critico" type="text" maxlength="<?= $Arma_crit ?>" placeholder="2d4"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
-                            <input id="emargem" title="margem" name="margem" type="number" min="0" max="20" maxlength="<?=$Arma_crit?>" placeholder="18"
+                            <input id="emargem" title="margem" name="margem" type="number" min="0" max="20" maxlength="<?= $Arma_crit ?>" placeholder="18"
                                    class="form-control border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -157,7 +163,7 @@
                         <div class="input-group">
                             <label for="erecarga"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Recarga:</label>
-                            <input id="erecarga" name="recarga" type="text" maxlength="<?=$Arma_reca?>"
+                            <input id="erecarga" name="recarga" type="text" maxlength="<?= $Arma_reca ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -167,7 +173,7 @@
                         <div class="input-group">
                             <label for="eespecial"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Especial:</label>
-                            <input id="eespecial" name="especial" type="text" maxlength="<?=$Arma_espe?>"
+                            <input id="eespecial" name="especial" type="text" maxlength="<?= $Arma_espe ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -196,7 +202,7 @@
                         <div class="input-group">
                             <label for="anom"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="anom" name="nome" type="text" maxlength="<?=$limite_nome_inv?>"
+                            <input id="anom" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -204,7 +210,7 @@
                         <div class="input-group">
                             <label for="ades"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Descrição:</label>
-                            <input id="ades" name="descricao" type="text" maxlength="<?=$Inv_desc?>"
+                            <input id="ades" name="descricao" type="text" maxlength="<?= $Inv_desc ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -245,14 +251,14 @@
                     <div class="col-12">
                         <div class="input-group">
                             <label for="enom" class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="enom" name="nome" type="text" maxlength="<?=$limite_nome_inv?>" class="form-control border-start-0 border-light bg-black text-white"/>
+                            <input id="enom" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="input-group">
                             <label for="edes"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Descrição:</label>
-                            <input id="edes" name="descricao" type="text" maxlength="<?=$Inv_desc?>"
+                            <input id="edes" name="descricao" type="text" maxlength="<?= $Inv_desc ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -285,7 +291,31 @@
         </div>
     </div>
 </div>
-
+<!-- Modal EDITAR ITEMpeso inv -->
+<div class="modal fade" id="editpesoinv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <form class="modal-content bg-black border-light" method="post" autocomplete="off" id="formedititem">
+            <div class="modal-header">
+                <span class="fs-4">Inventário</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="justify-content-center m-2">
+                    <p>Deixe 1 para padrão</p>
+                    <label class="input-group">
+                        <span class="p-1 input-group-text border-light bg-black text-white border-end-0">Peso: </span>
+                        <input name="peso" type="number" min="1" max="99" value="<?=$invmax?>" class="form-control border-start-0 border-light bg-black text-white"/>
+                    </label>
+                </div>
+                <input type="hidden" name="status" value="peso_inv"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success ms-auto" data-bs-dismiss="modal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 <!--------------------------ADD ARMAS---------------------------------------------------------------->
@@ -299,7 +329,7 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="anome"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input autocomplete="" id="anome" name="nome" type="text" maxlength="<?=$limite_nome_inv?>"
+                            <input autocomplete="" id="anome" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>"
                                    class="rounded-end form-control border-start-0 border-light bg-black text-white"
                                    required/>
                             <div class="invalid-feedback">Coloque o Nome.(Apenas letras e espaços)</div>
@@ -307,20 +337,20 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="atipo"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Tipo:</label>
-                            <input id="atipo" name="tipo" type="text" maxlength="<?=$Arma_tipo?>"
+                            <input id="atipo" name="tipo" type="text" maxlength="<?= $Arma_tipo ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                         <div class="invalid-feedback">(Apenas letras e espaços)</div>
                         <div class="input-group input-group-sm mb-2">
                             <label for="aataque"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Ataque:</label>
-                            <input id="aataque" name="ataque" type="text" maxlength="<?=$Arma_ataq?>"
+                            <input id="aataque" name="ataque" type="text" maxlength="<?= $Arma_ataq ?>"
                                    placeholder="Caso não saiba, olhe no como rolar dados!" value="2d20+/FOR/" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <label for="aalcance"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Alcance:</label>
-                            <input id="aalcance" name="alcance" type="text" maxlength="<?=$Arma_alca?>"
+                            <input id="aalcance" name="alcance" type="text" maxlength="<?= $Arma_alca ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -328,7 +358,7 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="adano"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Dano:</label>
-                            <input id="adano" name="dano" type="text" placeholder="1d4+/FOR/" maxlength="<?=$Arma_dano?>"
+                            <input id="adano" name="dano" type="text" placeholder="1d4+/FOR/" maxlength="<?= $Arma_dano ?>"
                                    class="form-control border-start-0 border-light bg-black text-white rounded-end"
                                    required/>
                             <div class="invalid-feedback">(Apenas valores dos dados ex: 2d20+5)</div>
@@ -336,21 +366,21 @@
                         <div class="input-group input-group-sm mb-2">
                             <label for="acritico"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Critico:</label>
-                            <input id="acritico" name="critico" type="text" placeholder="2d4+/2*FOR/" maxlength="<?=$Arma_crit?>"
+                            <input id="acritico" name="critico" type="text" placeholder="2d4+/2*FOR/" maxlength="<?= $Arma_crit ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
-                            <input title="margem" name="margem" type="number" placeholder="19" min="0" max="20" maxlength="<?=$Arma_crit?>"
+                            <input title="margem" name="margem" type="number" placeholder="19" min="0" max="20" maxlength="<?= $Arma_crit ?>"
                                    class="form-control border-light bg-black text-white"/>
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <label for="arecarga"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Recarga:</label>
-                            <input id="arecarga" name="recarga" type="text" maxlength="<?=$Arma_reca?>"
+                            <input id="arecarga" name="recarga" type="text" maxlength="<?= $Arma_reca ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <label for="aespecial"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Especial:</label>
-                            <input id="aespecial" name="especial" type="text" maxlength="<?=$Arma_espe?>"
+                            <input id="aespecial" name="especial" type="text" maxlength="<?= $Arma_espe ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
@@ -359,7 +389,7 @@
                         <div class="input-group input-group-sm my-2">
                             <label for="adesc"
                                    class="p-1 input-group-text border-light bg-black text-white border-end-0">Detalhes/Descrição:</label>
-                            <input id="adesc" name="desc" type="text" maxlength="<?=$Inv_desc?>"
+                            <input id="adesc" name="desc" type="text" maxlength="<?= $Inv_desc ?>"
                                    class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                         <div class="input-group input-group-sm mb-2">

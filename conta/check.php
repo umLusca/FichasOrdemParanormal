@@ -1,10 +1,6 @@
 <?php
 
-
-
-$con = con();
-
-
+$success = true;
 function logar(string $login): bool
 {
     $con = con();
@@ -21,7 +17,6 @@ function logar(string $login): bool
         $_SESSION["UserElite"] = $dados["elite"];
         $_SESSION["UserAdmin"] = $dados["admin"];
         $_SESSION["UserMarca"] = $dados["marca"];
-        $_SESSION["CookieSession"] = false;
         return true;
     } else {
         return false;
@@ -29,50 +24,196 @@ function logar(string $login): bool
 } //Inicia a sessão
 
 
+$con = con();
 $data = [];
-
-if(isset($_POST["status"])){
-	switch ($_POST['status']){
-		case 'addmarca':
-			$userid = $_SESSION["UserID"];
-			preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', cleanstring($_POST["urlmarca"]), $marca);
-			if ($marca){
-				$marca = cleanstring($_POST["urlmarca"]);
-				$q = $con->query("SELECT * FROM `usuarios` WHERE `id` = '".$_SESSION["UserID"]."';");
-				$rq = mysqli_fetch_array($q);
-				if($marca != $rq["marca"]) {
-					$a = $con->prepare("UPDATE `usuarios` SET `marca` = ? WHERE `id` = ? ;");
-					$a->bind_param("si", $marca, $userid);
-					$a->execute();
-					$data["success"] = (bool)$con->affected_rows;
-					if ($data["success"]) {
-						$_SESSION["UserMarca"] = cleanstring($_POST["urlmarca"]);
-						$msg = "Marca alterada com Sucesso";
-					}
-				} else {
-					$success = true;
-					$msg = "Sua marca é igual a anterior, nada alterado.";
-				}
-				$data["msg"] = $msg;
-			} else {
-				$data["success"] = false;
-				$data["msg"] = "O link não é válido...";
-			}
+$msg = "";
 
 
-			echo json_encode($data);
-			exit;
-			break;
-	}
+if (isset($_POST["status"])) {
+    switch ($_POST['status']) {
+        case "conta":
+            $con = con();
+            if (isset($_POST["asenha"]) && !empty($_POST["asenha"])) {
+                $senha = cleanstring($_POST["asenha"]);
+            }
+            if (isset($_SESSION["UserID"])) {
+                $u = mysqli_fetch_array($con->query("SELECT * FROM usuarios WHERE id = {$_SESSION["UserID"]}"));
+                if ($u["senha"] === cryptthis($senha)) {
+                    if (isset($_POST["nsenha"]) && !empty($_POST["nsenha"]) && isset($_POST["csenha"]) && !empty($_POST["csenha"])) {
+                        $nsenha = cleanstring($_POST["nsenha"]);
+                        $csenha = cleanstring($_POST["csenha"]);
+                        if (Check_Pass($nsenha, $csenha)) {
+                            $a = $con->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
+                            $nsenha = cryptthis($nsenha);
+                            $a->bind_param("si", $nsenha, $_SESSION["UserID"]);
+                            $a->execute();
+                            if ($con->affected_rows) {
+                                $success = true;
+                                $msg .= "Sucesso ao alterar senha;";
+                            } else {
+                                $success = false;
+                                $msg = "Erro no banco de dados.";
+                            }
+                        } else {
+                            $success = false;
+                            $msg = Check_Pass($nsenha, $csenha, 1)["msg"];
+                        }
+                    } else {
+                        if (isset($_POST["nsenha"]) && !empty($_POST["nsenha"])) {
+                            $success = false;
+                            $msg = "Preencha os campo das senhas;";
+                        }
+                    }
+                    if (isset($_POST["email"]) && !empty($_POST["email"])) {
+                        $email = cleanstring($_POST["email"]);
+                        if (Check_Email($email)) {
+                            $a = $con->prepare("SELECT * FROM usuarios WHERE email = ? ;");
+                            $a->bind_param("s", $email);
+                            $a->execute();
+                            $a = $a->get_result();
+                            if ($a->num_rows) {
+                                $ra = mysqli_fetch_array($a);
+                                if (!$ra["status"]) {
+                                    $con->query("DELETE FROM usuarios WHERE id = {$ra["id"]};");
+                                    $b = $con->prepare("UPDATE usuarios SET email = ? WHERE id = ? ;");
+                                    $b->bind_param("si", $email, $_SESSION["UserID"]);
+                                    $b->execute();
+                                    if ($con->affected_rows) {
+                                        $_SESSION["UserEmail"] = $email;
+                                        $success = true;
+                                        $msg .= "Alterado Email;";
+                                    } else {
+                                        $success = false;
+                                        $msg .= "Falha ao alterar email, erro na database;";
+                                    }
+                                } else {
+                                    $success = false;
+                                    $msg .= "Este email ja está em uso;";
+                                }
+                            } else {
+                                $c = $con->prepare("UPDATE usuarios SET email = ? WHERE id = ?");
+                                $c->bind_param("si", $email, $_SESSION["UserID"]);
+                                $c->execute();
+
+                                if ($con->affected_rows) {
+                                    $_SESSION["UserEmail"] = $email;
+                                    $success = true;
+                                    $msg .= "Alterado Email;";
+                                } else {
+                                    $success = false;
+                                    $msg .= "Falha ao alterar, erro na database.";
+                                }
+                            }
+                        } else {
+                            $success = false;
+                            $msg .= "Este email não é válido";
+                        }
+                    }
+                    if (isset($_POST["username"]) && !empty($_POST["username"])) {
+                        $username = cleanstring($_POST["username"]);
+                        if (Check_Login($username)) {
+                            $a = $con->prepare("SELECT * FROM usuarios WHERE login = ? ;");
+                            $a->bind_param("s", $username);
+                            $a->execute();
+                            $a = $a->get_result();
+                            if (!$a->num_rows) {
+                                $b = $con->prepare("UPDATE usuarios SET login = ? WHERE id = ? ;");
+                                $b->bind_param("si", $username, $_SESSION["UserID"]);
+                                $b->execute();
+                                if ($con->affected_rows) {
+                                    $_SESSION["UserLogin"] = $username;
+                                    $success = true;
+                                    $msg .= "Alterado Username;";
+                                } else {
+                                    $success = false;
+                                    $msg .= "Falha ao alterar username, erro na database;";
+                                }
+                            } else {
+                                $success = false;
+                                $msg .= "Este username ja está em uso;";
+                            }
+                        } else {
+                            $success = false;
+                            $msg .= "Este username não é válido;";
+                        }
+                    }
+                    if (isset($_POST["nome"]) && !empty($_POST["nome"])) {
+                        $nome = cleanstring($_POST["nome"]);
+                        if (Check_Name($nome)) {
+                            $b = $con->prepare("UPDATE usuarios SET nome = ? WHERE id = ? ;");
+                            $b->bind_param("si", $nome, $_SESSION["UserID"]);
+                            $b->execute();
+                            if ($con->affected_rows) {
+                                $_SESSION["UserName"] = $nome;
+                                $success = true;
+                                $msg .= "Alterado Nome;";
+                            } else {
+                                $success = false;
+                                $msg .= "Falha ao alterar nome, erro na database;";
+                            }
+                        } else {
+                            $success = false;
+                            $msg .= "Este Nome não é válido;";
+                        }
+                    }
+
+
+                } else {
+                    $success = false;
+                    $msg = "Sua senha atual está incorreta;";
+                }
+            } else {
+                $success = false;
+                $msg = "Sua sessão encerrou;";
+            }
+
+            $data["success"] = $success;
+            $data["msg"] = $msg;
+
+            echo json_encode($data);
+            exit;
+            break;
+        case 'addmarca':
+            $userid = $_SESSION["UserID"];
+
+            if (preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', cleanstring($_POST["urlmarca"])) ||  empty($_POST["urlmarca"])){
+                $marca = cleanstring($_POST["urlmarca"]);
+                $q = $con->query("SELECT * FROM `usuarios` WHERE `id` = '" . $_SESSION["UserID"] . "';");
+                $rq = mysqli_fetch_array($q);
+                if ($marca != $rq["marca"]) {
+                    $a = $con->prepare("UPDATE `usuarios` SET `marca` = ? WHERE `id` = ? ;");
+                    $a->bind_param("si", $marca, $userid);
+                    $a->execute();
+                    $data["success"] = (bool)$con->affected_rows;
+                    if ($data["success"]) {
+                        $_SESSION["UserMarca"] = cleanstring($_POST["urlmarca"]);
+                        $msg = "Marca alterada com Sucesso";
+                    }
+                } else {
+                    $success = false;
+                    $msg = "Sua marca é igual a anterior, nada alterado.";
+                }
+            } else {
+                $success = false;
+                $msg = "O link não é válido...";
+            }
+            $data["success"] = $success;
+            $data["msg"] = $msg;
+
+            echo json_encode($data);
+            exit;
+            break;
+
+    }
+
 }
-
 
 
 if (isset($_POST["cadastrar"])) {
     $success = true;
     if (!empty($_POST["nome"])) {
         $nome = cleanstring($_POST["nome"]);
-        if (!CheckName($nome)) {
+        if (!Check_Name($nome)) {
             $msg = "Apenas Letras e Espaços são permitidos no nome!";
             $success = false;
         }
@@ -82,18 +223,15 @@ if (isset($_POST["cadastrar"])) {
     }
 
     if (!empty($_POST["login"])) {
-        $login = cleanstring($_POST["login"]);
-        if(!CheckLogin($login)){
+        $login = $_POST["login"];
+        if (!Check_Login($login)) {
             $success = false;
-            $msg = "O username será usado para entrar em sua conta. (Apenas letras e Underlines)";
+            $msg = "O Username tem que ter Apenas letras, números e \"_\"";
         }
-        if (strlen($login) > 16){
+        if (strlen($login) > 16) {
             $success = false;
             $msg = "O username não pode ter mais de 16 caracteres.";
         }
-
-
-
     } else {
         $success = false;
         $msg = "Preencha todos os campos!";
@@ -101,7 +239,7 @@ if (isset($_POST["cadastrar"])) {
 
     if (!empty($_POST["email"])) {
         $email = cleanstring($_POST["email"]);
-        if (!CheckEmail($email)) {
+        if (!Check_Email($email)) {
             $msg = "Email inserido não é valido.";
             $success = false;
         }
@@ -111,36 +249,28 @@ if (isset($_POST["cadastrar"])) {
     }
 
     if (!empty($_POST["senha"] || $_POST["csenha"])) {
-		if(Check_Pass($_POST["senha"],$_POST["csenha"])){
-			$senha = cryptthis(cleanstring($_POST["senha"]));
-		} else {
-			$er = Check_Pass($_POST["senha"],$_POST["csenha"],true);
-			$success = $er["success"];
-			$msg = $er["msg"];
-		}
+        if (Check_Pass($_POST["senha"], $_POST["csenha"])) {
+            $senha = cryptthis(cleanstring($_POST["senha"]));
+        } else {
+            $er = Check_Pass($_POST["senha"], $_POST["csenha"], true);
+            $success = $er["success"];
+            $msg = $er["msg"];
+        }
     } else {
         $success = false;
         $msg = "Preencha todos os campos!";
     }
 
 
-	$a = $con->prepare("SELECT `id` FROM `usuarios` WHERE `login` = ?");
-	$a->bind_param("s",$login);
-	$a->execute();
-	$a = $a->get_result();
-	$b = $con->prepare("SELECT `id` FROM `usuarios` WHERE `email` = ?");
-	$b->bind_param("s",$email);
-	$b->execute();
-	$b = $b->get_result();
+    $a = $con->prepare("SELECT `id` FROM `usuarios` WHERE `login` = ?");
+    $a->bind_param("s", $login);
+    $a->execute();
+    $a = $a->get_result();
 
-	if ($a->num_rows) {
-		$success = false;
-		$msg = "Username já existente.";
-	}
-	if ($b->num_rows) {
-		$success = false;
-		$msg = "Email já existente.";
-	}
+    if ($a->num_rows) {
+        $success = false;
+        $msg = "Username já existente.";
+    }
     if ($success) {
         $a = $con->prepare("SELECT * FROM `usuarios` WHERE `email` = ? AND `status` = 1");
         $a->bind_param("s", $email);
@@ -164,10 +294,10 @@ if (isset($_POST["cadastrar"])) {
                     if ($con->affected_rows > 0) {
                         $success = true;
                         $msg = "Sucesso ao criar conta!";
-                        if(logar($login)) $msg .= ' (Logado Automaticamente)';
+                        if (logar($login)) $msg .= ' (Logado Automaticamente)';
                     } else {
                         $success = false;
-                        $msg = "Falha ao criar conta!".$q->affected_rows.$con->affected_rows;
+                        $msg = "Falha ao criar conta!" . $q->affected_rows . $con->affected_rows;
                     }
                 } else {
                     $success = false;
@@ -180,7 +310,7 @@ if (isset($_POST["cadastrar"])) {
                 if ($q->affected_rows == 1) {
                     $success = true;
                     $msg = "Sucesso ao criar conta!";
-                    if(logar($login))$msg .= ' (Logado Automaticamente)';
+                    if (logar($login)) $msg .= ' (Logado Automaticamente)';
                 } else {
                     $success = false;
                     $msg = "Falha ao criar conta!";
@@ -198,48 +328,48 @@ if (isset($_POST["cadastrar"])) {
 } //Verificação dos dados
 
 if (isset($_POST["logar"])) {
-	$success = true;
-	if (!empty($_POST["login"])) {
-		$login = cleanstring($_POST["login"]);
-	} else {
-		$success = false;
-		$msg = "Preencha todos os campos!";
-	}
-	if (!empty($_POST["senha"])) {
-		$pass = cleanstring($_POST["senha"]);
-		$senha = cryptthis($pass);
-	} else {
-		$success = false;
-		$msg = "Preencha todos os campos!";
-	}
-	$qu = $con->query("SELECT * FROM `usuarios` WHERE (usuarios.login = '$login') OR (usuarios.email = '$login');");
-	if (!$qu->num_rows) {
-		$success = false;
-		$msg = "Nenhuma conta encontrada...";
-	}
-	if ($success) {
-		$q = $con->prepare("select * from `usuarios` WHERE `login` = ? and `senha` = ? OR `email` = ? AND `senha` = ?;");
-		$q->bind_param("ssss", $login, $senha, $login, $senha);
-		$q->execute();
-		$rq = $q->get_result();
-		if ($rq->num_rows == 1) { //Verifica se existe essa conta e se a senha coincide com ela
-			$dados = mysqli_fetch_array($rq);
-			logar($dados["login"]);
-			$msg = "Sucesso ao fazer login!";
-			$success = true;
-			if (isset($_POST["lembrar"]) && ($_POST["lembrar"] == 'on' || $_POST["lembrar"] == 1)) remember_me($dados["id"]);// Quando a opção lembrar-me está marcada
-		} else {
-			$msg = "Usuario/Senha incorretos!";
-			$success = false;
-		}
+    $success = true;
+    if (!empty($_POST["login"])) {
+        $login = cleanstring($_POST["login"]);
+    } else {
+        $success = false;
+        $msg = "Preencha todos os campos!";
+    }
+    if (!empty($_POST["senha"])) {
+        $pass = cleanstring($_POST["senha"]);
+        $senha = cryptthis($pass);
+    } else {
+        $success = false;
+        $msg = "Preencha todos os campos!";
+    }
+    $qu = $con->query("SELECT * FROM `usuarios` WHERE (usuarios.login = '$login') OR (usuarios.email = '$login');");
+    if (!$qu->num_rows) {
+        $success = false;
+        $msg = "Nenhuma conta encontrada...";
+    }
+    if ($success) {
+        $q = $con->prepare("select * from `usuarios` WHERE `login` = ? and `senha` = ? OR `email` = ? AND `senha` = ?;");
+        $q->bind_param("ssss", $login, $senha, $login, $senha);
+        $q->execute();
+        $rq = $q->get_result();
+        if ($rq->num_rows == 1) { //Verifica se existe essa conta e se a senha coincide com ela
+            $dados = mysqli_fetch_array($rq);
+            logar($dados["login"]);
+            $msg = "Sucesso ao fazer login!";
+            $success = true;
+            if (isset($_POST["lembrar"]) && ($_POST["lembrar"] == 'on' || $_POST["lembrar"] == 1)) remember_me($dados["id"],7,"WEB");// Quando a opção lembrar-me está marcada
+        } else {
+            $msg = "Usuario/Senha incorretos!";
+            $success = false;
+        }
 
-	} // Verificação dos dados
-		$_SESSION["timeout"] += 1;
-		$data["tentativas"] = 5 - $_SESSION["timeout"];
-		$data["success"] = $success;
-		$data["msg"] = $msg.$aaa;
-		echo json_encode($data);
-		exit;
+    } // Verificação dos dados
+    $_SESSION["timeout"] += 1;
+    $data["tentativas"] = 5 - $_SESSION["timeout"];
+    $data["success"] = $success;
+    $data["msg"] = $msg;
+    echo json_encode($data);
+    exit;
 
 }
 
@@ -253,7 +383,7 @@ if (isset($_POST["update"])) {
         case 'recuperar':
             if (!empty($_POST["email"])) {
                 $email = cleanstring($_POST["email"]);
-                if (!CheckEmail($email)) {
+                if (!Check_Email($email)) {
                     $msg = "Email inserido não é valido.";
                     $success = false;
                 }
@@ -261,14 +391,14 @@ if (isset($_POST["update"])) {
                 $success = false;
                 $msg = "Preencha todos os campos!";
             }
-            if($success){
-                $s = $con->query("SELECT * FROM `usuarios` WHERE `email` = '".$email."'");
-                if($s->num_rows>0) {
+            if ($success) {
+                $s = $con->query("SELECT * FROM `usuarios` WHERE `email` = '" . $email . "'");
+                if ($s->num_rows > 0) {
                     $ds = mysqli_fetch_array($s);
-                    $hash = md5(md5($email).md5($ds["nome"]).strtotime(date('m/d/Y h:i:s')));
+                    $hash = md5(md5($email) . md5($ds["nome"]) . strtotime(date('m/d/Y h:i:s')));
 
-                    $k = $con->query("INSERT INTO `recuperar_senha` (`id_usuario`,`hash`,`email`,`data`) VALUES ('".$ds["id"]."','".$hash."','".$email."',NOW())");
-                    if($k) {
+                    $k = $con->query("INSERT INTO `recuperar_senha` (`id_usuario`,`hash`,`email`,`data`) VALUES ('" . $ds["id"] . "','" . $hash . "','" . $email . "',NOW())");
+                    if ($k) {
 
 
                         $link = "https://fichasop.com/conta/recuperar?recovery=" . $hash;
@@ -417,18 +547,18 @@ if (isset($_POST["update"])) {
                         $fromname = 'FichasOP';
                         $subject = 'Recuperar Conta';
 
-	                    $headers  = 'MIME-Version: 1.0' . "\r\n";
-	                    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	                    $headers .= 'From: suporte@fichasop.com' . "\r\n". 'Cc: Admin@fichasop.com' . "\r\n";
+                        $headers = 'MIME-Version: 1.0' . "\r\n";
+                        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                        $headers .= 'From: suporte@fichasop.com' . "\r\n" . 'Cc: Admin@fichasop.com' . "\r\n";
 
 
-	                    if (mail($email,$subject,$emailmsg,$headers)) {
-		                    $success = true;
-		                    $msg = 'Email enviado, Verifique sua caixa de email';
-	                    } else {
-		                    $success = false;
-							$msg = "Falha ao enviar email, contate um administrador.";
-	                    }
+                        if (mail($email, $subject, $emailmsg, $headers)) {
+                            $success = true;
+                            $msg = 'Email enviado, Verifique sua caixa de email';
+                        } else {
+                            $success = false;
+                            $msg = "Falha ao enviar email, contate um administrador.";
+                        }
 
                     }
                 } else {

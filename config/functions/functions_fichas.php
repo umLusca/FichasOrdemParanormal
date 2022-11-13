@@ -28,31 +28,60 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
 	return $return;
 }
 
+function Super_options($tipo,$selecionado = null): string
+{
+    switch($tipo) {
+        case "classes":
+            $conjunto = ["Mundano","Combatente","Especialista","Ocultista"];
+            break;
+        case "trilhas":
+            $conjunto = ["Nenhuma","Aniquilador","Comandante de Campo","Guerreiro","Operações Especiais","Tropa de Choque","Atirador de Elite","Infiltrador","Médico de Campo","Negociador","Técnico","Conduíte","Flagelador","Graduado","Intuitivo","Lâmina Paranormal"];
+            break;
+        case "origens":
+            $conjunto = ["Acadêmico","Agente de Saúde","Amnésico","Artista","Atleta","Chef","Criminoso","Cultista Arrependido","Desgarrado","Engenheiro","Executivo","Investigador","Lutador","Magnata","Mercenário","Militar","Operário","Policial","Religioso","Servidor Público","Teórico da Conspiração","TI","Trabalhador Rural","Trambiqueiro","Universitário","Vítima"];
+            break;
+        case "patentes":
+            $conjunto = ["Recruta","Operador","Agente Especial","Oficial de Operações", "Agente de Elite"];
+            break;
+        case "elementos":
+            $conjunto = ["Medo","Sangue","Energia","Conhecimento", "Morte"];
+            break;
+    }
+    $return = "";
+    foreach ($conjunto as $item => $option){
 
+        $return .= "<option "  .(($option == $selecionado)?"selected":"").  ">$option</option>";
+    }
+    return $return;
+}
 
 //Calculo bases
 function calcularvida($nex, $classe, $vigor, $trilha = 0 , $origem = 0 , $extra = 0): int
 {
+
 	switch ($origem){
-		case 8:
+		case "Desgarrado":
 			$extra += 1;
 			break;
 	}
 
 
 	switch ($classe) {
-		default:
+        default:
+            $pv = 8 + $vigor;
+            break;
+		case "Combatente":
 			switch ($trilha){
-				case 5:
+				case "Tropa de Choque":
 					$extra += 1;
 					break;
 			}
 			$pv = (20 + $vigor + $extra) + ((4 + $vigor + $extra) * (floor(($nex / 5)) - 1));
 			break;
-		case 2:
+		case "Especialista":
 			$pv = (16 + $vigor + $extra) + ((3 + $vigor + $extra) * (floor(($nex / 5)) - 1));
 			break;
-		case 3:
+		case "Ocultista":
 			$pv = (12 + $vigor + $extra) + ((2 + $vigor + $extra) * (floor(($nex / 5)) - 1));
 			break;
 	}
@@ -61,13 +90,16 @@ function calcularvida($nex, $classe, $vigor, $trilha = 0 , $origem = 0 , $extra 
 function calcularpe($nex, $classe, $presenca, $trilha = 0 , $origem = 0 , $extra = 0): int
 {
 	switch ($classe) {
-		default:
+        default:
+            $pe = 1 + $presenca;
+            break;
+		case "Combatente":
 			$pe = (2 + $presenca + $extra) + ((2 + $presenca + $extra) * (floor(($nex / 5) - 1)));
 			break;
-		case 2:
+		case "Especialista":
 			$pe = (3 + $presenca + $extra) + ((3 + $presenca + $extra) * (floor(($nex / 5) - 1)));
 			break;
-		case 3:
+		case "Ocultista":
 			$pe = (4 + $presenca + $extra) + ((4 + $presenca + $extra) * (floor(($nex / 5) - 1)));
 			break;
 	}
@@ -80,22 +112,25 @@ function calcularsan($nex, $classe, $trilha = 0 , $origem = 0 , $extra = 0, $ext
 	// Type 3: Nex Only
 	$esp = 1;
 	switch ($origem){
-		case 7:
+		case "Cultista Arrependido":
 			$esp = 2;
 			break;
-		case 26:
+		case "Vítima":
 			$extra += 1;
 			break;
 
 	}
 	switch ($classe) {
-		default:
+        default:
+            $san = 8;
+            break;
+		case "Combatente":
 			$san = ((12/ $esp) + $extra) + ((3 + $extra) * (floor(($nex / 5)) - 1));
 			break;
-		case 2:
+        case "Especialista":
 			$san = ((16/ $esp) + $extra) + ((4 + $extra) * (floor(($nex / 5)) - 1));
 			break;
-		case 3:
+		case "Ocultista":
 			$san = ((20/ $esp) + $extra) + ((5 + $extra) * (floor(($nex / 5)) - 1));
 			break;
 	}
@@ -103,7 +138,7 @@ function calcularsan($nex, $classe, $trilha = 0 , $origem = 0 , $extra = 0, $ext
 }
 function pesoinv($for, $int, $classe = 0,$trilha = 0,$origem = 0){
 
-	if($classe == 2 AND $trilha == 5){
+	if($classe == "Especialista" AND $trilha == "Técnico"){
 		$max = $for + $int;
 	} else {
 		$max = $for;
@@ -117,10 +152,14 @@ function pesoinv($for, $int, $classe = 0,$trilha = 0,$origem = 0){
 }
 
 
+function is($arr,$arg): bool
+{
+    return isset($arr[$arg]) && !empty($arr[$arg]);
+}
 //Verificações gerais
 function VerificarID($id): bool
 {
-	$id = intval($id);
+	$id = (int)$id;
 	if (isset($_SESSION["UserID"])) {
 		$userid = $_SESSION["UserID"];
 		if ($id > 0) {
@@ -263,9 +302,6 @@ function Rolar($dado, $dano = false): array
 	}
 	return ($result);
 }
-
-
-
 function RolarMkII($dado_bruto, $dano = false): array
 {
 	$index=0;
@@ -325,7 +361,6 @@ function RolarMkII($dado_bruto, $dano = false): array
 	return ($saida);
 
 }
-
 function TirarPorcento($Valor_Atual, $Valor_Maximo)
 {
 	if(($Valor_Maximo==0 AND $Valor_Atual == 0) OR $Valor_Maximo == 0){return 0;}
@@ -333,23 +368,13 @@ function TirarPorcento($Valor_Atual, $Valor_Maximo)
 }
 
 
-
-
-function DadoDinamico($dado, $FOR=1, $AGI=1, $INT=1, $PRE=1, $VIG=1,): string
+function DadoDinamico(string $dado,array $arr = null): string
 {
-	$FOR = minmax($FOR,0,10);
-	$AGI = minmax($AGI,0,10);
-	$INT = minmax($INT,0,10);
-	$PRE = minmax($PRE,0,10);
-	$VIG = minmax($VIG,0,10);
 	if (str_contains($dado, "/")) {
-		$dado = str_replace("FOR", $FOR, $dado);
-		$dado = str_replace("AGI", $AGI, $dado);
-		$dado = str_replace("INT", $INT, $dado);
-		$dado = str_replace("PRE", $PRE, $dado);
-		$dado = str_replace("VIG", $VIG, $dado);
+	foreach ($arr as $i => $v){
+		$dado = str_replace($i,$v,$dado);
+	}
 		$dado = str_replace("/", '', $dado);
-
 	}
 	return $dado;
 }

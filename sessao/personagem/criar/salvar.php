@@ -245,7 +245,7 @@ if (isset($_SESSION["UserID"])) {
             $habdes = "Você não se abala com entidades ou anomalias. Afinal, sempre soube que isso tudo existia. Você recebe resistência a dano mental igual ao seu Intelecto.";
 			$investigacao = $ocultismo = 5;
             break;
-        case "T.I.": // ti
+        case "TI": // ti
             $habnam = "Motor de Busca (Origem)";
             $habdes = "A critério do Mestre, sempre que tiver acesso a internet, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Tecnologia.";
             $investigacao = $tecnologia = 5;
@@ -273,6 +273,11 @@ if (isset($_SESSION["UserID"])) {
     }
     switch ($classe){
         default:
+            break;
+        case "Mundano": //Combatente
+            $hcn = "Empenho (Classe)";
+            $hcd = "Você pode não ter treinamento especial, mas compensa com dedicação e esforço. Quando faz um teste de perícia, você pode gastar 1 PE para receber +2 nesse teste.";
+            $pt[0] = "Armas Simples";
             break;
         case "Combatente": //Combatente
             $hcn = "Ataque Especial (Classe)";

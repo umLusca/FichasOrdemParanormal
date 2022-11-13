@@ -1,8 +1,5 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
-ini_set('display_startup_errors', true);
-ini_set('display_errors', true);
-session_save_path("/tmp");
 session_start();
 require_once "config.php";
 $con = con();
@@ -10,7 +7,6 @@ $con = con();
 if(isset($_POST["tc"])){
 	$_SESSION["tc"] = true;
 }//todo remove 25/09
-
 
 
 require_once RootDir."config/fichas/limites.php";//Limites e Variaveis
