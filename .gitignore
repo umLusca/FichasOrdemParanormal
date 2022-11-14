@@ -11,6 +11,7 @@ composer.lock/
 vendor/
 servers/node_modules/
 config/config.php
+config/localconfig.php
 includes/head.html
 includes/scripts.php
 robots.txt
