@@ -508,5 +508,3 @@ function is_user_logged_in($token = null)
     }
     return false;
 }
-
-
