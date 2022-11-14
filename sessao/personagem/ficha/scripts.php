@@ -1,10 +1,19 @@
 <script>
     <?php if ($edit){?>
+    let changingtimer,x,y;                //timer identifier
+    const donetimer = 1500;
     function deletar(id,nome,tipo) {
-        $('#deletarid').val(id);
-        $('#deletarnome').html(nome);
-        $('#deletarstatus').val(tipo);
-        $('#deletar').modal('show');
+        confirmar("Tem certeza?","Essa ação não poderá ser desfeita.").then((r)=>{
+            if(r){
+                $.post({
+                    url: "?token=<?=$fichat?>",
+                    data: {did: id, status: tipo, },
+                    complete:()=>{
+                        window.location.reload();
+                    },
+                });
+            }
+        })
     }//Deletar Arma
     function editarma(id) {
         $('#editarmatitle, #enome').val($("#armaid" + id + " .arma").text());
@@ -28,8 +37,6 @@
     function cleanedit() {
         $('#deletarid,#deletarnome,#deletarstatus, #enome,#etipo,#eataque,#ealcance,#edano,#ecritico,#erecarga,#eespecial,#editarmaid,#enom,#edes,#epes,#epre,#edititid,#anom,#ades,#apes,#apre,#additemid').val('');
     }// Limpar modal edições
-
-
     function percent(max,min = 0){
         if((max === 0 && min === 0) || max === 0){
             return 0;
@@ -41,10 +48,6 @@
             return p;
         }
     }
-
-
-    let changingtimer,x,y;                //timer identifier
-    const donetimer = 1500;
     function subtimer (){
         clearTimeout(changingtimer);
         changingtimer = setTimeout(subsaude, donetimer);
@@ -112,9 +115,6 @@
             socket.emit('<?=$missao_token?:$fichat?>', msg);
         });
     }
-    $('#morrendo,#combate').change(function () {
-        subtimer();
-    })
     function updatefoto() {
         let pv = parseInt($('#saude .pv').val());
         let pva = parseInt($('#saude .pva').val());
@@ -140,7 +140,6 @@
             $("#fotopersonagem").attr("src", "<?=$urlphoto;?>");
         }
     }
-
     function updateritualfoto(e) {
         let src = $(e).val();
         console.log(src)
@@ -155,6 +154,9 @@
         }
     }
     $(document).ready(function () {
+        $('#morrendo,#combate').change(function () {
+            subtimer();
+        })
         $('#addritual .selectosimbolo').change(function () {
             console.log("ok")
             let $foto = $('#addritual .selectosimbolo').val()
@@ -436,7 +438,6 @@
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
         $("#vera").click(function () {
-
             $('#card_inventario .trocavision').toggle();
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });

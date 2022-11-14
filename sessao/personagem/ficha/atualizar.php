@@ -1,9 +1,24 @@
 <?php
-$con = con();
 $success = true;
 if ($edit) {
     if (isset($_POST['status'])) {
         switch ($_POST['status']) {
+	        case "edit_habilidade":
+				$tipo = cleanstring($_POST["tipo"]);
+				$eid = (int)$_POST["eid"];
+				$title = cleanstring($_POST["title"]);
+				$desc = cleanstring($_POST["desc"]);
+				switch ($tipo){
+					case "hab":
+						$a = $con->prepare("UPDATE habilidades SET nome =?, descricao =? WHERE id = ? AND id_ficha = ?");
+						break;
+					case "pod":
+						$a = $con->prepare("UPDATE poderes SET nome =?, descricao =? WHERE id = ? AND id_ficha = ?");
+						break;
+				}
+				$a->bind_param("ssii",$title,$desc,$eid,$id);
+				$a->execute();
+		        break;
             case 'addarma':
                 $n = cleanstring($_POST["nome"],$limite_nome_inv);
                 $t = cleanstring($_POST["tipo"],$Arma_tipo);

@@ -31,14 +31,21 @@
                     <?php
                     foreach ($s[2] as $r):
                         ?>
-                        <div class="m-3 clearfix">
-                            <label for="h<?= $r["id"]; ?>" class="fs-4"><?= $r["nome"]; ?></label>
+                        <div class="m-3">
+                            <label class="fs-4"><?= $r["nome"]; ?></label>
                             <?php
                             if ($edit) {
                                 ?>
-                                <button class="btn btn-sm fa fa-trash text-danger float-end"
-                                        aria-label="Apagar Habilidade '<?= $r["nome"]; ?>'"
-                                        onclick="deletar(<?=$r["id"]?>,'<?= $r["nome"]; ?>','delethab')"></button>
+                                    <div class="float-end">
+                                        <button class="btn btn-sm fat fa-pencil text-warning"
+                                                aria-label="Editar Habilidade '<?= $r["nome"]; ?>'"
+                                                onclick="editar(<?=$r["id"]?>,'<?= $r["nome"]; ?>','hab')"></button>
+
+                                        <button class="btn btn-sm fat fa-trash text-danger"
+                                                aria-label="Apagar Habilidade '<?= $r["nome"]; ?>'"
+                                                onclick="deletar(<?=$r["id"]?>,'<?= $r["nome"]; ?>','delethab')"></button>
+
+                                    </div>
                             <?php }
                             ?>
                             <div class="font7">

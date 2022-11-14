@@ -3,138 +3,138 @@
 require_once "./../config/includes.php";
 
 if (!isset($_SESSION["UserID"])) {
-    header("Location: /");
-    exit;
+	header("Location: /");
+	exit;
 }
 $userid = $_SESSION["UserID"];
 
 if (isset($_POST["status"])) {
-    $success = true;
-    $msg = '';
-    switch ($_POST["status"]) {
-        case 'criarmissao':
-            if (!empty($_POST["title"])) {
-                $title = cleanstring($_POST["title"]);
-                if (strlen($title) < 5) {
-                    $success = false;
-                    $msg = "Seu titulo precisa conter no minimo 5 caracteres.";
-                }
-            } else {
-                $success = false;
-                $msg = "Sua missão precisa de um titulo";
-            }
-            if (!empty($_POST["desc"])) {
-                $desc = cleanstring($_POST["desc"]);
-                if (strlen($desc) < 50) {
-                    $success = false;
-                    $msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
-                }
-            } else {
-                $success = false;
-                $msg = "Sua missão precisa de uma descrição";
-            }
-            if ($success) {
-                $q = $con->prepare("INSERT INTO `missoes` (`nome`, `descricao`, `mestre`,`token`) VALUES (?, ?, ?, md5(UUID_SHORT()));");
-                $q->bind_param("ssi", $title, $desc, $_SESSION["UserID"]);
-                $q->execute();
-                if ($con->affected_rows) {
-                    $msg = "Sucesso ao criar missão.";
-                } else {
-                    $success = false;
-                    $msg = "Falha ao criar missão.";
-                }
-            }
-            $data["success"] = $success;
-            $data["msg"] = $msg;
-            echo json_encode($data);
-            exit;
-            break;
-        case 'player':
+	$success = true;
+	$msg = '';
+	switch ($_POST["status"]) {
+		case 'criarmissao':
+			if (!empty($_POST["title"])) {
+				$title = cleanstring($_POST["title"]);
+				if (strlen($title) < 5) {
+					$success = false;
+					$msg = "Seu titulo precisa conter no minimo 5 caracteres.";
+				}
+			} else {
+				$success = false;
+				$msg = "Sua missão precisa de um titulo";
+			}
+			if (!empty($_POST["desc"])) {
+				$desc = cleanstring($_POST["desc"]);
+				if (strlen($desc) < 50) {
+					$success = false;
+					$msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
+				}
+			} else {
+				$success = false;
+				$msg = "Sua missão precisa de uma descrição";
+			}
+			if ($success) {
+				$q = $con->prepare("INSERT INTO `missoes` (`nome`, `descricao`, `mestre`,`token`) VALUES (?, ?, ?, md5(UUID_SHORT()));");
+				$q->bind_param("ssi", $title, $desc, $_SESSION["UserID"]);
+				$q->execute();
+				if ($con->affected_rows) {
+					$msg = "Sucesso ao criar missão.";
+				} else {
+					$success = false;
+					$msg = "Falha ao criar missão.";
+				}
+			}
+			$data["success"] = $success;
+			$data["msg"] = $msg;
+			echo json_encode($data);
+			exit;
+			break;
+		case 'editmis':
+			if (!empty($_POST["title"])) {
+				$title = cleanstring($_POST["title"]);
+				if (strlen($title) < 5) {
+					$success = false;
+					$msg = "Seu titulo precisa conter no minimo 5 caracteres.";
+				}
+			} else {
+				$success = false;
+				$msg = "Sua missão precisa de um titulo";
+			}
+			if (!empty($_POST["desc"])) {
+				$desc = cleanstring($_POST["desc"]);
+				if (strlen($desc) < 50) {
+					$success = false;
+					$msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
+				}
+			} else {
+				$success = false;
+				$msg = "Sua missão precisa de uma descrição";
+			}
+			if ($success === true) {
+				$id = intval($_POST["id"]);
+				$q = $con->prepare("UPDATE `missoes` SET `nome` = ?, `descricao` = ? WHERE `id` = ?");
+				$q->bind_param("ssi", $title, $desc, $id);
+				$q->execute();
+				$success = $con->affected_rows;
+				$msg = $con->affected_rows ? "Sucesso" : "Falha";
+			}
+			$data["success"] = $success;
+			$data["msg"] = $msg;
+			echo json_encode($data);
+			exit;
+			break;
+		case 'player':
 
-            $token = cleanstring($_POST["token"]);
-            $view = intval($_POST["view"]);
+			$token = cleanstring($_POST["token"]);
+			$view = intval($_POST["view"]);
 
-            $b = $con->prepare("UPDATE `fichas_personagem` SET `public` = ? WHERE `token` = ? AND `usuario` = ? ;");
-            $b->bind_param("isi", $view, $token, $_SESSION["UserID"]);
-            $b->execute();
+			$b = $con->prepare("UPDATE `fichas_personagem` SET `public` = ? WHERE `token` = ? AND `usuario` = ? ;");
+			$b->bind_param("isi", $view, $token, $_SESSION["UserID"]);
+			$b->execute();
 
-            break;
-        case 'deleteficha':
-            $token = cleanstring($_POST["token"]);
-            $b = $con->prepare("DELETE FROM fichas_personagem WHERE token = ? AND usuario = ? ;");
-            $b->bind_param("si", $token, $_SESSION["UserID"]);
-            $b->execute();
-            break;
-        case 'deletemissao':
+			break;
+		case 'deleteficha':
+			$token = cleanstring($_POST["token"]);
+			$b = $con->prepare("DELETE FROM fichas_personagem WHERE token = ? AND usuario = ? ;");
+			$b->bind_param("si", $token, $_SESSION["UserID"]);
+			$b->execute();
+			break;
+		case 'deletemissao':
 
-            $con->query("DELETE FROM `missoes` WHERE `id` = '" . intval($_POST["id"]) . "' AND `mestre` = '$userid';");
-            break;
-        case 'editmis':
-            if (!empty($_POST["title"])) {
-                $title = cleanstring($_POST["title"]);
-                if (strlen($title) < 5) {
-                    $success = false;
-                    $msg = "Seu titulo precisa conter no minimo 5 caracteres.";
-                }
-            } else {
-                $success = false;
-                $msg = "Sua missão precisa de um titulo";
-            }
-            if (!empty($_POST["desc"])) {
-                $desc = cleanstring($_POST["desc"]);
-                if (strlen($desc) < 50) {
-                    $success = false;
-                    $msg = "Sua introdução precisa conter no minimo 50 caracteres.(Atual: " . strlen($desc) . ")";
-                }
-            } else {
-                $success = false;
-                $msg = "Sua missão precisa de uma descrição";
-            }
-            if ($success === true) {
-                $id = intval($_POST["id"]);
-                $q = $con->prepare("UPDATE `missoes` SET `nome` = ?, `descricao` = ? WHERE `id` = ?");
-                $q->bind_param("ssi", $title, $desc, $id);
-                $q->execute();
-                $success = $con->affected_rows;
-                $msg = $con->affected_rows ? "Sucesso" : "Falha";
-            }
-            $data["success"] = $success;
-            $data["msg"] = $msg;
-            echo json_encode($data);
-            exit;
-            break;
-        case 'acc':
-            $token = cleanstring($_POST["token"]);
-            $idt = cleanstring($_POST["idt"]);
-            $b = $con->prepare("UPDATE `ligacoes` SET `id_ficha` = (SELECT id from fichas_personagem where token = ?) WHERE `token` = ? AND `id_usuario` = ? ;");
-            $b->bind_param("ssi", $token, $idt, $_SESSION["UserID"]);
-            $b->execute();
-            break;
-        case 'rcc':
-            $idt = cleanstring($_POST["idt"]);
-            $a = $con->prepare("DELETE FROM ligacoes WHERE token = ? and id_usuario = ? ;");
-            $a->bind_param("si", $idt, $_SESSION["UserID"]);
-            $a->execute();
-            break;
-        case 'desp':
-            $token = cleanstring($_POST["token"]);
-            $b = $con->prepare("DELETE FROM `ligacoes` WHERE `id_usuario`= ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ? );");
-            $b->bind_param("is", $_SESSION["UserID"], $token);
-            $b->execute();
-            break;
-    }
+			$con->query("DELETE FROM `missoes` WHERE `id` = '" . intval($_POST["id"]) . "' AND `mestre` = '$userid';");
+			break;
+		case 'acc':
+			$token = cleanstring($_POST["token"]);
+			$idt = cleanstring($_POST["idt"]);
+			$b = $con->prepare("UPDATE `ligacoes` SET `id_ficha` = (SELECT id from fichas_personagem where token = ?) WHERE `token` = ? AND `id_usuario` = ? ;");
+			$b->bind_param("ssi", $token, $idt, $_SESSION["UserID"]);
+			$b->execute();
+			break;
+		case 'rcc':
+			$idt = cleanstring($_POST["idt"]);
+			$a = $con->prepare("DELETE FROM ligacoes WHERE token = ? and id_usuario = ? ;");
+			$a->bind_param("si", $idt, $_SESSION["UserID"]);
+			$a->execute();
+			break;
+		case 'desp':
+			$token = cleanstring($_POST["token"]);
+			$b = $con->prepare("DELETE FROM `ligacoes` WHERE `id_usuario`= ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ? );");
+			$b->bind_param("is", $_SESSION["UserID"], $token);
+			$b->execute();
+			break;
+	}
 }
 $a = $con->query("Select * from `missoes` WHERE `mestre` = '" . $_SESSION["UserID"] . "';");
 $b = $con->query("Select * from `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "';");
 
-$c = $con->query("SELECT L.*, m.nome,m.descricao as m_token FROM ligacoes L INNER JOIN missoes m on L.id_missao = m.id AND L.id_usuario = '".$_SESSION["UserID"]."' AND L.id_ficha is null;");
+$c = $con->query("SELECT L.*, m.nome,m.descricao as m_token FROM ligacoes L INNER JOIN missoes m on L.id_missao = m.id AND L.id_usuario = '" . $_SESSION["UserID"] . "' AND L.id_ficha is null;");
 
 $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_ficha from ligacoes WHERE id_ficha is not null) AND usuario = '" . $_SESSION["UserID"] . "';");
 ?>
 <!DOCTYPE html>
 <html lang="br">
 <head>
-    <?php require_once "./../includes/head.html"; ?>
+	<?php require_once "./../includes/head.html"; ?>
     <title>Sessões - FichasOP</title>
 </head>
 <body class="bg-black text-light">
@@ -144,14 +144,14 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 <main class="container-flex justify-content-center m-4">
     <div class="row row-cols-1 g-3">
 
-	    <?php if($c->num_rows){
-		    ?>
+		<?php if ($c->num_rows) {
+			?>
             <div>
                 <div class="card bg-black border-light">
                     <div class="card-header text-center font10"><h3>Convites de Missões</h3></div>
                     <div class="card-body">
                         <div class="row g-3 row-cols-1 row-cols-lg-2">
-						    <?php foreach ($c as $p) { ?>
+							<?php foreach ($c as $p) { ?>
                                 <div class="col">
                                     <div class="card bg-black border-dashed border-info" id="<?= $p["token"] ?>">
                                         <div class="card-header text-info">
@@ -174,17 +174,17 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-		                                        <?php
-		                                        foreach ($z as $ficha) {
-			                                        ?>
+												<?php
+												foreach ($z as $ficha) {
+													?>
                                                     <li>
                                                         <button class="dropdown-item"
                                                                 onclick="aceitarconvite('<?= $p["token"] ?>','<?= $ficha["token"] ?>')">
                                                             Aceitar - <?= $ficha["nome"] ?></button>
                                                     </li>
-			                                        <?php
-		                                        }
-		                                        ?>
+													<?php
+												}
+												?>
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
@@ -199,19 +199,19 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                         </div>
                                     </div>
                                 </div>
-						    <?php } ?>
+							<?php } ?>
 
                         </div>
                     </div>
                 </div>
             </div>
-	    <?php }?>
+		<?php } ?>
         <div>
             <div class="card bg-black border-light">
                 <div class="card-header text-center font10"><h3>Missões/Sessões</h3></div>
                 <div class="card-body">
                     <div class="row g-3 row-cols-1 row-cols-lg-2">
-                        <?php /*
+						<?php /*
                  $a = $con->query("Select * from `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "';");
                  foreach ($a as $dl) {
                      $b = $con->query("SELECT * FROM `missoes` WHERE `missoes`.`id` ='" . $dl["id_missao"] . "';");
@@ -315,7 +315,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                      <?php }
                  }
                 */
-                        foreach ($a as $m) { ?>
+						foreach ($a as $m) { ?>
                             <div class="col">
                                 <div class="card bg-black border-danger" id="<?= $m["token"] ?>">
                                     <div class="card-header text-danger"><span
@@ -338,19 +338,17 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
+						<?php } ?>
 
                         <div class="col">
                             <div class="card bg-black border-dashed border-danger">
                                 <div class="card-header text-danger"><span class="fs-4 font10">Criar Missão</span></div>
                                 <div class="card-body overflow-auto" style="height: 150px;">
-                                    <p class="m-1 font7">Para criar uma missão basta apenas clicar abaixo. Comece com um
-                                        título e uma descrição.</p>
+                                    <p class="m-1 font7">Para criar uma missão basta apenas clicar abaixo. Comece com um título e uma descrição.</p>
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" data-bs-toggle="modal"
-                                       data-bs-target="#criarsessao">Criar missão</a>
+                                    <a class="btn text-light border-dashed" data-bs-toggle="modal" data-bs-target="#criarsessao">Criar missão</a>
                                 </div>
                             </div>
                         </div>
@@ -363,7 +361,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                 <div class="card-header text-center font10"><h3>Personagens e Fichas</h3></div>
                 <div class="card-body">
                     <div class="row g-3 row-cols-1 row-cols-lg-2">
-                        <?php /*
+						<?php /*
                  $a = $con->query("Select * from `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "';");
                  foreach ($a as $dl) {
                      $b = $con->query("SELECT * FROM `missoes` WHERE `missoes`.`id` ='" . $dl["id_missao"] . "';");
@@ -488,10 +486,10 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                         </div>
                     <?php } */ ?>
 
-                        <?php foreach ($b as $f) {
-                            $mq = $con->query("SELECT * FROM missoes WHERE id in (SELECT id_missao FROM ligacoes WHERE id_ficha = '" . $f["id"] . "')");
-                            if ($mq->num_rows) $m = mysqli_fetch_array($mq);
-                            ?>
+						<?php foreach ($b as $f) {
+							$mq = $con->query("SELECT * FROM missoes WHERE id in (SELECT id_missao FROM ligacoes WHERE id_ficha = '" . $f["id"] . "')");
+							if ($mq->num_rows) $m = mysqli_fetch_array($mq);
+							?>
 
                             <div class="col">
                                 <div class="card h-100 bg-black border-primary">
@@ -518,8 +516,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                     <div class="card-body" style="height: 150px;">
                                         <div class="row justify-content-between">
                                             <div class="d-none d-sm-inline   col-auto align-self-center p-0">
-                                                <img src="<?= $f["foto"] ?>" class="border rounded-circle"
-                                                     style="aspect-ratio: 1/1; height: 115px">
+                                                <img src="<?= $f["foto"] ?>" class="border rounded-circle" style="aspect-ratio: 1/1; height: 115px">
                                             </div>
                                             <div class="col align-self-center">
                                                 <div class="row g-0 p-0 row-cols-2 justify-content-center">
@@ -545,7 +542,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                                     <div class="">
                                                         <div class="position-relative border">
                                                             <span class="text-muted bg-black overname position-absolute translate-middle-y text-center font10">Missão:</span>
-                                                            <div class="pt-4 px-2 text-truncate"><?= ($mq->num_rows)?$m["nome"] : "Nenhuma" ?></div>
+                                                            <div class="pt-4 px-2 text-truncate"><?= ($mq->num_rows) ? $m["nome"] : "Nenhuma" ?></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -558,7 +555,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
+						<?php } ?>
                         <div class="col">
                             <div class="card bg-black border-dashed border-primary">
                                 <div class="card-header text-primary"><span class="fs-4 font10">Criar Personagem</span>
@@ -600,7 +597,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                     <div class="m-2">
                         <label class="form-floating w-100">
                             <textarea type="text" name="desc" class="form-control bg-black text-white h-50" required
-                                rows="5"      placeholder="descrição da missão"></textarea>
+                                      rows="5" placeholder="descrição da missão"></textarea>
                             <label>Introdução da missão</label>
                         </label>
                     </div>
@@ -668,8 +665,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger me-auto" id="deletmissao"
-                            onclick="deletemissao()">
+                    <button type="button" class="btn btn-sm btn-danger me-auto" id="deletmissao" onclick="deletemissao()">
                         <i class="fa-regular fa-trash"></i> Deletar Missão Permanentemente!
                     </button>
                     <button type="submit" class="btn btn-primary">Salvar Configurações</button>
@@ -683,17 +679,17 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 <?php require_once "./../includes/scripts.php"; ?>
 
 <script>
-
     function desvincular(p) {
-        let text = "DESEJA DESVINCULAR ESSA FICHA?\nNÃO SERÁ POSSIVEL REVERTER!";
-        if (confirm(text) === true) {
-            $.post({
-                data: {status: "desp", token: p},
-                url: "",
-            }).done(function () {
-                location.reload();
-            });
-        }
+        confirmar("Tem certeza?", "Ao Desvincular, não será possível reverter.").then((s) => {
+            if (s) {
+                $.post({
+                    data: {status: "desp", token: p},
+                    url: "",
+                }).done(function () {
+                    location.reload();
+                });
+            }
+        })
     }
 
     function aceitarconvite(idt, idf) {
@@ -715,46 +711,44 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
     }
 
     function deleteficha(id) {
-        let text = "DESEJA DELETAR A FICHA?\nNÃO SERÁ POSSIVEL REVERTER";
-        if (confirm(text) === true) {
-            $.post({
-                url: '',
-                data: {token: id, status: "deleteficha"},
-            }).done(function (data) {
-                alert("DELETADO!");
-                location.reload();
-            })
-        } else {
-            alert("Você cancelou!");
-        }
+        confirmar("Deseja apagar essa ficha?", "Ao fazer isso não será possível reverter.").then((s) => {
+
+            console.log(s)
+            if (s) {
+                $.post({
+                    url: '',
+                    data: {token: id, status: "deleteficha"},
+                }).done(function (data) {
+                    location.reload();
+                })
+            }
+        })
     }
 
-    function deletemissao(id) {
-        let text = "DESEJA DELETAR A MISSÃO?\nNÃO SERÁ POSSIVEL REVERTER";
-        if (confirm(text) === true) {
-            $.post({
-                url: '',
-                data: {status: "deletemissao", id: id},
-            }).done(function (data) {
-                console.log(data)
-                alert("DELETADO!");
-                location.reload();
-            })
-        } else {
-            alert("Você cancelou!");
-        }
+    function deletemissao(t) {
+        confirmar("Deseja apagar essa missão?", "Não será possível desfazer essa ação.").then((s) => {
+            console.log(s)
+            if (s) {
+                $.post({
+                    url: '',
+                    data: {status: "deletemissao", tk: t},
+                }).done(function () {
+                    location.reload();
+                })
+            }
+        })
     }
 
     function configplayer(id) {
         $("#inputidficha").val(id);
-        $("#deletficha").attr("onclick", 'deleteficha("' + id + '")');
+        $("#deletficha").attr("onclick", `deleteficha("${id}")`);
     }
 
     function configmissao(token) {
         $("#inputidmissao").val(token);
         $("#configmissao .title").val($(`#${token} .title`).html());
         $("#configmissao .desc").val($(`#${token} .desc`).html());
-        $("#deletmissao").attr("onclick", 'deletemissao(' + token + ')');
+        $("#deletmissao").attr("onclick", 'deletemissao("' + token + '")');
     }
 
     $(document).ready(function () {
