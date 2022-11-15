@@ -12,7 +12,6 @@ vendor/
 servers/node_modules/
 config/config.php
 includes/head.html
-includes/scripts.php
 robots.txt
 .htaccess
 favicon.png
