@@ -190,7 +190,7 @@ if (isset($_SESSION["UserID"])) { ?>
 				<div class="modal-content bg-black text-white border-success">
 					<div class="modal-header">
 						<button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#perfil">
-							<i class="fa-solid fa-left"></i> Voltar
+							<i class="fat fa-left"></i> Voltar
 						</button>
 						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
@@ -323,118 +323,5 @@ if (isset($_SESSION["UserID"])) { ?>
 			</div>
 		</form>
 	</div>
-		<script>
-			let up;
-            $('#btnaddmarca').on('click', function () {
-                const url = $('#addfotomarca input').val();
-                console.log("afas")
-                if (url.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || url == "") {
-                    if (!up) {
-                        $.post({
-                            url: '',
-                            data: {status: 'addmarca', urlmarca: url},
-                            dataType: "JSON"
-                        }).done(function (data) {
-                            console.log(data)
-                            if (data.msg) {
-                                if (!data.success) {
-                                    $("#addfotomarca .return").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                                } else {
-                                    up = true;
-                                    $("#addfotomarca .return").html('<div class="alert alert-success">' + data.msg + '</div>');
-                                }
-                            }
-                        }).fail(function (d) {
-							console.log(d);
-                            $("#perfil .return").html(`<div class="alert alert-success m-2">Houve uma falha ao fazer a alteração.
-								<span class="float-end" role="button" onclick="copiar(\`${d.responseText}\`)"><i class="fas fa-copy" aria-hidden="true"></i></span>
-									</div>`);
-                       })
-                    }
-                } else {
-
-				}
-            })
-
-            $('#addfotomarca input').on('input', function () {
-                var src = jQuery(this).val();
-                if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
-                    $("#addfotomarca .warning").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(.jpg, .png ...)!");
-                    $('#addfotomarca .preview').html('');
-                    return false;
-                } else {
-                    $("#addfotomarca .warning").html("");
-                    $('#addfotomarca .preview').html('<img class="" height="250" width="250" src="' + src + '">');
-                }
-
-            })
-
-            function copiar(texto) {
-                const type = "text/plain";
-                const blob = new Blob([texto], {type});
-                const data = [new ClipboardItem({[type]: blob})];
-                navigator.clipboard.write(data);
-            }
-
-            $("#configconta .senha").on("input", () => {
-                if ($("#configconta .senha").val().length > 0) {
-                    $("#configconta .csenha").prop("required", true);
-                } else {
-                    $("#configconta .csenha").prop("required", false);
-                }
-            })
-			let enviando = false;
-            $("#configconta").on("submit", (e) => {
-                e.preventDefault();
-                $this = $("#configconta");
-                $this.addClass('was-validated');
-
-                if ($this.isValid() && $("#configconta .senha").val() === $("#configconta .csenha").val()) {
-                    console.log("true");
-                    if(!enviando) {
-                        $.post({
-                            url: '',
-                            data: $this.serialize() + "&status=conta",
-                            dataType: "json",
-                            beforeSend: () => {
-                                enviando = true;
-                                $("#configconta .warning").html(`<div class="alert alert-warning m-2">Estamos atualizando sua conta, aguarde...</div>`);
-                                $("#configconta input:enabled").val("");
-                            },
-                            success: (d) => {
-                                if (d.success && d.msg) {
-                                    $("#configconta .warning").html(`<div class="alert alert-success m-2">${d.msg}</div>`);
-                                    window.location.reload();
-                                } else {
-                                    enviando = false;
-                                    $("#configconta .warning").html(`
-									<div class="alert alert-danger m-2">${d.msg}
-										<span class="btn float-end" role="button" onclick="copiar(\`${d.msg}\`)">
-											<i class="fas fa-copy" aria-hidden="true"></i>
-										</span>
-									</div>`);
-                                }
-                            },
-                            error: (d) => {
-                                $("#configconta .warning").html(`<div class="alert alert-success m-2">Houve uma falha ao fazer a alteração.
-								<span class="float-end" role="button" onclick="copiar(\`${d.responseText}\`)"><i class="fas fa-copy" aria-hidden="true"></i></span>
-									</div>`);
-                                enviando = false;
-                            },
-                        });
-                    }
-                } else {
-                    $("#configconta .warning").html(`<div class="alert alert-danger m-2">Confirme se o formulário está preenchido corretamente.</div>`);
-                    $("#configconta .csenha").addClass("is-invalid")
-                    console.log("false");
-                }
-
-            })
-
-            function update_conta() {
-                $this = $("#configconta");
-                $this.isValid()
-            }
-		</script>
 	<!------------------------------------------------------------------------------------------------------------------->
 <?php } ?>

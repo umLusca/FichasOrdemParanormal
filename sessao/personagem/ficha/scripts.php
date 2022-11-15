@@ -1,14 +1,15 @@
 <script>
-    <?php if ($edit){?>
-    let changingtimer,x,y;                //timer identifier
+	<?php if ($edit){?>
+    let changingtimer, x, y;                //timer identifier
     const donetimer = 1500;
-    function deletar(id,nome,tipo) {
-        confirmar("Tem certeza?","Essa ação não poderá ser desfeita.").then((r)=>{
-            if(r){
+
+    function deletar(id, nome, tipo) {
+        confirmar("Tem certeza?", "Essa ação não poderá ser desfeita.").then((r) => {
+            if (r) {
                 $.post({
                     url: "?token=<?=$fichat?>",
-                    data: {did: id, status: tipo, },
-                    complete:()=>{
+                    data: {did: id, status: tipo,},
+                    complete: () => {
                         window.location.reload();
                     },
                 });
@@ -37,50 +38,53 @@
     function cleanedit() {
         $('#deletarid,#deletarnome,#deletarstatus, #enome,#etipo,#eataque,#ealcance,#edano,#ecritico,#erecarga,#eespecial,#editarmaid,#enom,#edes,#epes,#epre,#edititid,#anom,#ades,#apes,#apre,#additemid').val('');
     }// Limpar modal edições
-    function percent(max,min = 0){
-        if((max === 0 && min === 0) || max === 0){
+    function percent(max, min = 0) {
+        if ((max === 0 && min === 0) || max === 0) {
             return 0;
         }
         const p = (max / min) * 100;
-        if (p > 100){
+        if (p > 100) {
             return 100;
         } else {
             return p;
         }
     }
-    function subtimer (){
+
+    function subtimer() {
         clearTimeout(changingtimer);
         changingtimer = setTimeout(subsaude, donetimer);
     }
-    function updtsaude(valor,type) {
+
+    function updtsaude(valor, type) {
         let atual = type + 'a';
         let maxim = type;
-        let saude = parseInt($("#saude ."+atual).val()) + valor;
-        $("#saude ."+atual).val(saude);
-        let per = parseInt($("#saude ."+maxim).val());
-        if($('#saude .pva').val() < <?=$minimo_PVA?>){
+        let saude = parseInt($("#saude ." + atual).val()) + valor;
+        $("#saude ." + atual).val(saude);
+        let per = parseInt($("#saude ." + maxim).val());
+        if ($('#saude .pva').val() < <?=$minimo_PVA?>) {
             $('#saude .pva').val(<?=$minimo_PVA?>);
         }
-        if($('#saude .sana').val() < <?=$minimo_SANA?>){
+        if ($('#saude .sana').val() < <?=$minimo_SANA?>) {
             $('#saude .sana').val(<?=$minimo_SANA?>);
         }
-        if($('#saude .pea').val() < <?=$minimo_PEA?>){
+        if ($('#saude .pea').val() < <?=$minimo_PEA?>) {
             $('#saude .pea').val(<?=$minimo_PEA?>);
         }
 
-        if($('#saude .pva').val() > <?=$pv + $maximo_PVA?>){
+        if ($('#saude .pva').val() > <?=$pv + $maximo_PVA?>) {
             $('#saude .pva').val(<?=$pv + $maximo_PVA?>);
         }
-        if($('#saude .sana').val() > <?=$san + $maximo_SANA?>){
+        if ($('#saude .sana').val() > <?=$san + $maximo_SANA?>) {
             $('#saude .sana').val(<?=$san + $maximo_SANA?>);
         }
-        if($('#saude .pea').val() > <?=$pe + $maximo_PEA?>){
+        if ($('#saude .pea').val() > <?=$pe + $maximo_PEA?>) {
             $('#saude .pea').val(<?=$pe + $maximo_PEA?>);
         }
 
-        $("#barra"+atual).css('width', percent(saude,per)+'%');
+        $("#barra" + atual).css('width', percent(saude, per) + '%');
         subtimer();
     }
+
     function subsaude() {
         let data = $('#saude :input').serialize();
         if ($('#morrendo').is(":checked")) {
@@ -88,14 +92,16 @@
         } else {
             x = 0;
         }
-        data += '&status=usau&mor='+x;
+        data += '&status=usau&mor=' + x;
         console.log(data);
         $.post({
             url: '?token=<?=$fichat?>',
             dataType: 'json',
             data: data,
-			complete:(d)=>{console.log(d)},
-        }).done(function (data){
+            complete: (d) => {
+                console.log(d)
+            },
+        }).done(function (data) {
             console.log(data);
             const msg = {};
             if ($('#combate').is(":checked")) {
@@ -112,9 +118,32 @@
             $('#saude .pe').val(msg.vida.pe);
             console.log($('#saude .pe').val());
             updatefoto()
-            socket.emit('<?=$missao_token?:$fichat?>', msg);
+            socket.emit('<?=$missao_token ?: $fichat?>', msg);
         });
     }
+
+    function editritual(i,id) {
+        let editritual_modal = new bootstrap.Modal($("#editritual"));
+        editritual_modal.show();
+        $("#editritual .url").val($("#but-ritual-"+i+" .foto").prop("src"));
+        $("#editritual .foto").prop("src",$("#but-ritual-"+i+" .foto").prop("src"));
+        $("#editritual .ritual").val($("#but-ritual-"+i+" .nome").html());
+        $("#editritual .elemento").val($("#but-ritual-"+i+" .elemento").html());
+        $("#editritual .circulo").val($("#but-ritual-"+i+" .circulo").html());
+        $("#editritual .conjuracao").val($("#but-ritual-"+i+" .conjuracao").html());
+        $("#editritual .alcance").val($("#but-ritual-"+i+" .alcance").html());
+        $("#editritual .alvo").val($("#but-ritual-"+i+" .alvo").html());
+        $("#editritual .duracao").val($("#but-ritual-"+i+" .duracao").html());
+        $("#editritual .resistencia").val($("#but-ritual-"+i+" .resistencia").html());
+        $("#editritual .desc").val($("#but-ritual-"+i+" .desc").html());
+        $("#editritual .normal").val($("#but-ritual-"+i+" .normal").attr("data-dado"));
+        $("#editritual .discente").val($("#but-ritual-"+i+" .discente").attr("data-dado"));
+        $("#editritual .verdadeiro").val($("#but-ritual-"+i+" .verdadeiro").attr("data-dado"));
+        $("#editritual .did").val(id);
+        console.log($("#but-ritual-"+i+" .verdadeiro"));
+    }
+
+
     function updatefoto() {
         let pv = parseInt($('#saude .pv').val());
         let pva = parseInt($('#saude .pva').val());
@@ -125,14 +154,14 @@
             $("#fotopersonagem").attr("src", "<?=$urlphotomor;?>");
             console.log("morrendo")
         } else if (sana <= 0) {
-            if (percent(pva,pv) < 50) {
+            if (percent(pva, pv) < 50) {
                 console.log("enlouquecendo + ferido")
-                    $("#fotopersonagem").attr("src", "<?=$urlphotoef;?>");
-                } else {
+                $("#fotopersonagem").attr("src", "<?=$urlphotoef;?>");
+            } else {
                 console.log("enlouquecendo")
-                    $("#fotopersonagem").attr("src", "<?=$urlphotoenl;?>");
-                }
-        } else if (percent(pva,pv) < 50) {
+                $("#fotopersonagem").attr("src", "<?=$urlphotoenl;?>");
+            }
+        } else if (percent(pva, pv) < 50) {
             console.log("ferido")
             $("#fotopersonagem").attr("src", "<?=$urlphotofer;?>");
         } else {
@@ -140,22 +169,118 @@
             $("#fotopersonagem").attr("src", "<?=$urlphoto;?>");
         }
     }
-    function updateritualfoto(e) {
-        let src = $(e).val();
-        console.log(src)
-        src = src.trim();
-        if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
-            $("#addritual .aviso").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
-            $('#prevsimbolo').html(' <img src="/assets/img/desconhecido.webp" width="150" height="150" alt="Ritual">');
-            return false;
-        } else {
-            $("#warningsimbolo").html("");
-            $('#prevsimbolo').html('<img src="' + src + '" width="150" height="150" alt="Ritual">');
-        }
-    }
+
     $(document).ready(function () {
         $('#morrendo,#combate').change(function () {
             subtimer();
+        })
+
+        $("#editritual input.url").on("input", ()=>{
+            $this = $("#editritual input.url");
+
+            let src = $this.val().trim();
+            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
+                $this.addClass("is-invalid").addClass("is-valid");
+                $("#editritual .return").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
+                $('#editritual img.foto').prop("src","https://fichasop.com/assets/img/desconhecido.webp");
+                return false;
+            } else {
+                $this.addClass("is-valid").removeClass("is-invalid");
+                $("#editritual .return").html("");
+                $('#editritual img.foto').prop("src",src);
+            }
+
+
+        })
+
+        $('#editritual select.rituais').change(() => {
+            let $foto;
+            console.log($('#editritual select.rituais').val())
+            switch (parseInt($('#editritual select.rituais').val())) {
+                default:
+                    $foto = '';
+                    break;
+                case 2:
+                    $foto = 'https://fichasop.com/assets/img/desconhecido.webp';
+                    break;
+                case 3:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Amaldicoar_Tecnologia.webp';
+                    break;
+                case 4:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Assombracao_Forcada.webp';
+                    break;
+                case 5:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Camuflagem.webp';
+                    break;
+                case 6:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Cicatrizacao_Acelerada.webp';
+                    break;
+                case 7:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Coincidencia_Forcada.webp';
+                    break;
+                case 8:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Compreensao_Paranormal.webp';
+                    break;
+                case 9:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Comunicacao_com_Espiritos.webp';
+                    break;
+                case 10:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_da_Dama_de_Sangue.webp';
+                    break;
+                case 11:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_decadenzia.webp';
+                    break;
+                case 12:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Derreter_Criaturas_De_Sangue.webp';
+                    break;
+                case 13:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Descarnar.webp';
+                    break;
+                case 14:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Destruicao.webp';
+                    break;
+                case 15:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Dissipar_Espiritos.webp';
+                    break;
+                case 16:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Invocar_Nevoa.webp';
+                    break;
+                case 17:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Leitura_Psiquica.webp';
+                    break;
+                case 18:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_odio_Incontrolavel.webp';
+                    break;
+                case 19:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Papel_Graduacao.webp';
+                    break;
+                case 20:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Paralisia_Anormal.webp';
+                    break;
+                case 21:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Passagem_de_Conhecimento.webp';
+                    break;
+                case 22:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Pavor_Anormal.webp';
+                    break;
+                case 23:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Reacao.webp';
+                    break;
+                case 24:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Ritual_Espelho.webp';
+                    break;
+                case 25:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Sentir_Atraves_dois_em_um.webp';
+                    break;
+                case 26:
+                    $foto = 'https://fichasop.com/assets/img/Simbolo_Sugada_Mortal.webp';
+                    break;
+                case 27:
+                    $foto = 'https://fichasop.com/assets/img/simbolo_transcender.webp';
+                    break;
+            }
+            $("#editritual input.url").val($foto);
+
         })
         $('#addritual .selectosimbolo').change(function () {
             console.log("ok")
@@ -165,7 +290,7 @@
                 $("#simbolourl input").attr("readonly", false)
             } else {
                 $("#simbolourl input").attr("readonly", true);
-                switch ($foto){
+                switch ($foto) {
                     default:
                         $foto = 'https://fichasop.com/assets/img/desconhecido.webp';
                         break;
@@ -250,26 +375,9 @@
             }
         })
 
-
-    socket = io.connect('https://portrait.fichasop.com', {
-        reconnectionDelay: 2500,
-        transports: ['websocket', 'polling', 'flashsocket']
-    });
-    socket.on("connect", function () {
-        console.log("Conectado");
-    });
-    socket.on("disconnect", function () {
-        console.log("Desconectado");
-    });
-	    <?php if(isset($dados_missao) AND $dados_missao["id"]==5887){?>
-        $('#portrait').prop('checked', true);
-        socket.emit('create', '<?=$missao_token?:$fichat?>');
-        socket.emit('auth', '<?=$missao_token?:$fichat?>');
-	    <?php }?>
-
         $('#portrait').change(function () {
             if ($('#portrait').is(":checked")) {
-                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
+                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500, transports: ['websocket', 'polling', 'flashsocket']});
                 socket.emit('create', '<?=$missao_token ?: $fichat?>');
                 socket.emit('<?=$missao_token ?: $fichat?>', {auth: '<?=$fichat?>'});
             } else {
@@ -288,7 +396,9 @@
                 $.post({
                     url: '?token=<?=$fichat?>',
                     data: $(this).serialize(),
-                    complete:(d)=>{console.log(d)},
+                    complete: (d) => {
+                        console.log(d)
+                    },
                 }).done(function (data) {
                     location.reload();
                 })
@@ -308,41 +418,60 @@
             updtsaude();
         })
 
-            $("button, input:checkbox").on("click", function (){
-                $(this).blur();
-            })
+        $("button, input:checkbox").on("click", function () {
+            $(this).blur();
+        })
 
 
-        $('#prev').html('<img class="rounded-circle border border-light" style="max-width: 172px;width: -webkit-fill-available;" src="' + $('#fotourl').val() + '" alt="">');
-        $('#fotos .foto-perfil').on('input', function () {
-            var src = jQuery(this).val();
-            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
-                $("#warning").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(.jpg, .png ...)!");
-                $('#prev').html('');
+        $('#editfoto .foto-perfil').on('input', function () {
+            console.log("escrito")
+            var src = $(this).val();
+            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp|gif)$") || src == "") {
+                $("#editfoto .return").html("<div class='alert alert-danger m-2'><i class='fat fa-x'></i> Precisa iniciar com HTTPS e terminar com .PNG|.WEBP|.JPG|.GIF!</div>");
+                $('#editfoto .preview img').prop("src", '').parent().hide();
                 return false;
             } else {
-                $("#warning").html("");
-                $('#prev').html('<img class="position-absolute rounded-circle border border-light" style="max-width:100px;" height="100" width="100" src="' + src + '">');
+                $("#editfoto .return").html("");
+                $('#editfoto .preview img').prop("src", src).parent().show();
             }
 
         })
 
-
-
-        $('#foto').change(function () {
-            let fotovalor = $('#foto').val()
-            if (fotovalor == '9') {
-                $('#divfotourl').show();
-                $("#fotourl,#fotofemor,#fotourenl,#fotourfer").attr("disabled", false)
-            } else {
-                $('#divfotourl').hide();
-                $("#fotourl,#fotomor,#fotoenl,#fotofer,").attr("disabled", true)
+        $('#editfoto .selector').change(function () {
+            console.log($(this).val())
+            let foto;
+            switch (parseInt($(this).val())) {
+                case 1:
+                    foto = 'https://fichasop.com/assets/img/Man.webp';
+                    break;
+                case 2:
+                    foto = 'https://fichasop.com/assets/img/Woman.webp';
+                    break;
+                case 3:
+                    foto = 'https://fichasop.com/assets/img/Mauro.webp';
+                    break;
+                case 4:
+                    foto = 'https://fichasop.com/assets/img/Maya.webp';
+                    break;
+                case 5:
+                    foto = 'https://fichasop.com/assets/img/Bruna.webp';
+                    break;
+                case 6:
+                    foto = 'https://fichasop.com/assets/img/Leandro.webp';
+                    break;
+                case 7:
+                    foto = 'https://fichasop.com/assets/img/Jaime.webp';
+                    break;
+                case 8:
+                    foto = 'https://fichasop.com/assets/img/Aniela.webp';
+                    break;
             }
+
+            $("#editfoto .foto-perfil").val(foto)
+            $("#editfoto .return").html("");
+            $('#editfoto .preview img').prop("src", foto).parent().show();
+
         })
-
-
-
-
 
 
         $('.teedfa').on('input', function () {
@@ -431,7 +560,7 @@
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
     });
-    <?php } else {?>
+	<?php } else {?>
     $(document).ready(function () {
         $("#verp").click(function () {
             $("#pericias .destreinado").toggle();
@@ -442,6 +571,6 @@
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
     });
-    <?php
-    }?>
+	<?php
+	}?>
 </script>

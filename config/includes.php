@@ -3,7 +3,6 @@ error_reporting(E_ERROR | E_PARSE);
 session_start();
 require_once "config.php";
 $con = con();
-
 if(isset($_POST["tc"])){
 	$_SESSION["tc"] = true;
 }//todo remove 25/09

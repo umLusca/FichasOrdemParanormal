@@ -71,9 +71,9 @@ if (isset($_POST["status"])) {
 				$msg = "Sua missão precisa de uma descrição";
 			}
 			if ($success === true) {
-				$id = intval($_POST["id"]);
-				$q = $con->prepare("UPDATE `missoes` SET `nome` = ?, `descricao` = ? WHERE `id` = ?");
-				$q->bind_param("ssi", $title, $desc, $id);
+				$id = cleanstring($_POST["id"]);
+				$q = $con->prepare("UPDATE `missoes` SET `nome` = ?, `descricao` = ? WHERE `token` = ? AND mestre = ?");
+				$q->bind_param("sssi", $title, $desc, $id,$_SESSION["UserID"]);
 				$q->execute();
 				$success = $con->affected_rows;
 				$msg = $con->affected_rows ? "Sucesso" : "Falha";
@@ -577,16 +577,16 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
     </div>
 </main>
 <div id="modals">
-    <div class="modal" id="criarsessao" tabindex="-1">
+    <form class="modal" id="criarsessao" tabindex="-1" method="post" novalidate>
         <div class="modal-dialog modal-lg">
-            <form class="modal-content bg-black border-light" id="criarmissao" method="post" novalidate>
+            <div class="modal-content bg-black border-light">
                 <div class="modal-header">
                     <h4 class="modal-title">Criar uma sessão como mestre</h4>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="m-2" id="msgcriar"></div>
+                    <div class="m-2 return"></div>
                     <div class="m-2">
                         <label class="form-floating w-100">
                             <input type="text" name="title" class="form-control bg-black text-light"
@@ -606,9 +606,9 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                     <button type="submit" class="btn btn-primary">Criar Missão</button>
                     <input type="hidden" name="status" value="criarmissao">
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
     <form class="modal" id="configplayer" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-black border-light">
@@ -639,15 +639,16 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
         </div>
     </form>
 
-    <div class="modal" id="configmissao" tabindex="-1">
+    <form class="modal" id="configmissao" tabindex="-1" novalidate method="post">
         <div class="modal-dialog">
-            <form class="modal-content bg-black border-light" id="formconfigmissao" method="post" novalidate>
+            <div class="modal-content bg-black border-light">
                 <div class="modal-header">
                     <h3 class="modal-title">Configurações da missão</h3>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="return m-2"></div>
                     <div class="m-2">
                         <label class="form-floating w-100 ">
                             <input name="title" type="text" class="form-control bg-black text-white title"
@@ -672,9 +673,9 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                     <input type="hidden" name="status" value="editmis">
                     <input type="hidden" id="inputidmissao" name="id" value="">
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 <?php require_once "./../includes/scripts.php"; ?>
 
@@ -762,30 +763,30 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
             })
         })
 
-        $('#editmissao').submit(function (e) {
+        $('#criarsessao').submit(function (e) {
             e.preventDefault();
             var form = $(this);
             $.post({
                 beforeSend: function () {
-                    $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', true);
-                    $("#msgcriar").html("<div class='alert alert-warning'>Aguarde enquanto verificamos os dados...</div>");
+                    $("#criarsessao input, #criarsessao textarea, #criarsessao button").attr('disabled', true);
+                    $("#criarsessao .return").html("<div class='alert alert-warning'>Aguarde enquanto verificamos os dados...</div>");
                 },
                 url: "index.php",
                 data: form.serialize(),
                 dataType: "JSON",
                 error: function (data) {
                     console.log(data)
-                    $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', false);
-                    $("#msgcriar").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
+                    $("#criarsessao input, #criarsessao textarea, #criarsessao button").attr('disabled', false);
+                    $("#criarsessao .return").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
                 },
             }).done(function (data) {
                 console.log(data);
                 if (data.msg) {
                     if (!data.success) {
-                        $("#msgcriar").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                        $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', false);
+                        $("#criarsessao .return").html('<div class="alert alert-danger">' + data.msg + "</div>");
+                        $("#criarsessao input, #criarsessao textarea, #criarsessao button").attr('disabled', false);
                     } else {
-                        $("#msgcriar").html('<div class="alert alert-success">' + data.msg + '</div>');
+                        $("#criarsessao .return").html('<div class="alert alert-success">' + data.msg + '</div>');
                         window.location.href = "./";
                     }
                 }
@@ -793,60 +794,30 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
             });
         })
 
-        $('#formconfigmissao').submit(function (e) {
+        $('#configmissao').submit(function (e) {
             e.preventDefault();
             var form = $(this);
             $.post({
                 beforeSend: function () {
-                    $("#formconfigmissao input, #formconfigmissao textarea, #formconfigmissao button").attr('disabled', true);
-                    $("#returnconfigmissao").html("<div class='alert alert-warning'>Aguarde enquanto verificamos os dados...</div>");
+                    $("#configmissao input, #configmissao textarea, #configmissao button").attr('disabled', true);
+                    $("#configmissao .return").html("<div class='alert alert-warning'>Aguarde enquanto verificamos os dados...</div>");
                 },
                 url: "index.php",
                 data: form.serialize(),
                 dataType: "JSON",
                 error: function (data) {
                     console.log(data)
-                    $("#formconfigmissao input, #formconfigmissao textarea, #formconfigmissao button").attr('disabled', false);
-                    $("#returnconfigmissao").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
+                    $("#configmissao input, #configmissao textarea, #configmissao button").attr('disabled', false);
+                    $("#configmissao .return").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
                 },
             }).done(function (data) {
                 console.log(data);
                 if (data.msg) {
                     if (!data.success) {
-                        $("#returnconfigmissao").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                        $("#formconfigmissao input, #formconfigmissao textarea, #formconfigmissao button").attr('disabled', false);
+                        $("#configmissao .return").html('<div class="alert alert-danger">' + data.msg + "</div>");
+                        $("#configmissao input, #configmissao textarea, #configmissao button").attr('disabled', false);
                     } else {
-                        $("#returnconfigmissao").html('<div class="alert alert-success">' + data.msg + '</div>');
-                        window.location.href = "./";
-                    }
-                }
-
-            });
-        });
-        $('#criarmissao').submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            $.post({
-                beforeSend: function () {
-                    $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', true);
-                    $("#msgcriar").html("<div class='alert alert-warning'>Aguarde enquanto verificamos os dados...</div>");
-                },
-                url: "index.php",
-                data: form.serialize(),
-                dataType: "JSON",
-                error: function (data) {
-                    console.log(data)
-                    $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', false);
-                    $("#msgcriar").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
-                },
-            }).done(function (data) {
-                console.log(data);
-                if (data.msg) {
-                    if (!data.success) {
-                        $("#msgcriar").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                        $("#criarmissao input, #criarmissao textarea, #criarmissao button").attr('disabled', false);
-                    } else {
-                        $("#msgcriar").html('<div class="alert alert-success">' + data.msg + '</div>');
+                        $("#configmissao .return").html('<div class="alert alert-success">' + data.msg + '</div>');
                         window.location.href = "./";
                     }
                 }

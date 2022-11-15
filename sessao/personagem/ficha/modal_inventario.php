@@ -2,17 +2,18 @@
 <div class="modal fade" id="editinv" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content bg-black border-light">
-            <div class="modal-body px-2">
-                <div class="clearfix mb-5">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
-                            data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Editar Inventário</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" >
                 <div class="text-center">
                     <span class="text-center fs-4"><?= $espacosusados ?>/<?= $invmax ?></span>
                     <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
-                        <i class="fas fa-pencil"></i></button>
+                        <i class="fas fa-pencil"></i>
+                    </button>
                 </div>
-                <h1 class="text-center">Armas</h1>
+                <h3 class="text-center">Armas</h3>
                 <table class="table table-sm bg-black text-white table-borderless font2 mb-5 border border-light">
                     <thead>
                     <tr>
@@ -61,7 +62,7 @@
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <h1 class="text-center">Itens</h1>
+                <h3 class="text-center">Itens</h3>
                 <table class="table table-sm bg-black text-white table-borderless font2 mb-3 border border-light">
                     <thead>
                     <tr>

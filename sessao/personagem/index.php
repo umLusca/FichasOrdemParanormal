@@ -90,6 +90,7 @@ require_once "./ficha/aconfig_ficha.php";
             <?php if ($edit) {
                 require_once "./ficha/modal_detalhes.php";
                 require_once "./ficha/modal_principal.php";
+                require_once "./ficha/modal_foto.php";
                 require_once "./ficha/modal_personagem.php";
                 require_once "./ficha/modal_habilidades.php";
                 require_once "./ficha/modal_atributos.php";

@@ -1,12 +1,12 @@
 <!-- Modal proeficiencias-->
-<div class="modal fade" id="editpersonagem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="editpersonagem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content bg-black border-light">
-            <form class="modal-body" id="formeditdet" method="post">
-                <div class="clearfix">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <h1 class="text-center">Editar Detalhes Pessoais</h1>
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Editar Detalhes</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body p-0">
                 <nav>
                     <div class="nav nav-tabs justify-content-center" role="tablist">
                         <button class="btn btn-outline text-light active" id="edit-aba-personagem-principal" data-bs-toggle="tab" data-bs-target="#edit-personagem-principal" type="button" role="tab" aria-selected="true">Principal</button>
@@ -14,7 +14,7 @@
                         <button class="btn btn-outline text-light" id="edit-aba-personagem-anotacao" data-bs-toggle="tab" data-bs-target="#edit-personagem-anotacao" type="button" role="tab" aria-selected="false">Outros</button>
                     </div>
                 </nav>
-                <div class="tab-content">
+                <div class="tab-content p-2">
                     <div class="tab-pane fade show active m-2" id="edit-personagem-principal"  role="tabpanel" tabindex="0">
                         <div class="my-2">
                             <label class="fs-4" for="chdp">História</label>
@@ -56,11 +56,11 @@
                     </div>
                 </div>
                 <input type="hidden" name="status" value="editpers">
-                <div class="clearfix m-2">
-                    <button class="btn btn-outline-success float-start" type="submit">Salvar</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-success w-100" type="submit">Salvar</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 

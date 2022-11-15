@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content bg-black border-light">
             <div class="modal-header">
-                <span class="fs-4">Adicionar</span>
+                <span class="fs-4 modal-title">Adicionar</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -57,10 +57,17 @@
 							?>
                             <input type="hidden" name="did[]" value="<?= $r["id"] ?>">
                             <input type="hidden" name="p[]" value="0">
-                            <div class="m-3">
-                                <input type="text" aria-label="" name="nome[]" class="form-control fs-6 bg-black text-white" value="<?= $r["nome"]; ?>"/>
-                                <textarea aria-label="" name="desc[]" class="form-control bg-black text-light border-0 font7"><?= $r["descricao"]; ?></textarea>
-                            </div>
+                            <div class="m-2">
+                                <label class="form-floating w-100">
+                                    <input type="text" placeholder="Título habilidade" name="nome[]" class="form-control bg-black text-white" value="<?= $r["nome"]; ?>"/>
+                                    <label>Título</label>
+                                </label>
+                                <label class="form-floating w-100">
+
+                                    <textarea placeholder="Descrição da habilidade" name="desc[]" class="form-control-plaintext text-light"><?= $r["descricao"]; ?></textarea>
+                                    <label>Descrição</label>
+                                </label>
+                             </div>
 						<?php
 						endforeach;
 
@@ -73,9 +80,15 @@
 							?>
                             <input type="hidden" name="did[]" value="<?= $r["id"] ?>">
                             <input type="hidden" name="p[]" value="1">
-                            <div class="m-3">
-                                <input type="text" aria-label="" name="nome[]" class="form-control fs-6 bg-black text-white" value="<?= $r["nome"]; ?>"/>
-                                <textarea aria-label="" name="desc[]" class="form-control bg-black text-light border-0 font7"><?= $r["descricao"]; ?></textarea>
+                            <div class="m-2">
+                                <label class="form-floating w-100">
+                                    <input type="text" placeholder="Título do poder" name="nome[]" class="form-control fs-6 bg-black text-white" value="<?= $r["nome"]; ?>"/>
+<label>Título</label>
+                                </label>
+                                <label class="form-floating w-100">
+                                    <textarea aria-label="" name="desc[]" class="form-control-plaintext text-light"><?= $r["descricao"]; ?></textarea>
+                                    <label>Descrição</label>
+                                </label>
                             </div>
 						<?php
 						endforeach;
@@ -84,9 +97,9 @@
                     </div>
                 </div>
 
-                <div class="clearfix">
-                    <button type="submit" class="btn btn-success float-end" value="submit">Salvar</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success w-100" value="submit">Salvar</button>
             </div>
         </div>
     </div>

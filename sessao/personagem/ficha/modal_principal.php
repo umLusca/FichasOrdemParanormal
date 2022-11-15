@@ -1,17 +1,16 @@
 <!-- Modal proeficiencias-->
-<div class="modal modal-xl fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal modal-xl fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
         <div class="modal-content bg-black border-light">
-            <form class="modal-body" id="formeditpri">
-                <div class="clearfix">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
-                            data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    <div class="float-start m-2">
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Editar Status</span>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
                         <span class="text-info fa-solid fa-circle-info"> Os campos em azuis pode ser calculados automaticamente colocando 1.</span>
-                    </div>
-                </div>
-                <h1 class="text-center">Editar Principal</h1>
-                <h4 class="text-center">Saúde</h4>
+
+                <h4 class="text-center mt-3">Saúde</h4>
                 <div class="row row-cols-1 row-cols-md-3 g-2">
                     <div class="">
                         <label class="input-group input-group-sm">
@@ -35,7 +34,6 @@
                         </label>
                     </div>
                 </div>
-
                 <h4 class="text-center mt-3">Defesas</h4>
                 <div class="row row-cols-1 row-cols-md-3 g-2">
                     <div class="">
@@ -57,7 +55,6 @@
                         </label>
                     </div>
                 </div>
-
                 <h4 class="text-center mt-3">Resistencias a Elementos</h4>
                 <div class="row row-cols-1 row-cols-md-2 g-1">
                     <div class="">
@@ -172,20 +169,25 @@
 
                     <input type="hidden" name="status" value="editpri"/>
                 </div>
-                <div class="clearfix m-2">
-                    <button class="btn btn-outline-success float-start" type="submit">Salvar</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-success w-100" type="submit">Salvar</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 <!---TROCAR DE PERFIL MODAL--->
-<div class="modal fade" id="trocarficha" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<div class="modal fade" id="trocarficha" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content bg-black border-light">
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Trocar Rápido</span>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
             <div class="modal-body justify-content-center text-center">
-                <h1>Trocar Rápido</h1>
 
                 <?php
                 $k = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "' AND `id_ficha` IS NOT NULL;");
@@ -214,9 +216,6 @@
                 }
 
                 ?>
-                <div class="clearfix">
-                    <button type="button" class="btn btn-danger float-start" data-bs-dismiss="modal">Fechar</button>
-                </div>
             </div>
         </div>
     </div>

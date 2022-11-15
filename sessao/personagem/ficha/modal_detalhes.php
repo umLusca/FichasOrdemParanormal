@@ -1,60 +1,14 @@
 <!-- Modal proeficiencias-->
-<div class="modal modal-xl fade" id="editdetalhes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal modal-xl fade" id="editdetalhes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
         <div class="modal-content bg-black border-light">
-            <form class="modal-body" novalidate id="form_editar_principal">
-                <div class="clearfix">
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
-                            data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    <div class="float-start m-2">
-                        <span class="text-info"><i class="fa-regular fa-circle-info"></i> Os campos em azuis pode ser calculados automaticamente colocando 1.</span>
-                    </div>
-                </div>
-                <h1 class="text-center">Editar Detalhes</h1>
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Editar Detalhes</span>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto float-end"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
                 <div class="">
-                    <div class="m-2">
-                        <label for="foto" class="fs-4 fw-bold">Estilo de foto.</label>
-                        <select class="form-select bg-black text-light border-light" id="foto" name="foto">
-                            <option value="1">Desconhecido - Masculino</option>
-                            <option value="2">Desconhecido - Feminino</option>
-                            <option value="3">Mauro Nunes</option>
-                            <option value="4">Maya Shiruze</option>
-                            <option value="5">Bruna Sampaio</option>
-                            <option value="6">Leandro Weiss</option>
-                            <option value="7">Jaime Orthuga</option>
-                            <option value="8">Aniela Ukryty</option>
-                            <option value="9" selected>Customizada</option>
-                        </select>
-                    </div>
-                    <div class="m-2" id="divfotourl">
-                        <label for="fotourl" class="fs-4">Link da imagem</label>
-                        <div class="row">
-                            <div class="col" id="fotos">
-                                <label class="input-group input-group-sm m-1">
-                                    <span class="input-group-text bg-black border-light text-light border-end-0">Normal:</span>
-                                    <input id="fotourl" class="foto-perfil form-control form-control-sm bg-black text-light border-light border-start-0" name="fotourl"  type="url" value="<?= $urlphoto ?>" required/>
-                                </label>
-                                <label class="input-group input-group-sm m-1">
-                                    <span class="input-group-text bg-black border-light text-light border-end-0">Ferido:</span>
-                                    <input id="fotourl" class="foto-perfil form-control form-control-sm bg-black text-light border-light border-start-0" name="fotofer"  type="url" value="<?= $urlphotofer ?>" required/>
-                                </label>
-                                <label class="input-group input-group-sm m-1">
-                                    <span class="input-group-text bg-black border-light text-light border-end-0">Morrendo:</span>
-                                    <input id="fotourl" class="foto-perfil form-control form-control-sm bg-black text-light border-light border-start-0" name="fotomor"  type="url" value="<?= $urlphotomor ?>" required/>
-                                </label>
-                                <label class="input-group input-group-sm m-1">
-                                    <span class="input-group-text bg-black border-light text-light border-end-0">Enlouquecendo:</span>
-                                    <input id="fotourl" class="foto-perfil form-control form-control-sm bg-black text-light border-light border-start-0" name="fotoenl"  type="url" value="<?= $urlphotoenl ?>" required/>
-                                </label>
-                                <label class="input-group input-group-sm m-1">
-                                    <span class="input-group-text bg-black border-light text-light border-end-0">Ferido e Enlouquecendo:</span>
-                                    <input id="fotourl" class="foto-perfil form-control form-control-sm bg-black text-light border-light border-start-0" name="fotoef"  type="url" value="<?= $urlphotoef ?>" required/>
-                                </label>
-                            </div>
-                            <div id="prev" class="col-auto text-center"></div>
-                        </div>
-                        <div id="warning"></div>
-                    </div>
                     <div class="m-1 g-3 row row-cols-1 row-cols-lg-2">
                         <div class="">
                             <label class="fs-4 w-100">Nome
@@ -143,8 +97,8 @@
                 <div class="clearfix m-2">
                     <button class="btn btn-outline-success float-start" type="submit">Salvar</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
