@@ -101,7 +101,7 @@ if (isset($_POST["status"])) {
 			break;
 		case 'deletemissao':
 
-			$con->query("DELETE FROM `missoes` WHERE `id` = '" . intval($_POST["id"]) . "' AND `mestre` = '$userid';");
+			$con->query("DELETE FROM `missoes` WHERE `token` = '" . cleanstring($_POST["tk"]) . "' AND `mestre` = '$userid';");
 			break;
 		case 'acc':
 			$token = cleanstring($_POST["token"]);

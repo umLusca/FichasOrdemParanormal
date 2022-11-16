@@ -49,20 +49,6 @@ $url .= $_SERVER['HTTP_HOST'];
     </nav>
     <div class="w-100" style="height: 45px;"></div>
 
-    <div class="modal" id="confirmar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content text-bg-dark rounded-3 shadow">
-                <div class="modal-body p-4 text-center">
-                    <h5 class="mb-0 title"></h5>
-                    <p class="mb-0 desc"></p>
-                </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 cancel" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-start confirm"><strong>Confirmar</strong></button>
-                </div>
-            </div>
-        </div>
-    </div>
 	<div class="modal fade" id="doar" tabindex="-1" aria-labelledby="titledoar" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content bg-black text-white border-success">

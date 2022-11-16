@@ -128,11 +128,11 @@
 							<?php } ?>
                             <div class="col fs-4 justify-content-center align-items-center font4 row g-0 dblclick">
                                 <div class="col me-0">
-                                    <input type="number" title="Vida Atual" name="sana" min="<?= $minimo_SANA ?>" max="<?= $maximo_SAN ?>" value="<?= $sana ?>" class="sana border-0 sanatual form-control form-control-sm bg-black text-light text-end" readonly>
+                                    <input type="number" title="Sanidade Atual" name="sana" min="<?= $minimo_SANA ?>" max="<?= $maximo_SAN ?>" value="<?= $sana ?>" class="sana border-0 sanatual form-control form-control-sm bg-black text-light text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col ms-0">
-                                    <input type="number" title="Vida Máxima" name="san" min="1" max="<?= $maximo_SAN ?>" value="<?= $san ?>" class="san border-0 sanmaxima form-control form-control-sm bg-black text-light" readonly>
+                                    <input type="number" title="Sanidade Máxima" name="san" min="1" max="<?= $maximo_SAN ?>" value="<?= $san ?>" class="san border-0 sanmaxima form-control form-control-sm bg-black text-light" readonly>
                                 </div>
                             </div>
 							<?php if ($edit) { ?>
@@ -170,11 +170,11 @@
 							<?php } ?>
                             <div class="fs-4 justify-content-center mx-auto align-items-center font4 row g-0 dblclick">
                                 <div class="col-5 me-0">
-                                    <input type="number" title="Vida Atual" name="pea" min="<?= $minimo_PEA ?>" max="<?= $maximo_PE ?>" value="<?= $pea ?>" class="pea border-0 peatual form-control form-control-sm bg-black text-light text-end" readonly>
+                                    <input type="number" title="PE Atual" name="pea" min="<?= $minimo_PEA ?>" max="<?= $maximo_PE ?>" value="<?= $pea ?>" class="pea border-0 peatual form-control form-control-sm bg-black text-light text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col-5 ms-0">
-                                    <input type="number" title="Vida Máxima" name="pe" min="1" max="<?= $maximo_PE ?>" value="<?= $pe ?>" class="pe border-0 pemaxima form-control form-control-sm bg-black text-light" readonly>
+                                    <input type="number" title="PE Máximo" name="pe" min="1" max="<?= $maximo_PE ?>" value="<?= $pe ?>" class="pe border-0 pemaxima form-control form-control-sm bg-black text-light" readonly>
                                 </div>
                             </div>
 							<?php if ($edit) { ?>

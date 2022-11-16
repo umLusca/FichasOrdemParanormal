@@ -1,26 +1,65 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"  data-cfasync="false"></script>
-<script src="https://cdn.socket.io/4.5.1/socket.io.min.js"  data-cfasync="false"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" type="text/javascript" data-cfasync="false"></script>
+<script src="https://cdn.socket.io/4.5.1/socket.io.min.js" data-cfasync="false"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<div class="modal fade" id="confirmar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-bg-dark rounded-3 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0 title"></h5>
+                <p class="mb-0 desc"></p>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 cancel" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-start confirm"><strong>Confirmar</strong></button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    function confirmar(title,text) {
+        $("#confirmar .title").html(title);
+        $("#confirmar .desc").html(text);
+        let modalconfirm = new bootstrap.Modal(document.getElementById('confirmar'))
+        modalconfirm.show();
+        return new Promise((resolve,reject) => {
+            $("#confirmar .confirm").on("click", function () {
+                resolve(true);
+                modalconfirm.hide();
+            })
+            $("#confirmar .cancel").on("click", function (){
+                resolve(false);
+                modalconfirm.hide();
+            })
+
+        });
+
+    }
 
     $.fn.isValid = function () {
         return this[0].checkValidity()
     } // Função para checar validade de formularios
 
+    function percent(max, min = 0) {
+        if ((max === 0 && min === 0) || max === 0) {
+            return 0;
+        }
+        var p = (max / min) * 100;
+        if (p > 100) {
+            return 100;
+        } else {
+            return p;
+        }
+    }
     $(document).ready(function () {
+
+        $('.modal').on('show.bs.modal', function () {
+            $('.modal').not($(this)).each(function () {
+                $(this).modal('hide');
+            });
+        });
 		<?php if (!isset($_SESSION["UserID"])) {?>
 
-        function percent(max, min = 0) {
-            if ((max === 0 && min === 0) || max === 0) {
-                return 0;
-            }
-            var p = (max / min) * 100;
-            if (p > 100) {
-                return 100;
-            } else {
-                return p;
-            }
-        }
 
         $('#passrf').submit(function (e) {
             e.preventDefault();
@@ -124,7 +163,7 @@
         })
         modalperfil.show()
 		<?php
-        } else {?>
+		} else {?>
 
 
         $('#foto').change(function () {
