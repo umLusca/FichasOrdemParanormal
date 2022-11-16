@@ -4,7 +4,7 @@
         <div class="modal-content bg-black border-light">
             <div class="modal-header">
                 <span class="modal-title fs-4">Adicionar Ritual.</span>
-                <button class="btn-close btn-close-white"
+                <button type="button" class="btn-close btn-close-white"
                         data-bs-dismiss="modal" title="Fechar modal"></button>
             </div>
             <div class="modal-body" id="formaddritual">

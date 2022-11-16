@@ -9,7 +9,7 @@
             <div class="modal-body" >
                 <div class="text-center">
                     <span class="text-center fs-4"><?= $espacosusados ?>/<?= $invmax ?></span>
-                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
+                    <button  type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
                         <i class="fas fa-pencil"></i>
                     </button>
                 </div>
@@ -18,7 +18,7 @@
                     <thead>
                     <tr>
                         <th>
-                            <button data-bs-toggle="modal" data-bs-target="#addarma" class="btn btn-sm text-success"
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#addarma" class="btn btn-sm text-success"
                                     title="Adicionar Arma">
                                 <i class="fa-solid fa-square-plus"></i>
                             </button>
@@ -39,7 +39,7 @@
                     <?php foreach ($s[1] as $row): ?>
                         <tr id="armaid<?= $row["id"] ?>">
                             <td>
-                                <button data-bs-toggle="modal" data-bs-target="#editarma"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#editarma"
                                         onclick="editarma(<?= $row["id"]; ?>)" class="btn btn-sm text-warning">
                                     <i class="fa-regular fa-pencil"></i>
                                 </button>
@@ -54,7 +54,7 @@
                             <td class="recarga"><?= $row['recarga']; ?></td>
                             <td class="especial"><?= $row['especial']; ?></td>
                             <td>
-                                <button onclick="deletar(<?= $row["id"] ?>, '<?= $row["arma"] ?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
+                                <button type="button" onclick="deletar(<?= $row["id"] ?>, '<?= $row["arma"] ?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
                                     <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
@@ -67,7 +67,7 @@
                     <thead>
                     <tr>
                         <th>
-                            <button data-bs-toggle="modal" data-bs-target="#additem" class="btn btn-sm text-success"
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#additem" class="btn btn-sm text-success"
                                     title="Adicionar Item">
                                 <i class="fa-regular fa-square-plus"></i>
                             </button>
@@ -83,7 +83,7 @@
                     <?php foreach ($s[4] as $row): ?>
                         <tr id="itemid<?= $row["id"] ?>">
                             <th>
-                                <button data-bs-toggle="modal" data-bs-target="#edititem"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#edititem"
                                         onclick="edititem(<?= $row["id"]; ?>)" class="btn btn-sm text-warning">
                                     <i class="fa-regular fa-pencil"></i>
                                 </button>
@@ -93,7 +93,7 @@
                             <td class="espaco"><?= $row['espaco']; ?></td>
                             <td class="prestigio"><?= $row['prestigio']; ?></td>
                             <td>
-                                <button onclick="deletar(<?= $row["id"]; ?>,'<?= $row['nome'] ?>','delitem')" title="Deletar <?= $row['nome'] ?>" class="btn btn-sm text-danger">
+                                <button type="button" onclick="deletar(<?= $row["id"]; ?>,'<?= $row['nome'] ?>','delitem')" title="Deletar <?= $row['nome'] ?>" class="btn btn-sm text-danger">
                                     <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>

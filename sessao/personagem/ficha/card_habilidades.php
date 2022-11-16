@@ -37,10 +37,6 @@
                             if ($edit) {
                                 ?>
                                     <div class="float-end">
-                                        <button class="btn btn-sm fat fa-pencil text-warning"
-                                                aria-label="Editar Habilidade '<?= $r["nome"]; ?>'"
-                                                onclick="editar(<?=$r["id"]?>,'<?= $r["nome"]; ?>','hab')"></button>
-
                                         <button class="btn btn-sm fat fa-trash text-danger"
                                                 aria-label="Apagar Habilidade '<?= $r["nome"]; ?>'"
                                                 onclick="deletar(<?=$r["id"]?>,'<?= $r["nome"]; ?>','delethab')"></button>
