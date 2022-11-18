@@ -44,7 +44,7 @@ if (isset($_POST["status"])) {
 				if ($z->num_rows) { //Conta EXISTE!
 					$user = mysqli_fetch_assoc($z);
 
-					$x = $con->prepare("SELECT * FROM ligacoes WHERE id_usuario in (SELECT id from usuarios where email = ? OR login=?) AND id_missao = ?");
+					$x = $con->prepare("SELECT * FROM ligacoes WHERE id_usuario in (SELECT id from usuarios where email = ? OR login=?) AND id_missao = ? and id_ficha is null");
 					$x->bind_param("ssi", $email,$email,$id);
 					$x->execute();
 					$x = $x->get_result();

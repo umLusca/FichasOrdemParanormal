@@ -33,7 +33,7 @@
 </form>
 
 <!-- Editar Habilidades-->
-<div class="modal fade" id="edithab" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="edithab" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content bg-black border-light">
             <div class="modal-header">
@@ -103,4 +103,4 @@
             </div>
         </div>
     </div>
-</div>
+</form>

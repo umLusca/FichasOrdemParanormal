@@ -31,9 +31,7 @@
                 resolve(false);
                 modalconfirm.hide();
             })
-
         });
-
     }
 
     $.fn.isValid = function () {
