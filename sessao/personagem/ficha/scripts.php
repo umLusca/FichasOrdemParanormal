@@ -3,6 +3,12 @@
     let changingtimer, x, y;                //timer identifier
     const donetimer = 1500;
 
+
+    function editupdatefoto(SRC, EL) {
+        console.log(SRC,EL)
+        $(EL).prop("src", SRC);
+
+    }
     function deletar(id, nome, tipo) {
         confirmar("Tem certeza?", "Essa ação não poderá ser desfeita.").then((r) => {
             if (r) {
@@ -16,17 +22,25 @@
             }
         })
     }//Deletar Arma
-    function editarma(id) {
-        $('#editarmatitle, #enome').val($("#armaid" + id + " .arma").text());
-        $('#etipo').val($("#armaid" + id + " .tipo").text());
-        $('#eataque').val($("#armaid" + id + " .ataque").text());
-        $('#ealcance').val($("#armaid" + id + " .alcance").text());
-        $('#edano').val($("#armaid" + id + " .dano").text());
-        $('#ecritico').val($("#armaid" + id + " .critico").text());
-        $('#emargem').val($("#armaid" + id + " .margem").text());
-        $('#erecarga').val($("#armaid" + id + " .recarga").text());
-        $('#eespecial').val($("#armaid" + id + " .especial").text());
-        $('#editarmaid').val(id);
+    function edit(type,id) {
+        switch (type){
+            case "arma":
+                let emodal = new bootstrap.Modal($("#editarma"));
+                $('#editarma input[name=foto]').val($("#arma" + id + " img").attr("src"));
+                $('#editarma img').attr("src",$("#arma" + id + " img").attr("src"));
+                $('#editarma input[name=nome]').val($("#arma" + id + " .arma").text());
+                $('#editarma input[name=tipo]').val($("#arma" + id + " .tipo").text());
+                $('#editarma input[name=ataque]').val($("#arma" + id + " .ataque").attr("data-dado"));
+                $('#editarma input[name=alcance]').val($("#arma" + id + " .alcance").text());
+                $('#editarma input[name=dano]').val($("#arma" + id + " .dano").attr("data-dado"));
+                $('#editarma input[name=critico]').val($("#arma" + id + " .critico").attr("data-dado"));
+                $('#editarma input[name=margem]').val($("#arma" + id + " .critico").attr("data-margem"));
+                $('#editarma input[name=recarga]').val($("#arma" + id + " .recarga").text());
+                $('#editarma input[name=especial]').val($("#arma" + id + " .especial").text());
+                $('#editarma input[name=did]').val(id);
+                emodal.show();
+                break;
+        }
     }// Editar Arma
     function edititem(id) {
         $('#edititemtitle, #enom').val($("#itemid" + id + " .nome").text());
@@ -118,29 +132,29 @@
             $('#saude .pe').val(msg.vida.pe);
             console.log($('#saude .pe').val());
             updatefoto()
-            socket.emit('<?=$missao_token ?: $fichat?>', msg);
+            socket.emit('<?=$missao_token?:$fichat?>', msg);
         });
     }
 
-    function editritual(i,id) {
+    function editritual(i, id) {
         let editritual_modal = new bootstrap.Modal($("#editritual"));
         editritual_modal.show();
-        $("#editritual .url").val($("#but-ritual-"+i+" .foto").prop("src"));
-        $("#editritual .foto").prop("src",$("#but-ritual-"+i+" .foto").prop("src"));
-        $("#editritual .ritual").val($("#but-ritual-"+i+" .nome").html());
-        $("#editritual .elemento").val($("#but-ritual-"+i+" .elemento").html());
-        $("#editritual .circulo").val($("#but-ritual-"+i+" .circulo").html());
-        $("#editritual .conjuracao").val($("#but-ritual-"+i+" .conjuracao").html());
-        $("#editritual .alcance").val($("#but-ritual-"+i+" .alcance").html());
-        $("#editritual .alvo").val($("#but-ritual-"+i+" .alvo").html());
-        $("#editritual .duracao").val($("#but-ritual-"+i+" .duracao").html());
-        $("#editritual .resistencia").val($("#but-ritual-"+i+" .resistencia").html());
-        $("#editritual .desc").val($("#but-ritual-"+i+" .desc").html());
-        $("#editritual .normal").val($("#but-ritual-"+i+" .normal").attr("data-dado"));
-        $("#editritual .discente").val($("#but-ritual-"+i+" .discente").attr("data-dado"));
-        $("#editritual .verdadeiro").val($("#but-ritual-"+i+" .verdadeiro").attr("data-dado"));
+        $("#editritual .url").val($("#but-ritual-" + i + " .foto").prop("src"));
+        $("#editritual .foto").prop("src", $("#but-ritual-" + i + " .foto").prop("src"));
+        $("#editritual .ritual").val($("#but-ritual-" + i + " .nome").html());
+        $("#editritual .elemento").val($("#but-ritual-" + i + " .elemento").html());
+        $("#editritual .circulo").val($("#but-ritual-" + i + " .circulo").html());
+        $("#editritual .conjuracao").val($("#but-ritual-" + i + " .conjuracao").html());
+        $("#editritual .alcance").val($("#but-ritual-" + i + " .alcance").html());
+        $("#editritual .alvo").val($("#but-ritual-" + i + " .alvo").html());
+        $("#editritual .duracao").val($("#but-ritual-" + i + " .duracao").html());
+        $("#editritual .resistencia").val($("#but-ritual-" + i + " .resistencia").html());
+        $("#editritual .desc").val($("#but-ritual-" + i + " .desc").html());
+        $("#editritual .normal").val($("#but-ritual-" + i + " .normal").attr("data-dado"));
+        $("#editritual .discente").val($("#but-ritual-" + i + " .discente").attr("data-dado"));
+        $("#editritual .verdadeiro").val($("#but-ritual-" + i + " .verdadeiro").attr("data-dado"));
         $("#editritual .did").val(id);
-        console.log($("#but-ritual-"+i+" .verdadeiro"));
+        console.log($("#but-ritual-" + i + " .verdadeiro"));
     }
 
 
@@ -175,19 +189,19 @@
             subtimer();
         })
 
-        $("#editritual input.url").on("input", ()=>{
+        $("#editritual input.url").on("input", () => {
             $this = $("#editritual input.url");
 
             let src = $this.val().trim();
             if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
                 $this.addClass("is-invalid").addClass("is-valid");
                 $("#editritual .return").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(jpg,png,...)!");
-                $('#editritual img.foto').prop("src","https://fichasop.com/assets/img/desconhecido.webp");
+                $('#editritual img.foto').prop("src", "https://fichasop.com/assets/img/desconhecido.webp");
                 return false;
             } else {
                 $this.addClass("is-valid").removeClass("is-invalid");
                 $("#editritual .return").html("");
-                $('#editritual img.foto').prop("src",src);
+                $('#editritual img.foto').prop("src", src);
             }
 
 
@@ -375,9 +389,26 @@
             }
         })
 
+
+    socket = io.connect('https://portrait.fichasop.com', {
+        reconnectionDelay: 2500,
+        transports: ['websocket', 'polling', 'flashsocket']
+    });
+    socket.on("connect", function () {
+        console.log("Conectado");
+    });
+    socket.on("disconnect", function () {
+        console.log("Desconectado");
+    });
+	    <?php if(isset($dados_missao) AND $dados_missao["id"]==5887){?>
+        $('#portrait').prop('checked', true);
+        socket.emit('create', '<?=$missao_token?:$fichat?>');
+        socket.emit('auth', '<?=$missao_token?:$fichat?>');
+	    <?php }?>
+
         $('#portrait').change(function () {
             if ($('#portrait').is(":checked")) {
-                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500, transports: ['websocket', 'polling', 'flashsocket']});
+                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
                 socket.emit('create', '<?=$missao_token ?: $fichat?>');
                 socket.emit('<?=$missao_token ?: $fichat?>', {auth: '<?=$fichat?>'});
             } else {
@@ -486,23 +517,13 @@
                 $('#' + thisid + ' div.prevsimbolo').html('<img src="' + src + '" width="200" height="200" alt="Ritual">');
             }
 
-        }).change(function () {
-            thisid = $(this).attr("id");
-            let fotovalor = $('#' + thisid + ' select.fotosimbolo').val()
-            if (fotovalor == '2') {
-                $('#' + thisid + ' .divfotosimbolourl').show();
-                $('#' + thisid + ' input').attr("disabled", false)
-            } else {
-                $('#' + thisid + ' .divfotosimbolourl').hide();
-                $('#' + thisid + ' input').attr("disabled", true)
-            }
         })
 
         $('#addarmainvswitch').on('click', function () {
             if ($(this).is(":checked")) {
-                $('#addarmainv input[type=text], #addarmainv input[type=number]').attr('disabled', false);
+                $('#addarma .addinv input, #addarma textarea').attr('disabled', false);
             } else {
-                $('#addarmainv input[type=text], #addarmainv input[type=number]').attr('disabled', true);
+                $('#addarma .addinv input, #addarma textarea').attr('disabled', true);
             }
         }) //Ativar/Desativar Inventario em adicionar arma
 
@@ -559,7 +580,8 @@
             $('#card_inventario .trocavision').toggle();
             $(this).children("i").children().addClass("fa-regular").toggleClass("fa-eye fa-eye-slash");
         });
-    });
+    })
+    ;
 	<?php } else {?>
     $(document).ready(function () {
         $("#verp").click(function () {

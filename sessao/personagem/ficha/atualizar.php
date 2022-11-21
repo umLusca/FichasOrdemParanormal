@@ -3,6 +3,35 @@ $success = true;
 if ($edit) {
 	if (isset($_POST['status'])) {
 		switch ($_POST['status']) {
+			case "upload_foto":
+				$data = [];
+				$ft = cleanstring($_POST["type"]);
+				$type = match (true){
+					default => false,
+					($ft === "fp") => "foto",
+					($ft === "ff") => "foto_ferido",
+					($ft === "fm") => "foto_morrendo",
+					($ft === "fe") => "foto_enlouquecendo",
+					($ft === "fef") => "foto_ferenl",
+				};
+				if(isset($_FILES["file"])){
+					$return = Image_Upload($_FILES["file"], uniqid('pf_', true));
+					if ($return["status"] == 200) {
+						if($type) {
+							$b = $con->prepare("UPDATE `fichas_personagem` SET $type = ? WHERE `token` = ? AND usuario = ?;");
+							$b->bind_param("si", $return['data']['url'], $fichat, $_SESSION["UserID"]);
+						//	$b->execute();
+						}
+						$data = $return;
+						$data["success"] = true;
+						$data["msg"]= "Sucesso!";
+					} else {
+						$data["success"] = false;
+						$data["msg"]= "Falha!";
+					}
+				}
+				exit(json_encode($data,JSON_PRETTY_PRINT));
+				break;
 			case "edit_habilidade":
 				$tipo = cleanstring($_POST["tipo"]);
 				$eid = (int)$_POST["eid"];
@@ -115,7 +144,8 @@ if ($edit) {
 				break;
 			case 'editarma':
 				$aid = intval($_POST["did"]);
-				$n = cleanstring($_POST["nome"], $limite_nome_inv);
+				$n = cleanstring($_POST["nome"],$limite_nome_inv);
+				$f = cleanstring($_POST["foto"], 300);
 				$t = cleanstring($_POST["tipo"], $Arma_tipo);
 				$at = cleanstring($_POST["ataque"], $Arma_ataq);
 				$al = cleanstring($_POST["alcance"], $Arma_alca);
@@ -124,8 +154,8 @@ if ($edit) {
 				$m = minmax($_POST["margem"], 1, 20);
 				$r = cleanstring($_POST["recarga"], $Arma_reca);
 				$e = cleanstring($_POST["especial"], $Arma_espe);
-				$rr = $con->prepare("UPDATE `armas` SET `arma` = ?, `tipo` = ?, `ataque` = ?, `alcance` = ?, `dano` = ?, `critico` = ?, `margem` = ?, `recarga` = ?, `especial` = ? WHERE `armas`.`id` = ? AND `id_ficha` = '$id';;");
-				$rr->bind_param("ssssssissi", $n, $t, $at, $al, $d, $c, $m, $r, $e, $aid);
+				$rr = $con->prepare("UPDATE `armas` SET `arma` = ?, `foto` = ? , `tipo` = ?, `ataque` = ?, `alcance` = ?, `dano` = ?, `critico` = ?, `margem` = ?, `recarga` = ?, `especial` = ? WHERE `armas`.`id` = ? AND `id_ficha` = '$id';;");
+				$rr->bind_param("sssssssissi", $n, $f, $t, $at, $al, $d, $c, $m, $r, $e, $aid);
 				$rr->execute();
 				$success = $rr;
 				break;

@@ -6,62 +6,64 @@
                 <span class="fs-4 modal-title">Editar Inventário</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body">
                 <div class="text-center">
                     <span class="text-center fs-4"><?= $espacosusados ?>/<?= $invmax ?></span>
-                    <button  type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
+                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editpesoinv" title="Adicionar Arma">
                         <i class="fas fa-pencil"></i>
                     </button>
                 </div>
-                <h3 class="text-center">Armas</h3>
-                <table class="table table-sm bg-black text-white table-borderless font2 mb-5 border border-light">
-                    <thead>
-                    <tr>
-                        <th>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#addarma" class="btn btn-sm text-success"
-                                    title="Adicionar Arma">
-                                <i class="fa-solid fa-square-plus"></i>
-                            </button>
-                        </th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Ataque</th>
-                        <th scope="col">Alcance</th>
-                        <th scope="col">Dano</th>
-                        <th scope="col">Crítico</th>
-                        <th scope="col">Margem</th>
-                        <th scope="col">Recarga</th>
-                        <th scope="col">Especial</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($s[1] as $row): ?>
-                        <tr id="armaid<?= $row["id"] ?>">
-                            <td>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#editarma"
-                                        onclick="editarma(<?= $row["id"]; ?>)" class="btn btn-sm text-warning">
-                                    <i class="fa-regular fa-pencil"></i>
-                                </button>
-                            </td>
-                            <td class="arma"><?= $row['arma']; ?></td>
-                            <td class="tipo"><?= $row['tipo']; ?></td>
-                            <td class="ataque"><?= $row['ataque']; ?></td>
-                            <td class="alcance"><?= $row['alcance']; ?></td>
-                            <td class="dano"><?= $row['dano']; ?></td>
-                            <td class="critico"><?= $row['critico']; ?></td>
-                            <td class="margem"><?= $row['margem']; ?></td>
-                            <td class="recarga"><?= $row['recarga']; ?></td>
-                            <td class="especial"><?= $row['especial']; ?></td>
-                            <td>
-                                <button type="button" onclick="deletar(<?= $row["id"] ?>, '<?= $row["arma"] ?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
-                                    <i class="fa-regular fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+
+				<h3 class="text-center">Armas</h3>
+				<table class="table table-sm bg-black text-white table-borderless font2 mb-5 border border-light">
+					<thead>
+					<tr>
+						<th>
+							<button type="button" data-bs-toggle="modal" data-bs-target="#addarma" class="btn btn-sm text-success"
+									title="Adicionar Arma">
+								<i class="fa-solid fa-square-plus"></i>
+							</button>
+						</th>
+						<th scope="col">Nome</th>
+						<th scope="col">Tipo</th>
+						<th scope="col">Ataque</th>
+						<th scope="col">Alcance</th>
+						<th scope="col">Dano</th>
+						<th scope="col">Crítico</th>
+						<th scope="col">Margem</th>
+						<th scope="col">Recarga</th>
+						<th scope="col">Especial</th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach ($s[1] as $row): ?>
+						<tr id="armaid<?= $row["id"] ?>">
+							<td>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#editarma"
+										onclick="editarma(<?= $row["id"]; ?>)" class="btn btn-sm text-warning">
+									<i class="fa-regular fa-pencil"></i>
+								</button>
+							</td>
+							<td class="arma"><?= $row['arma']; ?></td>
+							<td class="tipo"><?= $row['tipo']; ?></td>
+							<td class="ataque"><?= $row['ataque']; ?></td>
+							<td class="alcance"><?= $row['alcance']; ?></td>
+							<td class="dano"><?= $row['dano']; ?></td>
+							<td class="critico"><?= $row['critico']; ?></td>
+							<td class="margem"><?= $row['margem']; ?></td>
+							<td class="recarga"><?= $row['recarga']; ?></td>
+							<td class="especial"><?= $row['especial']; ?></td>
+							<td>
+								<button type="button" onclick="deletar(<?= $row["id"] ?>, '<?= $row["arma"] ?>', 'delarma')" title="Editar Arma" class="btn btn-sm text-danger">
+									<i class="fa-regular fa-trash"></i>
+								</button>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+				 ?>
                 <h3 class="text-center">Itens</h3>
                 <table class="table table-sm bg-black text-white table-borderless font2 mb-3 border border-light">
                     <thead>
@@ -80,7 +82,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($s[4] as $row): ?>
+					<?php foreach ($s[4] as $row): ?>
                         <tr id="itemid<?= $row["id"] ?>">
                             <th>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#edititem"
@@ -98,7 +100,7 @@
                                 </button>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+					<?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -107,89 +109,100 @@
 </div>
 
 <!-- Modal EDITAR ARMA -->
-<div class="modal fade" id="editarma" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
+<form class="modal fade" id="editarma" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content bg-black border-light">
-            <form class="modal-body" method="post" autocomplete="off" id="formeditarma">
-                <div class="border-0 modal-header fs-1">Editar arma</div>
-                <div class="row my-5 g-2">
+            <div class="modal-header">
+                <span class="fs-4 modal-title">Editar Arma</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="cleanedit()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="m-2 text-center">
+                    <img style="max-width: 200px" src="" alt="Imagem da Arma">
+                </div>
+                <div class="row g-2">
                     <div class="col-12">
                         <div class="input-group">
-                            <label for="enome"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="enome" maxlength="<?= $limite_nome_inv ?>" name="nome" type="text" class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="input-group">
-                            <label for="etipo" class="p-1 input-group-text border-light bg-black text-white border-end-0">Tipo:</label>
-                            <input id="etipo" name="tipo" type="text" maxlength="<?= $Arma_tipo ?>" class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="input-group">
-                            <label for="eataque" class="p-1 input-group-text border-light bg-black text-white border-end-0">Ataque:</label>
-                            <input id="eataque" name="ataque" type="text" minlength="0" maxlength="<?= $Arma_ataq ?>" placeholder="1d20"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
+                            <label class="form-floating">
+                                <input class="foto-perfil form-control form-control-dark" id="arma_input" name="foto" type="url" />
+                                <label>Foto</label>
+                            </label>
+                            <label class="btn btn-outline-light border-dashed">
+                                <span id="arma_label" class="">Ou Selecione uma foto</span>
+                                <label class="progress" style="display: none;">
+                                    <label class="progress-bar" id="arma_progress" role="progressbar"></label>
+                                </label>
+                                <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('arma_',this,'<?= $fichat ?>','arma',()=>editupdatefoto($('#arma_input').val(),'#editarma img'))" hidden/>
+                            </label>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="input-group">
-                            <label for="ealcance"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Alcance:</label>
-                            <input id="ealcance" name="alcance" type="text" maxlength="<?= $Arma_alca ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
+                        <label class="form-floating">
+                            <input name="nome" maxlength="<?= $limite_nome_inv ?>" placeholder="Nome da Arma" type="text" class="form-control  form-control-dark" required/>
+                            <label>Nome</label>
+                        </label>
                     </div>
                     <div class="col-6">
-                        <div class="input-group">
-                            <label for="edano"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Dano:</label>
-                            <input id="edano" name="dano" type="text" maxlength="<?= $Arma_dano ?>" placeholder="1d4"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
+                        <label class="form-floating">
+                            <input name="tipo" type="text" placeholder="Tipo de Dano" maxlength="<?= $Arma_tipo ?>" class="form-control  form-control-dark"/>
+                            <label>Tipo</label>
+                        </label>
                     </div>
                     <div class="col-6">
-                        <div class="input-group">
-                            <label for="ecritico"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Critico:</label>
-                            <input id="ecritico" name="critico" type="text" maxlength="<?= $Arma_crit ?>" placeholder="2d4"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                            <input id="emargem" title="margem" name="margem" type="number" min="0" max="20" maxlength="<?= $Arma_crit ?>" placeholder="18"
-                                   class="form-control border-light bg-black text-white"/>
-                        </div>
+                        <label class="form-floating">
+                            <input name="ataque" type="text" placeholder="1d20" maxlength="<?= $Arma_ataq ?>" class="form-control  form-control-dark"/>
+                            <label>Ataque</label>
+                        </label>
                     </div>
                     <div class="col-6">
-                        <div class="input-group">
-                            <label for="erecarga"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Recarga:</label>
-                            <input id="erecarga" name="recarga" type="text" maxlength="<?= $Arma_reca ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
+                        <label class="form-floating">
+                            <input name="alcance" type="text" placeholder="Alcance da Arma" maxlength="<?= $Arma_alca ?>" class="form-control  form-control-dark"/>
+                            <label>Alcance</label>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-floating">
+                            <input name="dano" placeholder="Dano normal da arma" type="text" maxlength="<?= $Arma_dano ?>" class="form-control form-control-dark"/>
+                            <label>Dano</label>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-floating">
+                            <input name="critico" type="text" maxlength="<?= $Arma_crit ?>" placeholder="2d4" class="form-control bg-transparent text-white"/>
+                            <label>Crítico</label>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-floating">
+                            <input name="margem" placeholder="Margem de crítico da arma" type="number" min="0" max="20" class="form-control  form-control-dark"/>
+                            <label>Margem</label>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-floating">
+                            <input name="recarga" placeholder="Recarga da arma" type="text" maxlength="<?= $Arma_reca ?>"
+                                   class="form-control form-control-dark"/>
+                            <label>Recarga</label>
+                        </label>
                     </div>
 
 
                     <div class="col-6">
-                        <div class="input-group">
-                            <label for="eespecial"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Especial:</label>
-                            <input id="eespecial" name="especial" type="text" maxlength="<?= $Arma_espe ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
+                        <label class="form-floating">
+                            <input name="especial" type="text" placeholder="Especial da arma" maxlength="<?= $Arma_espe ?>" class="form-control form-control-dark"/>
+                            <label>Especial</label>
+                        </label>
                     </div>
                 </div>
-                <input type="hidden" name="did" value="" id="editarmaid"/>
+                <input type="hidden" name="did" value=""/>
                 <input type="hidden" name="status" value="editarma"/>
-                <div class="clearfix mx-5">
-                    <button type="button" class="btn btn-secondary float-start" data-bs-dismiss="modal"
-                            onclick="cleanedit()">Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-success float-end" data-bs-dismiss="modal">Salvar</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success float-end w-100" data-bs-dismiss="modal">Salvar</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 <!-- Modal ADD ITEM -->
 <div class="modal fade" id="additem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -200,10 +213,8 @@
                 <div class="row my-5 g-2">
                     <div class="col-12">
                         <div class="input-group">
-                            <label for="anom"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input id="anom" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
+                            <label for="anom" class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
+                            <input id="anom" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>" class="form-control border-start-0 border-light bg-black text-white"/>
                         </div>
                     </div>
                     <div class="col-12">
@@ -292,9 +303,9 @@
     </div>
 </div>
 <!-- Modal EDITAR ITEMpeso inv -->
-<div class="modal fade" id="editpesoinv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="editpesoinv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-sm">
-        <form class="modal-content bg-black border-light" method="post" autocomplete="off" id="formedititem">
+        <div class="modal-content bg-black border-light">
             <div class="modal-header">
                 <span class="fs-4">Inventário</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
@@ -304,7 +315,7 @@
                     <p>Deixe 1 para padrão</p>
                     <label class="input-group">
                         <span class="p-1 input-group-text border-light bg-black text-white border-end-0">Peso: </span>
-                        <input name="peso" type="number" min="1" max="99" value="<?=$invmax?>" class="form-control border-start-0 border-light bg-black text-white"/>
+                        <input name="peso" type="number" min="1" max="99" value="<?= $invmax ?>" class="form-control border-start-0 border-light bg-black text-white"/>
                     </label>
                 </div>
                 <input type="hidden" name="status" value="peso_inv"/>
@@ -313,113 +324,125 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-success ms-auto" data-bs-dismiss="modal">Salvar</button>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 
 <!--------------------------ADD ARMAS---------------------------------------------------------------->
-<div class="modal fade" id="addarma" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
+<form class="modal fade" id="addarma" tabindex="-1">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content bg-black border-light">
-            <form class="modal-body" method="post" autocomplete="off" id="formaddarmas" novalidate>
-                <div class="border-0 modal-header fs-1">Adicionar arma</div>
-                <div class="row my-3 mx-1">
-                    <div class="col-sm">
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="anome"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Nome:</label>
-                            <input autocomplete="" id="anome" name="nome" type="text" maxlength="<?= $limite_nome_inv ?>"
-                                   class="rounded-end form-control border-start-0 border-light bg-black text-white"
-                                   required/>
-                            <div class="invalid-feedback">Coloque o Nome.(Apenas letras e espaços)</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="atipo"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Tipo:</label>
-                            <input id="atipo" name="tipo" type="text" maxlength="<?= $Arma_tipo ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="invalid-feedback">(Apenas letras e espaços)</div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="aataque"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Ataque:</label>
-                            <input id="aataque" name="ataque" type="text" maxlength="<?= $Arma_ataq ?>"
-                                   placeholder="Caso não saiba, olhe no como rolar dados!" value="2d20+/FOR/" class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="aalcance"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Alcance:</label>
-                            <input id="aalcance" name="alcance" type="text" maxlength="<?= $Arma_alca ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
+            <div class="modal-header">
+                <span>Adicionar Arma</span>
+                <button type="button" class="btn-close-white btn-close" data-bs-dismiss="modal" onclick="cleanedit()"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="m-2 text-center">
+                    <img style="max-width: 200px" src="" alt="Imagem da Arma">
+                </div>
+                <div class="row m-2 g-2">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <label class="form-floating">
+                                <input class="foto-perfil form-control form-control-dark" id="aarma_input" name="foto" type="url" />
+                                <label>Foto</label>
+                            </label>
+                            <label class="btn btn-outline-light border-dashed">
+                                <span id="aarma_label" class="">Ou Selecione uma foto</span>
+                                <label class="progress" style="display: none;">
+                                    <label class="progress-bar" id="aarma_progress" role="progressbar"></label>
+                                </label>
+                                <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('aarma_',this,'<?= $fichat ?>','arma',()=>editupdatefoto($('#aarma_input').val(),'#addarma img'))" hidden/>
+                            </label>
                         </div>
                     </div>
-                    <div class="col-md">
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="adano"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Dano:</label>
-                            <input id="adano" name="dano" type="text" placeholder="1d4+/FOR/" maxlength="<?= $Arma_dano ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white rounded-end"
-                                   required/>
-                            <div class="invalid-feedback">(Apenas valores dos dados ex: 2d20+5)</div>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="acritico"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Critico:</label>
-                            <input id="acritico" name="critico" type="text" placeholder="2d4+/2*FOR/" maxlength="<?= $Arma_crit ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                            <input title="margem" name="margem" type="number" placeholder="19" min="0" max="20" maxlength="<?= $Arma_crit ?>"
-                                   class="form-control border-light bg-black text-white"/>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="arecarga"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Recarga:</label>
-                            <input id="arecarga" name="recarga" type="text" maxlength="<?= $Arma_reca ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="aespecial"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Especial:</label>
-                            <input id="aespecial" name="especial" type="text" maxlength="<?= $Arma_espe ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
+                    <div class="col-6 col-lg-4">
+                        <label class="form-floating">
+                            <input name="nome" placeholder="Nome da Arma" maxlength="<?= $limite_nome_inv ?>" class="form-control form-control-dark" required />
+                            <label>Nome</label>
+                        </label>
                     </div>
-                    <div class="col-sm" id="addarmainv">
-                        <h4 class="text-center">Inventario</h4>
-                        <div class="input-group input-group-sm my-2">
-                            <label for="adesc"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Detalhes/Descrição:</label>
-                            <input id="adesc" name="desc" type="text" maxlength="<?= $Inv_desc ?>"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="apeso"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Peso/Espaço:</label>
-                            <input id="apeso" name="peso" value="0" max="50" min="-50" type="number"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="input-group input-group-sm mb-2">
-                            <label for="aprest"
-                                   class="p-1 input-group-text border-light bg-black text-white border-end-0">Categoria:</label>
-                            <input id="aprest" name="prestigio" value=0 max='50' min='-50' type="number"
-                                   class="form-control border-start-0 border-light bg-black text-white"/>
-                        </div>
-                        <div class="m-2 form-check form-switch">
-                            <input class="form-check-input" type="checkbox" checked role="switch" id="addarmainvswitch"
-                                   name="lembrar">
-                            <label class="form-check-label" for="addarmainvswitch">Adicionar Ao inventario</label>
-                        </div>
-                        <input type="hidden" name="opc" value="addinvtoo"/>
+                    <div class="col-6 col-lg-4">
+                        <label class="form-floating">
+                            <input name="tipo" placeholder="Tipo de dano da Arma" maxlength="<?= $Arma_tipo ?>" class="form-control form-control-dark"/>
+                            <label>Tipo</label>
+                        </label>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <label class="form-floating">
+                            <input name="alcance" placeholder="Alcance da Arma" maxlength="<?= $Arma_alca ?>" class="form-control form-control-dark"/>
+                            <label>Alcance</label>
+                        </label>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-floating">
+                            <input name="recarga" placeholder="Recarga da Arma" maxlength="<?= $Arma_reca ?>" class="form-control form-control-dark"/>
+                            <label>Recarga</label>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-floating">
+                            <input name="especial" placeholder="Especial da Arma" maxlength="<?= $Arma_espe ?>" class="form-control form-control-dark"/>
+                            <label>Especial</label>
+                        </label>
+                    </div>
+                    <div class="col-6 col-xl-4">
+                        <label class="form-floating">
+                            <input name="ataque" placeholder="Dado de ataque da Arma" maxlength="<?= $Arma_ataq ?>" class="form-control form-control-dark"/>
+                            <label>Ataque</label>
+                        </label>
+                    </div>
+                    <div class="col-12 col-sm-5 col-lg-6 col-xl-4">
+                        <label class="form-floating">
+                            <input name="dano" placeholder="Dano de ataque da Arma" maxlength="<?= $Arma_dano ?>" class="form-control form-control-dark"/>
+                            <label>Dano</label>
+                        </label>
+                    </div>
+                    <div class="col-7 col-sm-4 col-lg-8 col-xl-2">
+                        <label class="form-floating">
+                            <input name="critico" placeholder="Dano Crítico do ataque da Arma" maxlength="<?= $Arma_crit ?>" class="form-control form-control-dark"/>
+                            <label>Crítico</label>
+                        </label>
+                    </div>
+                    <div class="col-5 col-sm-3 col-lg-4 col-xl-2">
+                        <label class="form-floating">
+                            <input name="margem" placeholder="Margem do Crítico do ataque da Arma" min="0" max="20" class="form-control form-control-dark"/>
+                            <label>Margem</label>
+                        </label>
+                    </div>
+                </div>
+                <hr>
+                <label class="m-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" checked role="switch" id="addarmainvswitch" name="invtoo">
+                    <label class="form-check-label" for="addarmainvswitch">Adicionar Ao inventario</label>
+                </label>
+                <div class="row m-2 g-2 addinv">
+                    <div class="col-8 col-md-9 col-lg-10">
+                        <label class="form-floating h-100">
+                            <textarea name="desc" placeholder="Detalhes ou descrição" maxlength="<?= $Inv_desc ?>" class="form-control form-control-dark h-100"></textarea>
+                            <label>Detalhes</label>
+                        </label>
+                    </div>
+                    <div class="col">
+                        <label class="form-floating">
+                            <input name="peso" placeholder="Peso" min="-10" max="50" class="form-control form-control-dark" />
+                            <label>Peso</label>
+                        </label>
+                        <hr>
+                        <label  class="form-floating">
+                            <input name="prestigio" placeholder="Categoria"  min="-10" max="50" class="form-control form-control-dark" />
+                            <label>Categoria</label>
+                        </label>
                     </div>
                 </div>
                 <input type="hidden" name="status" value="addarma"/>
-                <div class="clearfix mx-5">
-                    <button type="button" class="btn btn-secondary float-start" data-bs-dismiss="modal"
-                            onclick="cleanedit()">Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-success float-end">Salvar</button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success w-100">Salvar</button>
+            </div>
         </div>
     </div>
-</div>
+</form>

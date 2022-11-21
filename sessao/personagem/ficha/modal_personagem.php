@@ -50,8 +50,8 @@
                             <textarea id="cppdp" maxlength="<?=$Fich_pesa?>" class="form-control bg-black text-light border-0" name="pesadelo"><?=$pesadelo?></textarea>
                         </div>
                         <div class="my-2">
-                            <label class="fs-4" for="cadp">Anotações</label>
-                            <textarea id="cadp" maxlength="<?=$Fich_note?>" class="form-control bg-black text-light border-0" name="anotacoes"><?=$anotacao?></textarea>
+                            <label class="fs-4" for="caad">Anotações</label>
+                            <textarea id="caad" maxlength="<?=$Fich_note?>" class="form-control bg-black text-light border-0" name="anotacoes"><?=$anotacao?></textarea>
                         </div>
                     </div>
                 </div>

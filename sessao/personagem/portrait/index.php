@@ -8,7 +8,7 @@ require_once "./../ficha/aconfig_ficha.php";
     <head>
         <?php require_once './../../../includes/head.html';?>
         <meta charset="UTF-8">
-        <title><?=$nome?> - Portrait FichasOP</title>
+        <title><?=$nome?> - Portraits FichasOP</title>
         <?php require_once "./../../../includes/scripts.php";?>
     </head>
     <body class="bg-black text-light">

@@ -17,6 +17,7 @@
     </div>
 </div>
 <script>
+
     function confirmar(title,text) {
         $("#confirmar .title").html(title);
         $("#confirmar .desc").html(text);
@@ -34,9 +35,70 @@
         });
     }
 
-    $.fn.isValid = function () {
-        return this[0].checkValidity()
-    } // Função para checar validade de formularios
+    function uploadFile(PREFIX_, element = null, token, Upload_name = "file", callback = null) {
+        const FILE = element.files[0];
+
+        let progressbar = $("*[id^=" + PREFIX_ +"].progress-bar");
+        let returndiv = $("*[id^=" + PREFIX_ + "label]");
+        let inputurl = $("input[id^=" + PREFIX_ + "input]");
+
+        let formulario = new FormData();
+
+
+        formulario.append("type", Upload_name);
+        formulario.append("file", FILE);
+        formulario.append("token", token);
+        formulario.append("status", "upload_foto");
+        $.ajax({
+            url: "",
+            type: "POST",
+            data: formulario,
+            dataType:"json",
+            cache: false,
+            processData: false,
+            contentType: false,
+            beforeSend: () => {
+                console.log("Before");
+                progressbar.parent().show();
+                progressbar.addClass("bg-primary").removeClass("bg-danger,bg-success, bg-warning");
+                returndiv.html("Aguarde...");
+            },
+            xhr: () => {
+                const xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", (evt) => {
+                    if (evt.lengthComputable) {
+                        const percent = (evt.loaded / evt.total) * 100;
+                        progressbar.css("width", Math.round(percent) + "%")
+                    }
+                }, false);
+                xhr.addEventListener("error", () => {
+                    returndiv.html("Falha. Tente novamente mais tarde.");
+                    progressbar.addClass("bg-danger").removeClass("bg-primary,bg-success,bg-warning");
+                })
+                xhr.addEventListener("load", (e) => {
+                    returndiv.html("Sucesso!");
+                    progressbar.addClass("bg-success").removeClass("bg-danger,bg-primary,bg-warning");
+                })
+                xhr.addEventListener("abort", () => {
+                    returndiv.html("Envio cancelado!");
+                    progressbar.addClass("bg-warning").removeClass("bg-danger,bg-primary");
+                })
+                return xhr;
+            },
+            error: () => {
+                returndiv.html("Falha. Verifique sua conexão");
+                progressbar.addClass("bg-danger").removeClass("bg-primary,bg-success,bg-warning");
+            },
+            success: (d) => {
+                console.log(d)
+                inputurl.val(d["data"]["url"]);
+            },
+            complete: (d) => {
+                console.log(d);
+                callback();
+            },
+        })
+    }
 
     function percent(max, min = 0) {
         if ((max === 0 && min === 0) || max === 0) {
@@ -50,6 +112,10 @@
         }
     }
     $(document).ready(function () {
+
+        $.fn.isValid = function () {
+            return this[0].checkValidity()
+        } // Função para checar validade de formularios
 
         $('.modal').on('show.bs.modal', function () {
             $('.modal').not($(this)).each(function () {

@@ -19,7 +19,7 @@
         </div>
         <div class="card-body p-0">
             <div class="row g-0 m-2 justify-content-center">
-                <?php if ($edit) { ?>
+				<?php if ($edit) { ?>
                     <div class="col" id="butmor">
                         <div class="d-flex align-self-center flex-column card border-info bg-black m-2">
                             <div class="card-header text-center p-0">
@@ -43,32 +43,32 @@
                     </div>
 				<?php } ?>
                 <div class="col-auto text-center align-self-center m-2" style="width: -webkit-fill-available; max-width: 190px;  aspect-ratio: 1/1">
-                    <div class="position-relative" >
+                    <div class="position-relative">
                         <div class="position-absolute top-0 end-0">
-                            <button class="btn btn-sm text-warning"  data-bs-toggle="modal" data-bs-target="#editfoto" title="editar foto perfil">
+                            <button class="btn btn-sm text-warning" data-bs-toggle="modal" data-bs-target="#editfoto" title="editar foto perfil">
                                 <i class="fat fa-pencil"></i>
                             </button>
                         </div>
                         <img data-bs-toggle="modal" data-bs-target="#trocarficha" alt="Foto perfil" src="<?php
-			            if ($pva <= 0) {
-				            echo $urlphotomor;
-			            } else
-				            if ($sana <= 0) {
-					            if (TirarPorcento($pva, $pv) < 50) {
-						            echo $urlphotoef;
-					            } else {
-						            echo $urlphotoenl;
-					            }
-				            } else {
-					            if (TirarPorcento($pva, $pv) < 50) {
-						            echo $urlphotofer;
-					            } else {
-						            echo $urlphoto;
-					            }
-				            }
+						if ($pva <= 0) {
+							echo $urlphotomor;
+						} else
+							if ($sana <= 0) {
+								if (TirarPorcento($pva, $pv) < 50) {
+									echo $urlphotoef;
+								} else {
+									echo $urlphotoenl;
+								}
+							} else {
+								if (TirarPorcento($pva, $pv) < 50) {
+									echo $urlphotofer;
+								} else {
+									echo $urlphoto;
+								}
+							}
 
 
-			            ?>" id="fotopersonagem" class="rounded-circle border img-fluid" style="aspect-ratio: 1/1"/>
+						?>" id="fotopersonagem" class="rounded-circle border img-fluid" style="aspect-ratio: 1/1"/>
                     </div>
                 </div>
             </div>
