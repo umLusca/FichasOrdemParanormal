@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Cagliostro&display=swap&family=Concert+One&family=EB+Garamond&family=Flow+Circular&family=IM+Fell+English+SC&family=Lemon&family=Permanent+Marker&family=Special+Elite&family=Yuji+Boku&display=swap');
+/* Chrome, Edge, and Safari */
+@font-face {
+    font-family: sigilos;
+    src: url('https://beta.fichasop.com/assets/css/sigilos.ttf');
+}
+
+.border-dotted {
+    border: var(--bs-border-width) dotted var(--bs-border-color);
+}
+.border-dashed {
+    border: var(--bs-border-width) dashed var(--bs-border-color);
+}
+.sigilos {
+    font-family: sigilos;
+    color: yellow;
+}
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 3px;
+    border: 0 none #000000;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+@font-face {
+    font-family: 'daisywheelregular';
+    src: url('../../../assets/css/daisywhl-webfont.woff2') format('woff2'),
+    url('../../../assets/css/daisywhl-webfont.woff') format('woff');
+
+}
+
+.font1 {
+    font-family: 'Concert One', cursive;
+}
+
+.font2 {
+    font-family: 'EB Garamond', serif;
+}
+
+.flow {
+    font-family: 'Flow Circular', cursive;
+}
+
+.font4 {
+    font-family: 'Lemon', cursive;
+}
+
+.font5 {
+    font-family: 'Permanent Marker', cursive;
+}
+
+.font6 {
+    font-family: 'Special Elite', cursive;
+}
+
+.font7 {
+    font-family: 'IM Fell English SC', serif;
+}
+
+.font8 {
+    font-family: 'daisywheelregular', cursive;
+}
+
+.font9 {
+    font-family: 'Yuji Boku', serif;
+}
+
+.font10 {
+    font-family: 'Cagliostro', sans-serif;
+}
+
+.containera {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 300px;
+    height: auto;
+    color: white;
+}
+
+.containera img {
+    width: 300px;
+    height: auto;
+}
+
+.atributos {
+    font-size: 30px;
+    position: absolute;
+    text-align: center;
+    height: 88px;
+    width: 90px;
+}
+.atributos>span {
+    color: lightgray;
+    font-size: 40px;
+    position: absolute;
+    margin: -50% -10%;
+}
+.atributos:hover>span{
+    color: rgb(225 116 126);
+    text-shadow: 0 0 10px red;
+}
+
+.overname {
+    margin: 11px 1%;
+    font-size: 14px;
+}
+.atributos-input {
+    background-color: transparent;
+    color: lightgray;
+    padding: 0 0 25px 0;
+    font-size: 2rem;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.for {
+    margin-top: 26.75%;
+    margin-left: 3.5%;
+}
+.agi {
+    margin-top: 6%;
+    margin-left: 35%;
+}
+
+.int {
+    margin-top: 27%;
+    margin-left: 66%;
+}
+
+.pre {
+    margin-top: 65%;
+    margin-left: 12.75%;
+}
+
+.vig {
+    margin-top: 65%;
+    margin-left: 57%;
+}
+.hex {
+    -webkit-clip-path: polygon(5% 25%, 50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%);
+    clip-path: polygon(5% 25%, 50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%);
+}
+:root {
+    --bs-black-rgb:25,25,25;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: var(--bs-black-rgb);
+}
+.nav-tabs {
+    --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #191919;
+}
+.form-control-dark {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0) !important;
+    border: 1px solid #ced4da;
+}
+label.form-floating {
+    width:100%;
+}
