@@ -1,29 +1,36 @@
 <?php
 
-function proibido(){
+function proibido()
+{
     return header('location: ..');
 }
 
-Const UploadKey = "ef02827bc6403b4028f3ebd4375163c9";
+const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9","597d795ea0028f95a051c1df0ab85dce","0f32daed2d725ef44d874f98798422f3","15d1789295f623f383308ce4fd56e842","dcb7e42b1a76ff5a1faa70af080fcf4b"];
 function Image_Upload($image, $name = null)
 {
-
-	$API_KEY = UploadKey;
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $API_KEY);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	$extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-	$file_name = ($name) ? $name . '.' . $extension : $image['name'];
-	$data = array('image' => base64_encode(file_get_contents($image['tmp_name'])), 'name' => $file_name);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-	$result = curl_exec($ch);
-	if (curl_errno($ch)) {
-		return 'Error:' . curl_error($ch);
-	} else {
-		curl_close($ch);
-		return json_decode($result, true);
-	}
+    foreach (UploadKeys as $chave){
+        $API_KEY = $chave;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $API_KEY);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+        $file_name = ($name) ? $name . '.' . $extension : $image['name'];
+        $data = array('image' => base64_encode(file_get_contents($image['tmp_name'])), 'name' => $file_name);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            //return 'Error:' . curl_error($ch);
+            curl_close($ch);
+        } else {
+            curl_close($ch);
+            $result =  json_decode($result, true);
+            if($result["status"] == 200){
+                return $result;
+            }
+        }
+    }
+    return $result;
 }
 
 function Check_Name($nome): bool
@@ -412,11 +419,12 @@ function Check_Token(string $sid): bool
         return false;
     }
 }
+
 function logout($type = "UKN"): void
 {
     $con = con();
     $q = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ?");
-    $q->bind_param("is", $_SESSION["UserID"],$type);
+    $q->bind_param("is", $_SESSION["UserID"], $type);
     $q->execute();
     if (is_user_logged_in()) {
         unset($_SESSION["UserID"]);
@@ -428,11 +436,12 @@ function logout($type = "UKN"): void
     session_unset();
     session_destroy();
 }
+
 function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
 {
     $con = con();
     $b = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ? ");
-    $b->bind_param("is", $user_id,$type);
+    $b->bind_param("is", $user_id, $type);
     $b->execute();
 
 
@@ -458,10 +467,12 @@ function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
         return "falha";
     }
 }
-function check_session($token){
+
+function check_session($token)
+{
     $con = con();
     $token = cleanstring($token);
-    if(empty($token)){
+    if (empty($token)) {
         return false;
     }
 
@@ -488,6 +499,7 @@ function check_session($token){
     return false;
 
 }
+
 function is_user_logged_in($token = null)
 {
     $con = con();
@@ -496,10 +508,10 @@ function is_user_logged_in($token = null)
     }
 
 
-    if($token === null) {
+    if ($token === null) {
         $token = filter_input(INPUT_COOKIE, 'remember_me');
     }
-    if(empty($token)){
+    if (empty($token)) {
         return false;
     }
 
@@ -528,4 +540,10 @@ function is_user_logged_in($token = null)
         }
     }
     return false;
+}
+
+
+function Tirar_Acento($string): array|string|null
+{
+    return preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/","/(Ñ)/", "/(ç)/", "/(Ç)/","/(ý|ÿ)/", "(Ý)"), explode(" ","a A e E i I o O u U n N ç Ç y Y"),$string);
 }

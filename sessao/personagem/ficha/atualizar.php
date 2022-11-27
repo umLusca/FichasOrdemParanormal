@@ -6,6 +6,7 @@ if ($edit) {
 			case "upload_foto":
 				$data = [];
 				$ft = cleanstring($_POST["type"]);
+
 				$type = match (true){
 					default => false,
 					($ft === "fp") => "foto",
@@ -14,12 +15,13 @@ if ($edit) {
 					($ft === "fe") => "foto_enlouquecendo",
 					($ft === "fef") => "foto_ferenl",
 				};
+                $type = false;
 				if(isset($_FILES["file"])){
 					$return = Image_Upload($_FILES["file"], uniqid('pf_', true));
 					if ($return["status"] == 200) {
 						if($type) {
 							$b = $con->prepare("UPDATE `fichas_personagem` SET $type = ? WHERE `token` = ? AND usuario = ?;");
-							$b->bind_param("si", $return['data']['url'], $fichat, $_SESSION["UserID"]);
+							$b->bind_param("sii", $return['data']['url'], $fichat, $_SESSION["UserID"]);
 						//	$b->execute();
 						}
 						$data = $return;
@@ -29,6 +31,7 @@ if ($edit) {
 						$data["success"] = false;
 						$data["msg"]= "Falha!";
 					}
+                    $data["return"] = $return;
 				}
 				exit(json_encode($data,JSON_PRETTY_PRINT));
 				break;
@@ -76,7 +79,7 @@ if ($edit) {
 			case 'addd':
 				$nome = cleanstring($_POST["nome"], $Dado_nome);
 				$dado = cleanstring($_POST["dado"], $Dado_nome);
-				$foto = minmax(intval($_POST["icone"]), 0, 13);
+				$foto = minmax((int)$_POST["icone"], 0, 13);
 				$dano = ($_POST["dano"] == 'on' or $_POST["dano"] == 1);
 				if (empty($nome)) {
 					$nome = $dado;

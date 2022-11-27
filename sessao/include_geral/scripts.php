@@ -74,6 +74,7 @@
             $("#eds").val("editd");
             $("#formeditdado").submit();
         })
+        
         $('#dados .dado').on('mousedown touchstart', function(e) {
             $(this).addClass('active');
             let id = $(this).attr("aria-id");
@@ -88,6 +89,8 @@
             $(this).removeClass('active');
             clearInterval(timeOut);
         });
+        
+        
         $('#rolardadosbutton').on('click', function (){
             let dado = $("#rolardadosinput").val();
             $('#returncusdados').html("");

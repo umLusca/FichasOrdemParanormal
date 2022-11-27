@@ -496,20 +496,24 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                     <div class="card-header text-primary"><span
                                                 class="fs-4 font10"><?= $f["nome"] ?></span>
                                         <div class="float-end d-inline">
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    title="Desvincular Ficha da missão" onclick="desvincular('<?=$f["token"]?>')">
+                                                <i class="fal fa-chain"></i>
+                                            </button>
                                             <a class="btn btn-sm btn-outline-info"
                                                href="personagem/portrait?token=<?= $f["token"]; ?>"><i
-                                                        class="fa-regular fa-user"></i></a>
+                                                        class="fal fa-user"></i></a>
                                             <a class="btn btn-sm btn-outline-info"
                                                href="personagem/impresso?token=<?= $f["token"]; ?>"><i
-                                                        class="fa-regular fa-print"></i></a>
+                                                        class="fal fa-print"></i></a>
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#configplayer"
                                                     onclick="configplayer('<?= $f["token"] ?>')"><i
-                                                        class="fa-solid fa-gear"></i></button>
+                                                        class="fal fa-gear"></i></button>
                                             <button type="button" class="btn btn-sm"
                                                     title="Ficha está atualmente <?= $f["public"] ? "Visivel" : "Invisivel" ?>">
-                                                <i class="fa-solid fa-eye<?= $f["public"] ? " text-success" : "-slash text-danger" ?>"></i>
+                                                <i class="fal fa-eye<?= $f["public"] ? " text-success" : "-slash text-danger" ?>"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -565,8 +569,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" href="./personagem/criar">Criar
-                                        personagem</a>
+                                    <a class="btn text-light border-dashed" href="./personagem/criar">Criar personagem</a>
                                 </div>
                             </div>
                         </div>

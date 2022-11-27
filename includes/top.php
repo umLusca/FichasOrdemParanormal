@@ -6,16 +6,7 @@ else
 // Append the host(domain name, ip) to the URL.
 $url .= $_SERVER['HTTP_HOST'];
 ?>
-<style>
-    .form-control-dark {
-        color: #ffffff !important;
-        background-color: rgba(255, 255, 255, 0) !important;
-        border: 1px solid #ced4da;
-    }
-    label.form-floating {
-        width:100%;
-    }
-</style>
+
     <nav class="navbar navbar-expand-sm bg-black navbar-dark p-0 fixed-top border-bottom border-secondary font3">
         <div class="container-fluid">
             <a class="navbar-brand" href="/"><img src="/assets/img/Energia.webp" class="rounded bg-black" width="32px" alt="Inicio"/></a>
