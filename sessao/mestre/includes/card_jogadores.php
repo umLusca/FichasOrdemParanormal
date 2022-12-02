@@ -114,7 +114,7 @@
 													?>
                                                 </div>
                                                 <span class="fs-6">Resistencia</span>
-                                                <div class="row g-1 justify-content-center">
+                                                <div class="row g-2 justify-content-center">
 													<?= $ficha["balistica"] ? '<div class="col-auto">
                                                                 <span class="form-control form-control-sm border-light text-light bg-black">Balística: ' . $ficha["balistica"] . '</span>
                                                             </div>' : '' ?>
@@ -165,7 +165,7 @@
                                              aria-labelledby="aba-dados-<?= $ficha["id"] ?>" tabindex="0">
                                             <div class="m-2">
                                                 <span class="fs-6">Atributos</span>
-                                                <div class="row justify-content-center g-1">
+                                                <div class="row justify-content-center g-2">
                                                     <div class='col-auto'>
                                                         <span class='p-1 rounded-1 border'>FOR: <?= $ficha["forca"] ?></span>
                                                     </div>
@@ -222,7 +222,7 @@
                                              aria-labelledby="aba-outros-<?= $ficha["token"] ?>" tabindex="0">
                                             <div class="m-2">
                                                 <span class="fs-6">Informações</span>
-                                                <div class="row g-1 row-cols-1">
+                                                <div class="row g-2 row-cols-1">
 													<?= !empty($ficha["idade"]) ? "<span class='p-1 rounded-1 border'>Idade: " . $ficha["idade"] . "</span>" : "" ?>
 													<?= !empty($ficha["local"]) ? "<span class='p-1 rounded-1 border'>Local: " . $ficha["local"] . "</span>" : "" ?>
 													<?= !empty($ficha["origem"]) ? "<span class='p-1 rounded-1 border'>Origem: " . $ficha["origem"] . "</span>" : "" ?>
