@@ -1,6 +1,25 @@
 <div class="col-md-6" id="player">
     <div class="card bg-black border-light h-100">
         <div class="card-header text-center">
+            <div class="position-absolute start-0">
+				<?php
+				
+				if ((bool)$missao["combate"]) {
+					?>
+                    <button class="btn btn-outline-warning mx-1 p-0" aria-checked="false" title="Alternar status de Combate" onclick="toggleCombate(this);">
+                    <span class="fa-stack fa-sm">
+                        <i class="fa-regular fa-slash fa-stack-1x"></i>
+                        <i class="fa-regular fa-sword fa-stack-1x"></i>
+                    </span>
+                    </button>
+				<?php } else { ?>
+                    <button class="btn btn-warning mx-1 p-0" aria-checked="false" title="Alternar status de Combate" onclick="toggleCombate(this);">
+                    <span class="fa-stack fa-sm">
+                        <i class="fa-regular fa-sword fa-stack-1x"></i>
+                    </span>
+                    </button>
+				<?php } ?>
+            </div>
             <div class="position-absolute end-0">
                 <button class="btn btn-outline-success fa-lg mx-1 p-1" data-bs-toggle="modal" data-bs-target="#adicionar">
                     <i class="fat fa-plus-large"></i>
@@ -12,17 +31,16 @@
             <div class="row row-cols-lg-2 row-cols-xxl-3 row-cols-1 g-2 p-2" id="fichasperson">
 				<?php
 				foreach ($jogadores as $ficha) {
-
+					
 					if ($ficha["peso_inv"] > 1) {
 						$invmax = $ficha["peso_inv"];
 					} else {
 						$invmax = pesoinv($ficha["forca"], $ficha["inteligencia"], $ficha["classe"], $ficha["trilha"], $ficha["origem"]);
 					}
-
 					$s = $con->query("Select SUM(espaco) AS pesototal From `inventario` where `id_ficha` = '" . $ficha["id"] . "';");
 					$ddinv = mysqli_fetch_array($s);
 					$espacosusados = $ddinv["pesototal"];
-
+					
 					?>
                     <div class="col">
                         <div class="card-body h-100 p-0" id="player<?= $ficha["token"] ?>">
@@ -34,7 +52,8 @@
                                     </a>
                                     <div class="float-end d-inline">
                                         <a class="btn btn-sm btn-outline-info" href="./../personagem/portrait/<?= ($id == 5887) ? "Espiral/" : '' ?>?token=<?= $ficha["token"] ?>"><i class="fa-solid fa-user"></i></a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="desvincular(<?= $ficha["id"] ?>)" title="Desvincular ficha"><i class="fa-solid fa-link-slash"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="desvincular(<?= $ficha["id"] ?>)" title="Desvincular ficha">
+                                            <i class="fa-solid fa-link-slash"></i></button>
                                     </div>
                                 </div>
                                 <div class="card-body p-0 border-0 text-center">
@@ -105,9 +124,8 @@
                                             <div class="my-2">
                                                 <span class="fs-6">Defesas</span>
                                                 <div class="btn-group justify-content-center font6 w-100">
-													<?= $ficha["passiva"] ? '<span class="btn btn-sm btn-outline-light">Passiva: ' . $ficha["passiva"] . '</span>' : ''
-													?>
-
+													<?= $ficha["passiva"] ? '<span class="btn btn-sm btn-outline-light">Passiva: ' . $ficha["passiva"] . '</span>' : '' ?>
+													
 													<?= $ficha["esquiva"] ? '<span class="btn btn-sm btn-outline-light">Esquiva: ' . $ficha["esquiva"] . '</span>' : ''
 													?>
 													<?= $ficha["bloqueio"] ? '<span class="btn btn-sm btn-outline-light">Bloqueio: ' . $ficha["bloqueio"] . '</span>' : ''
@@ -118,13 +136,13 @@
 													<?= $ficha["balistica"] ? '<div class="col-auto">
                                                                 <span class="form-control form-control-sm border-light text-light bg-black">Balística: ' . $ficha["balistica"] . '</span>
                                                             </div>' : '' ?>
-
+													
 													<?= $ficha["fogo"] ? '
                                                         <div class="col-auto">
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Fogo: ' . $ficha["fogo"] . '</span>
                                                         </div>' : ''
 													?>
-
+													
 													<?= $ficha["fisica"] ? '
                                                         <div class="col-auto">
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Física: ' . $ficha["fisica"] . '</span>
@@ -135,13 +153,13 @@
                                                            <span class="form-control form-control-sm border-light text-light bg-black">Mental: ' . $ficha["insanidade"] . '</span>
                                                        </div>' : ''
 													?>
-
+													
 													<?= $ficha["morte"] ? '
                                                         <div class="col-auto">
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Morte: ' . $ficha["morte"] . '</span>
                                                         </div>' : ''
 													?>
-
+													
 													<?= $ficha["conhecimento"] ? '
                                                         <div class="col-auto">
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Conhecimento: ' . $ficha["conhecimento"] . '</span>
@@ -152,7 +170,7 @@
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Sangue: ' . $ficha["sangue"] . '</span>
                                                         </div>' : ''
 													?>
-
+													
 													<?= $ficha["energia"] ? '
                                                         <div class="col-auto">
                                                             <span class="form-control form-control-sm border-light text-light bg-black">Energia: ' . $ficha["energia"] . '</span>
@@ -185,7 +203,7 @@
                                                 <span class="fs-6">Perícias</span>
 												<?php if ($ficha["acrobacia"] != 0 || $ficha["artes"] != 0 || $ficha["adestramento"] != 0 || $ficha["atletismo"] != 0 || $ficha["atualidade"] != 0 || $ficha["ciencia"] != 0 || $ficha["diplomacia"] != 0 || $ficha["enganacao"] != 0 || $ficha["fortitude"] != 0 || $ficha["furtividade"] != 0 || $ficha["iniciativa"] != 0 || $ficha["intimidacao"] != 0 || $ficha["intuicao"] != 0 || $ficha["investigacao"] != 0 || $ficha["luta"] != 0 || $ficha["medicina"] != 0 || $ficha["ocultismo"] != 0 || $ficha["percepcao"] != 0 || $ficha["pilotagem"] != 0 || $ficha["pontaria"] != 0 || $ficha["profissao"] != 0 || $ficha["reflexos"] != 0 || $ficha["religiao"] != 0 || $ficha["sobrevivencia"] != 0 || $ficha["tatica"] != 0 || $ficha["tecnologia"] != 0 || $ficha["vontade"] != 0) { ?>
                                                     <div class="row justify-content-center g-2">
-
+														
 														<?= $ficha["acrobacias"] ? "<div class='col-auto'><span class='p-1 rounded-1 border'>Acrobacia: +" . $ficha["acrobacias"] . "</span></div>" : "" ?>
 														<?= $ficha["adestramento"] ? "<div class='col-auto'><span class='p-1 rounded-1 border'>Adestramento: +" . $ficha["adestramento"] . "</span></div>" : "" ?>
 														<?= $ficha["artes"] ? "<div class='col-auto'><span class='p-1 rounded-1 border'>Artes: +" . $ficha["artes"] . "</span></div>" : "" ?>

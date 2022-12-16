@@ -19,29 +19,6 @@
         </div>
         <div class="card-body p-0">
             <div class="row g-0 m-2 justify-content-center">
-				<?php if ($edit) { ?>
-                    <div class="col" id="butmor">
-                        <div class="d-flex align-self-center flex-column card border-info bg-black m-2">
-                            <div class="card-header text-center p-0">
-                                <h3 class="m-0"><span>Portrait</span>/<span>Missão</span></h3>
-                            </div>
-                            <div class="card-body p-1">
-                                <div class="m-2">
-                                    <input type="checkbox" class="btn-check" id="portrait" <?= $edit ?: "disabled" ?>>
-                                    <label class="d-grid btn btn-outline-success fw-bolder" for="portrait">Online</label>
-                                </div>
-                                <div class="m-2">
-                                    <input type="checkbox" class="btn-check" id="combate" <?= $edit ?: "disabled" ?>>
-                                    <label class="d-grid btn btn-outline-warning fw-bolder" for="combate">Combate</label>
-                                </div>
-                                <div class="m-2">
-                                    <input type="checkbox" class="btn-check" id="morrendo" <?= $morrendo ? "checked" : '' ?> <?= $edit ?: "disabled" ?>>
-                                    <label class="d-grid btn btn-outline-danger fw-bolder" for="morrendo">Morto</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-				<?php } ?>
                 <div class="col-auto text-center align-self-center m-2" style="width: -webkit-fill-available; max-width: 190px;  aspect-ratio: 1/1">
                     <div class="position-relative">
                         <div class="position-absolute top-0 end-0">

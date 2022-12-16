@@ -1,6 +1,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" type="text/javascript" data-cfasync="false"></script>
 <script src="https://cdn.socket.io/4.5.1/socket.io.min.js" data-cfasync="false"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js" data-cfasync="false"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js" data-cfasync="false"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" data-cfasync="false"></script>
 
 <div class="modal fade" id="confirmar" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -10,25 +13,28 @@
                 <p class="mb-0 desc"></p>
             </div>
             <div class="modal-footer flex-nowrap p-0">
-                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 cancel" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-start confirm"><strong>Confirmar</strong></button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 cancel" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-start confirm">
+                    <strong>Confirmar</strong></button>
             </div>
         </div>
     </div>
 </div>
-<script>
+<script type="text/babel">
 
-    function confirmar(title,text) {
+    function confirmar(title, text) {
         $("#confirmar .title").html(title);
         $("#confirmar .desc").html(text);
         let modalconfirm = new bootstrap.Modal(document.getElementById('confirmar'))
         modalconfirm.show();
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             $("#confirmar .confirm").on("click", function () {
                 resolve(true);
                 modalconfirm.hide();
             })
-            $("#confirmar .cancel").on("click", function (){
+            $("#confirmar .cancel").on("click", function () {
                 resolve(false);
                 modalconfirm.hide();
             })
@@ -38,7 +44,7 @@
     function uploadFile(PREFIX_, element = null, token, Upload_name = "file", callback = null) {
         const FILE = element.files[0];
 
-        let progressbar = $("*[id^=" + PREFIX_ +"].progress-bar");
+        let progressbar = $("*[id^=" + PREFIX_ + "].progress-bar");
         let returndiv = $("*[id^=" + PREFIX_ + "label]");
         let inputurl = $("input[id^=" + PREFIX_ + "input]");
 
@@ -53,7 +59,7 @@
             url: "",
             type: "POST",
             data: formulario,
-            dataType:"json",
+            dataType: "json",
             cache: false,
             processData: false,
             contentType: false,
@@ -91,7 +97,12 @@
             },
             success: (d) => {
                 console.log(d)
-                inputurl.val(d["data"]["url"]);
+                if (d["data"]["url"]) {
+                    inputurl.val(d["data"]["url"]);
+                } else {
+                    returndiv.html("Falha. Limite estourado.");
+                    progressbar.addClass("bg-danger").removeClass("bg-primary,bg-success,bg-warning");
+                }
             },
             complete: (d) => {
                 console.log(d);
@@ -111,8 +122,8 @@
             return p;
         }
     }
-    $(document).ready(function () {
 
+    $(document).ready(function () {
         $.fn.isValid = function () {
             return this[0].checkValidity()
         } // Função para checar validade de formularios
@@ -123,7 +134,6 @@
             });
         });
 		<?php if (!isset($_SESSION["UserID"])) {?>
-
 
         $('#passrf').submit(function (e) {
             e.preventDefault();
@@ -228,6 +238,158 @@
         modalperfil.show()
 		<?php
 		} else {?>
+
+        let up;
+        let enviando = false;
+        
+        $('#btnaddmarca').on('click', function () {
+            const url = $('#addfotomarca input').val();
+            console.log("afas")
+            if (url.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || url == "") {
+                if (!up) {
+                    $.post({
+                        url: '',
+                        data: {status: 'addmarca', urlmarca: url},
+                        dataType: "JSON"
+                    }).done(function (data) {
+                        console.log(data)
+                        if (data.msg) {
+                            if (!data.success) {
+                                $("#addfotomarca .return").html('<div class="alert alert-danger">' + data.msg + "</div>");
+                            } else {
+                                up = true;
+                                $("#addfotomarca .return").html('<div class="alert alert-success">' + data.msg + '</div>');
+                            }
+                        }
+                    }).fail(function (d) {
+                        console.log(d);
+                        $("#perfil .return").html(`<div class="alert alert-success m-2">Houve uma falha ao fazer a alteração.
+								<span class="float-end" role="button" onclick="copiar(\`${d.responseText}\`)"><i class="fas fa-copy" aria-hidden="true"></i></span>
+									</div>`);
+                    })
+                }
+            } else {
+
+            }
+        })
+
+        $('#addfotomarca input').on('input', function () {
+            var src = jQuery(this).val();
+            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || src == "") {
+                $("#addfotomarca .warning").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(.jpg, .png ...)!");
+                $('#addfotomarca .preview').html('');
+                return false;
+            } else {
+                $("#addfotomarca .warning").html("");
+                $('#addfotomarca .preview').html('<img class="" height="250" width="250" src="' + src + '">');
+            }
+
+        })
+
+        function copiar(texto) {
+            const type = "text/plain";
+            const blob = new Blob([texto], {type});
+            const data = [new ClipboardItem({[type]: blob})];
+            navigator.clipboard.write(data);
+        }
+
+        $("#configconta .senha").on("input", () => {
+            if ($("#configconta .senha").val().length > 0) {
+                $("#configconta .csenha").prop("required", true);
+            } else {
+                $("#configconta .csenha").prop("required", false);
+            }
+        })
+        $("#configconta").on("submit", (e) => {
+            e.preventDefault();
+            $this = $("#configconta");
+            $this.addClass('was-validated');
+
+            if ($this.isValid() && $("#configconta .senha").val() === $("#configconta .csenha").val()) {
+                console.log("true");
+                if(!enviando) {
+                    $.post({
+                        url: '',
+                        data: $this.serialize() + "&status=conta",
+                        dataType: "json",
+                        beforeSend: () => {
+                            enviando = true;
+                            $("#configconta .warning").html(`<div class="alert alert-warning m-2">Estamos atualizando sua conta, aguarde...</div>`);
+                            $("#configconta input:enabled").val("");
+                        },
+                        success: (d) => {
+                            if (d.success && d.msg) {
+                                $("#configconta .warning").html(`<div class="alert alert-success m-2">${d.msg}</div>`);
+                                window.location.reload();
+                            } else {
+                                enviando = false;
+                                $("#configconta .warning").html(`
+									<div class="alert alert-danger m-2">${d.msg}
+										<span class="btn float-end" role="button" onclick="copiar(\`${d.msg}\`)">
+											<i class="fas fa-copy" aria-hidden="true"></i>
+										</span>
+									</div>`);
+                            }
+                        },
+                        error: (d) => {
+                            $("#configconta .warning").html(`<div class="alert alert-success m-2">Houve uma falha ao fazer a alteração.
+								<span class="float-end" role="button" onclick="copiar(\`${d.responseText}\`)"><i class="fas fa-copy" aria-hidden="true"></i></span>
+									</div>`);
+                            enviando = false;
+                        },
+                    });
+                }
+            } else {
+                $("#configconta .warning").html(`<div class="alert alert-danger m-2">Confirme se o formulário está preenchido corretamente.</div>`);
+                $("#configconta .csenha").addClass("is-invalid")
+                console.log("false");
+            }
+
+        })
+
+        
+        
+        
+        
+        
+        
+        $("#addmarcadiv input").on("input", () => {
+            let $this = $("#addmarcadiv input");
+            console.log("teste");
+            let src = $this.val().trim();
+            if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") && src !== "") {
+                $this.addClass("is-invalid").addClass("is-valid");
+                $("#addmarcadiv .return").html("<div class='alert alert-danger'>Precisa ser HTTPS, e Terminar com extensão de imagem(jpg,png,...)!</div>");
+                $('#addmarcadiv img').prop("src", "").hide();
+                return false;
+            } else {
+                $this.addClass("is-valid").removeClass("is-invalid");
+                $("#addmarcadiv .return").html("");
+                $('#addmarcadiv img').prop("src", src).show();
+            }
+        })
+        $("#addmarcadiv .submit").on("click", () => {
+            $.ajax({
+                url: "",
+                method: "post",
+                data: {status: "addmarca", urlmarca: $("#addmarcadiv input").val()},
+                dataType: "json",
+                beforeSend: () => {
+                    $("#addmarcadiv input, #addmarcadiv button").attr("disabled", true);
+                },
+                success: (d) => {
+                    if (d.success) {
+                        $("#addmarcadiv .return").html("<div class='alert alert-success'>" + d.msg + "</div>");
+                    } else {
+                        $("#addmarcadiv .return").html("<div class='alert alert-danger'>" + d.msg + "</div>");
+                    }
+                },
+                complete: (d)=>{
+                    console.log(d)
+                    $("#addmarcadiv input, #addmarcadiv button").attr("disabled", false);
+                }
+            });
+        })
 
 
         $('#foto').change(function () {

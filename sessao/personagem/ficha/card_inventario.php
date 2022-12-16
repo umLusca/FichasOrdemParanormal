@@ -29,8 +29,15 @@
 				<?php foreach ($s[1] as $i => $arma): ?>
                     <div class="col">
                         <div class="card h-100 border text-white bg-dark position-relative" id="arma<?= $arma["id"] ?>">
+                            <div class="position-absolute start-0-0 top-0">
+                                <button type="button" class="btn btn-sm btn-outline-danger" title="Apagar Arma" onclick="deletar(<?= $arma["id"] ?>, '<?= $arma["arma"] ?>', 'delarma')">
+                                    <i class="fa-regular fa-trash"></i>
+                                </button>
+                            </div>
                             <div class="position-absolute end-0 top-0">
-                                <button class="btn btn-sm btn-outline-warning" onclick="edit('arma',<?= $arma["id"] ?>)"><i class="fat fa-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-warning" title="Apagar Arma" onclick="edit('arma',<?= $arma["id"] ?>)">
+                                    <i class="fat fa-pencil"></i>
+                                </button>
                             </div>
                             <img class="card-img-top oto" src="<?= $arma["foto"] ?>">
                             <div class="card-body p-0">
@@ -65,7 +72,7 @@
                                 <div class="top-100 position-sticky">
 									<?php if (!empty($arma["ataque"])) { ?>
                                         <div class="d-grid">
-                                            <button class="btn btn-sm p-0 btn-outline-info rounded-0 ataque" data-dado="<?= $arma["ataque"] ?>" onclick='rolar("<?= DadoDinamico($arma['ataque'], $dc) ?>", 0, "Ataque Arma")'>
+                                            <button class="btn btn-sm p-0 btn-outline-info rounded-0 ataque" data-dado="<?= $arma["ataque"] ?>" onclick='rolar(<?= "{nome:`Teste {$arma["arma"]}`,dado: `{$arma["ataque"]}`, dano: false,margem:{$arma["margem"]}}" ?>,<?= "{nome:`Dano {$arma["arma"]}`,dado: `{$arma["dano"]}`, dano: 1}" ?>,<?= "{nome:`Crítico {$arma["arma"]}`,dado: `{$arma["critico"]}`, dano: 1}" ?>)'>
                                                 Teste<br>
 												<?= $arma["ataque"] ?>
                                             </button>
@@ -102,73 +109,11 @@
                 </div>
             </div>
             <div class="py-2" id="inv">
-				<?php if ($s[1]->num_rows > 0) { ?>
-                    (Essa tabela será removida em breve....)
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered border-dark bg-black text-white table-borderless font2"
-                               id="armas">
-                            <thead>
-                            <tr>
-                                <th scope="col">Nome</th>
-                                <th class="trocavision" scope="col" style="display: none;">Tipo</th>
-                                <th class="trocavision" scope="col">Ataque</th>
-                                <th class="trocavision" scope="col" style="display: none;">Alcance</th>
-                                <th class="trocavision" scope="col">Dano</th>
-                                <th class="trocavision" scope="col">Crítico</th>
-                                <th class="trocavision" scope="col" style="display: none;">Recarga</th>
-                                <th class="trocavision" scope="col" style="display: none;">Especial</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-							<?php foreach ($s[1] as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['arma']; ?></td>
-                                    <td class="trocavision" style="display: none;"><?= $row['tipo'] ?></td>
-                                    <td class="trocavision">
-                                        <button class="btn btn-sm fw-bolder text-info" title="Rolar Ataque"
-											<?php if ($edit) { ?>
-                                                onclick='rolar("<?= DadoDinamico($row['ataque'], $dc) ?>", 0, "Ataque Arma")'
-											<?php } else { ?>disabled<?php } ?>>
-                                            <i class="fa-regular fa-dice"></i><?= $row["ataque"] ?>
-                                        </button>
-                                    </td>
-                                    <td class="trocavision" style="display: none;"><?= $row['alcance']; ?></td>
-                                    <td class="trocavision">
-                                        <button class="btn btn-sm fw-bolder text-danger" title="Rolar Dano"
-											<?php if ($edit) { ?>
-                                                onclick="rolar('<?= $row['dano'] ?>', 1, 'Dano Arma')"
-											<?php } else { ?>
-                                                disabled
-											<?php } ?>>
-                                            <i class="fa-regular fa-dice"></i>
-											<?= $row['dano'] ?>
-                                        </button>
-                                    </td>
-                                    <td class="trocavision">
-                                        <button class="btn btn-sm fw-bolder text-danger" title="Rolar Dano critico"
-											<?php if ($edit) { ?>
-                                                onclick="rolar('<?= $row['critico'] ?>', 1, 'Crítico Arma')"
-											<?php } else { ?>
-                                                disabled
-											<?php } ?>>
-                                            <i class="fa-regular fa-dice"></i>
-											<?= $row['margem'] ? $row["margem"] . ' / ' : '' ?><?= $row['critico'] ?>
-                                        </button>
-                                    </td>
-                                    <td class="trocavision" style="display: none;"><?= $row['recarga']; ?></td>
-                                    <td class="trocavision" style="display: none;"><?= $row['especial']; ?></td>
-                                </tr>
-							<?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-					<?php
-				}
+				<?php
 				if ($s[4]->num_rows > 0) {
 					?>
                     <h3 class="mx-2">Itens</h3>
                     <div class="table-responsive">
-
                         <table class="table table-bordered border-dark table-sm bg-black text-white table-borderless font2"
                                id="itens">
                             <thead>

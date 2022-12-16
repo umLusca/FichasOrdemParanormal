@@ -1,6 +1,6 @@
 <?php
 $con = con();
-if (isset($espiral) and $espiral){
+if (isset($espiral) && $espiral){
 	$edit = true;
 } else {
 	$edit = false;
@@ -10,7 +10,7 @@ $missao = 0;
 $userid = $_SESSION["UserID"];
 
 //Importante para evitar XSS INJECTIOn e um bucado de coisa
-$id = intval($_GET["id"] ?: 0);
+$id = (int)($_GET["id"] ?: 0);
 
 if(isset($_GET["id"])) {
 	$qs = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` = '$id'");
@@ -50,11 +50,11 @@ if ($lig->num_rows) {
 
 if ((isset($_SESSION["UserAdmin"]) && $_SESSION["UserAdmin"])){
 	$edit = true;
-} else if ((isset($dados_missao) and $dados_missao["mestre"] == $userid)) {
+} else if ((isset($dados_missao) && $dados_missao["mestre"] == $userid)) {
 	$edit = true;
 } else if (VerificarID($id)){
 	$edit = true;
-} else IF (isset($portrait) AND $portrait) {
+} else IF (isset($portrait) && $portrait) {
 	$edit = false;
 } else IF (!$rqs["public"]) {
 	header("Location: ./..");

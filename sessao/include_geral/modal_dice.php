@@ -1,10 +1,10 @@
-<!-- Modal ATRIBUTOS-->
+
 <div class="modal fade" id="rolardados" tabindex="-1">
     <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
         <div class="modal-content bg-black border-light">
             <div class="modal-header">
                 <div class="text-center fs-1">Como Criar/Rolar Dados.</div>
-                <button class="btn-close btn-close-white" data-bs-dimiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="m-3 text-center">
@@ -122,7 +122,6 @@
         </div>
     </form>
 </div>
-
 <div class="modal fade" id="editardado" tabindex="-1">
     <form class="modal-dialog" method="post" id="formeditdado">
         <div class="modal-content bg-black border-light">
@@ -175,16 +174,14 @@
 
 
 <div class="position-fixed top-50 start-50 translate-middle">
-    <div class="toast bg-black text-light border-dark" id="Toastdados" role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
+    <div class="toast bg-black text-light border-info" id="Toastdados" role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-dark">
             <strong class="me-auto">Resultado</strong>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
-            <div id="resultado">
-            <span class="font6 fs-1"></span>
-                <span id="dado1"></span>:<span id="valores1"></span>
-            </div>
+        </div>
+        <div class="toast-footer btn-group w-100">
         </div>
     </div>
 </div>

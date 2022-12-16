@@ -4,21 +4,38 @@ if (isset($_POST["status"])) {
 	$success = true;
 	$msg = '';
 	switch ($_POST["status"]) {
+		case "copy_npc":
+			$token = (int)($_POST["npc"]);
+			$a = $con->prepare("SELECT * FROM u436203203_bd.fichas_npc WHERE id = ? AND missao = ?;");
+			$a->bind_param("ii", $token, $id);
+			$a->execute();
+			$ra = mysqli_fetch_assoc($a->get_result());
+			
+			$stmt = duplicate_row($ra, null, array("id"));
+			
+			$b = $con->prepare("INSERT INTO fichas_npc ({$stmt["query_columns"]}) VALUES ({$stmt["query_values"]})");
+			$b->bind_param($stmt["bind_types"], ...$stmt["bind_values"]);
+			$b->execute();
+			exit();
+			break;
 		case 'updtini':
 			$data = [];
 			$c = 0;
-			while ($c != count($_POST["id"])) {
-				$nome = $_POST['nome'][$c];
-				$idi = intval($_POST['id'][$c]);
-				$prioridade = intval($_POST['prioridade'][$c]);
-				$iniciativa = minmax($_POST['iniciativa'][$c], -99, 999);
-				$dano = minmax($_POST['dano'][$c], -999, 999);
-
-				$z = $con->prepare("UPDATE iniciativas SET `nome`= ?,`iniciativa`= ?,`prioridade`= ?,`dano`= ? WHERE iniciativas.id = ?");
-				$z->bind_param("siiii", $nome, $iniciativa, $prioridade, $dano, $idi);
-				$z->execute();
-				$c++;
-			}
+            for($i = 0; $i < count($_POST["id"]); $i ++){
+                $nome = $_POST['nome'][$i];
+                $idi = (int)$_POST['id'][$i];
+                $prioridade = (int)$_POST['prioridade'][$i];
+                $iniciativa = minmax($_POST['iniciativa'][$i], -99, 999);
+                $dano = minmax($_POST['dano'][$i], -999, 999);
+    
+    
+                $z = $con->prepare("UPDATE iniciativas SET `nome`= ?,`iniciativa`= ?,`prioridade`= ?,`dano`= ? WHERE iniciativas.id = ?");
+                $z->bind_param("siiii", $nome, $iniciativa, $prioridade, $dano, $idi);
+                $z->execute();
+    
+            }
+            
+            
 			$data["missao"] = $id;
 			$data["count"] = count($_POST["iniciativa"]);
 			$data["post"] = $_POST;
@@ -242,62 +259,28 @@ if (isset($_POST["status"])) {
 		case 'deleteini':
 			$con->query("DELETE FROM `iniciativas` WHERE `id_missao`='" . $id . "' AND `id`='" . intval($_POST["iniciativa_id"]) . "';");
 			break;
-		case 'upv':
-			$ficha_id = intval($_POST["ficha"]);
-			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-			$rs = mysqli_fetch_array($sq);
-			$pva = $rs["pva"] + intval($_POST["value"]);
-			$ppva = $rs["pv"] + 20;
-			if ($pva >= $ppva) {
-				$pva = intval($rs["pv"] + 20);
-			} elseif ($pva <= 0) {
-				$pva = 0;
-			}
-			$con->query("UPDATE `fichas_npc` SET `pva` = '" . $pva . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-			if ($con->affected_rows) {
-				$msg = "Vida alterada!";
-			} else {
-				$success = false;
-				$msg = "Vida NÃO alterada!";
-			}
-			break;
-		case 'usan':
-			$ficha_id = intval($_POST["ficha"]);
-			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-			$rs = mysqli_fetch_array($sq);
-			$sana = $rs["sana"] + intval($_POST["value"]);
-			$psana = $rs["san"] + 20;
-			if ($sana >= $psana) {
-				$sana = intval($rs["san"] + 20);
-			} elseif ($sana <= 0) {
-				$sana = 0;
-			}
-			$con->query("UPDATE `fichas_npc` SET `sana` = '" . $sana . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-			if ($con->affected_rows) {
-				$msg = "Sanidade alterada!";
-			} else {
-				$success = false;
-				$msg = "Sanidade NÃO alterada!";
-			}
-			break;
-		case 'upe':
-			$ficha_id = intval($_POST["ficha"]);
-			$sq = $con->query("Select * From `fichas_npc` where `missao` = '$id' AND `id` = '$ficha_id';");
-			$rs = mysqli_fetch_array($sq);
-			$pe = $rs["pe"];
-			$pea = $rs["pea"] + intval($_POST["value"]);
-			$pea = ($pea > $pe) ? $pe : (($pea < 0) ? 0 : $pea);
-			if ($pea > $pe) {
-				$pea = $pe;
-			}
-			$con->query("UPDATE `fichas_npc` SET `pea` = '" . $pea . "' WHERE `missao` = " . $id . " AND `id` = '" . $ficha_id . "';");
-			break;
-		case 'pe':
-			$npc = intval($_POST["npc"]);
-			$sq = $con->query("Select `pe` From `fichas_npc` where `id` = '$npc' AND `missao`='$id';");
-			$rs = mysqli_fetch_array($sq);
-			$pea = $rs["pe"] - intval($_POST["value"]);
-			$con->query("Update `fichas_npc` SET `pea` = '$pea' WHERE `id`='$npc' AND `missao`='$id';");
+		case 'us_npc':
+			$ficha_id = (int)$_POST["ficha"];
+			$data = $_POST["data"];
+			
+			if($data["pva"] >= $data["pv"]+20) $data["pva"] = $data["pv"]+20;
+			if($data["pva"] < 0) $data["pva"] = 0;
+			
+			if($data["sana"] >= $data["san"]+20) $data["sana"] = $data["san"]+20;
+			if($data["sana"] < 0) $data["sana"] = 0;
+			
+			if($data["pea"] >= $data["pe"]+20) $data["pea"] = $data["pe"]+20;
+			if($data["pea"] < 0) $data["pea"] = 0;
+			
+			$st = get_stmt($data,array("id","missao"),"fichas_npc",$con);
+			$st["bind"] .= "ii";
+			$st["values"][] = $ficha_id;
+			$st["values"][] = $id;
+			
+			$_a = $con->prepare("UPDATE fichas_npc SET {$st["query"]} WHERE id =? AND u436203203_bd.fichas_npc.missao = ? ");
+			$_a->bind_param($st["bind"],...$st["values"]);
+			$_a->execute();
+			
 			break;
 		case 'deletenpc':
 			$npc = intval($_POST["npc"]);
@@ -497,33 +480,17 @@ if (isset($_POST["status"])) {
 			$y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
 			break;
 		case 'roll':
-			$dado = cleanstring($_POST["dado"], 50);
-			$dano = intval(minmax($_POST["dano"], 0, 1));
+			$dado = DadoDinamico(cleanstring($_POST["dado"], 50), $dc);
+			$dano = minmax((int)$_POST["dano"], 0, 1);
+			$margem = (int)$_POST["margem"];
 			if (ClearRolar($dado)) {
+				$data = RolarMkII($dado, $dano,$margem);
 				$data["success"] = true;
-				$data = RolarMkII($dado, $dano);
 			} else {
 				$data = ClearRolar($dado, true);
 			}
 			$data["dado"] = $dado;
 			echo json_encode($data);
 			exit;
-		case 'npc':
-			$ss = $con->query('SELECT * FROM `fichas_npc` WHERE `id` = ' . intval($_POST["ficha"]) . ' AND `missao` = ' . $id . ';');
-			$ss = $con->query('SELECT * FROM fichas_npc WHERE id = ' . intval($_POST["ficha"]) . ' AND missao = ' . intval($id) . ';');
-			print(json_encode(mysqli_fetch_array(utf8ize($ss))));
-			exit;
-			break;
 	}
-}
-function utf8ize($d)
-{
-	if (is_array($d)) {
-		foreach ($d as $k => $v) {
-			$d[$k] = utf8ize($v);
-		}
-	} else if (is_string($d)) {
-		return utf8_encode($d);
-	}
-	return $d;
 }

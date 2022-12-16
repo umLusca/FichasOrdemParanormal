@@ -62,12 +62,13 @@ if ($edit) {
 				$r = cleanstring($_POST["recarga"], $Arma_reca);
 				$e = cleanstring($_POST["especial"], $Arma_espe);
 				$desc = cleanstring($_POST["desc"], $Inv_desc);
+				$foto = cleanstring($_POST["foto"], $Inv_desc);
 				$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
 				$pres = minmax($_POST["prestigio"], 0, 10);//Categorias
-				$rr = $con->prepare("INSERT INTO `armas`(`id_ficha`,`arma`,`tipo`,`ataque`,`alcance`,`dano`,`critico`, `margem`,`recarga`,`especial`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-				$rr->bind_param("issssssiss", $id, $n, $t, $at, $al, $d, $c, $m, $r, $e);
+				$rr = $con->prepare("INSERT INTO `armas`(`id_ficha`,`foto`,`arma`,`tipo`,`ataque`,`alcance`,`dano`,`critico`, `margem`,`recarga`,`especial`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+				$rr->bind_param("isssssssiss", $id,$foto, $n, $t, $at, $al, $d, $c, $m, $r, $e);
 				$rr->execute();
-				if ($_POST["opc"] == 'addinvtoo') {
+				if ($_POST["invtoo"] === 'on' || $_POST["invtoo"] === true) {
 					$p = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`prestigio`,`espaco`,`id`) VALUES ( ?, ?, ?, ?, ?, '');");
 					$p->bind_param("issid", $id, $n, $desc, $pres, $peso);
 					$p->execute();
@@ -146,7 +147,7 @@ if ($edit) {
 				$con->query("UPDATE `fichas_personagem` SET `forca` = '$forca', `agilidade` = '$agilidade',`inteligencia` = '$intelecto',`presenca` = '$presenca',`vigor` = '$vigor' WHERE `id` = '$id';");
 				break;
 			case 'editarma':
-				$aid = intval($_POST["did"]);
+				$aid = (int)$_POST["did"];
 				$n = cleanstring($_POST["nome"],$limite_nome_inv);
 				$f = cleanstring($_POST["foto"], 300);
 				$t = cleanstring($_POST["tipo"], $Arma_tipo);
@@ -379,7 +380,7 @@ if ($edit) {
                                `perfuracao` = ?,`eletricidade`= ?, `frio` = ?,`impacto` = ?,`corte` = ?,
                                `pea` = ?, `pe` = ?,`san` = ?, `sana` = ?, `quimico` = ?, `pv` = ?, `pva` = ?
                           		WHERE `id` = ?;");
-				$b->bind_param("iiiiiiiiiiiiiiiiiiiiiiii", $pa, $es, $bl, $ment, $bali, $fisi, $fogo, $mort, $sang, $conh, $ener, $perf, $elet, $frio, $impa, $cort, $pea, $pe, $san, $sana, $quim, $pv, $pva, $id);
+				$b->bind_param("iiiiiiiiiiiiiiiiiiiiiiii", $pa, $es, $bl, $ment, $fisi, $bali, $fogo, $mort, $sang, $conh, $ener, $perf, $elet, $frio, $impa, $cort, $pea, $pe, $san, $sana, $quim, $pv, $pva, $id);
 				$b->execute();
 				break;
 			case 'editpro':
@@ -454,14 +455,29 @@ if ($edit) {
 				break;
 			case 'roll':
 				$dado = DadoDinamico(cleanstring($_POST["dado"], 50), $dc);
-				$dano = intval(minmax($_POST["dano"], 0, 1));
+				$dano = minmax((int)$_POST["dano"], 0, 1);
+				$margem = (int)$_POST["margem"];
 				if (ClearRolar($dado)) {
+					$data = RolarMkII($dado, $dano,$margem);
 					$data["success"] = true;
-					$data = RolarMkII($dado, $dano);
 				} else {
 					$data = ClearRolar($dado, true);
 				}
 				$data["dado"] = $dado;
+				
+				if(isset($dados_missao)){
+					$_a = $con->prepare("INSERT INTO dados_rolados_mestre (dados,data,missao) VALUES (?,NOW(),?)");
+					
+					$ret = [];
+					$ret["dado"] = $data;
+					$ret["dado"]["nome"] = cleanstring($_POST["nome"]);
+					$ret["nome"] = $nome;
+					$ret["ficha"] = $fichat;
+					$ret["foto"] = $urlphoto;
+					
+					$_a->bind_param("si",json_encode($ret),$dados_missao["id"]);
+					$data["missao"] = $_a->execute();
+				}
 				echo json_encode($data);
 				exit;
 			case 'usau':

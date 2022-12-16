@@ -302,19 +302,25 @@ function Rolar($dado, $dano = false): array
 	}
 	return ($result);
 }
-function RolarMkII($dado_bruto, $dano = false): array
+
+
+function RolarMkII($dado_bruto, $dano = false, $margem = 20): array
 {
 	$index=0;
 	$resultado = $print = $soma = null;
-
-	$saida = [];	$dado_bruto = str_replace("-", "+-", $dado_bruto);
+	$critico = false;
+	$somatotal = 0;
+	
+	
+	$saida = [];
+	$dado_bruto = str_replace("-", "+-", $dado_bruto);
 	$dado_fragmentado = explode('+', $dado_bruto);
 	foreach ($dado_fragmentado as $valor_dado) {
 		if (!empty($valor_dado)) {
 			$separador = explode('d', $valor_dado);
 
-			$quantidade = intval($separador[0]);
-			$faces      = intval($separador[1]);
+			$quantidade = (int)$separador[0];
+			$faces      = (int)$separador[1];
 			if ($quantidade == 0 and $faces) {
 				$quantidade = 1;
 			}
@@ -326,27 +332,31 @@ function RolarMkII($dado_bruto, $dano = false): array
 			}
 			if ($faces) {
 				if ($dano) {
-					$saida[$index]["dado"] = "d" . $faces;
+					$saida["dados"][$index]["dado"] = "d" . $faces;
 					for ($i = 0; $i < $quantidade; $i++):
-						$saida[$index]["rolagens"] = $i +1;
-						$saida[$index]["resultados"][$i] = rand(1, $faces);
-						$resultado += $saida[$index]["resultados"][$i];
-						$print .= (isset($print)?'+':"") . $saida[$index]["resultados"][$i];
+						$saida["dados"][$index]["rolagens"] = $i +1;
+						$saida["dados"][$index]["resultados"][$i] = random_int(1, $faces);
+						$resultado += $saida["dados"][$index]["resultados"][$i];
+						$print .= (isset($print)?'+':"") . $saida["dados"][$index]["resultados"][$i];
 					endfor;
 				} else {
 					for ($i = 0; $i < $quantidade; $i++):
-						$saida[$index]["resultados"][$i] = rand(1, $faces);
+						$saida["dados"][$index]["resultados"][$i] = random_int(1, $faces);
+						if($saida["dados"][$index]["resultados"][$i] >= $margem){
+							$critico = true;
+						}
 					endfor;
-					$saida[$index]["rolagens"] = $quantidade;
-					$saida[$index]["dado"] = "d".$faces;
-					$saida[$index]["melhor"] = max($saida[$index]["resultados"]);
-					$saida[$index]["pior"] = min($saida[$index]["resultados"]);
-					$resultado += $saida[$index][$negative?"pior":"melhor"];
-					$print .= (isset($print)?"+":'') . $saida[$index][$negative?"pior":"melhor"];
-					$saida[$index]["resultado"] += $saida[$index][$negative?"pior":"melhor"];
+					$saida["dados"][$index]["rolagens"] = $quantidade;
+					$saida["dados"][$index]["dado"] = "d".$faces;
+					$saida["dados"][$index]["melhor"] = max($saida["dados"][$index]["resultados"]);
+					$saida["dados"][$index]["pior"] = min($saida["dados"][$index]["resultados"]);
+					$resultado += $saida["dados"][$index][$negative?"pior":"melhor"];
+					$print .= (isset($print)?"+":'') . $saida["dados"][$index][$negative?"pior":"melhor"];
+					$saida["dados"][$index]["resultado"] += $saida["dados"][$index][$negative?"pior":"melhor"];
 			}
 				$index++;
 			} else {
+				$somatotal += $quantidade;
 				if ($quantidade > 0) {
 					$quantidade = (isset($saida["print"])?"+":($negative?"-":"+")) . $quantidade;
 				}
@@ -356,6 +366,10 @@ function RolarMkII($dado_bruto, $dano = false): array
 			}
 		}
 	}
+	$saida["dano"] = (bool)$dano;
+	$saida["critico"] = (bool)$critico;
+	$saida["margem"] = $margem;
+	$saida["soma"] = $somatotal;
 	$saida["resultado"] = $resultado;
 	$saida["print"] = $print;
 	return ($saida);

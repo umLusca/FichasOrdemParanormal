@@ -19,13 +19,15 @@
                 </div>
 			<?php } ?>
         </div>
-        <div class="card-body p-0 font4">
+        <div class="card-body font1">
             <nav class="">
-                <div class="nav nav-tabs px-2" role="tablist">
+                <div class="nav nav-tabs" role="tablist">
 					<?php foreach ($s[6] as $i => $r): ?>
-                        <button class="text-light p-1 nav-link <?= ($i == 0) ? 'active' : '' ?>"
-                                id="but-ritual-tab-<?= $i ?>" data-bs-toggle="tab"
-                                data-bs-target="#but-ritual-<?= $i ?>" type="button"
+                        <button class="text-light btn-sm nav-link <?= ($i == 0) ? 'active' : '' ?>"
+                                id="but-ritual-tab-<?= $i ?>"
+                                data-bs-toggle="tab"
+                                data-bs-target="#but-ritual-<?= $i ?>"
+                                type="button"
                                 role="tab"><?= $r["nome"] ?></button>
 					<?php endforeach; ?>
                 </div>

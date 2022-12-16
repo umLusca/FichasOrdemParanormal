@@ -68,34 +68,21 @@
         clearTimeout(changingtimer);
         changingtimer = setTimeout(subsaude, donetimer);
     }
-
+    
     function updtsaude(valor, type) {
         let atual = type + 'a';
-        let maxim = type;
-        let saude = parseInt($("#saude ." + atual).val()) + valor;
-        $("#saude ." + atual).val(saude);
-        let per = parseInt($("#saude ." + maxim).val());
-        if ($('#saude .pva').val() < <?=$minimo_PVA?>) {
-            $('#saude .pva').val(<?=$minimo_PVA?>);
+        let total = type;
+        let $el = (type) => $(`#saude input[name=${type}]`)
+        let diff = (val1, type, val2) => {
+            return eval(val1 + type + val2) ? val2 : val1;
         }
-        if ($('#saude .sana').val() < <?=$minimo_SANA?>) {
-            $('#saude .sana').val(<?=$minimo_SANA?>);
-        }
-        if ($('#saude .pea').val() < <?=$minimo_PEA?>) {
-            $('#saude .pea').val(<?=$minimo_PEA?>);
-        }
-
-        if ($('#saude .pva').val() > <?=$pv + $maximo_PVA?>) {
-            $('#saude .pva').val(<?=$pv + $maximo_PVA?>);
-        }
-        if ($('#saude .sana').val() > <?=$san + $maximo_SANA?>) {
-            $('#saude .sana').val(<?=$san + $maximo_SANA?>);
-        }
-        if ($('#saude .pea').val() > <?=$pe + $maximo_PEA?>) {
-            $('#saude .pea').val(<?=$pe + $maximo_PEA?>);
-        }
-
-        $("#barra" + atual).css('width', percent(saude, per) + '%');
+        $el(atual).val(parseInt($el(atual).val()) + valor);
+        
+        
+        $el(atual).val(diff($el(atual).val(), ">", parseInt($el(total).val()) + 20));
+        $el(atual).val(diff($el(atual).val(), "<", (type === "pv") ? <?=$minimo_PVA?> : 0));
+        $("#barra" + atual).width(percent($el(atual).val(), $el(total).val()) + '%');
+        
         subtimer();
     }
 
@@ -417,7 +404,8 @@
         })
 
 
-        $("form").submit(function (event) {
+        $("form:not([ajax])").submit(function (event) {
+            console.log("AJAX")
             $(this).addClass('was-validated');
             if (!$(this).isValid()) {
                 event.preventDefault()

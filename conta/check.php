@@ -38,13 +38,19 @@ if (isset($_POST["status"])) {
             }
             if (isset($_SESSION["UserID"])) {
                 $u = mysqli_fetch_array($con->query("SELECT * FROM usuarios WHERE id = {$_SESSION["UserID"]}"));
-                if ($u["senha"] === cryptthis($senha)) {
-                    if (isset($_POST["nsenha"]) && !empty($_POST["nsenha"]) && isset($_POST["csenha"]) && !empty($_POST["csenha"])) {
+                if ($u["senha"] === cryptthis($senha) || PassCheck($senha, $u["senha"])) {
+					if(!PassCheck($senha,$u["senha"])){
+						$_a = $con->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
+						$nn = PassCheck($senha);
+						$_a->bind_param("ss",$nn, $_SESSION["UserID"]);
+						$_a->execute();
+					}
+                    if (isset($_POST["nsenha"], $_POST["csenha"]) && !empty($_POST["nsenha"]) && !empty($_POST["csenha"])) {
                         $nsenha = cleanstring($_POST["nsenha"]);
                         $csenha = cleanstring($_POST["csenha"]);
                         if (Check_Pass($nsenha, $csenha)) {
                             $a = $con->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
-                            $nsenha = cryptthis($nsenha);
+                            $nsenha = PassCheck($nsenha);
                             $a->bind_param("si", $nsenha, $_SESSION["UserID"]);
                             $a->execute();
                             if ($con->affected_rows) {
@@ -175,7 +181,6 @@ if (isset($_POST["status"])) {
             break;
         case 'addmarca':
             $userid = $_SESSION["UserID"];
-
             if (preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', cleanstring($_POST["urlmarca"])) ||  empty($_POST["urlmarca"])){
                 $marca = cleanstring($_POST["urlmarca"]);
                 $q = $con->query("SELECT * FROM `usuarios` WHERE `id` = '" . $_SESSION["UserID"] . "';");
@@ -205,7 +210,6 @@ if (isset($_POST["status"])) {
             break;
 
     }
-
 }
 
 
@@ -250,7 +254,7 @@ if (isset($_POST["cadastrar"])) {
 
     if (!empty($_POST["senha"] || $_POST["csenha"])) {
         if (Check_Pass($_POST["senha"], $_POST["csenha"])) {
-            $senha = cryptthis(cleanstring($_POST["senha"]));
+            $senha = PassCheck(cleanstring($_POST["senha"]));
         } else {
             $er = Check_Pass($_POST["senha"], $_POST["csenha"], true);
             $success = $er["success"];
@@ -284,10 +288,10 @@ if (isset($_POST["cadastrar"])) {
         $ab = $ab->get_result();
 
 
-        if ($a->num_rows == 0) {
-            if ($ab->num_rows == 0) {
+        if (!$a->num_rows) {
+            if (!$ab->num_rows) {
                 $b = $con->query("SELECT * FROM `usuarios` WHERE `login` = '" . $login . "';");
-                if ($b->num_rows == 0) {
+                if (!$b->num_rows) {
                     $q = $con->prepare("INSERT INTO `usuarios`(`nome`,`login`,`senha`,`email`,`id`) VALUES (?,?,?,?,'')");
                     $q->bind_param("ssss", $nome, $login, $senha, $email);
                     $q->execute();
@@ -337,29 +341,45 @@ if (isset($_POST["logar"])) {
     }
     if (!empty($_POST["senha"])) {
         $pass = cleanstring($_POST["senha"]);
-        $senha = cryptthis($pass);
     } else {
         $success = false;
         $msg = "Preencha todos os campos!";
     }
-    $qu = $con->query("SELECT * FROM `usuarios` WHERE (usuarios.login = '$login') OR (usuarios.email = '$login');");
-    if (!$qu->num_rows) {
-        $success = false;
-        $msg = "Nenhuma conta encontrada...";
-    }
     if ($success) {
-        $q = $con->prepare("select * from `usuarios` WHERE `login` = ? and `senha` = ? OR `email` = ? AND `senha` = ?;");
-        $q->bind_param("ssss", $login, $senha, $login, $senha);
+        $q = $con->prepare("select * from `usuarios` WHERE `login` = ? OR `email` = ?");
+        $q->bind_param("ss", $login, $login);
         $q->execute();
         $rq = $q->get_result();
-        if ($rq->num_rows == 1) { //Verifica se existe essa conta e se a senha coincide com ela
-            $dados = mysqli_fetch_array($rq);
-            logar($dados["login"]);
-            $msg = "Sucesso ao fazer login!";
-            $success = true;
-            if (isset($_POST["lembrar"]) && ($_POST["lembrar"] == 'on' || $_POST["lembrar"] == 1)) remember_me($dados["id"],7,"WEB");// Quando a opção lembrar-me está marcada
-        } else {
-            $msg = "Usuario/Senha incorretos!";
+        if ($rq->num_rows) { //Verifica se existe essa conta e se a senha coincide com ela
+	        $dados = mysqli_fetch_array($rq);
+			if($dados["senha"] === cryptthis($pass)) {
+				logar($dados["login"]);
+				if (isset($_POST["lembrar"]) && ($_POST["lembrar"] === 'on' || $_POST["lembrar"] === 1)){
+					remember_me($dados["id"], 7, "WEB");
+				}// Quando a opção lembrar-me está marcada
+				$msg = "Sucesso ao fazer login!";
+				$success = true;
+				
+				$newhash = PassCheck($pass);
+				$a = $con->prepare("UPDATE usuarios SET senha = ? WHERE login = ?");
+				$a->bind_param("ss",$newhash,$dados["login"]);
+				$a->execute();
+				
+				
+			} else if (PassCheck($pass,$dados["senha"])) {
+				logar($dados["login"]);
+				if (isset($_POST["lembrar"]) && ($_POST["lembrar"] === 'on' || $_POST["lembrar"] === 1)){
+					remember_me($dados["id"], 7, "WEB");
+				}// Quando a opção lembrar-me está marcada
+				$msg = "Sucesso ao entrar!";
+				$success = true;
+				
+			} else {
+				$msg = "Usuario/Senha Incorreto!";
+				$success = false;
+			}
+		} else {
+            $msg = "Nenhuma conta encontrada!";
             $success = false;
         }
 
@@ -372,7 +392,7 @@ if (isset($_POST["logar"])) {
     exit;
 
 }
-
+/* OBSOLETO
 if (isset($_POST["update"])) {
     $success = true;
     switch ($_POST["update"]) {
@@ -544,21 +564,14 @@ if (isset($_POST["update"])) {
             </table>
           </body>
         </html>';// Link -> Recuperar Senha.
-                        $fromname = 'FichasOP';
-                        $subject = 'Recuperar Conta';
-
-                        $headers = 'MIME-Version: 1.0' . "\r\n";
-                        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                        $headers .= 'From: suporte@fichasop.com' . "\r\n" . 'Cc: Admin@fichasop.com' . "\r\n";
-
-
-                        if (mail($email, $subject, $emailmsg, $headers)) {
+                        if (Send_Email('Recuperar Conta',$email,$emailmsg)) {
                             $success = true;
                             $msg = 'Email enviado, Verifique sua caixa de email';
                         } else {
                             $success = false;
                             $msg = "Falha ao enviar email, contate um administrador.";
                         }
+                        
 
                     }
                 } else {
@@ -627,7 +640,7 @@ if (isset($_POST["update"])) {
                         $msg .= "Senha não pode conter espaços! ";
                         $success = false;
                     }
-                    $senha = cryptthis($pass);
+                    $senha = PassCheck($pass);
 
                 } else {
                     $msg = "As Senhas não Coincidem";
@@ -720,3 +733,4 @@ if (isset($_POST["update"])) {
     //header("Refresh:3");
     exit;
 }
+*/

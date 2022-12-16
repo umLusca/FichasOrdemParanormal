@@ -6,6 +6,167 @@ function proibido()
 }
 
 const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9","597d795ea0028f95a051c1df0ab85dce","0f32daed2d725ef44d874f98798422f3","15d1789295f623f383308ce4fd56e842","dcb7e42b1a76ff5a1faa70af080fcf4b"];
+
+/**
+ * Retorna os parâmetros necessários para fazer um mysqli_prepare();
+ * <h2>Exemplo de uso</h2>
+ *  $arr = ("coluna"=>"valor" , "coluna2"=>"valor2" );<br/><br/>
+ *  $return = get_stmt($arr);<br/><br/>
+ *  $q = mysqli_prepare($con,"UPDATE tabela SET <b>{return["query"]}</b>;");<br/>
+ *  $q->bind_param(<b>$return["bind"]</b>,...<b>$return["values"]</b>);<br/>
+ *  $q->execute();<br/>
+ *
+ *
+ * @param array $array [Obrigatório] <p>
+ * Um Array contendo indice e valor, sendo a coluna e valor respectivamente a tabela que será aplicada.<br/>
+ * Exemplo:
+ * <ul>
+ * <li>array(<br/>      "nome" => "Lucas",<br/>       "idade" => 18<br/>);</li>
+ * </ul>
+ * </p>
+ * @param array|null $excludes [Opcional]
+ * <p> Um Array contendo colunas que deverão ser excluídas ou não alteráveis no processo.
+ *  Exemplo:
+ * <ul>
+ * <li>array("nome","idade");</li>
+ * </ul>
+ * Com isso, As colunas <b>Nome</b> e <b>Idade</b> não vão ser alteradas, mesmo que dentro do array principal.
+ * </p>
+ * @param array|string|null $includes [Opcional]
+ * <p>
+ * <h2>Caso Array</h2>
+ * Fará com que apenas os indices dentro deste array sejam atualizados. Sendo limitado apenas pelo <b>$excludes</b>.<br />
+ * Isto é, Caso tenha uma coluna que esteja em ambos, será priorizado a exclusão no processo.
+ * Exemplo:
+ * <ul>
+ * <li>array("nome","idade");</li>
+ * </ul>
+ * <h2>Caso String</h2>
+ * Será o nome da tabela, que será alterado. Fazendo com que o $con Seja obrigatório para poder pegar as colunas dentro da mesma.
+ * E fazendo assim, o includes automaticamente. Sendo limitado apenas ao $excludes.
+ * </p>
+ * @param mysqli|null $con [Opcional|Obrigatório]
+ * <p>
+ * Obrigatória quando $includes for uma string. Será preciso para conseguir as colunas e apenas permitir a alteração das mesmas.
+ * </p>
+ * @return array
+ * <p>
+ *  Retorna um Array com 3 Valores sendo <br />
+ *  <var>$return["bind"]</var>: Uma string contendo o tipo de valor dentro de $return["values"]. Exemplo ["bind"] = "ssi".<br/>
+ *  <var>$return["values"]</var>: Uma array contendo os valores separados de cada coluna na ordem da $return["query"].
+ *  <var>$return["query"]</var>: Uma string que contem cada atualização para alterar no banco de dados.
+ * <p>
+ */
+function get_stmt(array $array, array $excludes = null, array|string $includes = null, mysqli $con = null): array
+{
+    $bind = "";
+    $values = [];
+    $query = "";
+    
+    if (isset($includes, $con) && is_string($includes)) {
+        $_d = $con->query("SHOW COLUMNS FROM {$includes} ;");
+        
+        $includes = [];
+        foreach ($_d as $f) {
+            $includes[] = $f["Field"];
+        }
+    }
+    foreach ($array as $item => $valor) {
+        $i++;
+        if (isset($excludes) && is_array($excludes) && in_array($item, $excludes, true)) {
+            $continue = true;
+        }
+        if (isset($includes) && is_array($includes) && !in_array($item, $includes, true)) {
+            $continue = true;
+        }
+        if ($i === count($array) && $continue) {
+            $query = substr($query,0,-2);
+            continue;
+        }
+        if($continue) {
+            continue;
+        }
+        switch (gettype($valor)) {
+            case "string":
+                $bind .= "s";
+                break;
+            case "boolean":
+            case "integer":
+                $bind .= "i";
+                break;
+            case "NULL":
+                continue 2;
+                break;
+        }
+        $query .= "$item = ?";
+        
+        if ($i < count($array)) {
+            $query .= ", ";
+        }
+        
+        $values[] = $valor;
+    }
+    return array(
+        "bind" => $bind,
+        "query" => $query,
+        "values" => $values
+    );
+}
+
+function duplicate_row($row_infos, array $updates = null, array $excludes = null){
+	$query_columns = "";
+	$query_values = "";
+	$bind_types = "";
+	$bind_values = [];
+	
+	
+	
+	foreach ($row_infos as $item => $valor) {
+		$i++;
+		$continue = false;
+		if (isset($updates[$item], $row_infos[$item])) {
+			$valor = $updates[$item];
+		}
+		if (isset($excludes) && in_array($item, $excludes, true)) {
+			$continue = true;
+		}else {
+			switch (gettype($valor)) {
+				case "string":
+					$bind_types .= "s";
+					break;
+				case "boolean":
+				case "integer":
+					$bind_types .= "i";
+					break;
+				case "NULL":
+					$continue = true;
+					break;
+			}
+		}
+		
+		if(!$continue) {
+			$bind_values[] = $valor;
+			$query_columns .= $item;
+			$query_values .= "?";
+			
+			if ($i < count($row_infos)) {
+				$query_values .= ", ";
+				$query_columns .= ", ";
+				
+			}
+		} else if ($i === count($row_infos)) {
+			$query_values = substr($query_values,0,-2);
+			$query_columns = substr($query_columns,0,-2);
+		}
+	}
+	return array(
+		"bind_types" => $bind_types,
+		"query_columns" => $query_columns,
+		"query_values" => $query_values,
+		"bind_values" => $bind_values
+	);
+}
+
 function Image_Upload($image, $name = null)
 {
     foreach (UploadKeys as $chave){
@@ -98,13 +259,13 @@ function Check_Pass($senha, $senha2, $debug = false): bool|array
         return $success;
     }
 }
-
+/*
 function Send_Email($Assunto, $Destinatario, $Mensagem): bool
 {
     $headers = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=iso-8859-1' . "\r\n" . 'From: suporte@fichasop.com' . "\r\n" . 'Cc: Admin@fichasop.com' . "\r\n";
     return mail($Destinatario, $Assunto, $Mensagem, $headers);
 }
-
+*/
 function Convite($Destinatario): string
 {
     return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>

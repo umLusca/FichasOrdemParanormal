@@ -40,8 +40,7 @@ $a = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` = '" . $id . "' 
 $jogadores = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '".$id."');");
 
 $m = $con->query("SELECT * FROM `dados_mestre` WHERE `id_missao` = '".$id."';");
-$fichanpcs = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id' AND `categoria` = 0;");
-$fichasmonstro = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id' AND `categoria` = 1;");
+$fichanpcs = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id'");
 
 $missao_token = $token;
 require_once './includes/atualizar.php';
@@ -57,7 +56,7 @@ if(isset($_GET["id"])){
     </head>
     <body class="bg-black text-white">
     <main class="container-fluid mt-5">
-        <div class="row g-2">
+        <div class="row g-3">
             <?php
             require_once "./includes/card_jogadores.php";
             require_once "./includes/card_dadosjogadores.php";

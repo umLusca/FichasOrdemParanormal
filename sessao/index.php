@@ -12,6 +12,20 @@ if (isset($_POST["status"])) {
 	$success = true;
 	$msg = '';
 	switch ($_POST["status"]) {
+		case "duplicate":
+			$token = cleanstring($_POST["token"]);
+			$a = $con->prepare("SELECT * FROM u436203203_bd.fichas_personagem WHERE token = ? AND usuario = ?");
+			$a->bind_param("si", $token, $_SESSION["UserID"]);
+			$a->execute();
+			$ra = mysqli_fetch_assoc($a->get_result());
+			
+			$stmt = duplicate_row($ra, array("nome" => $ra["nome"] . " - Cópia", "token" => uniqid("ficha_", true)), array("id"));
+			
+			$b = $con->prepare("INSERT INTO u436203203_bd.fichas_personagem ({$stmt["query_columns"]}) VALUES ({$stmt["query_values"]})");
+			$b->bind_param($stmt["bind_types"], ...$stmt["bind_values"]);
+			$b->execute();
+			
+			break;
 		case 'criarmissao':
 			if (!empty($_POST["title"])) {
 				$title = cleanstring($_POST["title"]);
@@ -73,7 +87,7 @@ if (isset($_POST["status"])) {
 			if ($success === true) {
 				$id = cleanstring($_POST["id"]);
 				$q = $con->prepare("UPDATE `missoes` SET `nome` = ?, `descricao` = ? WHERE `token` = ? AND mestre = ?");
-				$q->bind_param("sssi", $title, $desc, $id,$_SESSION["UserID"]);
+				$q->bind_param("sssi", $title, $desc, $id, $_SESSION["UserID"]);
 				$q->execute();
 				$success = $con->affected_rows;
 				$msg = $con->affected_rows ? "Sucesso" : "Falha";
@@ -84,14 +98,14 @@ if (isset($_POST["status"])) {
 			exit;
 			break;
 		case 'player':
-
+			
 			$token = cleanstring($_POST["token"]);
 			$view = intval($_POST["view"]);
-
+			
 			$b = $con->prepare("UPDATE `fichas_personagem` SET `public` = ? WHERE `token` = ? AND `usuario` = ? ;");
 			$b->bind_param("isi", $view, $token, $_SESSION["UserID"]);
 			$b->execute();
-
+			
 			break;
 		case 'deleteficha':
 			$token = cleanstring($_POST["token"]);
@@ -100,7 +114,7 @@ if (isset($_POST["status"])) {
 			$b->execute();
 			break;
 		case 'deletemissao':
-
+			
 			$con->query("DELETE FROM `missoes` WHERE `token` = '" . cleanstring($_POST["tk"]) . "' AND `mestre` = '$userid';");
 			break;
 		case 'acc':
@@ -143,7 +157,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 
 <main class="container-flex justify-content-center m-4">
     <div class="row row-cols-1 g-3">
-
+		
 		<?php if ($c->num_rows) {
 			?>
             <div>
@@ -344,11 +358,13 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                             <div class="card bg-black border-dashed border-danger">
                                 <div class="card-header text-danger"><span class="fs-4 font10">Criar Missão</span></div>
                                 <div class="card-body overflow-auto" style="height: 150px;">
-                                    <p class="m-1 font7">Para criar uma missão basta apenas clicar abaixo. Comece com um título e uma descrição.</p>
+                                    <p class="m-1 font7">Para criar uma missão basta apenas clicar abaixo. Comece com um
+                                        título e uma descrição.</p>
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" data-bs-toggle="modal" data-bs-target="#criarsessao">Criar missão</a>
+                                    <a class="btn text-light border-dashed" data-bs-toggle="modal" data-bs-target="#criarsessao">Criar
+                                        missão</a>
                                 </div>
                             </div>
                         </div>
@@ -485,7 +501,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                             </div>
                         </div>
                     <?php } */ ?>
-
+						
 						<?php foreach ($b as $f) {
 							$mq = $con->query("SELECT * FROM missoes WHERE id in (SELECT id_missao FROM ligacoes WHERE id_ficha = '" . $f["id"] . "')");
 							if ($mq->num_rows) $m = mysqli_fetch_array($mq);
@@ -497,8 +513,12 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                                 class="fs-4 font10"><?= $f["nome"] ?></span>
                                         <div class="float-end d-inline">
                                             <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Desvincular Ficha da missão" onclick="desvincular('<?=$f["token"]?>')">
+                                                    title="Desvincular Ficha da missão" onclick="desvincular('<?= $f["token"] ?>')">
                                                 <i class="fal fa-chain"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-info"
+                                                    title="Desvincular Ficha da missão" onclick="query('duplicate','<?= $f["token"] ?>',true,'Deseja Duplicar essa ficha?')">
+                                                <i class="fal fa-copy"></i>
                                             </button>
                                             <a class="btn btn-sm btn-outline-info"
                                                href="personagem/portrait?token=<?= $f["token"]; ?>"><i
@@ -569,7 +589,8 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" href="./personagem/criar">Criar personagem</a>
+                                    <a class="btn text-light border-dashed" href="./personagem/criar">Criar
+                                        personagem</a>
                                 </div>
                             </div>
                         </div>
@@ -585,22 +606,19 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
             <div class="modal-content bg-black border-light">
                 <div class="modal-header">
                     <h4 class="modal-title">Criar uma sessão como mestre</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="m-2 return"></div>
                     <div class="m-2">
                         <label class="form-floating w-100">
-                            <input type="text" name="title" class="form-control bg-black text-light"
-                                   placeholder="Título da missão" required/>
+                            <input type="text" name="title" class="form-control bg-black text-light" placeholder="Título da missão" required/>
                             <label>Titulo da missão</label>
                         </label>
                     </div>
                     <div class="m-2">
                         <label class="form-floating w-100">
-                            <textarea type="text" name="desc" class="form-control bg-black text-white h-50" required
-                                      rows="5" placeholder="descrição da missão"></textarea>
+                            <textarea type="text" name="desc" class="form-control bg-black text-white h-50" required rows="5" placeholder="descrição da missão"></textarea>
                             <label>Introdução da missão</label>
                         </label>
                     </div>
@@ -683,6 +701,47 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 <?php require_once "./../includes/scripts.php"; ?>
 
 <script>
+    function query(query, token, confirmacao = null, texto = "") {
+        //todo
+        if (confirmacao) {
+            confirmar("Tem certeza?", texto).then((s) => {
+                if (s) {
+                    $.ajax({
+                        url: "",
+                        method: "POST",
+                        data: {
+                            status: query,
+                            token: token
+                        },
+                        success: (d) => {
+                            console.log(d)
+                        },
+                        complete:(d)=>{
+                            location.reload();
+                        }
+                    })
+                }
+            });
+        } else {
+
+            $.ajax({
+                url: "",
+                method: "POST",
+                data: {
+                    status: query,
+                    token: token
+                },
+                success: (d) => {
+                    console.log(d)
+                },
+                complete:(d)=>{
+                    location.reload();
+                }
+            })
+        }
+    }
+
+
     function desvincular(p) {
         confirmar("Tem certeza?", "Ao Desvincular, não será possível reverter.").then((s) => {
             if (s) {

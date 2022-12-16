@@ -41,7 +41,7 @@
 						<tr id="armaid<?= $row["id"] ?>">
 							<td>
 								<button type="button" data-bs-toggle="modal" data-bs-target="#editarma"
-										onclick="editarma(<?= $row["id"]; ?>)" class="btn btn-sm text-warning">
+										onclick="edit('arma',<?= $row["id"] ?>)" class="btn btn-sm text-warning">
 									<i class="fa-regular fa-pencil"></i>
 								</button>
 							</td>
@@ -63,7 +63,6 @@
 					<?php endforeach; ?>
 					</tbody>
 				</table>
-				 ?>
                 <h3 class="text-center">Itens</h3>
                 <table class="table table-sm bg-black text-white table-borderless font2 mb-3 border border-light">
                     <thead>
@@ -409,7 +408,7 @@
                     </div>
                     <div class="col-5 col-sm-3 col-lg-4 col-xl-2">
                         <label class="form-floating">
-                            <input name="margem" placeholder="Margem do Crítico do ataque da Arma" min="0" max="20" class="form-control form-control-dark"/>
+                            <input name="margem" placeholder="Margem do Crítico do ataque da Arma" type="number" min="0" max="20" class="form-control form-control-dark"/>
                             <label>Margem</label>
                         </label>
                     </div>
@@ -428,12 +427,12 @@
                     </div>
                     <div class="col">
                         <label class="form-floating">
-                            <input name="peso" placeholder="Peso" min="-10" max="50" class="form-control form-control-dark" />
+                            <input name="peso" placeholder="Peso" type="number" min="-10" max="50" class="form-control form-control-dark" />
                             <label>Peso</label>
                         </label>
                         <hr>
                         <label  class="form-floating">
-                            <input name="prestigio" placeholder="Categoria"  min="-10" max="50" class="form-control form-control-dark" />
+                            <input name="prestigio" placeholder="Categoria" type="number"  min="-10" max="50" class="form-control form-control-dark" />
                             <label>Categoria</label>
                         </label>
                     </div>
