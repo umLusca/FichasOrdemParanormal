@@ -1,11 +1,12 @@
 <script type="text/babel">
-    let typingTimer;                //timer identifier
-    const doneTypingInterval = 2500;  //time in ms, 5 seconds for example
-    const $note = $('#notes .note');
+    <?php require_once "dadosjogados_script.js";?>
+    <?php require_once "iniciativas_script.js";?>
+    <?php require_once "jogadores_script.js";?>
+    <?php require_once "notas_script.js";?>
     const editnpcmodal = new bootstrap.Modal('#editnpc')
     const players = [
 		<?php
-		foreach ($jogadores as $i => $token) {
+		foreach ($q["personagens"] as $i => $token) {
 			echo "{
                 nome:'" . $token["nome"] . "',
                 token:'" . $token["token"] . "',
@@ -21,7 +22,7 @@
         transports: ['websocket', 'polling', 'flashsocket']
     });
     function copynpc(id){
-        confirmar("Deseja duplicar essa ficha", '').then((s)=>{
+        confirmar("Deseja duplicar essa ficha?", '').then((s)=>{
             if (s)
             $.ajax({
                 url:"",
@@ -123,34 +124,6 @@
         })
     }
 
-    function adicionariniciativa() {
-        $.post({
-            data: {status: 'criariniciativa'},
-            url: '?token=<?=$missao_token?>',
-            dataType: ""
-        }).done(function () {
-            location.reload();
-        })
-    }
-
-    function submitiniciativa() {
-        $.post({
-            url: '?token=<?=$missao_token?>',
-            dataType: '',
-            data: $('#iniciativa :input').serialize(),
-            success: function (data) {
-            }
-        });
-    }
-
-    function deletariniciativa(iniciativa_id) {
-        $.post({
-            data: {status: 'deleteini', iniciativa_id: iniciativa_id},
-            url: '?token=<?=$missao_token?>',
-        }).done(function () {
-            location.reload();
-        })
-    }
 
     function deletnpc(id) {
         confirmar("tem certeza?","Ao apagar essa ficha, não será possível desfazer").then((s)=>{
@@ -165,80 +138,6 @@
         })
     }
 
-    function updateIndex(e, ui) {
-        $('td.index', ui.item.parent()).each(function (i) {
-            $(this).html(i + 1);
-        });
-        $('input.hidden', ui.item.parent()).each(function (i) {
-            $(this).val(i + 1);
-        });
-        submitiniciativa();
-    };
-
-    function doneTyping() {
-        sync = $("#noteform").serialize();
-        $.post({
-            url: "",
-            data: sync,
-        }).done(function () {
-
-            $("#syncnotes").attr("class", "text-success").children("i")
-                .find('[data-fa-i2svg]')
-                .removeClass('fa-arrow-rotate-right fa-spin')
-                .addClass("fa-regular fa-cloud-check");
-        }).fail(function () {
-            $("#syncnotes").attr("class", "text-danger").children("i")
-                .find('[data-fa-i2svg]')
-                .removeClass('fa-arrow-rotate-right fa-spin')
-                .addClass("fa-regular fa-cloud-xmark");
-
-        })
-    }
-
-    function addnote() {
-        $.post({
-            data: {status: 'addnote'},
-            url: "",
-        }).done(function (data) {
-            location.reload();
-        });
-    }
-
-    function deletenote(id) {
-        $.post({
-            data: {status: 'deletenote', note: id},
-            url: "",
-        }).done(function (data) {
-            location.reload();
-        });
-    }
-
-    function desvincular(p) {
-        let text = "DESEJA DESVINCULAR ESSA FICHA?\nNÃO SERÁ POSSIVEL REVERTER!";
-        if (confirm(text) === true) {
-            $.post({
-                data: {status: "desp", p: p},
-                url: " ",
-            }).done(function (data) {
-                console.log(data);
-            });
-        }
-    }
-
-    function toggleCombate(t) {
-        let checked = $(t).attr("aria-checked");
-        console.log(checked);
-        if (checked === "true") {
-            $(t).attr("aria-checked", "false");
-            $(t).addClass("btn-outline-warning").removeClass("btn-warning");
-            $(t).find(".fa-slash").show()
-        } else {
-            $(t).attr("aria-checked", "true");
-            $(t).addClass("btn-warning").removeClass("btn-outline-warning");
-            $(t).find(".fa-slash").hide()
-        }
-        $(t).blur();
-    }
 
 
     $(document).ready(function () {
@@ -284,6 +183,7 @@
             }
         });
 
+
         $("form:not([ajax])").not("#adicionar").submit(function (event) {
             $(this).addClass('was-validated');
 
@@ -300,89 +200,6 @@
                 })
             }
         })// Enviar qualquer formulario via jquery
-        $('#adicionar').submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            $.post({
-                url: "",
-                data: form.serialize() + "&status=addplayer",
-                dataType: "JSON",
-                beforeSend: function () {
-                    $("#adicionar input, #adicionar button").attr('disabled', true);
-                    $("#adicionar .return").html("<div class='alert alert-warning m-2'><i class='fat fa-spinner fa-spin'></i> Aguarde enquanto verificamos os dados...</div>");
-                },
-                success: (data) => {
-                    console.log(data);
-                    if (data.msg) {
-                        if (!data.success) {
-                            $("#adicionar .return").html('<div class="alert alert-danger m-2">' + data.msg + "</div>");
-                            $("#adicionar input, #adicionar button").attr('disabled', false);
-                        } else {
-                            if (data.type == 1) {
-                                $("#adicionar .return").html('<div class="alert alert-success m-2">' + data.msg + '</div>');
-                                setTimeout(function () {
-                                    $("#adicionar input, #adicionar button").attr('disabled', false);
-                                }, 200)
-                            } else {
-                                $("#adicionar .return").html('<div class="alert alert-success m-2">' + data.msg + ' <a href="https://fichasop.com/?convite=1&email=' + data.email + '">https://fichasop.com/?convite=1&email=' + data.email + '</a></div>');
-                                setTimeout(function () {
-                                    $("#adicionar input, #adicionar button").attr('disabled', false);
-                                }, 200)
-                            }
-                        }
-                    }
-                },
-                error: () => {
-                    $("#adicionar input, #adicionar button").attr('disabled', false);
-                    $("#adicionar .return").html("<div class='alert alert-danger m-2'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
-                }
-            })
-        });
 
-        $note.on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(doneTyping, doneTypingInterval);
-        });
-
-        $note.on('keydown', function () {
-            clearTimeout(typingTimer);
-            $("#syncnotes").attr("class", "text-warning").children("i")
-                .find('[data-fa-i2svg]')
-                .addClass('fa-arrow-rotate-right fa-spin')
-                .removeClass('fa-regular fa-cloud-x fa-cloud')
-        });
-        $(".iniciativa").dblclick(function () {
-            $(this).children("input").attr('readonly', false).toggleClass('border-0').delay(200).focus();
-        })
-        $(".iniciativa input").focusout(function () {
-            let attr = $(this).attr('readonly');
-            if (typeof attr !== 'undefined' && attr !== false) {
-                $(this).attr('readonly', true)
-            } else {
-                $(this).attr('readonly', true).toggleClass('border-0')
-                submitiniciativa();
-            }
-        })
-        $(".up,.down").click(function () {
-            const item = $(this).parents("tr:first");
-            const ui = {item};
-
-            if ($(this).is(".up")) {
-                item.insertBefore(item.prev());
-            } else {
-                item.insertAfter(item.next());
-            }
-            updateIndex('', ui);
-        });
-
-        function refreshstatus() {
-            $(".principal").each(function () {
-                let $this = $("#" + $(this).attr("id"));
-                $($this).load('?token=<?=$missao_token?> #' + $(this).attr("id") + '>*')
-            })
-            setTimeout(refreshstatus, 5000);
-        }
-
-        setTimeout(refreshstatus, 1000);
     });
 </script>

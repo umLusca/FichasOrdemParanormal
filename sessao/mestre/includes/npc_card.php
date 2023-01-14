@@ -1,13 +1,11 @@
 <?php
 function Echo_FichaNPC($fichas, $type): void
 {
-	foreach ($fichas
-	
-	         as $r) {
+	foreach ($fichas as $r) {
 		if ($r["categoria"] == $type) {
 			?>
             <div class="col col-md-6 col-lg-4 col-xl-3 card-body border-0 text-center" id="npc<?= $r["id"] ?>">
-                <div class="card bg-black border-light h-100">
+                <div class="card h-100">
                     <div class="position-absolute end-0 m-1">
                         <button class="btn btn-sm text-danger " onclick="deletnpc(<?= $r["id"] ?>);">
                             <i class="fa-regular fa-trash"></i>
@@ -260,7 +258,7 @@ function Echo_FichaNPC($fichas, $type): void
 
 ?>
 <div class="col-12" id="npc">
-    <div class="card h-100 w-100 bg-black border-light">
+    <div class="card h-100 border-secondary">
         <div class="card-body p-0">
             <div class="position-absolute end-0">
                 <button class="btn text-success fa-lg" data-bs-toggle="modal" data-bs-target="#addnpc">
@@ -268,7 +266,7 @@ function Echo_FichaNPC($fichas, $type): void
                 </button>
             </div>
             <div class="card-header border-0">
-                <div class="card-title fs-2 text-center font6">Fichas NPCs</div>
+                <h3 class="card-title text-center font6 m-0">Fichas NPCs</h3>
             </div>
             <div class="container-fluid p-0">
                 <nav>
@@ -286,14 +284,14 @@ function Echo_FichaNPC($fichas, $type): void
                         <div class="tab-pane fade show active" id="guia-npc" role="tabpanel" aria-labelledby="aba-npc" tabindex="0">
                             <div class="row m-2 g-1" id="fichasnpc">
 								<?php
-								Echo_FichaNPC($fichanpcs, "0")
+								Echo_FichaNPC($q["npcs"], "0")
 								?>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="guia-monstro" role="tabpanel" aria-labelledby="guia-monstro" tabindex="0">
                             <div class="row m-2" id="fichasmonstro">
 								<?php
-								Echo_FichaNPC($fichanpcs, "1")
+								Echo_FichaNPC($q["npcs"], "1")
 								?>
                             </div>
                         </div>
