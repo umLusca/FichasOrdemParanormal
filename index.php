@@ -22,14 +22,25 @@ if (isset($_POST["status"])) {
 
 ?>
 <!doctype html>
+<!--
+kkRick#7849
+Deixe o feijão de molho de véspera. No dia seguinte cozinhe-o juntamente com o caldo de carne e 2,5 litros de água fria.
 
-<html lang="pt-BR">
+Tampe a panela e deixe cozinhar em fogo baixo por aproximadamente 1 hora.
+
+Em outra panela doure o paio, a cebola e o alho, no óleo. Junte o coento e o arroz e refogue bem. Acrescente o feijão já cozido, juntamente com o caldo. Misture bem, tampe a panela e deixe cozinhar até que o arroz fique cozido, úmido e com consistência cremosa.
+
+Cubra o arroz com as fatias de queijo. Tampe a panela novamente e deixe que o vapor derreta o queijo.
+
+Sirva acompanhado de carne-de-sol frita ou assada.
+-->
+<html lang="pt-BR" data-bs-theme="<?=$_SESSION["theme"]?>">
 <head>
 	<!-- Required meta tags -->
 	<title>Fichas Ordem Paranormal</title>
     <?php require_once './includes/head.html'; ?>
 </head>
-<body class="bg-black text-light">
+<body class="">
 <style>
     body {
         padding-top: 3rem;
@@ -121,6 +132,10 @@ if (isset($_POST["status"])) {
             margin-top: 7rem;
         }
     }
+    
+    :root {
+        --bs-body-color: #fff;
+    }
 </style>
 <?php require_once RootDir . "includes/top.php"; ?>
 <main>
@@ -150,13 +165,13 @@ if (isset($_POST["status"])) {
 									<h4>Espiral</h4>
 									<span>Site utilizado em <a class="link-danger" href="https://www.youtube.com/c/MestrePedroK">Espiral</a>, por uns dos autores dos livros e jogadores de ordem paranormal:</span>
 									<ul>
-										<li><a class="link-light" href="https://twitter.com/mestrepedrok">MestrePedrok</a></li>
-										<li><a class="link-light" href="https://twitter.com/silandcrafts">Sil</a></li>
-										<li><a class="link-light" href="https://twitter.com/CtrlAltDella">Felipe Della Corte</a></li>
-										<li><a class="link-light" href="https://twitter.com/bastet_min">Bastet</a></li>
-										<li><a class="link-light" href="https://twitter.com/iamKalera">Kalera</a></li>
-										<li><a class="link-light" href="https://twitter.com/MongeHan">Monge Han</a></li>
-										<li><a class="link-light" href="https://twitter.com/jooanadart">Jooana d'Art</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/mestrepedrok">MestrePedrok</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/silandcrafts">Sil</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/CtrlAltDella">Felipe Della Corte</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/bastet_min">Bastet</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/iamKalera">Kalera</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/MongeHan">Monge Han</a></li>
+										<li><a class="link-secondary" href="https://twitter.com/jooanadart">Jooana d'Art</a></li>
 									</ul>
 								</div>
 							</div>
@@ -164,7 +179,7 @@ if (isset($_POST["status"])) {
 						<div class="carousel-item" data-bs-interval="5000">
 							<div class="text-center m-3">
 								<img src="/assets/img/foto.webp" width="150" height="150"
-									 class="bg-dark rounded-circle mx-3 border border-1 border-white">
+									 class="rounded-circle mx-3 border border-1 border-white">
 								<h2>Comunidade</h2>
 								<p>Entre no nosso discord e entre na nossa comunidade de ordem</p>
 								<a class="btn btn-outline-primary font1" href="https://discord.gg/gHaAxqC2Hw">Discord</a>
