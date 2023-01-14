@@ -437,9 +437,6 @@ if (isset($_POST["status"])) {
 				$b++;
 			}
 			break;
-		case 'addnote':
-			$y = $con->query("INSERT INTO `notes`(`id`,`nome`,`notas`,`missao`) VALUES ('','Título','È Recomendado usar notas externas!','$id');");
-			break;
 		case 'addd':
 			$nome = cleanstring($_POST["nome"]);
 			$dado = cleanstring($_POST["dado"]);
@@ -475,9 +472,16 @@ if (isset($_POST["status"])) {
 			$p = intval($_POST["p"]);
 			$con->query("DELETE FROM `ligacoes` WHERE `id_missao`='$id' AND `id_ficha`='$p';");
 			break;
-		case 'deletenote':
-			$nid = intval($_POST["note"]);
-			$y = $con->query("DELETE FROM `notes` WHERE `id`='$nid' AND `missao`='$id' ");
+
+
+        case 'notas_criar':
+            $y = $con->query("INSERT INTO `notes`(`id`,`nome`,`notas`,`missao`) VALUES ('','Título','È Recomendado usar notas externas!','$id');");
+            break;
+		case 'notas_deletar':
+			$nid = (int)$_POST["note"];
+            $tvar = $con->prepare("DELETE FROM `notes` WHERE `id` = ? AND `missao` = ?");
+            $tvar->bind_param("ii",$nid,$id);
+            $tvar->execute();
 			break;
 		case 'roll':
 			$dado = DadoDinamico(cleanstring($_POST["dado"], 50), $dc);

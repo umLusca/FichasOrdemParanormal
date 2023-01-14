@@ -31,16 +31,16 @@ if (VerificarMestre($token) || VerificarMestre($id) || $_SESSION["UserAdmin"]) {
     proibido();
 }
 
-
-
-$q = $con->query("Select * FROM `ligacoes` WHERE id_missao = '" . $id . "';");
-$nt = $con->query("SELECT * FROM `notes` WHERE `missao` = '$id';");
-$a = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` = '" . $id . "' ORDER BY prioridade");
-
-$jogadores = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '".$id."');");
-
+$q = []; //Querys;
+$q["ligacoes"] = $con->query("Select * FROM `ligacoes` WHERE id_missao = '" . $id . "';");
+$q["notas"] = $con->query("SELECT * FROM `notes` WHERE `missao` = '$id';");
+$q["iniciativas"] = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` = '" . $id . "' ORDER BY prioridade");
+$q["personagens"] = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '".$id."');");
 $m = $con->query("SELECT * FROM `dados_mestre` WHERE `id_missao` = '".$id."';");
-$fichanpcs = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id'");
+$q["npcs"] = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id'");
+$q["dados_player"] = $con->query("SELECT * FROM dados_rolados_mestre WHERE missao in (select id_missao from u436203203_bd.ligacoes WHERE missao = {$id}) ORDER BY `data` desc");
+
+
 
 $missao_token = $token;
 require_once './includes/atualizar.php';
@@ -54,24 +54,24 @@ if(isset($_GET["id"])){
         <?php require_once "./../../includes/head.html"; ?>
         <title>Mestre - FichasOP</title>
     </head>
-    <body class="bg-black text-white">
+    <body class="">
     <main class="container-fluid mt-5">
         <div class="row g-3">
             <?php
-            require_once "./includes/card_jogadores.php";
-            require_once "./includes/card_dadosjogadores.php";
-            require_once "./includes/card_iniciativas.php";
+            require_once "./includes/jogadores_card.php";
+            require_once "./includes/dadosjogados_card.php";
+            require_once "./includes/iniciativas_card.php";
             require_once "./../include_geral/card_dice.php";
-            require_once "./includes/card_notas.php";
-            require_once "./includes/card_npc.php";
+            require_once "./includes/notas_card.php";
+            require_once "./includes/npc_card.php";
             ?>
         </div>
     </main>
     <div>
     <?php
     require_once "./../include_geral/modal_dice.php";
-    require_once "./includes/modal_jogadores.php";
-    require_once "./includes/modal_npc.php";
+    require_once "./includes/jogadores_modal.php";
+    require_once "./includes/npc_modal.php";
     ?>
     </div>
 

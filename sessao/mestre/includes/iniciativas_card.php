@@ -1,0 +1,90 @@
+<div class="col-md-6" id="rodada">
+    <div class="card h-100 border-secondary">
+        <div class="card-body p-0">
+            <div class="card-header text-center">
+                <h3 class="font6 m-0">Iniciativas</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-hover table-bordered" id="iniciativa">
+                    <colgroup>
+                        <col style="width: 40px">
+                        <col>
+                        <col>
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                    </colgroup>
+                    <input type="hidden" name="status" value="updtini">
+                    <thead>
+                    <tr>
+                        <th>
+                            <button type="button" class="btn btn-sm text-success" data-fop-initfunction="add">
+                                <i class="fa-regular fa-square-plus"></i>
+                            </button>
+                        </th>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Iniciativa</th>
+                        <th>Dano</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody class="ui-drag">
+					<?php
+
+
+					if ($q["iniciativas"]->num_rows) {
+						foreach ($q["iniciativas"] as $i => $r) {
+							$p = $i + 1;
+							?>
+                            <tr class="drag" data-fop-initid="<?=$r["id"]?>">
+                                <input type="hidden" name="id[]" value="<?= $r["id"]; ?>">
+                                <td class="">
+                                    <button type="button" class="btn btn-sm up text-info" data-fop-initfunction="up"><i class="fa-solid fa-chevrons-up"></i></button>
+                                </td>
+                                <td class="index">
+                                    <input type="hidden" class="hidden" name="prioridade[]" value="<?= $p; ?>">
+                                </td>
+                                <td class="iniciativa">
+                                    <input type="text" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="nome[]" readonly value="<?= $r["nome"]; ?>">
+                                </td>
+                                <td class="iniciativa">
+                                    <input type="number" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="iniciativa[]" readonly value="<?= $r["iniciativa"]; ?>">
+                                </td>
+                                <td class="iniciativa">
+                                    <input type="number" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="dano[]" readonly value="<?= $r["dano"]; ?>">
+                                </td>
+                                <td class="p-0">
+                                    <div class="d-inline">
+                                        <button type="button" class="btn down btn-sm text-info" data-fop-initfunction="down">
+                                            <i class="fa-solid fa-chevrons-down"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm text-danger" data-fop-initfunction="delete">
+                                            <i class="fa-regular fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+							<?php
+						}} else { ?>
+                        <tr>
+                            <td></td>
+                            <td class="index"></td>
+                            <td>Crie uma iniciativa</td>
+                            <td>adicionando um personagem.</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+						<?php
+					}
+					?>
+                    </tbody>
+                </table>
+                <div class="card-footer border-0">
+                        <span class="text-info"><i
+                                    class="fa-regular fa-circle-info"></i> Clique duas vezes para editar.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
