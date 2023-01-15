@@ -416,6 +416,12 @@ if (isset($_POST["status"])) {
 			$t->bind_param('siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisssii', $nome, $categoria, $pv, $pv, $san, $san, $pe, $pe, $for, $agi, $int, $pre, $vig, $passiva, $esquiva, $morte, $sangue, $energia, $conhecimento, $balistica, $fisica, $mental, $acro, $ades, $arte, $atle, $atua, $cien, $crim, $dipl, $enga, $fort, $furt, $inic, $inti, $intu, $inve, $luta, $medi, $ocul, $perc, $pilo, $pont, $prof, $refl, $reli, $sobr, $tati, $tecn, $vont, $ata, $habs, $dets, $fid, $id);
 			$t->execute();
 			break;
+		case 'npc':
+			$ss = $con->query('SELECT * FROM `fichas_npc` WHERE `id` = ' . intval($_POST["ficha"]) . ' AND `missao` = ' . $id . ';');
+			$ss = $con->query('SELECT * FROM fichas_npc WHERE id = ' . intval($_POST["ficha"]) . ' AND missao = ' . intval($id) . ';');
+			print(json_encode(mysqli_fetch_array($ss)));
+			exit;
+			break;
 		case 'syncnotes':
 			$a = count($_POST["titulo"]);
 			$b = 0;

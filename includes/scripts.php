@@ -7,7 +7,7 @@
 
 <div class="modal fade" id="confirmar" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content text-bg-dark rounded-3 shadow">
+        <div class="modal-content rounded-3 shadow">
             <div class="modal-body p-4 text-center">
                 <h5 class="mb-0 title"></h5>
                 <p class="mb-0 desc"></p>
@@ -135,113 +135,123 @@
         });
 		<?php if (!isset($_SESSION["UserID"])) {?>
 
-        $('#passrf').submit(function (e) {
+        let recup = false;
+        let login = false;
+        let regis = false;
+        $('#passr').submit(function (e) {
             e.preventDefault();
-            var form = $(this);
-            $.post({
-                beforeSend: function () {
-                    $("#passrmsg").html("<div class='alert alert-warning'>Aguarde...</div>");
-                    $("#footerpassr").hide();
-                    $("#remail").attr("readonly", true);
-                },
-                url: "",
-                data: form.serialize(),
-                dataType: "JSON",
-                error: function () {
-                    $("#footerpassr").show();
-                    $("#passrmsg").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
-                    $("#remail").attr("readonly", false);
-                },
-            }).done(function (data) {
-                console.log(data);
-                if (data.msg) {
-                    if (!data.success) {
-                        $("#footerpassr").show();
-                        $("#passrmsg").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                        $("#remail").attr("readonly", false);
-                    } else {
-                        $("#passrmsg").html('<div class="alert alert-success">' + data.msg + '</div>');
-                        $("#footerpassr").hide();
-                        $("#remail").attr("readonly", true);
-                    }
-                }
+            const form = $(this);
+            console.log("t3este")
+            if (!recup)
+                $.post({
+                    url: "",
+                    data: form.serialize(),
+                    dataType: "JSON",
+                    beforeSend: function () {
+                        $("#passr .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde...</div>");
+                        $("#passr input[name=email]").attr("readonly", true);
+                        $("#passr .btn").attr("disabled", true);
+                        recup = true;
+                    },
+                    success: (data) => {
+                        console.log(data);
+                        if (data.msg) {
+                            if (!data.success) {
+                                $("#passr .btn").attr("disabled", false);
+                                $("#passr .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> " + data.msg + "</div>");
+                                $("#passr input[name=email]").attr("readonly", false);
+                                recup = false;
+                            } else {
+                                $("#passr .return").html("<div class='alert alert-success'><i class='fal fa-check'></i> " + data.msg + "</div>");
+                            }
+                        }
 
-            });
+                    },
+                    error: function () {
+                        $("#passr .btn").attr("disabled", false);
+                        $("#passr .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> Falha ao conectar com o banco de dados. Contate um administrador!</div>");
+                        $("#passr input[name=email]").attr("readonly", false);
+                        recup = false;
+                    }
+                })
         });
-        $('#cadastro').submit(function (e) {
+        $('#cadastrar').submit(function (e) {
             e.preventDefault();
-            var form = $(this);
-            //var url = form.attr('action');
-            $.post({
-                beforeSend: function () {
-                    $("#footercadastro").hide();
-                    $("#messagecadastro").html("<div class='alert alert-warning'>Aguarde enquanto criamos sua conta...</div>");
-                },
-                url: "",
-                data: form.serialize(),
-                dataType: "JSON",
-                error: function () {
-                    $("#footercadastro").show();
-                    $("#messagecadastro").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
-                },
-            }).done(function (data) {
-                if (data.msg) {
-                    if (!data.success) {
-                        $("#footercadastro").show();
-                        $("#messagecadastro").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                    } else {
-                        $("#messagecadastro").html('<div class="alert alert-success">' + data.msg + '</div>');
-                        window.location.href = "./";
-                        $("#footercadastro").hide();
-                    }
-                }
+            const form = $(this);
+            if (!regis)
+                $.post({
+                    beforeSend: function () {
+                        $("#cadastrar .btn").attr("disabled", true);
+                        $("#cadastrar .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto criamos sua conta...</div>");
+                        regis = true;
+                    },
+                    url: "",
+                    data: form.serialize()+"&status=cadastro",
+                    dataType: "JSON",
+                    success: (data) => {
+                        if (!data.success) {
+                            $("#cadastrar .btn").attr("disabled",false);
+                            $("#cadastrar .return").html('<div class="alert alert-danger"><i class="fal fa-x"></i> ' + data.msg + "</div>");
+                        } else {
+                            regis = false;
+                            $("#cadastrar .return").html('<div class="alert alert-success"><i class="fal fa-check"></i> ' + data.msg + '</div>');
+                            window.location.href = "./";
+                        }
+                    },
+                    error: function () {
+                        regis = false;
+                        $("#cadastrar .btn").attr("disabled",false);
+                        $("#cadastrar .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> Houve um erro ao fazer a solicitação, contate um administrador!</div>");
+                    },
+                }).done(function (data) {
 
-            });
+                });
         });
         $('#login').submit(function (e) {
             e.preventDefault();
             var form = $(this);
-            $.post({
-                beforeSend: function () {
-                    $("#footerlogin").hide();
-                    $("#messagelogin").html("<div class='alert alert-warning'>Aguarde enquanto fazemos um rolamento no login...</div>");
-                },
-                url: "",
-                data: form.serialize(),
-                dataType: "JSON",
-                error: function () {
-                    $("#footerlogin").show();
-                    $("#messagelogin").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
-                },
-            }).done(function (data) {
-                if (data.msg) {
-                    if (!data.success) {
-                        $("#footerlogin").show();
-                        $("#messagelogin").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                    } else {
-                        $("#messagelogin").html('<div class="alert alert-success">' + data.msg + '</div>');
-                        window.location.href = "/sessao";
-                        $("#footercadastro").hide();
-                        $("#footerlogin").hide();
-                    }
-                }
-
-            });
+            console.log("OMAIGOD")
+            if (!login)
+                $.post({
+                    beforeSend: function () {
+                        login = true;
+                        $("#login .btn").attr("disabled", true);
+                        $("#login .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto fazemos um rolamento no login...</div>");
+                    },
+                    url: "",
+                    data: form.serialize() + "&status=login",
+                    dataType: "JSON",
+                    success: (data) => {
+                        if (!data.success) {
+                            $("#login .btn").attr("disabled", false);
+                            $("#login .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> " + data.msg + "</div>");
+                            login = false;
+                        } else {
+                            $("#login .return").html('<div class="alert alert-success"><i class="fal fa-check"></i> ' + data.msg + '</div>');
+                            window.location.href = "/sessao";
+                        }
+                    },
+                    error: () => {
+                        login = false;
+                        $("#login .btn").attr("disabled", false);
+                        $("#login .return").html("<div class='alert alert-danger'>Houve um erro ao fazer a solicitação, contate um administrador!</div>");
+                    },
+                })
         });
 		<?php
 		}
 		if (isset($_GET["convite"]) && $_GET["convite"] == 1 && !isset($_SESSION["UserID"])){ ?>
 
-        var modalperfil = new bootstrap.Modal(document.getElementById('cadastrar'), {
+        const modalperfil = new bootstrap.Modal(document.getElementById('cadastrar'), {
             keyboard: false
-        })
+        });
         modalperfil.show()
 		<?php
 		} else {?>
 
         let up;
         let enviando = false;
-        
+
         $('#btnaddmarca').on('click', function () {
             const url = $('#addfotomarca input').val();
             console.log("afas")
@@ -302,12 +312,12 @@
         })
         $("#configconta").on("submit", (e) => {
             e.preventDefault();
-            $this = $("#configconta");
+            let $this = $("#configconta");
             $this.addClass('was-validated');
 
             if ($this.isValid() && $("#configconta .senha").val() === $("#configconta .csenha").val()) {
                 console.log("true");
-                if(!enviando) {
+                if (!enviando) {
                     $.post({
                         url: '',
                         data: $this.serialize() + "&status=conta",
@@ -347,12 +357,7 @@
 
         })
 
-        
-        
-        
-        
-        
-        
+
         $("#addmarcadiv input").on("input", () => {
             let $this = $("#addmarcadiv input");
             console.log("teste");
@@ -384,7 +389,7 @@
                         $("#addmarcadiv .return").html("<div class='alert alert-danger'>" + d.msg + "</div>");
                     }
                 },
-                complete: (d)=>{
+                complete: (d) => {
                     console.log(d)
                     $("#addmarcadiv input, #addmarcadiv button").attr("disabled", false);
                 }

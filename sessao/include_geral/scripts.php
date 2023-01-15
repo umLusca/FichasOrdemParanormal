@@ -12,8 +12,7 @@
         $('#edidd').val(id);
         modaleditardado.toggle();
     }
-
-
+    
     function rolar(dado1, dado2 = undefined, dado3 = undefined) {
 
         if (typeof dado1 === "string") {
@@ -119,9 +118,9 @@
                                     Crítico</button>;
                         }
                         ReactDOM.createRoot($("#Toastdados")[0]).render([
-                            <div className="toast-header bg-dark">
-                                <span className="me-auto text-light fs-5">{dado1["nome"]}</span>
-                                <button type="button" className="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                            <div className="toast-header">
+                                <span className="me-auto fs-5">{dado1["nome"]}</span>
+                                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>,
                             <div className={"toast-body pb-0 " + (data["critico"] ? "vibrate" : "")}>
                                 <div>
@@ -135,6 +134,19 @@
                         new bootstrap.Toast($('#Toastdados')).show();
                         resolve({status: true});
                     } else {
+                        ReactDOM.createRoot($("#Toastdados")[0]).render([
+                            <div className="toast-header">
+                                <span className="me-auto fs-5">{dado1["nome"]}</span>
+                                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>,
+                            <div className={"toast-body pb-0"}>
+                                <div>
+                                    <h3>Falha...</h3>
+                                    <p>{data.msg}</p>
+                                </div>
+                            </div>])
+                        new bootstrap.Toast($('#Toastdados')).show();
+                        
                         $("main button").attr("disabled", false);
                         resolve({status: false, ...data});
 
@@ -143,6 +155,7 @@
 
                 },
                 error: () => {
+                    
                     $("main button").attr("disabled", false);
                     resolve({status: false});
                 },
@@ -183,13 +196,20 @@
 
         })
 
-        $("#ded").click(function () {
-            $("#eds").val("deld");
-            $("#formeditdado").submit();
+        $("#editardado .deletar").click(function (e) {
+            e.preventDefault()
+            confirmar("Deseja apagar esse dado?").then(s=>{
+                console.log(s)
+                if (s){
+                    $("#eds").val("deld");
+                    $("#editardado").submit();
+                }
+            })
         })
-        $("#sed").click(function () {
+        $("#editardado .salvar").click(function (e) {
+            e.preventDefault()
             $("#eds").val("editd");
-            $("#formeditdado").submit();
+            $("#editardado").submit();
         })
 
         $('#dados .dado').on('mousedown touchstart', function (e) {

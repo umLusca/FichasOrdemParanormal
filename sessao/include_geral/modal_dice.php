@@ -1,10 +1,9 @@
-
 <div class="modal fade" id="rolardados" tabindex="-1">
     <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
-        <div class="modal-content bg-black border-light">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="text-center fs-1">Como Criar/Rolar Dados.</div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="m-3 text-center">
@@ -77,16 +76,16 @@
 
 <div class="modal fade" id="adddado" tabindex="-1">
     <form class="modal-dialog" method="post" id="formadddado">
-        <div class="modal-content bg-black border-light">
-            <div class="text-center modal-header border-bottom-0">
-                <h2 class="modal-title">Adicionar Dado.</h2>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content border-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Dado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="m-3">
                     <div class="m-2">
                         <label class="fs-4" for="icone">Icone</label>
-                        <select class="form-select bg-black text-light" id="icone" name="icone" required="required">
+                        <select class="form-select" id="icone" name="icone" required="required">
                             <option value="1" >D4</option>
                             <option value="2" >D6</option>
                             <option value="3" >D8</option>
@@ -103,37 +102,37 @@
                     </div>
                     <div class="m-2">
                         <label class="fs-4" for="dnome">Nome (Opcional)</label>
-                        <input id="dnome" class="form-control bg-black  text-light " type="text" maxlength="20" placeholder="Dado de Ferro" name="nome"/>
+                        <input id="dnome" class="form-control" type="text" maxlength="20" placeholder="Dado de Ferro" name="nome"/>
                     </div>
                     <div class="m-2">
                         <label class="fs-4" for="ddado">Dados</label>
-                        <input id="ddado" class="form-control bg-black  text-light" type="text" maxlength="20" name="dado" placeholder="1d20+5" required/>
+                        <input id="ddado" class="form-control" type="text" maxlength="20" name="dado" placeholder="1d20+5" required/>
                     </div>
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch m-2">
                         <input class="form-check-input" type="checkbox" role="switch" id="switchdano" name="dano">
                         <label class="form-check-label" for="switchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
                     <input type="hidden" name="status" value="addd"/>
                 </div>
             </div>
-            <div class="modal-footer border-top-0">
+            <div class="modal-footer">
                 <button class="btn btn-outline-success" type="submit">Criar</button>
             </div>
         </div>
     </form>
 </div>
-<div class="modal fade" id="editardado" tabindex="-1">
-    <form class="modal-dialog" method="post" id="formeditdado">
-        <div class="modal-content bg-black border-light">
-            <div class="modal-header border-bottom-0">
-                <h2>Editar Dado.</h2>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
+<form class="modal fade" id="editardado" tabindex="-1" method="post">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Dado</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="m-3">
                     <div class="m-2">
                         <label class="fs-4" for="eddicone">Icone</label>
-                        <select class="form-select bg-black text-light" id="eddicone" name="icone" required="required">
+                        <select class="form-select" id="eddicone" name="icone" required="required">
                             <option value="1" >D4</option>
                             <option value="2" >D6</option>
                             <option value="3" >D8</option>
@@ -150,34 +149,33 @@
                     </div>
                     <div class="m-2">
                         <label class="fs-4" for="ednome">Nome (Opcional)</label>
-                        <input id="ednome" class="form-control bg-black  text-light" type="text" maxlength="20" name="nome" placeholder="Dado de ferro"/>
+                        <input id="ednome" class="form-control" type="text" maxlength="20" name="nome" placeholder="Dado de ferro"/>
                     </div>
                     <div class="m-2">
                         <label class="fs-4" for="eddado">Dados</label>
-                        <input id="eddado" class="form-control bg-black  text-light" type="text" maxlength="20" name="dado" placeholder="1d20+5" required/>
+                        <input id="eddado" class="form-control" type="text" maxlength="20" name="dado" placeholder="1d20+5" required/>
                     </div>
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch m-2">
                         <input class="form-check-input" type="checkbox" role="switch" id="eswitchdano" name="dano" value="1" <?=$dado["dano"]?'CHECKED':''?>>
                         <label class="form-check-label" for="eswitchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
-                </div>
                 <input type="hidden" id="eds" name="status" value=""/>
                 <input type="hidden" id="edidd" name="did"/>
             </div>
-            <div class="clearfix m-3">
-                <button class="btn btn-outline-success float-end" type="submit" id="sed">Salvar</button>
-                <button class="btn btn-outline-danger float-start" type="submit" id="ded">Deletar</button>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-outline-danger deletar" type="submit">Deletar</button>
+                <button class="btn btn-outline-success salvar" type="submit">Salvar</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 
 <div class="position-fixed top-50 start-50 translate-middle">
-    <div class="toast bg-black text-light border-info" id="Toastdados" role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-dark">
+    <div class="toast border-info" id="Toastdados" role="alert" data-bs-autohide="false" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
             <strong class="me-auto">Resultado</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
         </div>

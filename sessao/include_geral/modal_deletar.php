@@ -1,6 +1,6 @@
 <div class="modal fade" id="deletar" data-bs-keyboard="false" tabindex="-1">
 	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content bg-black border-light">
+		<div class="modal-content border-secondary">
 			<form class="modal-body" method="post" id="formdeletar">
 				<div class="border-0 modal-header fs-4"><span>Deseja Deletar:</span> <span id="deletarnome"></span></div>
 				<input type="hidden" id="deletarid" name="did" value=""/>

@@ -1,5 +1,5 @@
 <div class="col-md-6" id="card_rolar">
-    <div class="card h-100 bg-black border-light" style="min-height: 360px;">
+    <div class="card h-100" style="min-height: 360px;">
         <div class="card-header clearfix text-center p-0">
             <div class="float-start">
                 <button class="btn btn-sm text-info fa-lg" title="Como rolar dados. " data-bs-toggle="modal" data-bs-target="#rolardados">
@@ -60,8 +60,8 @@
 				        }
 				        ?>
                         <div class="col dado" aria-foto="<?= $dado["foto"]; ?>" aria-dado="<?= $dado["dado"]; ?>" aria-id="<?= $dado["id"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>,'<?= $dado["nome"]?>')">
-                            <button class="btn btn-lg text-light" <?=(!isset($edit) OR $edit)?:"disabled"?>>
-                                <i class="fa-light <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"]; ?>
+                            <button class="btn btn-lg text-body-emphasis" <?=(!isset($edit) OR $edit)?:"disabled"?>>
+                                <i class="fal <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"]; ?>
                             </button>
                         </div>
 			        <?php
@@ -74,10 +74,10 @@
                 <div class="return"></div>
                 <div class="input-group">
                     <label class="form-floating text-start">
-                        <input type="text" class="form-control form-control-dark border-end-0" placeholder="/AGI/d20+/PONT/+1d6"/>
+                        <input type="text" class="form-control border-secondary border-end-0" placeholder="/AGI/d20+/PONT/+1d6"/>
                         <label>Dado Rapido (EX: "/AGI/d20" )</label>
                     </label>
-                    <button class="btn btn-lg btn-outline-light border-start-0" type="submit"><i class="fa-regular fa-paper-plane-top"></i></button>
+                    <button class="btn btn-lg btn-outline-secondary border-start-0" type="submit"><i class="fa-regular fa-paper-plane-top"></i></button>
                 </div>
             </form>
         </div>

@@ -4,42 +4,42 @@ function Echo_FichaNPC($fichas, $type): void
 	foreach ($fichas as $r) {
 		if ($r["categoria"] == $type) {
 			?>
-            <div class="col col-md-6 col-lg-4 col-xl-3 card-body border-0 text-center" id="npc<?= $r["id"] ?>">
+            <div class="col col-md-6 col-lg-4 col-xl-3 border-0 text-center" id="npc<?= $r["id"] ?>">
                 <div class="card h-100">
-                    <div class="position-absolute end-0 m-1">
-                        <button class="btn btn-sm text-danger " onclick="deletnpc(<?= $r["id"] ?>);">
-                            <i class="fa-regular fa-trash"></i>
-                        </button>
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="col-auto">
+                            <button class="btn btn-sm text-warning" onclick="editnpc(<?= $r["id"] ?>,'<?= $r["categoria"] ?>');">
+                                <i class="fa-regular fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm text-primary" title="Duplicar Ficha" onclick="copynpc(<?= $r["id"] ?>);">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <h5 class="text-truncate"><?= $r["nome"] ?></h5>
+                        <div class="col-auto">
+                            <button class="btn btn-sm text-danger " onclick="deletnpc(<?= $r["id"] ?>);">
+                                <i class="fa-regular fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class=" position-absolute start-0 m-1">
-                        <button class="btn btn-sm text-warning" onclick="editnpc(<?= $r["id"] ?>,'<?= $r["categoria"] ?>');">
-                            <i class="fa-regular fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm text-primary" title="Duplicar Ficha" onclick="copynpc(<?= $r["id"] ?>);">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <div class="card-header border-0">
-                        <span class="card-title font7 fs-5"><?= $r["nome"] ?></span>
-                    </div>
-                    <ul class="nav nav-pills mb-3 justify-content-center" role="tablist">
+                    <ul class="nav nav-tabs justify-content-center" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline text-light active" id="pills-principal-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-principal<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-principal<?= $r["id"] ?>" aria-selected="true">
+                            <button class="nav-link link-secondary active" id="pills-principal-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-principal<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-principal<?= $r["id"] ?>" aria-selected="true">
                                 Principal
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline text-light" id="pills-ataque-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-ataque<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-ataque<?= $r["id"] ?>" aria-selected="false">
+                            <button class="nav-link link-secondary" id="pills-ataque-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-ataque<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-ataque<?= $r["id"] ?>" aria-selected="false">
                                 Defesas
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline text-light" id="pills-pericias-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-pericias<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-pericias<?= $r["id"] ?>" aria-selected="false">
+                            <button class="nav-link link-secondary" id="pills-pericias-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-pericias<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-pericias<?= $r["id"] ?>" aria-selected="false">
                                 Perícias
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline text-light" id="pills-habilidades-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-habilidades<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-disabled<?= $r["id"] ?>" aria-selected="false">
+                            <button class="nav-link link-secondary" id="pills-habilidades-tab<?= $r["id"] ?>" data-bs-toggle="pill" data-bs-target="#pills-habilidades<?= $r["id"] ?>" type="button" role="tab" aria-controls="pills-disabled<?= $r["id"] ?>" aria-selected="false">
                                 Outros
                             </button>
                         </li>
@@ -50,44 +50,29 @@ function Echo_FichaNPC($fichas, $type): void
                                 <div class="my-2">
                                     <strong>Atributos</strong>
                                     <div class="row justify-content-center g-1 mt-2">
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-light" onclick="rolar('<?= ValorParaRolarDado($r["forca"]) ?>d20')">
-                                                FOR: <?= ($r["forca"]) ?></button>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-light" onclick="rolar('<?= ValorParaRolarDado($r["agilidade"]) ?>d20')">
-                                                AGI: <?= ($r["agilidade"]) ?></button>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-light" onclick="rolar('<?= ValorParaRolarDado($r["inteligencia"]) ?>d20')">
-                                                INT: <?= ($r["inteligencia"]) ?></button>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-light" onclick="rolar('<?= ValorParaRolarDado($r["presenca"]) ?>d20')">
-                                                PRE: <?= ($r["presenca"]) ?></button>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-light" onclick="rolar('<?= ValorParaRolarDado($r["vigor"]) ?>d20')">
-                                                VIG: <?= ($r["vigor"]) ?></button>
-                                        </div>
+										<?= pillbutton("FOR", $r["forca"], true, "rolar('" . ValorParaRolarDado($r["forca"]) . "d20')") ?>
+										<?= pillbutton("FOR", $r["agilidade"], true, "rolar('" . ValorParaRolarDado($r["agilidade"]) . "d20')") ?>
+										<?= pillbutton("FOR", $r["inteligencia"], true, "rolar('" . ValorParaRolarDado($r["inteligencia"]) . "d20')") ?>
+										<?= pillbutton("FOR", $r["presenca"], true, "rolar('" . ValorParaRolarDado($r["presenca"]) . "d20')") ?>
+										<?= pillbutton("FOR", $r["vigor"], true, "rolar('" . ValorParaRolarDado($r["vigor"]) . "d20')") ?>
                                     </div>
                                 </div>
                                 <div class="my-2">
                                     <strong>Vida</strong>
                                     <div class="">
                                         <div class="position-absolute start-0 ps-2">
-                                            <button class="btn btn-sm text-white" onclick="updt('pv',-5,<?= $r["id"] ?>);">
+                                            <button class="btn btn-sm text-secondary" onclick="updt('pv',-5,<?= $r["id"] ?>);">
                                                 <i class="fa-solid fa-chevrons-left"></i> -5
                                             </button>
-                                            <button class="btn btn-sm text-white" onclick="updt('pv',-1,<?= $r["id"] ?>);">
+                                            <button class="btn btn-sm text-secondary" onclick="updt('pv',-1,<?= $r["id"] ?>);">
                                                 <i class="fa-solid fa-chevron-left"></i> -1
                                             </button>
                                         </div>
                                         <div class="position-absolute end-0 pe-2">
-                                            <button class="btn btn-sm text-white" onclick="updt('pv',1,<?= $r["id"] ?>);">
+                                            <button class="btn btn-sm text-secondary" onclick="updt('pv',1,<?= $r["id"] ?>);">
                                                 +1 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
-                                            <button class="btn btn-sm text-white" onclick="updt('pv',5,<?= $r["id"] ?>);">
+                                            <button class="btn btn-sm text-secondary" onclick="updt('pv',5,<?= $r["id"] ?>);">
                                                 +5 <i class="fa-solid fa-chevrons-right"></i>
                                             </button>
                                         </div>
@@ -103,18 +88,18 @@ function Echo_FichaNPC($fichas, $type): void
                                             <strong>Sanidade</strong>
                                             <div class="">
                                                 <div class="position-absolute start-0 ps-2">
-                                                    <button class="btn btn-sm text-white" onclick="updt('san',-5,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('san',-5,<?= $r["id"] ?>);">
                                                         <i class="fa-solid fa-chevrons-left"></i> -5
                                                     </button>
-                                                    <button class="btn btn-sm text-white" onclick="updt('san',-1,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('san',-1,<?= $r["id"] ?>);">
                                                         <i class="fa-solid fa-chevron-left"></i> -1
                                                     </button>
                                                 </div>
                                                 <div class="position-absolute end-0 pe-2">
-                                                    <button class="btn btn-sm text-white" onclick="updt('san',1,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('san',1,<?= $r["id"] ?>);">
                                                         +1 <i class="fa-solid fa-chevron-right"></i>
                                                     </button>
-                                                    <button class="btn btn-sm text-white" onclick="updt('san',5,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('san',5,<?= $r["id"] ?>);">
                                                         +5 <i class="fa-solid fa-chevrons-right"></i>
                                                     </button>
                                                 </div>
@@ -132,18 +117,18 @@ function Echo_FichaNPC($fichas, $type): void
                                             <strong>Esforço</strong>
                                             <div class="">
                                                 <div class="position-absolute start-0 ps-2">
-                                                    <button class="btn btn-sm text-white" onclick="updt('pe',-5,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('pe',-5,<?= $r["id"] ?>);">
                                                         <i class="fa-solid fa-chevrons-left"></i> -5
                                                     </button>
-                                                    <button class="btn btn-sm text-white" onclick="updt('pe',-1,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('pe',-1,<?= $r["id"] ?>);">
                                                         <i class="fa-solid fa-chevron-left"></i> -1
                                                     </button>
                                                 </div>
                                                 <div class="position-absolute end-0 pe-2">
-                                                    <button class="btn btn-sm text-white" onclick="updt('pe',1,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('pe',1,<?= $r["id"] ?>);">
                                                         +1 <i class="fa-solid fa-chevron-right"></i>
                                                     </button>
-                                                    <button class="btn btn-sm text-white" onclick="updt('pe',5,<?= $r["id"] ?>);">
+                                                    <button class="btn btn-sm text-secondary" onclick="updt('pe',5,<?= $r["id"] ?>);">
                                                         +5 <i class="fa-solid fa-chevrons-right"></i>
                                                     </button>
                                                 </div>
@@ -166,8 +151,8 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="my-2">
                                     <strong>Defesas</strong>
                                     <div class="row m-2 g-2 justify-content-center">
-										<?= $r["passiva"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Passiva: ' . $r["passiva"] . '</span></div>' : "" ?>
-										<?= $r["esquiva"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Esquiva: ' . $r["esquiva"] . '</span></div>' : "" ?>
+										<?= pill("Passiva", $r["passiva"]) ?>
+										<?= pill("Esquiva", $r["esquiva"]) ?>
                                     </div>
                                     </div><?php }
 								
@@ -176,14 +161,17 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="my-2">
                                     <h4>Resistências</h4>
                                     <div class="row m-2 g-2 justify-content-center">
-										<?= $r["morte"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Morte: ' . $r["morte"] . '</span></div>' : "" ?>
-										<?= $r["sangue"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Sangue: ' . $r["sangue"] . '</span></div>' : "" ?>
-										<?= $r["energia"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Energia: ' . $r["energia"] . '</span></div>' : "" ?>
-										<?= $r["conhecimento"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Conhecimento: ' . $r["conhecimento"] . '</span></div>' : "" ?>
-										<?= $r["mental"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Mental: ' . $r["mental"] . '</span></div>' : "" ?>
-										<?= $r["fisica"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Física: ' . $r["fisica"] . '</span></div>' : "" ?>
-										<?= $r["balistica"] ? '<div class="col-auto"><span class="input-group-text bg-black text-white">Balística: ' . $r["balistica"] . '</span></div>' : "" ?>
-                                    </div>
+	
+	                                    <?= pill("Morte", $r["morte"]) ?>
+	                                    <?= pill("Sangue", $r["sangue"]) ?>
+	                                    <?= pill("Energia", $r["energia"]) ?>
+	                                    <?= pill("Conhecimento", $r["conhecimento"]) ?>
+	                                    <?= pill("Mental", $r["mental"]) ?>
+	                                    <?= pill("Física", $r["fisica"]) ?>
+	                                    <?= pill("Balística", $r["balistica"]) ?>
+                                     
+                                     
+								  </div>
                                     </div><?php }
 								?>
                             </div>
@@ -202,49 +190,49 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="mt-4 pericias">
                                         <h4>Perícias</h4>
                                         <div class="row g-2 m-2 justify-content-center">
-											<?= $r["acrobacia"] ? "<div class='col-auto m-1'><button class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["acrobacia"] . '"' . ")'>Acrobacia: +" . $r["acrobacia"] . "</button></div>" : "" ?>
-											<?= $r["adestramento"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["adestramento"] . '"' . ")'>Adestramento: +" . $r["adestramento"] . "</span></div>" : "" ?>
-											<?= $r["atletismo"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["forca"] ?: -2) . 'd20+' . $r["atletismo"] . '"' . ")'>Atletismo: +" . $r["atletismo"] . "</span></div>" : "" ?>
-											<?= $r["atualidade"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["atualidade"] . '"' . ")'>Atualidades: +" . $r["atualidade"] . "</span></div>" : "" ?>
-											<?= $r["ciencia"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'   onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["ciencia"] . '"' . ")'>Ciências: +" . $r["ciencia"] . "</span></div>" : "" ?>
-											<?= $r["crime"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["crime"] . '"' . ")'>Crime: +" . $r["crime"] . "</span></div>" : "" ?>
-											<?= $r["diplomacia"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["diplomacia"] . '"' . ")'>Diplomacia: +" . $r["diplomacia"] . "</span></div>" : "" ?>
-											<?= $r["enganacao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["enganacao"] . '"' . ")'>Enganação: +" . $r["enganacao"] . "</span></div>" : "" ?>
-											<?= $r["fortitude"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["vigor"] ?: -2) . 'd20+' . $r["fortitude"] . '"' . ")'>Fortitude: +" . $r["fortitude"] . "</span></div>" : "" ?>
-											<?= $r["furtividade"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["furtividade"] . '"' . ")'>Furtividade: +" . $r["furtividade"] . "</span></div>" : "" ?>
-											<?= $r["iniciativa"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["iniciativa"] . '"' . ")'>Iniciativa: +" . $r["iniciativa"] . "</span></div>" : "" ?>
-											<?= $r["intimidacao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["intimidacao"] . '"' . ")'>Intimidação: +" . $r["intimidacao"] . "</span></div>" : "" ?>
-											<?= $r["intuicao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["intuicao"] . '"' . ")'>Intuição: +" . $r["intuicao"] . "</span></div>" : "" ?>
-											<?= $r["investigacao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["investigacao"] . '"' . ")'>Investigação: +" . $r["investigacao"] . "</span></div>" : "" ?>
-											<?= $r["luta"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["forca"] ?: -2) . 'd20+' . $r["luta"] . '"' . ")'>Luta: +" . $r["luta"] . "</span></div>" : "" ?>
-											<?= $r["medicina"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["medicina"] . '"' . ")'>Medicina: +" . $r["medicina"] . "</span></div>" : "" ?>
-											<?= $r["ocultismo"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["ocultismo"] . '"' . ")'>Ocultismo: +" . $r["ocultismo"] . "</span></div>" : "" ?>
-											<?= $r["percepcao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["percepcao"] . '"' . ")'>Percepção: +" . $r["percepcao"] . "</span></div>" : "" ?>
-											<?= $r["pilotagem"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["pilotagem"] . '"' . ")'>Pilotagem: +" . $r["pilotagem"] . "</span></div>" : "" ?>
-											<?= $r["pontaria"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["pontaria"] . '"' . ")'>Pontaria: +" . $r["pontaria"] . "</span></div>" : "" ?>
-											<?= $r["profissao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["profissao"] . '"' . ")'>Profissão: +" . $r["profissao"] . "</span></div>" : "" ?>
-											<?= $r["reflexos"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["agilidade"] ?: -2) . 'd20+' . $r["reflexos"] . '"' . ")'>Reflexos: +" . $r["reflexos"] . "</span></div>" : "" ?>
-											<?= $r["religiao"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["religiao"] . '"' . ")'>Religião: +" . $r["religiao"] . "</span></div>" : "" ?>
-											<?= $r["sobrevivencia"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["sobrevivencia"] . '"' . ")'>Sobrevivência: +" . $r["sobrevivencia"] . "</span></div>" : "" ?>
-											<?= $r["tatica"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["tatica"] . '"' . ")'>Tática: +" . $r["tatica"] . "</span></div>" : "" ?>
-											<?= $r["tecnologia"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["inteligencia"] ?: -2) . 'd20+' . $r["tecnologia"] . '"' . ")'>Tecnologia: +" . $r["tecnologia"] . "</span></div>" : "" ?>
-											<?= $r["vontade"] ? "<div class='col-auto m-1'><span class='btn btn-sm btn-outline-light'  onclick='rolar(" . '"' . ($r["presenca"] ?: -2) . 'd20+' . $r["vontade"] . '"' . ")'>Vontade: +" . $r["vontade"] . "</span></div>" : "" ?>
-                                        </div>
+	                                        <?= pillbutton("Acobracia", $r["acrobacia"],true,"rolar('{$r["acrobacia"]}d20',false,'Acobracia')") ?>
+	                                        <?= pillbutton("Adestramento", $r["adestramento"],true,"rolar('{$r["adestramento"]}d20',false,'Adestramento')") ?>
+	                                        <?= pillbutton("Atletismo", $r["atletismo"],true,"rolar('{$r["atletismo"]}d20',false,'Atletismo')") ?>
+	                                        <?= pillbutton("Atualidade", $r["atualidade"],true,"1drolar('{$r["atualidade"]}d20',false,'Atualidade')") ?>
+	                                        <?= pillbutton("Ciência", $r["ciencia"],true,"rolar('{$r["ciencia"]}d20',false,'Ciência')") ?>
+	                                        <?= pillbutton("Crime", $r["crime"],true,"rolar('{$r["crime"]}d20',false,'Crime')") ?>
+	                                        <?= pillbutton("Diplomacia", $r["diplomacia"],true,"rolar('{$r["diplomacia"]}d20',false,'Diplomacia')") ?>
+	                                        <?= pillbutton("Enganação", $r["enganacao"],true,"rolar('{$r["enganacao"]}d20',false,'Enganação')") ?>
+	                                        <?= pillbutton("Fortitude", $r["fortitude"],true,"rolar('{$r["fortitude"]}d20',false,'Fortitude')") ?>
+	                                        <?= pillbutton("Furtividade", $r["furtividade"],true,"rolar('{$r["furtividade"]}d20',false,'Furtividade')") ?>
+	                                        <?= pillbutton("Iniciativa", $r["iniciativa"],true,"rolar('{$r["iniciativa"]}d20',false,'Iniciativa')") ?>
+	                                        <?= pillbutton("Intimidação", $r["intimidacao"],true,"rolar('{$r["intimidacao"]}d20',false,'Intimidação')") ?>
+	                                        <?= pillbutton("Intuição", $r["intuicao"],true,"rolar('{$r["intuicao"]}d20',false,'Intuição')") ?>
+	                                        <?= pillbutton("Investigação", $r["investigacao"],true,"rolar('{$r["investigacao"]}d20',false,'Investigação')") ?>
+	                                        <?= pillbutton("Luta", $r["luta"],true,"rolar('{$r["luta"]}d20'),false,'Luta'") ?>
+	                                        <?= pillbutton("Medicina", $r["medicina"],true,"rolar('{$r["medicina"]}d20',false,'Medicina')") ?>
+	                                        <?= pillbutton("Ocultismo", $r["ocultismo"],true,"rolar('{$r["ocultismo"]}d20',false,'Ocultismo')") ?>
+	                                        <?= pillbutton("Percepção", $r["percepcao"],true,"rolar('{$r["percepcao"]}d20',false,'Percepção')") ?>
+	                                        <?= pillbutton("Pilotagem", $r["pilotagem"],true,"rolar('{$r["pilotagem"]}d20',false,'Pilotagem')") ?>
+	                                        <?= pillbutton("Pontaria", $r["pontaria"],true,"rolar('{$r["pontaria"]}d20',false,'Pontaria')") ?>
+	                                        <?= pillbutton("Profissão", $r["profissao"],true,"rolar('{$r["profissao"]}d20',false,'Profissão')") ?>
+	                                        <?= pillbutton("Reflexos", $r["reflexos"],true,"rolar('{$r["reflexos"]}d20',false,'Reflexos')") ?>
+	                                        <?= pillbutton("Religião", $r["religiao"],true,"rolar('{$r["religiao"]}d20',false,'Religião')") ?>
+	                                        <?= pillbutton("Sobrevivência", $r["sobrevivencia"],true,"rolar('{$r["sobrevivencia"]}d20',false,'Sobrevivência')") ?>
+	                                        <?= pillbutton("Tática", $r["tatica"],true,"rolar('{$r["tatica"]}d20',false,'Tática')") ?>
+	                                        <?= pillbutton("Tecnologia", $r["tecnologia"],true,"rolar('{$r["tecnologia"]}d20',false,'Tecnologia')") ?>
+	                                        <?= pillbutton("Vontade", $r["vontade"],true,"rolar('{$r["vontade"]}d20',false,'Vontade')") ?>
+	                                      </div>
                                     </div>
 								<?php } ?>
                             </div>
                             <div class="tab-pane fade" id="pills-habilidades<?= $r["id"] ?>" role="tabpanel" aria-labelledby="pills-habilidades-tab<?= $r["id"] ?>" tabindex="0">
                                 <div class="m-2">
                                     <label class="fs-4" for="ataque<?= $r["id"] ?>">Ataques</label><br>
-                                    <textarea class="bg-black text-light w-100" readonly id="ataque<?= $r["id"] ?>" name="ataques" type="text"><?= $r["ataques"] ?></textarea>
+                                    <textarea class="form-control" readonly id="ataque<?= $r["id"] ?>" name="ataques" type="text"><?= $r["ataques"] ?></textarea>
                                 </div>
                                 <div class="m-2">
                                     <label class="fs-4" for="habilidades<?= $r["id"] ?>">Habilidades</label><br>
-                                    <textarea class="bg-black text-light w-100" readonly id="habilidades<?= $r["id"] ?>" name="habilidades" type="text"><?= $r["habilidades"] ?></textarea>
+                                    <textarea class="form-control" readonly id="habilidades<?= $r["id"] ?>" name="habilidades" type="text"><?= $r["habilidades"] ?></textarea>
                                 </div>
                                 <div class="m-2">
                                     <label class="fs-4" for="detalhes<?= $r["id"] ?>">Detalhes</label><br>
-                                    <textarea class="bg-black text-light w-100" readonly id="detalhes<?= $r["id"] ?>" name="detalhes" type="text"><?= $r["detalhes"] ?></textarea>
+                                    <textarea class="form-control" readonly id="detalhes<?= $r["id"] ?>" name="detalhes" type="text"><?= $r["detalhes"] ?></textarea>
                                 </div>
                             </div>
                         </div>
@@ -282,14 +270,14 @@ function Echo_FichaNPC($fichas, $type): void
                 <div class="d-flex align-items-start">
                     <div class="tab-content container-fluid">
                         <div class="tab-pane fade show active" id="guia-npc" role="tabpanel" aria-labelledby="aba-npc" tabindex="0">
-                            <div class="row m-2 g-1" id="fichasnpc">
+                            <div class="row m-2 g-2" id="fichasnpc">
 								<?php
 								Echo_FichaNPC($q["npcs"], "0")
 								?>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="guia-monstro" role="tabpanel" aria-labelledby="guia-monstro" tabindex="0">
-                            <div class="row m-2" id="fichasmonstro">
+                            <div class="row m-2 g-2" id="fichasmonstro">
 								<?php
 								Echo_FichaNPC($q["npcs"], "1")
 								?>

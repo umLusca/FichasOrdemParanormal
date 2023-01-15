@@ -7,9 +7,9 @@ else
 $url .= $_SERVER['HTTP_HOST'];
 ?>
 
-    <nav class="navbar navbar-expand-sm bg-black navbar-dark p-0 fixed-top border-bottom border-secondary font3">
+    <nav class="navbar navbar-expand-sm bg-body p-0 fixed-top border-bottom border-secondary font3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="/assets/img/Energia.webp" class="rounded bg-black" width="32px" alt="Inicio"/></a>
+            <a class="navbar-brand" href="/"><img src="/assets/img/Energia.webp" class="rounded" width="32px" alt="Inicio"/></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -40,7 +40,7 @@ $url .= $_SERVER['HTTP_HOST'];
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cadastrar"><i class="fat fa-user-plus text-danger"></i> Registrar-se</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logar"><i class="fat fa-user-check text-success"></i> Entrar</a>
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login"><i class="fat fa-user-check text-success"></i> Entrar</a>
                         </li>
                      <?php } ?>
                          </ul>
@@ -51,7 +51,7 @@ $url .= $_SERVER['HTTP_HOST'];
 
 	<div class="modal fade" id="doar" tabindex="-1" aria-labelledby="titledoar" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content bg-black text-white border-success">
+			<div class="modal-content border-success">
 				<div class="modal-body">
 					<div class="modal-header border-0">
 						<h5 class="modal-title" id="titledoar">Ajudar com doação</h5>

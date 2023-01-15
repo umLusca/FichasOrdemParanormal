@@ -211,15 +211,15 @@ function Check_Login($login): bool
     $login = cleanstring($login);
     if (empty($login) || strlen($login) < 2 || strlen($login) > 16) {
         return false;
-    } else {
-        return (preg_match('/^[\w\s-]*$/', $login));
     }
-
+	
+	return (preg_match('/^[\w\s-]*$/', $login));
+	
 }
 
 function Check_Email($email): bool
 {
-    $email = cleanstring($email);
+    $email = cleanstring($email,200);
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 
 }

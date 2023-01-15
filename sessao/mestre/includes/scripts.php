@@ -186,6 +186,7 @@
 
         $("form:not([ajax])").not("#adicionar").submit(function (event) {
             $(this).addClass('was-validated');
+            console.log("aaa")
 
             if (!$(this).isValid()) {
                 event.preventDefault()

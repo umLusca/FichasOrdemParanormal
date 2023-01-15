@@ -16,7 +16,7 @@
 
                     <?php if ($q["notas"]->num_rows < 5) { ?>
                         <li class="nav-item" role="presentation">
-                            <button type="button" class="btn text-success addnote"><i class="fa-regular fa-square-plus"></i> Adicionar</button>
+                            <button type="button" class="nav-link link-success addnote"><i class="fa-regular fa-square-plus"></i> Adicionar</button>
                         </li>
                     <?php } ?>
                 </ul>

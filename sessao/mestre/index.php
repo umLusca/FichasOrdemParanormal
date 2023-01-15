@@ -49,7 +49,7 @@ if(isset($_GET["id"])){
 }
 ?>
 <!DOCTYPE html>
-<html lang="br">
+<html lang="br" data-bs-theme="<?=$_SESSION["theme"]?>">
     <head>
         <?php require_once "./../../includes/head.html"; ?>
         <title>Mestre - FichasOP</title>

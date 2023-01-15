@@ -1,146 +1,132 @@
 <?php if (!isset($_SESSION["UserID"])) { ?>
-    <div class="modal fade" id="logar" tabindex="-1">
+    <form class="modal fade" id="login" tabindex="-1" ajax>
         <div class="modal-dialog">
-            <div class="modal-content bg-black text-white border-success">
-                <form class="modal-body" id="login" method="post">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title">Fazer Login</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Fechar"></button>
+            <div class="modal-content border-success">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fazer Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="m-2 return"></div>
+                    <div class="row m-2">
+                        <div class="col">
+                            <label class="form-floating">
+                                <input class="form-control" name="login" type="text" placeholder="Email/User"/>
+                                <label>Email/User</label>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label class="form-floating">
+                                <input class="form-control" name="senha" type="password" placeholder="Senha"/>
+                                <label>Senha</label>
+                            </label>
+                        </div>
                     </div>
-                    <div id="messagelogin"></div>
-                    <div class="row">
-                        <div class="col-md input-group my-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="llogin">Email/User:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="llogin"
-                                   name="login" type="text"/>
-                        </div>
-                        <div class="col-md input-group my-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="lsenha">Senha:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="lsenha"
-                                   name="senha" type="password"/>
-                        </div>
-                    </div>
-                    <div class="row mx-2">
-                        <div class="form-check form-switch col-6">
-                            <input class="form-check-input" type="checkbox" role="switch" id="lembrardemim"
-                                   name="lembrar">
-                            <label class="form-check-label" for="lembrardemim">Manter Ativo</label>
-                        </div>
+                    <div class="row m-2">
                         <div class="col-6">
-                            <button class="btn btn-sm btn-outline-info float-end" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#passr">Recuperar senha
+                            <button class="btn btn-sm btn-outline-info" type="button" data-bs-toggle="modal" data-bs-target="#passr">
+                                Recuperar senha
                             </button>
                         </div>
+                        <div class="col-6">
+                            <label class="form-check form-switch form-check-reverse">
+                                <input class="form-check-input" type="checkbox" role="switch" name="lembrar">
+                                <span class="form-check-label user-select-none">Manter Ativo</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="modal-footer border-0 justify-content-between" id="footerlogin">
-                        <input type="hidden" name="logar" value="1">
-                        <button type="submit" class="btn btn-success">Entrar</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer footer">
+                    <button type="submit" class="btn btn-success w-100">Entrar</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="passr" tabindex="-1">
+    </form>
+    <form class="modal fade" id="passr" tabindex="-1" method="post">
         <div class="modal-dialog">
-            <div class="modal-content bg-black text-white border-success">
-                <form class="modal-body" id="passrf" method="post">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title">Recuperar senha</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Fechar"></button>
+            <div class="modal-content border-success">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar senha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="m-2 return"></div>
+                    <div class="m-2">
+                        <label class="form-floating">
+                            <input class="form-control" name="email" type="text" placeholder="Email"/>
+                            <label>Email</label>
+                        </label>
                     </div>
-                    <div id="passrmsg"></div>
-                    <div class="row">
-                        <div class="col-md input-group my-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="remail">Email:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="remail"
-                                   name="email" type="text"/>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0" id="footerpassr">
-                        <input type="hidden" name="update" value="recuperar">
-                        <button type="submit" class="btn btn-success">Recuperar</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success w-100">Recuperar</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="cadastrar" tabindex="-1" aria-hidden="true">
+    </form>
+    <form class="modal fade" id="cadastrar" tabindex="-1" aria-hidden="true" method="post">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-black text-white border-success">
-                <form class="modal-body" id="cadastro" method="post">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title">Criar uma conta</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Fechar"></button>
-                    </div>
-                    <div id="messagecadastro"></div>
-                    <div class="row">
-                        <div class="col-md input-group m-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="cnome">Nome:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="cnome"
-                                   name="nome" type="text"/>
+            <div class="modal-content border-success">
+                <div class="modal-header">
+                    <h5 class="modal-title">Criar uma conta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="m-2 return"></div>
+                    <div class="m-2 row g-2">
+                        <div class="col-12 col-sm-6">
+                            <label class="form-floating">
+                                <input class="form-control" name="nome" type="text" placeholder="Nome" maxlength="50" minlength="2"/>
+                                <label>Nome</label>
+                            </label>
                         </div>
-                        <div class="col-md input-group m-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="clogin">Username:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="clogin"
-                                   name="login" type="text"/>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-floating">
+                                <input class="form-control" name="login" type="text" placeholder="Login/username" maxlength="16" minlength="2"/>
+                                <label>Username</label>
+                            </label>
                         </div>
-						<?php if (isset($_GET["email"])) { ?>
-                            <div class="col-md input-group m-1">
-                                <label class="input-group-text bg-black text-white border-light border-end-0"
-                                       for="cemail">Email:</label>
-                                <input class="form-control bg-black text-white border-light border-start-0" disabled
-                                       id="cemail" type="email" value="<?php echo ($_GET["email"]) ?: ''; ?>"/>
-                            </div>
+                        <div class="col-12">
+                            <label class="form-floating">
+                                <input class="form-control" name="email" type="email" placeholder="Email da conta" maxlength="200" <?= !empty($_GET["email"]) ? "readonly value='{$_GET["email"]}'" : "" ?>/>
+                                <label>Email</label>
+                            </label>
+                        </div>
 
-                            <input name="email" type="hidden" value="<?php echo ($_GET["email"]) ?: ''; ?>"/>
-						<?php } else { ?>
-                            <div class="col-md input-group m-1">
-                                <label class="input-group-text bg-black text-white border-light border-end-0"
-                                       for="cemail">Email:</label>
-                                <input class="form-control bg-black text-white border-light border-start-0" id="cemail"
-                                       name="email" type="email"/>
-                            </div>
-						<?php } ?>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md input-group m-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="csenha">Senha:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="csenha"
-                                   name="senha" type="password"/>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-floating">
+                                <input class="form-control" name="senha" type="password" placeholder="Sua senha"/>
+                                <label>Senha</label>
+                            </label>
                         </div>
-                        <div class="col-md input-group m-1">
-                            <label class="input-group-text bg-black text-white border-light border-end-0" for="ccsenha">Repetir
-                                senha:</label>
-                            <input class="form-control bg-black text-white border-light border-start-0" id="ccsenha"
-                                   name="csenha" type="password"/>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-floating">
+                                <input class="form-control" name="csenha" type="password" placeholder="Repetir senha"/>
+                                <label>Repetir senha</label>
+                            </label>
                         </div>
                     </div>
-                    <div class="modal-footer border-0" id="footercadastro">
-                        <input type="hidden" name="cadastrar" value="1">
-                        <button type="submit" class="btn btn-success">Cadastrar</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 
 <?php }
 if (isset($_SESSION["UserID"])) { ?>
     <div class="modal fade" id="perfil" tabindex="-1" aria-label="Perfil Modal" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content bg-black text-white border-secondary">
+            <div class="modal-content border-secondary">
                 <div class="modal-header">
                     <h1 class="fs-5 modal-title">Dados da Conta</h1>
-                    <button class="btn-close-white btn-close" type="button" data-bs-dismiss="modal" title="Fechar"></button>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" title="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row row-cols-2 row-cols-md-2 g-2 m-3">
                         <div class="col">
-                            <div class="card bg-black text-white border-light h-100">
+                            <div class="card border-secondary h-100">
                                 <div class="card-header">
                                     <h1 class="fs-4 card-title">Editar informações da conta</h1>
                                 </div>
@@ -154,7 +140,7 @@ if (isset($_SESSION["UserID"])) { ?>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card bg-black text-white border-light h-100">
+                            <div class="card border-secondary h-100">
                                 <div class="card-header">
                                     <h1 class="fs-4 card-title">Missões e Fichas</h1>
                                 </div>
@@ -162,15 +148,16 @@ if (isset($_SESSION["UserID"])) { ?>
                                     <div class="return"></div>
                                     <div class="m-2">
                                         <div class="input-group">
-                                            <label class="form-floating">
-                                                <input placeholder="URL da MARCA" value="<?= $_SESSION["UserMarca"] ?>" type="url" class="form-control form-control-dark"/>
+                                            <label class="form-floating border-secondary">
+                                                <input placeholder="URL da MARCA" value="<?= $_SESSION["UserMarca"] ?>" type="url" class="form-control"/>
                                                 <label>URL da marca</label>
                                             </label>
-                                            <button class="btn btn-outline-light submit" type="button"><i class="fal fa-send"></i></button>
-
+                                            <button class="btn btn-outline-secondary border-secondary-subtle submit" type="button">
+                                                <i class="fal fa-send"></i>
+                                            </button>
                                         </div>
                                         <div class="preview d-flex justify-content-center">
-                                            <img src="<?=$_SESSION["UserMarca"]?>" style="width: 50%;  max-width: 200px;" alt="Marca">
+                                            <img src="<?= $_SESSION["UserMarca"] ?>" style="width: 50%;  max-width: 200px;" alt="Marca">
                                         </div>
                                     </div>
                                 </div>
@@ -185,12 +172,12 @@ if (isset($_SESSION["UserID"])) { ?>
     <div id="updateforms">
         <form class="modal fade" id="configconta" novalidate tabindex="-1">
             <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content bg-black text-white border-success">
+                <div class="modal-content border-success">
                     <div class="modal-header">
-                        <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#perfil">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#perfil">
                             <i class="fat fa-left"></i> Voltar
                         </button>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="text-center m-2">
@@ -198,20 +185,20 @@ if (isset($_SESSION["UserID"])) { ?>
                         </div>
                         <div class="row g-4 row-cols-1 row-cols-md-2 m-2">
                             <div class="col">
-                                <div class="card bg-black text-white border-light">
+                                <div class="card border-secondary">
                                     <div class="card-header">
                                         <span class="fs-4 card-title">Alterar Username</span>
                                     </div>
                                     <div class="card-body">
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="text" class="form-control bg-transparent text-light" value="<?= $_SESSION["UserLogin"] ?>" disabled placeholder="Username Atual">
+                                                <input type="text" class="form-control" value="<?= $_SESSION["UserLogin"] ?>" disabled placeholder="Username Atual">
                                                 <label>Username atual</label>
                                             </label>
                                         </div>
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="text" class="form-control bg-transparent text-light" minlength="3" maxlength="16" name="username" placeholder="Novo username">
+                                                <input type="text" class="form-control" minlength="3" maxlength="16" name="username" placeholder="Novo username">
                                                 <span class="invalid-feedback">O username só pode conter letras, números e "_"</span>
                                                 <label>Novo username</label>
                                             </label>
@@ -220,20 +207,20 @@ if (isset($_SESSION["UserID"])) { ?>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card bg-black text-white border-light">
+                                <div class="card border-secondary">
                                     <div class="card-header">
                                         <span class="fs-4 card-title">Alterar nome</span>
                                     </div>
                                     <div class="card-body">
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="text" class="form-control bg-transparent text-light" value="<?= $_SESSION["UserName"] ?>" disabled placeholder="Nome Atual">
+                                                <input type="text" class="form-control" value="<?= $_SESSION["UserName"] ?>" disabled placeholder="Nome Atual">
                                                 <label>Nome atual</label>
                                             </label>
                                         </div>
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="text" class="form-control bg-transparent text-light" minlength="2" name="nome" placeholder="Alterar Nome">
+                                                <input type="text" class="form-control" minlength="2" name="nome" placeholder="Alterar Nome">
                                                 <span class="invalid-feedback">O nome só pode conter letras e espaços (2-)</span>
                                                 <label>Novo nome</label>
                                             </label>
@@ -242,38 +229,37 @@ if (isset($_SESSION["UserID"])) { ?>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card bg-black text-white border-light">
+                                <div class="card border-secondary">
                                     <div class="card-header">
                                         <span class="fs-4 card-title">Alterar E-mail</span>
                                     </div>
                                     <div class="card-body">
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input class="form-control bg-transparent text-light" value="<?= $_SESSION["UserEmail"] ?>" disabled placeholder="E-mail Atual">
+                                                <input class="form-control" value="<?= $_SESSION["UserEmail"] ?>" disabled placeholder="E-mail Atual">
                                                 <label>E-mail atual</label>
                                             </label>
                                         </div>
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="email" class="form-control bg-transparent text-light" minlength="5" maxlength="100" name="email" placeholder="Novo username">
+                                                <input type="email" class="form-control" minlength="5" maxlength="100" name="email" placeholder="Novo username">
+                                               <label>Novo E-mail</label>
                                                 <span class="invalid-feedback">Preencha o e-mail corretamente.</span>
-                                                <label>Novo E-mail</label>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card bg-black text-white border-light">
+                                <div class="card border-secondary">
                                     <div class="card-header">
                                         <span class="fs-4 card-title">Alterar Senha</span>
                                     </div>
                                     <div class="card-body">
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="password" class="form-control bg-transparent text-light senha" minlength="8" maxlength="50" name="nsenha" placeholder="nova senha">
-                                                <div class="invalid-feedback">Preencha sua senha de acordo com os
-                                                    requisitos:<br>
+                                                <input type="password" class="form-control senha" minlength="8" maxlength="50" name="nsenha" placeholder="nova senha">
+                                                <div class="invalid-feedback">Preencha sua senha conforme os requisitos:<br>
                                                     <ul>
                                                         <li>Entre 8 e 50 Caracteres</li>
                                                         <li>Precisa de ao menos 1 Número</li>
@@ -286,7 +272,7 @@ if (isset($_SESSION["UserID"])) { ?>
                                         </div>
                                         <div class="m-2">
                                             <label class="form-floating w-100">
-                                                <input type="password" class="form-control bg-transparent text-light csenha" minlength="8" maxlength="50" name="csenha" placeholder="Repetir nova senha">
+                                                <input type="password" class="form-control csenha" minlength="8" maxlength="50" name="csenha" placeholder="Repetir nova senha">
                                                 <span class="invalid-feedback">As senhas não coincidem</span>
                                                 <label>Confirme a senha nova</label>
                                             </label>
@@ -296,14 +282,14 @@ if (isset($_SESSION["UserID"])) { ?>
                             </div>
                         </div>
                         <div class="p-1 m-3">
-                            <div class="card bg-black text-white border-light">
+                            <div class="card border-secondary">
                                 <div class="card-header">
                                     <span class="fs-4 card-title">Senha atual</span>
                                 </div>
                                 <div class="card-body">
                                     <div class="m-2">
                                         <label class="form-floating w-100">
-                                            <input type="password" class="form-control bg-transparent text-light" minlength="8" maxlength="50" name="asenha" placeholder="senha atual" required>
+                                            <input type="password" class="form-control" minlength="8" maxlength="50" name="asenha" placeholder="senha atual" required>
                                             <span class="invalid-feedback">Preencha com sua senha atual. (8-50 caracteres)</span>
                                             <label>Senha atual</label>
                                         </label>
@@ -313,8 +299,8 @@ if (isset($_SESSION["UserID"])) { ?>
                         </div>
                         <div class="warning m-2"></div>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-outline-success">Atualizar</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success w-100">Atualizar</button>
                     </div>
                 </div>
             </div>

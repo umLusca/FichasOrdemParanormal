@@ -12,7 +12,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
 		        <button class='atributos int hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($int) . 'd20", 0,"Intelecto");\'' : 'disabled') . "><span>".$int."</span></button>
 		        <button class='atributos pre hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($pre) . 'd20", 0,"Presença"); \'' : 'disabled') . "><span>".$pre."</span></button>
 		        <button class='atributos vig hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($vig) . 'd20", 0,"Vigor");    \'' : 'disabled') . "><span>".$vig."</span></button>
-		        <img src='/assets/img/Atributes.webp' height='512' width='516' alt='Atributos'>
+		        <img src='/assets/img/Atributes".($_SESSION["theme"]==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
 	        </div>";
 	} else {
 		$return ="
@@ -22,7 +22,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
                 <input required class='atributos int atributos-input hex font2' type='number' min='$min' max='$max' value='$int' name='intelecto' title='Intelecto'/>
                 <input required class='atributos pre atributos-input hex font2' type='number' min='$min' max='$max' value='$pre' name='presenca'  title='Presença'/>
                 <input required class='atributos vig atributos-input hex font2' type='number' min='$min' max='$max' value='$vig' name='vigor'     title='Vigor'/>
-                <img src='/assets/img/Atributes.webp' height='512' width='516' alt='Atributos'>
+                <img src='/assets/img/Atributes".($_SESSION["theme"]==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
             </div>";
 	}
 	return $return;

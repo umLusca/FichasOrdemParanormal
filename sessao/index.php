@@ -146,12 +146,12 @@ $c = $con->query("SELECT L.*, m.nome,m.descricao as m_token FROM ligacoes L INNE
 $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_ficha from ligacoes WHERE id_ficha is not null) AND usuario = '" . $_SESSION["UserID"] . "';");
 ?>
 <!DOCTYPE html>
-<html lang="br">
+<html lang="br" data-bs-theme="<?=$_SESSION["theme"]?>">
 <head>
 	<?php require_once "./../includes/head.html"; ?>
     <title>Sessões - FichasOP</title>
 </head>
-<body class="bg-black text-light">
+<body>
 
 <?php require_once "./../includes/top.php"; ?>
 
@@ -161,13 +161,13 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 		<?php if ($c->num_rows) {
 			?>
             <div>
-                <div class="card bg-black border-light">
+                <div class="card border-secondary">
                     <div class="card-header text-center font10"><h3>Convites de Missões</h3></div>
                     <div class="card-body">
                         <div class="row g-3 row-cols-1 row-cols-lg-2">
 							<?php foreach ($c as $p) { ?>
                                 <div class="col">
-                                    <div class="card bg-black border-dashed border-info" id="<?= $p["token"] ?>">
+                                    <div class="card border-dashed border-info" id="<?= $p["token"] ?>">
                                         <div class="card-header text-info">
                                             <span class="fs-4 font10 title"><?= $p["nome"] ?></span>
                                         </div>
@@ -181,7 +181,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                                 Convite de missão
                                             </button>
 
-                                            <ul class="dropdown-menu dropdown-menu-dark bg-black border border-light">
+                                            <ul class="dropdown-menu border border-secondary">
                                                 <li><a class="dropdown-item"
                                                        href='personagem/criar?convite=<?= $p["token"]; ?>'>Aceitar
                                                         e Criar uma ficha</a></li>
@@ -221,117 +221,14 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
             </div>
 		<?php } ?>
         <div>
-            <div class="card bg-black border-light">
+            <div class="card  border-secondary">
                 <div class="card-header text-center font10"><h3>Missões/Sessões</h3></div>
                 <div class="card-body">
                     <div class="row g-3 row-cols-1 row-cols-lg-2">
-						<?php /*
-                 $a = $con->query("Select * from `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "';");
-                 foreach ($a as $dl) {
-                     $b = $con->query("SELECT * FROM `missoes` WHERE `missoes`.`id` ='" . $dl["id_missao"] . "';");
-                     $c = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` ='" . $dl["id_ficha"] . "';");
-                     $cd = mysqli_fetch_array($c);
-                     foreach ($b as $dm) {
-                         ?>
-                         <div class="col-md-6 my-2">
-                             <div class="card h-100 m-2 bg-black border-<?= $dl["id_ficha"] ? "primary" : "info" ?>">
-                                 <?php if ($dl["id_ficha"] > 0) : ?>
-                                     <div class="m-1 mb-3">
-                                         <div class="mx-1 start-0 position-absolute">
-                                             <button type="button" class="btn btn-sm text-primary"
-                                                     data-bs-toggle="modal" data-bs-target="#configplayer"
-                                                     onclick='configplayer("<?= $cd["token"] ?>")'><i
-                                                         class="fa-solid fa-gear"></i></button>
-                                             <button type="button" class="btn btn-sm"
-                                                     title="Ficha está atualmente <?= $cd["public"] ? "Visivel" : "Invisivel" ?>">
-                                                 <i class="fa-solid fa-eye<?= $cd["public"] ? " text-success" : "-slash text-danger" ?>"></i>
-                                             </button>
-                                         </div>
-                                         <div class=" position-absolute start-50 translate-middle-x">
-                                             <a class="btn btn-sm btn-outline-info"
-                                                href="personagem/portrait?token=<?= $cd["token"]; ?>">Portrait</a>
-                                             <a class="btn btn-sm btn-outline-info"
-                                                href="personagem/impresso?token=<?= $cd["token"]; ?>"><i
-                                                         class="fa-regular fa-print"></i></a>
-                                         </div>
-                                         <button type="button"
-                                                 class="btn btn-sm text-danger position-absolute end-0 mx-1 "
-                                                 title="Desvincular ficha da missão."
-                                                 onclick="desvincular('<?= $cd["token"] ?>')">
-                                             <i class="fa-regular fa-unlink"></i>
-                                         </button>
-                                     </div>
-                                 <?php endif; ?>
-                                 <div class="card-body">
-                                     <div class="card-title">
-                                         <label for="missao[]"
-                                                class="text-danger fs-4 fw-bold"><?= $dm["nome"]; ?></label>
-                                     </div>
-                                     <textarea id="missao[]" disabled class="bg-black text-white w-100"
-                                               style="height: 100px;"><?= $dm["descricao"]; ?></textarea>
-                                     <div class="card-footer">
-                                         <?php if ($dm["status"]) {
-                                             if ($dl["id_ficha"] > 0) { ?>
-                                                 <a class="btn btn-outline-primary"
-                                                    href='personagem?token=<?= $cd["token"] ?>'>Continuar
-                                                     - <?= $cd["nome"] ?></a>
-                                             <?php } else {
-                                                 ?>
-                                                 <div class="btn-group">
-                                                     <button type="button"
-                                                             class="btn btn-outline-info dropdown-toggle"
-                                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                                         Convite de missão
-                                                     </button>
-                                                     <ul class="dropdown-menu dropdown-menu-dark bg-black border border-light">
-                                                         <li><a class="dropdown-item"
-                                                                href='personagem/criar?convite=<?php echo $dl["id"]; ?>'>Aceitar
-                                                                 e Criar uma ficha</a></li>
-                                                         <li>
-                                                             <hr class="dropdown-divider">
-                                                         </li>
-                                                         <?php
-                                                         $z = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "'");
-                                                         foreach ($z as $ficha) {
-                                                             $zz = $con->query("SELECT * FROM `ligacoes` WHERE `id_ficha` = '" . $ficha["id"] . "';");
-                                                             if (!$zz->num_rows) {
-                                                                 ?>
-                                                                 <li>
-                                                                     <button class="dropdown-item"
-                                                                             onclick="aceitarconvite(<?= $dl["id"] ?>,'<?= $ficha["token"] ?>')">
-                                                                         Aceitar - <?= $ficha["nome"] ?></button>
-                                                                 </li>
-                                                                 <?php
-                                                             }
-                                                         }
-                                                         ?>
-                                                         <li>
-                                                             <hr class="dropdown-divider">
-                                                         </li>
-                                                         <li>
-                                                             <button class="dropdown-item"
-                                                                     onclick="recusarconvite(<?= $dl["id"] ?>)">
-                                                                 Recusar Pedido
-                                                             </button>
-                                                         </li>
-                                                     </ul>
-                                                 </div>
-                                                 <?php
-                                             }
-                                         } else { ?>
-                                             <a class="btn btn-outline-danger" disabled>Bloqueado pelo
-                                                 Mestre</a>
-                                         <?php } ?>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     <?php }
-                 }
-                */
+						<?php
 						foreach ($a as $m) { ?>
                             <div class="col">
-                                <div class="card bg-black border-danger" id="<?= $m["token"] ?>">
+                                <div class="card border-danger" id="<?= $m["token"] ?>">
                                     <div class="card-header text-danger"><span
                                                 class="fs-4 font10 title"><?= $m["nome"] ?></span>
                                         <button type="button" class="btn btn-sm text-muted float-end"
@@ -355,7 +252,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 						<?php } ?>
 
                         <div class="col">
-                            <div class="card bg-black border-dashed border-danger">
+                            <div class="card border-dashed border-danger">
                                 <div class="card-header text-danger"><span class="fs-4 font10">Criar Missão</span></div>
                                 <div class="card-body overflow-auto" style="height: 150px;">
                                     <p class="m-1 font7">Para criar uma missão basta apenas clicar abaixo. Comece com um
@@ -363,7 +260,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" data-bs-toggle="modal" data-bs-target="#criarsessao">Criar
+                                    <a class="btn btn-outline-secondary border-secondary border-dashed" data-bs-toggle="modal" data-bs-target="#criarsessao">Criar
                                         missão</a>
                                 </div>
                             </div>
@@ -373,134 +270,11 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
             </div>
         </div>
         <div>
-            <div class="card bg-black border-light">
+            <div class="card border-secondary">
                 <div class="card-header text-center font10"><h3>Personagens e Fichas</h3></div>
                 <div class="card-body">
                     <div class="row g-3 row-cols-1 row-cols-lg-2">
-						<?php /*
-                 $a = $con->query("Select * from `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "';");
-                 foreach ($a as $dl) {
-                     $b = $con->query("SELECT * FROM `missoes` WHERE `missoes`.`id` ='" . $dl["id_missao"] . "';");
-                     $c = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` ='" . $dl["id_ficha"] . "';");
-                     $cd = mysqli_fetch_array($c);
-                     foreach ($b as $dm) {
-                         ?>
-                         <div class="col-md-6 my-2">
-                             <div class="card h-100 m-2 bg-black border-<?= $dl["id_ficha"] ? "primary" : "info" ?>">
-                                 <?php if ($dl["id_ficha"] > 0) : ?>
-                                     <div class="m-1 mb-3">
-                                         <div class="mx-1 start-0 position-absolute">
-                                             <button type="button" class="btn btn-sm text-primary"
-                                                     data-bs-toggle="modal" data-bs-target="#configplayer"
-                                                     onclick='configplayer("<?= $cd["token"] ?>")'><i
-                                                         class="fa-solid fa-gear"></i></button>
-                                             <button type="button" class="btn btn-sm"
-                                                     title="Ficha está atualmente <?= $cd["public"] ? "Visivel" : "Invisivel" ?>">
-                                                 <i class="fa-solid fa-eye<?= $cd["public"] ? " text-success" : "-slash text-danger" ?>"></i>
-                                             </button>
-                                         </div>
-                                         <div class=" position-absolute start-50 translate-middle-x">
-                                             <a class="btn btn-sm btn-outline-info"
-                                                href="personagem/portrait?token=<?= $cd["token"]; ?>">Portrait</a>
-                                             <a class="btn btn-sm btn-outline-info"
-                                                href="personagem/impresso?token=<?= $cd["token"]; ?>"><i
-                                                         class="fa-regular fa-print"></i></a>
-                                         </div>
-                                         <button type="button"
-                                                 class="btn btn-sm text-danger position-absolute end-0 mx-1 "
-                                                 title="Desvincular ficha da missão."
-                                                 onclick="desvincular('<?= $cd["token"] ?>')">
-                                             <i class="fa-regular fa-unlink"></i>
-                                         </button>
-                                     </div>
-                                 <?php endif; ?>
-                                 <div class="card-body">
-                                     <div class="card-title">
-                                         <label for="missao[]"
-                                                class="text-danger fs-4 fw-bold"><?= $dm["nome"]; ?></label>
-                                     </div>
-                                     <textarea id="missao[]" disabled class="bg-black text-white w-100"
-                                               style="height: 100px;"><?= $dm["descricao"]; ?></textarea>
-                                     <div class="card-footer">
-                                         <?php if ($dm["status"]) {
-                                             if ($dl["id_ficha"] > 0) { ?>
-                                                 <a class="btn btn-outline-primary"
-                                                    href='personagem?token=<?= $cd["token"] ?>'>Continuar
-                                                     - <?= $cd["nome"] ?></a>
-                                             <?php } else {
-                                                 ?>
-                                                 <div class="btn-group">
-                                                     <button type="button"
-                                                             class="btn btn-outline-info dropdown-toggle"
-                                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                                         Convite de missão
-                                                     </button>
-                                                     <ul class="dropdown-menu dropdown-menu-dark bg-black border border-light">
-                                                         <li><a class="dropdown-item"
-                                                                href='personagem/criar?convite=<?php echo $dl["id"]; ?>'>Aceitar
-                                                                 e Criar uma ficha</a></li>
-                                                         <li>
-                                                             <hr class="dropdown-divider">
-                                                         </li>
-                                                         <?php
-                                                         $z = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "'");
-                                                         foreach ($z as $ficha) {
-                                                             $zz = $con->query("SELECT * FROM `ligacoes` WHERE `id_ficha` = '" . $ficha["id"] . "';");
-                                                             if (!$zz->num_rows) {
-                                                                 ?>
-                                                                 <li>
-                                                                     <button class="dropdown-item"
-                                                                             onclick="aceitarconvite(<?= $dl["id"] ?>,'<?= $ficha["token"] ?>')">
-                                                                         Aceitar - <?= $ficha["nome"] ?></button>
-                                                                 </li>
-                                                                 <?php
-                                                             }
-                                                         }
-                                                         ?>
-                                                         <li>
-                                                             <hr class="dropdown-divider">
-                                                         </li>
-                                                         <li>
-                                                             <button class="dropdown-item"
-                                                                     onclick="recusarconvite(<?= $dl["id"] ?>)">
-                                                                 Recusar Pedido
-                                                             </button>
-                                                         </li>
-                                                     </ul>
-                                                 </div>
-                                                 <?php
-                                             }
-                                         } else { ?>
-                                             <a class="btn btn-outline-danger" disabled>Bloqueado pelo
-                                                 Mestre</a>
-                                         <?php } ?>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     <?php }
-                 }
-
-                    foreach ($a as $m) { ?>
-                        <div class="col-md-6">
-                            <div class="card bg-black border-danger">
-                                <div class="card-header text-danger"><span class="fs-4 font10"><?= $m["nome"] ?></span>
-                                    <button type="button" class="btn btn-sm text-muted float-end" data-bs-toggle="modal"
-                                            data-bs-target="#configmissao" onclick="configmissao(<?= $m["id"] ?>)"><i
-                                                class="fa-solid fa-gear"></i></button>
-
-                                </div>
-                                <div class="card-body overflow-auto" style="height: 100px;">
-                                    <p class="m-1 font7"><?= $m["descricao"] ?></p>
-                                </div>
-
-                                <div class="card-footer d-grid">
-                                    <a class="btn btn-outline-danger" href="./mestre/?token=<?= $m["token"] ?>">Acessar
-                                        Painel</a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } */ ?>
+			
 						
 						<?php foreach ($b as $f) {
 							$mq = $con->query("SELECT * FROM missoes WHERE id in (SELECT id_missao FROM ligacoes WHERE id_ficha = '" . $f["id"] . "')");
@@ -508,7 +282,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 							?>
 
                             <div class="col">
-                                <div class="card h-100 bg-black border-primary">
+                                <div class="card h-100 border-primary">
                                     <div class="card-header text-primary"><span
                                                 class="fs-4 font10"><?= $f["nome"] ?></span>
                                         <div class="float-end d-inline">
@@ -547,25 +321,25 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 
                                                     <div class="">
                                                         <div class="position-relative border">
-                                                            <span class="text-muted bg-black overname position-absolute translate-middle-y text-center font10">Classe:</span>
+                                                            <span class="text-muted bg-body overname position-absolute translate-middle-y text-center font10">Classe:</span>
                                                             <div class="pt-4 px-2 text-truncate "><?= $f["classe"] ?></div>
                                                         </div>
                                                     </div>
                                                     <div class="">
                                                         <div class="position-relative border">
-                                                            <span class="text-muted bg-black overname position-absolute translate-middle-y text-center font10">Trilha:</span>
+                                                            <span class="text-muted bg-body overname position-absolute translate-middle-y text-center font10">Trilha:</span>
                                                             <div class="pt-4 px-2 text-truncate "><?= $f["trilha"] ?></div>
                                                         </div>
                                                     </div>
                                                     <div class="">
                                                         <div class="position-relative border">
-                                                            <span class="text-muted bg-black overname position-absolute translate-middle-y text-center font10">Origem:</span>
+                                                            <span class="text-muted bg-body overname position-absolute translate-middle-y text-center font10">Origem:</span>
                                                             <div class="pt-4 px-2 text-truncate "><?= $f["origem"] ?></div>
                                                         </div>
                                                     </div>
                                                     <div class="">
                                                         <div class="position-relative border">
-                                                            <span class="text-muted bg-black overname position-absolute translate-middle-y text-center font10">Missão:</span>
+                                                            <span class="text-muted bg-body overname position-absolute translate-middle-y text-center font10">Missão:</span>
                                                             <div class="pt-4 px-2 text-truncate"><?= ($mq->num_rows) ? $m["nome"] : "Nenhuma" ?></div>
                                                         </div>
                                                     </div>
@@ -581,7 +355,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                             </div>
 						<?php } ?>
                         <div class="col">
-                            <div class="card bg-black border-dashed border-primary">
+                            <div class="card border-dashed border-primary">
                                 <div class="card-header text-primary"><span class="fs-4 font10">Criar Personagem</span>
                                 </div>
                                 <div class="card-body overflow-auto" style="height: 150px;">
@@ -589,8 +363,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                 </div>
 
                                 <div class="card-footer d-grid">
-                                    <a class="btn text-light border-dashed" href="./personagem/criar">Criar
-                                        personagem</a>
+                                    <a class="btn btn-outline-secondary border-secondary border-dashed" href="./personagem/criar">Criar personagem</a>
                                 </div>
                             </div>
                         </div>
@@ -603,22 +376,22 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 <div id="modals">
     <form class="modal" id="criarsessao" tabindex="-1" method="post" novalidate>
         <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-black border-light">
+            <div class="modal-content border-secondary">
                 <div class="modal-header">
                     <h4 class="modal-title">Criar uma sessão como mestre</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="m-2 return"></div>
                     <div class="m-2">
                         <label class="form-floating w-100">
-                            <input type="text" name="title" class="form-control bg-black text-light" placeholder="Título da missão" required/>
+                            <input type="text" name="title" class="form-control" placeholder="Título da missão" required/>
                             <label>Titulo da missão</label>
                         </label>
                     </div>
                     <div class="m-2">
                         <label class="form-floating w-100">
-                            <textarea type="text" name="desc" class="form-control bg-black text-white h-50" required rows="5" placeholder="descrição da missão"></textarea>
+                            <textarea type="text" name="desc" class="form-control h-50" required rows="5" placeholder="descrição da missão"></textarea>
                             <label>Introdução da missão</label>
                         </label>
                     </div>
@@ -632,10 +405,10 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
     </form>
     <form class="modal" id="configplayer" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-black border-light">
+            <div class="modal-content border-secondary">
                 <div class="modal-header text-center">
                     <h4 class="modal-title">Configurações da ficha</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -662,17 +435,17 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
 
     <form class="modal" id="configmissao" tabindex="-1" novalidate method="post">
         <div class="modal-dialog">
-            <div class="modal-content bg-black border-light">
+            <div class="modal-content border-secondary">
                 <div class="modal-header">
                     <h3 class="modal-title">Configurações da missão</h3>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="return m-2"></div>
                     <div class="m-2">
                         <label class="form-floating w-100 ">
-                            <input name="title" type="text" class="form-control bg-black text-white title"
+                            <input name="title" type="text" class="form-control title"
                                    placeholder="titulo missão">
                             <label>Título</label>
                         </label>
@@ -680,7 +453,7 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                     <div class="m-2">
                         <label class="form-floating w-100">
                                 <textarea name="desc" style="min-height: 200px" rows="7"
-                                          class="form-control bg-black text-white desc"
+                                          class="form-control desc"
                                           placeholder="descrição missão"></textarea>
                             <label>Descrição da missão</label>
                         </label>
