@@ -1,16 +1,16 @@
 <div class="col">
-    <div class="card h-100 bg-black border-light" id="card_proeficiencias">
-        <div class="card-header clearfix text-center p-0">
+    <div class="card h-100" id="card_proeficiencias">
+        <div class="card-header d-flex justify-content-between">
 	        <?php if (!isset($_GET["popout"]) AND $edit) { ?>
-            <div class="float-start">
+            <div class="me-auto">
                     <button class="btn btn-sm text-white popout fa-lg" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
             </div>
             <?php } ?>
-            <span class="font6 fs-4">Proficiências</span>
+            <h4 class="m-0">Proficiências</h4>
 	        <?php if ($edit) { ?>
-                <div class="float-end">
+                <div class="ms-auto">
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editpro" title="Editar proficiências">
                         <i class="fa-regular fa-pencil"></i>
                     </button>
@@ -24,13 +24,12 @@
             <?php foreach ($s[3] as $r): ?>
                 <div class="mx-4 my-3">
                     <div class="input-group">
-                        <input id="<?= $r["nome"]; ?>" aria-label="<?= $r["nome"]; ?>"
-                               class="form-control bg-black text-decoration-underline text-light" disabled
-                               value="<?= $r["nome"]; ?>"/>
+                        <span id="<?= $r["nome"]; ?>" aria-label="<?= $r["nome"]; ?>"
+                               class="input-group-text text-decoration-underline bg-body flex-grow-1"><?= $r["nome"]; ?></span>
                         <?php
                         if ($edit) {
                             ?>
-                            <button class="btn btn-sm text-danger btn-outline-light"
+                            <button class="btn btn-sm btn-outline-danger"
                                     title="Apagar Proeficiencia: '<?=$r["nome"]?>'"
                                     onclick="deletar(<?=$r["id"]?>,'<?=$r["nome"]?>','deletpro')">
                                 <i class="fa-regular fa-trash"></i>

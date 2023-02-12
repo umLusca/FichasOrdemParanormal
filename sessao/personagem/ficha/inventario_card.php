@@ -1,6 +1,6 @@
 <div class="col">
-    <div class="card bg-black text-white border-light" id="card_inventario">
-        <div class="card-header clearfix text-center p-0">
+    <div class="card" id="card_inventario">
+        <div class="card-header d-flex justify-content-between">
 			<?php if ($edit) { ?>
                 <div class="float-start">
 					<?php if (!isset($_GET["popout"])) { ?>
@@ -8,12 +8,9 @@
                             <i class="fa-regular fa-rectangle-vertical-history"></i>
                         </button>
 					<?php } ?>
-                    <button class="btn btn-sm text-info fa-lg" id="vera" title="Ver informações inventario">
-                        <i class="fa-regular fa-eye"></i>
-                    </button>
                 </div>
 			<?php } ?>
-            <span class="fs-4 font6">Inventário (<?= $espacosusados ?>/<?= $invmax ?>)</span>
+            <h4 class="m-0">Inventário (<?= $espacosusados ?>/<?= $invmax ?>)</h4>
 			<?php if ($edit) { ?>
                 <div class="float-end">
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editinv"
@@ -28,7 +25,7 @@
             <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-1 m-2">
 				<?php foreach ($s[1] as $i => $arma): ?>
                     <div class="col">
-                        <div class="card h-100 border text-white bg-dark position-relative" id="arma<?= $arma["id"] ?>">
+                        <div class="card h-100 border position-relative" id="arma<?= $arma["id"] ?>">
                             <div class="position-absolute start-0-0 top-0">
                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Apagar Arma" onclick="deletar(<?= $arma["id"] ?>, '<?= $arma["arma"] ?>', 'delarma')">
                                     <i class="fa-regular fa-trash"></i>
@@ -43,30 +40,30 @@
                             <div class="card-body p-0">
                                 <div class="card-title text-center arma"><?= $arma["arma"] ?></div>
 								<?php if (!empty($arma["tipo"])) { ?>
-                                    <div class="input-group rounded-0">
-                                        <span class="input-group-text rounded-0 bg-transparent text-light"><i class="fa-thin fa-seal-question"></i></span>
-                                        <span class="form-control rounded-0 bg-transparent text-light tipo"><?= $arma["tipo"] ?></span>
+                                    <div class="input-group">
+                                        <span class="input-group-text rounded-0 bg-body"><i class="fa-thin fa-seal-question"></i></span>
+                                        <span class="input-group-text rounded-0 flex-grow-1 bg-body tipo"><?= $arma["tipo"] ?></span>
                                     </div>
 								<?php }
 								if (!empty($arma["especial"])) {
 									?>
-                                    <div class="input-group rounded-0">
-                                        <span class="input-group-text rounded-0 bg-transparent text-light"><i class="fa-thin fa-sparkles"></i></span>
-                                        <span class="form-control rounded-0 bg-transparent text-light especial"><?= $arma["especial"] ?></span>
+                                    <div class="input-group">
+                                        <span class="input-group-text rounded-0 bg-body"><i class="fa-thin fa-sparkles"></i></span>
+                                        <span class="input-group-text rounded-0 flex-grow-1 bg-body especial"><?= $arma["especial"] ?></span>
                                     </div>
 								<?php }
 								if (!empty($arma["recarga"])) {
 									?>
-                                    <div class="input-group rounded-0">
-                                        <span class="input-group-text rounded-0 bg-transparent text-light"><i class="fa-thin fa-rotate"></i></span>
-                                        <span class="form-control rounded-0 bg-transparent text-light recarga"><?= $arma["recarga"] ?></span>
+                                    <div class="input-group">
+                                        <span class="input-group-text rounded-0 bg-body"><i class="fa-thin fa-rotate"></i></span>
+                                        <span class="input-group-text rounded-0 flex-grow-1 bg-body  recarga"><?= $arma["recarga"] ?></span>
                                     </div>
 								<?php }
 								if (!empty($arma["alcance"])) {
 									?>
-                                    <div class="input-group rounded-0">
-                                        <span class="input-group-text rounded-0 bg-transparent text-light"><i class="fa-thin fa-crosshairs"></i></span>
-                                        <span class="form-control rounded-0 bg-transparent text-light alcance"><?= $arma["alcance"] ?></span>
+                                    <div class="input-group">
+                                        <span class="input-group-text rounded-0 bg-body"><i class="fa-thin fa-crosshairs"></i></span>
+                                        <span class="input-group-text rounded-0 flex-grow-1 bg-body alcance"><?= $arma["alcance"] ?></span>
                                     </div>
 								<?php } ?>
                                 <div class="top-100 position-sticky">
@@ -114,23 +111,33 @@
 					?>
                     <h3 class="mx-2">Itens</h3>
                     <div class="table-responsive">
-                        <table class="table table-bordered border-dark table-sm bg-black text-white table-borderless font2"
-                               id="itens">
+                        <table class="table table-striped table-hover table-bordered table-sm font2" id="itens">
+                            <colgroup>
+                                <col style="width: min-content">
+                                <col>
+                                <col style="width: 75px">
+                                <col style="width: 50px">
+                            </colgroup>
                             <thead>
                             <tr>
-                                <th scope="col">Nome</th>
-                                <th class="trocavision" scope="col">Descrição</th>
-                                <th class="trocavision" scope="col" style="display: none;">Espaços</th>
-                                <th class="trocavision" scope="col" style="display: none;">Categoria</th>
+                                <th scope="col">
+                                    <button class="btn btn-sm btn-outline-info" id="vera" title="Ver informações inventario">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </button>
+                                    Nome
+                                </th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Peso</th>
                             </tr>
                             </thead>
                             <tbody>
 							<?php foreach ($s[4] as $row): ?>
                                 <tr>
                                     <td><?= $row['nome']; ?></td>
-                                    <td class="trocavision"><?= $row['descricao']; ?></td>
-                                    <td class="trocavision" style="display: none;"><?= $row['espaco']; ?></td>
-                                    <td class="trocavision" style="display: none;"><?= $row['prestigio']; ?></td>
+                                    <td><?= $row['descricao']; ?></td>
+                                    <td><?= $row['prestigio']; ?></td>
+                                    <td><?= $row['espaco']; ?></td>
                                 </tr>
 							<?php endforeach; ?>
                             </tbody>

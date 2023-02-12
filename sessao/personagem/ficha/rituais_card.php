@@ -1,40 +1,56 @@
+
+<?php
+function elicon($el)
+{
+    switch (strtolower($el)) {
+        case "energia":
+            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Energia_icon.webp" class="img-fluid"></i>';
+        case "morte":
+            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Morte_icon.webp" class="img-fluid"></i>';
+        case "conhecimento":
+            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Conhecimento_icon.webp" class="img-fluid"></i>';
+        case "sangue":
+            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Sangue_icon.webp" class="img-fluid"></i>';
+        case "medo":
+            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Medo_icon.webp" class="img-fluid"></i>';
+    }
+}
+?>
 <div class="col">
-    <div class="card h-100 bg-black border-light" id="card_rituais">
-        <div class="card-header clearfix text-center p-0">
-			<?php if (!isset($_GET["popout"]) and $edit) { ?>
+    <div class="card h-100" id="card_rituais">
+        <div class="card-header d-flex justify-content-between">
+            <?php if (!isset($_GET["popout"]) and $edit) { ?>
                 <div class="float-start">
                     <button class="btn btn-sm text-white popout fa-lg" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
                 </div>
-			<?php } ?>
-            <span class="font6 fs-4">Rituais</span>
+            <?php } ?>
+            <h4 class="m-0">Rituais</h4>
 
-			<?php if ($edit) { ?>
+            <?php if ($edit) { ?>
                 <div class="float-end">
                     <button class="btn btn-sm text-success fa-lg" data-bs-toggle="modal" data-bs-target="#addritual"
                             title="Adicionar Ritual">
                         <i class="fa-regular fa-square-plus"></i>
                     </button>
                 </div>
-			<?php } ?>
+            <?php } ?>
         </div>
-        <div class="card-body font1">
-            <nav class="">
-                <div class="nav nav-tabs" role="tablist">
-					<?php foreach ($s[6] as $i => $r): ?>
-                        <button class="text-light btn-sm nav-link <?= ($i == 0) ? 'active' : '' ?>"
-                                id="but-ritual-tab-<?= $i ?>"
-                                data-bs-toggle="tab"
-                                data-bs-target="#but-ritual-<?= $i ?>"
-                                type="button"
-                                role="tab"><?= $r["nome"] ?></button>
-					<?php endforeach; ?>
-                </div>
+        <div class="card-body p-0 font1">
+            <nav class="nav nav-tabs my-2 px-2" role="tablist">
+                <?php foreach ($s[6] as $i => $r): ?>
+                    <button class="nav-link <?= ($i == 0) ? 'active' : '' ?>"
+                            id="but-ritual-tab-<?= $i ?>"
+                            data-bs-toggle="tab"
+                            data-bs-target="#but-ritual-<?= $i ?>"
+                            type="button"
+                            role="tab"><?=elicon($r["elemento"])?> <?= $r["nome"] ?></button>
+                <?php endforeach; ?>
             </nav>
             <div class="m-2">
                 <div class="tab-content">
-					<?php foreach ($s[6] as $i => $r): ?>
+                    <?php foreach ($s[6] as $i => $r): ?>
                         <div class="tab-pane fade <?= ($i == 0) ? 'show active' : '' ?>" id="but-ritual-<?= $i ?>"
                              role="tabpanel">
                             <div class="container-fluid font2 text-start">
@@ -48,22 +64,22 @@
                                         <div class="row g-1 m-1 row-cols-2">
                                             <div class="col-12">
                                                 <div class="position-relative border rounded-1">
-													<?php if ($edit) { ?>
+                                                    <?php if ($edit) { ?>
                                                         <div class="btn-group position-sticky float-end">
 
-                                                            <button class="btn btn-sm text-warning" onclick="editritual(<?=$i?>,<?= $r["id"] ?>)">
+                                                            <button class="btn btn-sm text-warning" onclick="editritual(<?= $i ?>,<?= $r["id"] ?>)">
                                                                 <i class="fat fa-pencil"></i>
                                                             </button>
                                                             <button class="btn btn-sm text-danger" onclick="deletar(<?= $r["id"] ?>,'<?= $r["nome"] ?>','deleteritual')">
                                                                 <i class="fat fa-trash"></i>
                                                             </button>
                                                         </div>
-													<?php } ?>
+                                                    <?php } ?>
                                                     <span class="col form-control form-control-sm bg-black text-light border-0">Nome: <span class="nome"><?= $r["nome"] ?></span></span>
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <span class="form-control form-control-sm bg-black text-light">Elemento: <span class="elemento"><?= $r["elemento"] ?></span> -  <span class="circulo"><?= $r["circulo"] ?></span></span>
+                                                <span class="form-control form-control-sm bg-black text-light">Elemento: <?=elicon($r["elemento"])?> <?= $r["elemento"] ?> -  <span class="circulo"><?= $r["circulo"] ?></span></span>
                                             </div>
                                             <div class="col">
                                                 <span class="bg-black form-control form-control-sm bg-black text-light">Execução:  <span class="conjuracao"><?= $r["conjuracao"] ?></span></span>
@@ -112,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-					<?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

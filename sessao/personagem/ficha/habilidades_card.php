@@ -1,15 +1,21 @@
 <div class="col">
-    <div class="card h-100 bg-black border-light" id="card_habilidades">
-        <div class="card-header clearfix p-0">
+    <div class="card h-100" id="card_habilidades">
+        <div class="card-header d-flex justify-content-center">
 	        <?php if (!isset($_GET["popout"]) AND $edit) { ?>
-            <div class="float-start">
+            <div class="me-auto">
                     <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                     </button>
             </div>
             <?php }?>
+                <nav>
+                    <div class="d-flex justify-content-center nav nav-pills" role="tablist">
+                        <button class="btn btn-sm btn-outline-primary active mx-2" id="aba-habilidades" data-bs-toggle="tab" data-bs-target="#habilidades" type="button" role="tab" aria-controls="habilidades" aria-selected="true">Habilidades</button>
+                        <button class="btn btn-sm btn-outline-primary mx-2" id="aba-poderes" data-bs-toggle="tab" data-bs-target="#poderes" type="button" role="tab" aria-controls="poderes" aria-selected="false">Poderes</button>
+                    </div>
+                </nav>
 	        <?php if ($edit) { ?>
-            <div class="float-end">
+            <div class="ms-auto">
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#edithab" title="Editar Habilidades">
                         <i class="fa-regular fa-pencil"></i>
                     </button>
@@ -20,12 +26,6 @@
             <?php }?>
         </div>
         <div class="card-body p-0 font1">
-            <nav>
-                <div class="d-flex justify-content-center m-2" role="tablist">
-                    <button class="btn btn-outline text-light active mx-2 fs-3" id="aba-habilidades" data-bs-toggle="tab" data-bs-target="#habilidades" type="button" role="tab" aria-controls="habilidades" aria-selected="true">Habilidades</button>
-                    <button class="btn btn-outline text-light mx-2 fs-3" id="aba-poderes" data-bs-toggle="tab" data-bs-target="#poderes" type="button" role="tab" aria-controls="poderes" aria-selected="false">Poderes</button>
-                </div>
-            </nav>
             <div class="tab-content m-2">
                 <div class="tab-pane fade show active" id="habilidades" role="tabpanel" aria-labelledby="aba-habilidades" tabindex="0">
                     <?php

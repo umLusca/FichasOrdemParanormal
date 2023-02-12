@@ -5,14 +5,14 @@ require_once "./ficha/aconfig_ficha.php";
 
 ?>
 <!DOCTYPE html>
-<html lang="br">
+<html lang="br" data-bs-theme="<?=$_SESSION["theme"]?>">
     <head>
         <?php require_once './../../includes/head.html';?>
         <meta charset="UTF-8">
         <title><?= $nome?: "Desconhecido"; ?> - FichasOP</title>
         <?php require_once "./../../includes/scripts.php";?>
     </head>
-    <body class="bg-black text-light">
+    <body>
         <?php if (!isset($_GET["popout"])) {
             include_once "./../../includes/top.php";
             }?>
@@ -21,39 +21,39 @@ require_once "./ficha/aconfig_ficha.php";
                 <div class="row g-2 m-md-2 row-cols-1 row-cols-md-2">
                     <?php
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_detalhes.php";
+                        include_once "./ficha/informacoes_card.php";
                     } else if ($_GET["popout"] == 'dados') {
-                        include_once "./ficha/card_detalhes.php";
+                        include_once "./ficha/informacoes_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_principal.php";
+                        include_once "./ficha/status_card.php";
                     } else if ($_GET["popout"] == 'principal') {
-                        include_once "./ficha/card_principal.php";
+                        include_once "./ficha/status_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_atributos.php";
+                        include_once "./ficha/atributos_card.php";
                     } else if ($_GET["popout"] == 'atributos'){
-                        include_once "./ficha/card_atributos.php";
+                        include_once "./ficha/atributos_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_pericias.php";
+                        include_once "./ficha/pericias_card.php";
                     } else if ($_GET["popout"] == 'pericias'){
-                        include_once "./ficha/card_pericias.php";
+                        include_once "./ficha/pericias_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_habilidades.php";
+                        include_once "./ficha/habilidades_card.php";
                     } else if ($_GET["popout"] == 'habilidades'){
-                        include_once "./ficha/card_habilidades.php";
+                        include_once "./ficha/habilidades_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_proeficiencias.php";
+                        include_once "./ficha/proeficiencias_card.php";
                     } else if ($_GET["popout"] == 'proeficiencias'){
-                        include_once "./ficha/card_proeficiencias.php";
+                        include_once "./ficha/proeficiencias_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
@@ -63,24 +63,24 @@ require_once "./ficha/aconfig_ficha.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_personagem.php";
+                        include_once "./ficha/historias_card.php";
                     } else if ($_GET["popout"] == 'personagem'){
-                        include_once "./ficha/card_personagem.php";
+                        include_once "./ficha/historias_card.php";
                     }
                 ?>
                     </div>
                         <div class="row g-2 mx-md-2 mt-1 row-cols-1">
                     <?php
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_inventario.php";
+                        include_once "./ficha/inventario_card.php";
                     } else if ($_GET["popout"] == 'inventario'){
-                        include_once "./ficha/card_inventario.php";
+                        include_once "./ficha/inventario_card.php";
                     }
 
                     if (!isset($_GET["popout"])) {
-                        include_once "./ficha/card_rituais.php";
+                        include_once "./ficha/rituais_card.php";
                     } else if ($_GET["popout"] == 'rituais'){
-                        include_once "./ficha/card_rituais.php";
+                        include_once "./ficha/rituais_card.php";
                     }
                     ?>
                 </div>
@@ -88,16 +88,15 @@ require_once "./ficha/aconfig_ficha.php";
         </main>
         <div id="modalsaki">
             <?php if ($edit) {
-                require_once "./ficha/modal_detalhes.php";
-                require_once "./ficha/modal_principal.php";
-                require_once "./ficha/modal_foto.php";
-                require_once "./ficha/modal_personagem.php";
-                require_once "./ficha/modal_habilidades.php";
-                require_once "./ficha/modal_atributos.php";
-                require_once "./ficha/modal_pericias.php";
-                require_once "./ficha/modal_inventario.php";
-                require_once "./ficha/modal_proeficiencias.php";
-                require_once "./ficha/modal_rituais.php";
+                require_once "./ficha/informacoes_modal.php";
+                require_once "./ficha/status_modal.php";
+                require_once "./ficha/historias_modals.php";
+                require_once "./ficha/habilidades_modal.php";
+                require_once "./ficha/atributos_modal.php";
+                require_once "./ficha/pericias_modal.php";
+                require_once "./ficha/inventario_modal.php";
+                require_once "./ficha/proeficiencias_modal.php";
+                require_once "./ficha/rituais_modal.php";
                 require_once "./../include_geral/modal_dice.php";
                 require_once "./../include_geral/modal_deletar.php";
             } ?>
