@@ -120,7 +120,7 @@ if (isset($_SESSION["UserID"])) { ?>
         <div class="modal-dialog modal-xl">
             <div class="modal-content border-secondary">
                 <div class="modal-header">
-                    <h1 class="fs-5 modal-title">Dados da Conta</h1>
+                    <h1 class="fs-5 modal-title">Configurações</h1>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" title="Fechar"></button>
                 </div>
                 <div class="modal-body">
@@ -128,9 +128,17 @@ if (isset($_SESSION["UserID"])) { ?>
                         <div class="col">
                             <div class="card border-secondary h-100">
                                 <div class="card-header">
-                                    <h1 class="fs-4 card-title">Editar informações da conta</h1>
+                                    <h1 class="fs-4 card-title">Personalizar</h1>
                                 </div>
                                 <div class="card-body">
+
+                                    <label class="form-floating">
+                                        <select class="form-select" id="sitethemeselect" aria-label="Tema do site">
+	                                        <?=Super_options("tema",$_SESSION["theme"])?>
+                                            <option value="dark" disabled>Escuro > Claro ;)</option>
+                                        </select>
+                                        <label>Tema do site</label>
+                                    </label>
                                     <div class="d-grid top-100 position-sticky m-2">
                                         <button class="btn btn-lg btn-outline-warning d-grid" type="button" data-bs-toggle="modal" data-bs-target="#configconta">
                                             Alterar informações da conta

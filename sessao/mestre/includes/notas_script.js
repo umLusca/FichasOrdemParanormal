@@ -23,13 +23,11 @@ function doneTyping() {
 }
 
 $("#notas .addnote").on("click",()=>{
-
     $.post({
-        data: {status: 'notas_criar'},
+        data: {query: 'mestre_add_nota',token:token},
         url: "",
         complete: () => {
             location.reload();
-
         }
     })
 })
@@ -39,7 +37,7 @@ $("#notas .deletenota").on("click",(e)=>{
         if(r){
 
             $.post({
-                data: {status: 'notas_deletar', note: $(e.currentTarget).data("fop-id")},
+                data: {query: 'mestre_delete_nota', note: $(e.currentTarget).data("fop-id")},
                 url: "",
                 complete:(d)=>{
                     location.reload();

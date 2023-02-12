@@ -1,9 +1,8 @@
-
 function submitIniciativa(){
     $.post({
         url: '?token=<?=$missao_token?>',
         dataType: '',
-        data: $('#iniciativa :input').serialize(),
+        data: $('#iniciativa :input').serialize()+"&query=mestre_update_iniciativa",
     });
 }
 
@@ -15,7 +14,7 @@ $(() => {
         switch ($(this).data("fop-initfunction")) {
             case "add":
                 $.post({
-                    data: {status: 'criariniciativa'},
+                    data: {query: 'mestre_add_iniciativa'},
                     url: '?token=<?=$missao_token?>',
                 }).done(function () {
                     location.reload();
@@ -33,7 +32,7 @@ $(() => {
                 confirmar("Deseja deletar da lista?").then(s => {
                     if (s) {
                         $.post({
-                            data: {status: 'deleteini', iniciativa_id: id},
+                            data: {query: 'mestre_delete_iniciativa', iniciativa_id: id},
                             url: '?token=<?=$missao_token?>',
                         })
                         $("#iniciativa tr[data-fop-initid=" + id + "]").remove()
@@ -47,7 +46,7 @@ $(() => {
         $('td.index', item.parent()).each(function (i) {
             $(this).html(i + 1);
         });
-        $('input.hidden', item.parent()).each(function (i) {
+        $('input.prioridade', item.parent()).each(function (i) {
             $(this).val(i + 1);
         });
 

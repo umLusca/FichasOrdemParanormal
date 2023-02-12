@@ -3,8 +3,8 @@ function desvincular(p) {
     let text = "DESEJA DESVINCULAR ESSA FICHA?\nNÃO SERÁ POSSIVEL REVERTER!";
     if (confirm(text) === true) {
         $.post({
-            data: {status: "desp", p: p},
-            url: " ",
+            data: {query: "mestre_desvincular_player", p: p},
+            url: "",
         }).done(function (data) {
             console.log(data);
         });
@@ -36,7 +36,7 @@ $(() => {
         var form = $(this);
         $.post({
             url: "",
-            data: form.serialize() + "&status=addplayer",
+            data: form.serialize() + "&query=mestre_add_player",
             dataType: "JSON",
             beforeSend: function () {
                 $("#adicionar input, #adicionar button").attr('disabled', true);

@@ -112,7 +112,8 @@
                         <input class="form-check-input" type="checkbox" role="switch" id="switchdano" name="dano">
                         <label class="form-check-label" for="switchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
-                    <input type="hidden" name="status" value="addd"/>
+                    <input type="hidden" name="query" value="add_dado_customizado"/>
+                    <input type="hidden" name="token" value="<?=$token?>"/>
                 </div>
             </div>
             <div class="modal-footer">
@@ -159,8 +160,9 @@
                         <input class="form-check-input" type="checkbox" role="switch" id="eswitchdano" name="dano" value="1" <?=$dado["dano"]?'CHECKED':''?>>
                         <label class="form-check-label" for="eswitchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
-                <input type="hidden" id="eds" name="status" value=""/>
-                <input type="hidden" id="edidd" name="did"/>
+                <input type="hidden" id="eds" name="query" value=""/>
+                <input type="hidden" id="edidd" name="token_pai"/>
+                <input type="hidden" name="token" value="<?=$token?>"/>
             </div>
             <div class="modal-footer justify-content-between">
                 <button class="btn btn-outline-danger deletar" type="submit">Deletar</button>

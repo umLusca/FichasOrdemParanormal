@@ -1,6 +1,7 @@
 <?php
 
 require_once "./../../config/includes.php";
+echo "false";
 $con = con();
 $uid = $_SESSION["UserID"];
 
@@ -8,7 +9,7 @@ if (!empty($_GET["token"])) {
 	$token = cleanstring($_GET["token"]);
 } else {
 	$token = null;
-};
+}
 if ($_SESSION["UserAdmin"]) {
 	if(!empty($_GET["id"])){$id = intval($_GET["id"]);} else {$id = null;}
 } else {
@@ -36,7 +37,7 @@ $q["ligacoes"] = $con->query("Select * FROM `ligacoes` WHERE id_missao = '" . $i
 $q["notas"] = $con->query("SELECT * FROM `notes` WHERE `missao` = '$id';");
 $q["iniciativas"] = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` = '" . $id . "' ORDER BY prioridade");
 $q["personagens"] = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '".$id."');");
-$m = $con->query("SELECT * FROM `dados_mestre` WHERE `id_missao` = '".$id."';");
+
 $q["npcs"] = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id'");
 $q["dados_player"] = $con->query("SELECT * FROM dados_rolados_mestre WHERE missao in (select id_missao from u436203203_bd.ligacoes WHERE missao = {$id}) ORDER BY `data` desc");
 
