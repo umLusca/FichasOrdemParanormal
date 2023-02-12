@@ -19,8 +19,8 @@
             <div class="m-2">
                 <div class="row row-cols-auto g-2 justify-content-center" id="dados">
 			        <?php
-			        foreach ($m as $dado):
-				        switch ($dado["foto"]) {
+			        $dados_custom = $con->query("SELECT * FROM `dados_customizados` WHERE `token_pai` = '$token';");
+			        foreach ($dados_custom as $dado): switch ($dado["foto"]) {
 					        default:
 						        $iconedado = "fa-dice-d20";
 						        break;
@@ -57,16 +57,13 @@
 					        case 12:
 						        $iconedado = "fa-dice-six";
 						        break;
-				        }
-				        ?>
-                        <div class="col dado" aria-foto="<?= $dado["foto"]; ?>" aria-dado="<?= $dado["dado"]; ?>" aria-id="<?= $dado["id"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>,'<?= $dado["nome"]?>')">
+				        } ?>
+                        <div class="col dado" aria-foto="<?= $dado["foto"] ?>" aria-dado="<?= $dado["dado"] ?>" aria-id="<?= $dado["token"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>,'<?= $dado["nome"]?>')">
                             <button class="btn btn-lg text-body-emphasis" <?=(!isset($edit) OR $edit)?:"disabled"?>>
-                                <i class="fal <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"]; ?>
+                                <i class="fal <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"] ?>
                             </button>
                         </div>
-			        <?php
-			        endforeach;
-			        ?>
+			        <?php endforeach; ?>
                 </div>
             </div>
             <form class="m-2 position-sticky top-100" id="formfastdice" ajax>

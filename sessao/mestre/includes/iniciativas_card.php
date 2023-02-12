@@ -14,7 +14,6 @@
                         <col style="width: 80px">
                         <col style="width: 80px">
                     </colgroup>
-                    <input type="hidden" name="status" value="updtini">
                     <thead>
                     <tr>
                         <th>
@@ -36,23 +35,24 @@
 					if ($q["iniciativas"]->num_rows) {
 						foreach ($q["iniciativas"] as $i => $r) {
 							$p = $i + 1;
-							?>
+                            ?>
                             <tr class="drag" data-fop-initid="<?=$r["id"]?>">
-                                <input type="hidden" name="id[]" value="<?= $r["id"]; ?>">
+                                <input type="hidden" class="prioridade" name="init[<?=$i?>][p]" value="<?= $p ?>">
+                                <input type="hidden" class="hidden" name="init[<?=$i?>][id]" value="<?= $r["id"] ?>">
                                 <td class="">
                                     <button type="button" class="btn btn-sm up text-info" data-fop-initfunction="up"><i class="fa-solid fa-chevrons-up"></i></button>
                                 </td>
                                 <td class="index">
-                                    <input type="hidden" class="hidden" name="prioridade[]" value="<?= $p; ?>">
+                                    <?=$p?>
                                 </td>
                                 <td class="iniciativa">
-                                    <input type="text" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="nome[]" readonly value="<?= $r["nome"]; ?>">
+                                    <input type="text" style="min-width: 40px" autocomplete="off" name="init[<?=$i?>][n]" class="form-control form-control-plaintext form-control-sm" readonly value="<?= $r["nome"]; ?>">
                                 </td>
                                 <td class="iniciativa">
-                                    <input type="number" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="iniciativa[]" readonly value="<?= $r["iniciativa"]; ?>">
+                                    <input type="number" style="min-width: 40px" autocomplete="off" name="init[<?=$i?>][i]" class="form-control form-control-plaintext form-control-sm" readonly value="<?= $r["iniciativa"]; ?>">
                                 </td>
                                 <td class="iniciativa">
-                                    <input type="number" style="min-width: 40px" autocomplete="off" class="form-control form-control-plaintext form-control-sm" name="dano[]" readonly value="<?= $r["dano"]; ?>">
+                                    <input type="number" style="min-width: 40px" autocomplete="off" name="init[<?=$i?>][d]" class="form-control form-control-plaintext form-control-sm" readonly value="<?= $r["dano"]; ?>">
                                 </td>
                                 <td class="p-0">
                                     <div class="d-inline">

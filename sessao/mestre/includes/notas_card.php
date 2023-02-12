@@ -37,7 +37,7 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <input type="hidden" name="status" value="syncnotes"/>
+                <input type="hidden" name="query" value="mestre_update_nota"/>
             </form>
         </div>
     </div>

@@ -26,7 +26,7 @@ $url .= $_SERVER['HTTP_HOST'];
 
 	                <?php if (isset($_SESSION["UserID"])) { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#perfil"><i class="fat fa-user text-warning"></i> Minha Conta</a>
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#perfil"><i class="fat fa-gear text-primary"></i> Configurações</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/sessao"><i class="fat fa-dice-d10 text-success"></i> Campanhas e Fichas</a>

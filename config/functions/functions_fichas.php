@@ -2,8 +2,13 @@
 
 
 //yep
-function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max = 10): string
+function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max = 10,$theme = "auto"): string
 {
+	if($theme === "auto"){
+		$_theme = $_SESSION["theme"];
+	} else {
+		$_theme = $theme;
+	}
 	if (!$input){
 		$return = "
             <div class='containera mx-auto'>
@@ -12,7 +17,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
 		        <button class='atributos int hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($int) . 'd20", 0,"Intelecto");\'' : 'disabled') . "><span>".$int."</span></button>
 		        <button class='atributos pre hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($pre) . 'd20", 0,"Presença"); \'' : 'disabled') . "><span>".$pre."</span></button>
 		        <button class='atributos vig hex btn font2' " . ($enabled ? 'onclick=\'rolar("' . ValorParaRolarDado($vig) . 'd20", 0,"Vigor");    \'' : 'disabled') . "><span>".$vig."</span></button>
-		        <img src='/assets/img/Atributes".($_SESSION["theme"]==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
+		        <img src='/assets/img/Atributes".($_theme==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
 	        </div>";
 	} else {
 		$return ="
@@ -22,7 +27,7 @@ function atributos($for,$agi,$int,$vig,$pre,$enabled=1,$input=0, $min = -10,$max
                 <input required class='atributos int atributos-input hex font2' type='number' min='$min' max='$max' value='$int' name='intelecto' title='Intelecto'/>
                 <input required class='atributos pre atributos-input hex font2' type='number' min='$min' max='$max' value='$pre' name='presenca'  title='Presença'/>
                 <input required class='atributos vig atributos-input hex font2' type='number' min='$min' max='$max' value='$vig' name='vigor'     title='Vigor'/>
-                <img src='/assets/img/Atributes".($_SESSION["theme"]==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
+                <img src='/assets/img/Atributes".($_theme==="dark"?"":"_light").".webp' height='512' width='516' alt='Atributos'>
             </div>";
 	}
 	return $return;
@@ -45,6 +50,9 @@ function Super_options($tipo,$selecionado = null): string
             break;
         case "elementos":
             $conjunto = ["Medo","Sangue","Energia","Conhecimento", "Morte"];
+            break;
+        case "tema":
+            $conjunto = ["dark","light","auto"];
             break;
     }
     $return = "";

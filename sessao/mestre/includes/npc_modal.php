@@ -328,7 +328,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="submit" class="btn btn-primary">Enviar</button>
-                <input type="hidden" name="status" value="addnpc"/>
+                <input type="hidden" name="query" value="mestre_add_fichasnpc"/>
             </div>
         </form>
     </div>
@@ -639,7 +639,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="submit" class="btn btn-primary">Enviar</button>
-                <input type="hidden" name="status" value="editnpc"/>
+                <input type="hidden" name="query" value="mestre_update_fichasnpc"/>
                 <input type="hidden" id='efni' name="efni" value=""/>
             </div>
         </div>

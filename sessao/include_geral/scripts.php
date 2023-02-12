@@ -16,9 +16,6 @@
     function rolar(dado1, dado2 = undefined, dado3 = undefined) {
 
         if (typeof dado1 === "string") {
-            console.log("1", typeof dado1);
-            console.log("2", typeof dado2);
-            console.log("3", typeof dado3);
 
             let dano, nome, dado;
             dado = dado1;
@@ -42,7 +39,7 @@
                 url: "",
                 method: "post",
                 data: {
-                    status: "roll",
+                    query: "rolar_dado",
                     dado: dado1["dado"],
                     dano: dado1["dano"],
                     nome: dado1["nome"],
@@ -201,14 +198,14 @@
             confirmar("Deseja apagar esse dado?").then(s=>{
                 console.log(s)
                 if (s){
-                    $("#eds").val("deld");
+                    $("#eds").val("delete_dado_customizado");
                     $("#editardado").submit();
                 }
             })
         })
         $("#editardado .salvar").click(function (e) {
             e.preventDefault()
-            $("#eds").val("editd");
+            $("#eds").val("edit_dado_customizado");
             $("#editardado").submit();
         })
 

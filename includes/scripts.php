@@ -22,7 +22,27 @@
         </div>
     </div>
 </div>
+<script>
+</script>
 <script type="text/babel">
+
+    function getCookie(key) {
+        let value = ''
+        document.cookie.split(';').forEach((e) => {
+            if (e.includes(key)) {
+                value = e.split('=')[1]
+            }
+        })
+        return value
+    }function setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
 
     function confirmar(title, text) {
         $("#confirmar .title").html(title);
@@ -123,7 +143,62 @@
         }
     }
 
+
+
     $(document).ready(function () {
+        $("#sitethemeselect").on("change",()=>{
+            let theme = $("#sitethemeselect").val();
+            console.log(getCookie("theme"));
+            console.log(theme)
+            setTheme(theme);
+            setCookie("theme",theme,365)
+            console.log(getCookie("theme"));
+        })
+        
+        
+        /*!
+ * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)
+ * Copyright 2011-2022 The Bootstrap Authors
+ * Licensed under the Creative Commons Attribution 3.0 Unported License.
+ * Changed by Lucas (https://github.com/LucasMeGames)
+ */
+
+        const storedTheme = getCookie("theme");
+        const getPreferredTheme = () => {
+            if (storedTheme) {
+                return storedTheme
+            }
+
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        const setTheme = function (theme) {
+            switch (theme){
+                default:
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        $(document.documentElement).attr("data-bs-theme", "dark")
+                    } else {
+                        $(document.documentElement).attr("data-bs-theme", "light")
+                    }
+                    break;
+                case "dark":
+                    $(document.documentElement).attr("data-bs-theme", "dark")
+                    break;
+                case "light":
+                    $(document.documentElement).attr("data-bs-theme", "light")
+                    break;
+            }
+        }
+        setTheme(getPreferredTheme())
+        
+        $(window.matchMedia('(prefers-color-scheme: dark)')).on("change",()=>{
+            if (storedTheme !== 'light' || storedTheme !== 'dark') {
+                setTheme(getPreferredTheme())
+            }
+        })
+        
+     
+
+
         $.fn.isValid = function () {
             return this[0].checkValidity()
         } // Função para checar validade de formularios
@@ -186,11 +261,11 @@
                         regis = true;
                     },
                     url: "",
-                    data: form.serialize()+"&status=cadastro",
+                    data: form.serialize() + "&status=cadastro",
                     dataType: "JSON",
                     success: (data) => {
                         if (!data.success) {
-                            $("#cadastrar .btn").attr("disabled",false);
+                            $("#cadastrar .btn").attr("disabled", false);
                             $("#cadastrar .return").html('<div class="alert alert-danger"><i class="fal fa-x"></i> ' + data.msg + "</div>");
                         } else {
                             regis = false;
@@ -200,7 +275,7 @@
                     },
                     error: function () {
                         regis = false;
-                        $("#cadastrar .btn").attr("disabled",false);
+                        $("#cadastrar .btn").attr("disabled", false);
                         $("#cadastrar .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> Houve um erro ao fazer a solicitação, contate um administrador!</div>");
                     },
                 }).done(function (data) {
@@ -218,7 +293,7 @@
                         $("#login .btn").attr("disabled", true);
                         $("#login .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto fazemos um rolamento no login...</div>");
                     },
-                    url: "",
+                    url: "/",
                     data: form.serialize() + "&status=login",
                     dataType: "JSON",
                     success: (data) => {
