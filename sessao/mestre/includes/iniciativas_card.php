@@ -1,8 +1,13 @@
-<div class="col-md-6" id="rodada">
+<div class="col-12 <?=isset($_GET["popout"])?:"col-md-6"?>" id="rodada">
     <div class="card h-100 border-secondary">
         <div class="card-body p-0">
-            <div class="card-header text-center">
-                <h3 class="font6 m-0">Iniciativas</h3>
+            <div class="card-header d-flex">
+                <h4 class="m-0">Iniciativas</h4>
+	            <?php if (!isset($_GET["popout"])) { ?>
+                    <button class="btn text-secondary fa-lg mx-1 p-1 popout" data-fop-pop="iniciativas" style="height: 30px; width: 30px;">
+                        <i class="fal fa-rectangle-vertical-history"></i>
+                    </button>
+	            <?php } ?>
             </div>
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-hover table-bordered" id="iniciativa">

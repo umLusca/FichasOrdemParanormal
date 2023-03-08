@@ -10,6 +10,7 @@ require_once RootDir . "/sessao/personagem/ficha/aconfig_ficha.php";
     <title><?= $nome ?> - Portrait FichasOP</title>
 	<?php require_once RootDir . "/includes/scripts.php"; ?>
     <style>
+        
         .portrait {
             position: relative;
             height: 1000px;
@@ -33,10 +34,10 @@ require_once RootDir . "/sessao/personagem/ficha/aconfig_ficha.php";
             height: 835px;
             width: 832px;
             margin: 2.25%;
-            border-radius: 0 0 50% 50%;
         }
 
         .personagem img {
+            position: absolute;
             height: 100%;
             width: 100%;
         }
@@ -81,9 +82,12 @@ require_once RootDir . "/sessao/personagem/ficha/aconfig_ficha.php";
         }
 
 
+
         .fs-0 {
             font-size: 200px;
         }
+
+
         @keyframes morto {
             from {
                 filter: brightness(100%);
@@ -133,6 +137,33 @@ require_once RootDir . "/sessao/personagem/ficha/aconfig_ficha.php";
             font-size: 120px;
             text-shadow: 1px 1px 10px;
             color: rgb(255, 193, 7);
+        }
+        .teste {
+            -webkit-mask-image: url('/assets/img/fundo3.webp');
+            mask-image: url('/assets/img/fundo3.webp');
+            -webkit-mask-size: 100%;
+            mask-size: 100%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+        }
+        .breath {
+            animation: breath 4s infinite;
+        }
+
+        .morto .breath {
+            animation: breath 4s paused;
+        }
+        @keyframes breath {
+
+            0% {
+                transform: scaleY(100%) translateY(0) rotate(0);
+            }
+            60% {
+                transform: scaleY(102%) translateY(-1%) rotate(-1deg);
+            }
+            90% {
+                transform: scaleY(99.5%) translateY(0.25%) rotate(0.5deg);
+            }
         }
 
 
@@ -215,6 +246,17 @@ require_once "./../includes/scripts.php";
 
 <script type="text/babel">
 
+    function hide() {
+        dado = '';
+        tick();
+    }
+
+    function show() {
+        dado = 'show';
+        setTimeout(hide, 3000);
+        tick();
+    }
+
     function tick() {
         console.log("teste");
         updtsaude()
@@ -222,13 +264,12 @@ require_once "./../includes/scripts.php";
             <div className="portrait">
                 <div>
                     <div className="fundo">
-                        <img src='/assets/img/fundo1.webp'/>
                     </div>
                     <div className="marca">
-                        {(marca) ? <img src={marca}/> : ""}
                     </div>
-                    <div className="personagem pri">
-                        <img src={foto}/>
+                    <div className="personagem pri teste">
+                        {(marca) ? <img src={marca}/> : ""}
+                        <img className="breath" src={foto}/>
                     </div>
                     <div className="PE">
                         <span className="">{pea}</span>

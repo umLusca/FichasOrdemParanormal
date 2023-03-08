@@ -18,54 +18,8 @@
 		}
 		?>
     ]
-    var socket = io('https://portrait.fichasop.com', {
-        reconnectionDelay: 5000,
-        transports: ['websocket', 'polling', 'flashsocket']
-    });
-    
 
     $(document).ready(function () {
-
-        socket.on('connect', function () {
-            console.log("Conectado.")
-        });
-        socket.on('disconnect', function () {
-            console.log("Desconectado.")
-        });
-        socket.emit('create', '<?=$missao_token?>');
-        socket.on('<?=$missao_token?>', function (msg) {
-            console.log(msg);
-            let index = players.findIndex(function (player) {
-                return player.token === msg.ficha;
-            });
-
-            if (msg.auth) {
-                let index = players.findIndex(function (player) {
-                    return player.token === msg.auth;
-                });
-                if (index => 0) {
-                    socket.emit('<?=$missao_token?>', {authr: true, uid: msg.uid})
-                } else {
-                    socket.emit('<?=$missao_token?>', {authr: false, uid: msg.uid})
-                }
-            }
-            if (index => 0) {
-                if (msg.dado) {
-                    if (players[index]) {
-                        msg.foto = players[index]["foto"];
-                        msg.nome = players[index]["nome"];
-                    } else {
-                        if (msg.foto == null || msg.foto == '') {
-                            msg.foto = '/assets/img/Man.webp';
-                            msg.nome = 'Mestre';
-                        }
-                    }
-                    dadojogador(msg);
-                    console.log(msg);
-                    console.log("s");
-                }
-            }
-        });
 
 
         $("form:not([ajax])").not("#adicionar").submit(function (event) {
@@ -86,5 +40,11 @@
             }
         })// Enviar qualquer formulario via jquery
 
+
+        $('body .popout').on('click', function (e) {
+            window.open(`/sessao/mestre?popout=${$(e.currentTarget).attr("data-fop-pop")}&token=<?=$missao_token?>`, "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            return false;
+        })
+   
     });
 </script>

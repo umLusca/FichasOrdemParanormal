@@ -1,12 +1,12 @@
 <div class="col-md-6" id="card_rolar">
     <div class="card h-100" style="min-height: 360px;">
-        <div class="card-header clearfix text-center p-0">
+        <div class="card-header d-flex justify-content-between">
             <div class="float-start">
                 <button class="btn btn-sm text-info fa-lg" title="Como rolar dados. " data-bs-toggle="modal" data-bs-target="#rolardados">
                     <i class="fa-regular fa-circle-info"></i>
                 </button>
             </div>
-            <span class="fs-4 font6">Dados Customizado</span>
+            <h4 class="m-0">Dados Customizado</h4>
             
             <div class="float-end">
                 <button class="btn btn-sm text-success fa-lg" title="Adicionar dado" data-bs-toggle="modal" data-bs-target="#adddado">
@@ -19,8 +19,16 @@
             <div class="m-2">
                 <div class="row row-cols-auto g-2 justify-content-center" id="dados">
 			        <?php
-			        $dados_custom = $con->query("SELECT * FROM `dados_customizados` WHERE `token_pai` = '$token';");
-			        foreach ($dados_custom as $dado): switch ($dado["foto"]) {
+                    if(isset($token)){
+                        $token = $token;
+                    }
+			        $dc = $con->prepare("SELECT * FROM `dados_customizados` WHERE `owner` = ? AND (`token_pai` = ? OR `token_pai` is null);");
+                    $dc->bind_param("is",$_SESSION["UserID"],$token);
+                    $dc->execute();
+			        $dados_custom = $dc->get_result();
+                    
+			        foreach ($dados_custom as $dado):
+                        switch ($dado["foto"]) {
 					        default:
 						        $iconedado = "fa-dice-d20";
 						        break;
@@ -58,7 +66,7 @@
 						        $iconedado = "fa-dice-six";
 						        break;
 				        } ?>
-                        <div class="col dado" aria-foto="<?= $dado["foto"] ?>" aria-dado="<?= $dado["dado"] ?>" aria-id="<?= $dado["token"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar('<?= $dado["dado"] ?>',<?=$dado["dano"]?>,'<?= $dado["nome"]?>')">
+                        <div class="col dado" aria-foto="<?= $dado["foto"] ?>" aria-dado="<?= $dado["dado"] ?>" aria-id="<?= $dado["token"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar({'dado':'<?= $dado["dado"] ?>','dano':'<?=$dado["dano"]?>','nome':'<?= $dado["nome"]?>'})">
                             <button class="btn btn-lg text-body-emphasis" <?=(!isset($edit) OR $edit)?:"disabled"?>>
                                 <i class="fal <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"] ?>
                             </button>

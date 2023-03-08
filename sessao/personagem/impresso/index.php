@@ -44,6 +44,13 @@ require_once "./../ficha/aconfig_ficha.php";
             font-size: 30px;
             width: 45px;
         }
+        .per {
+            position: absolute;
+            text-align: left;
+            margin: 75% 28%;
+            font-size: 30px;
+            width: 45px;
+        }
 
         .origem {
             position: absolute;
@@ -334,19 +341,19 @@ require_once "./../ficha/aconfig_ficha.php";
         }
 
         .intimidacao {
-            margin-top: 806%;
-        }
-
-        .intuicao {
             margin-top: 880%;
         }
 
-        .investigacao {
+        .intuicao {
             margin-top: 954%;
         }
 
-        .iniciativa {
+        .investigacao {
             margin-top: 1028%;
+        }
+
+        .iniciativa {
+            margin-top: 806%;
         }
 
         .luta {
@@ -410,22 +417,22 @@ require_once "./../ficha/aconfig_ficha.php";
 
         .Slot2 {
             position: absolute;
-            margin-top: 121.25%;
+            margin-top: 121.75%;
         }
 
         .Slot3 {
             position: absolute;
-            margin-top: 123.75%;
+            margin-top: 124.75%;
         }
 
         .Slot4 {
             position: absolute;
-            margin-top: 126.25%;
+            margin-top: 127.75%;
         }
 
         .Slot5 {
             position: absolute;
-            margin-top: 128.75%;
+            margin-top: 130.75%;
         }
 
         .Slot6 {
@@ -454,7 +461,7 @@ require_once "./../ficha/aconfig_ficha.php";
         }
 
         .Alcance {
-            margin-left: 48.5%;
+            margin-left: 76.5%;
             font-size: 12px;
             width: 10%;
         }
@@ -472,7 +479,7 @@ require_once "./../ficha/aconfig_ficha.php";
         }
 
         .Especial {
-            margin-left: 76%;
+            margin-left: 84%;
             font-size: 12px;
             width: 15%;
         }
@@ -496,7 +503,6 @@ require_once "./../ficha/aconfig_ficha.php";
         .Inventario {
             font-size: 15px;
             font-weight: lighter;
-
         }
 
         .Inv1 {
@@ -619,8 +625,13 @@ require_once "./../ficha/aconfig_ficha.php";
             margin-top: 55.5%;
         }
 
-        .Item {
+        .quantidade {
             margin-left: 8%;
+            text-align: left;
+            width: 14.5%;
+        }
+        .Item {
+            margin-left: 12%;
             text-align: left;
             width: 14.5%;
         }
@@ -670,10 +681,10 @@ require_once "./../ficha/aconfig_ficha.php";
             <div class="nome font6"><?= $nome ?></div>
             <div class="jogador font6"><?= $usuario ?></div>
             <span class="nex font6"><?= $nex ?></span>
+            <span class="per font6"><?= $pe_rodada ?></span>
             <span class="nex pex font6"><?= $pex ?></span>
             <span class="origem font6"><?= $origem ?></span>
             <span class="classe font6"><?= $classe ?></span>
-            <span class="patente font6"><?= $patente ?></span>
         </div>
         <div class="attr font1">
             <span class="for"><?= $forca ?></span>
@@ -712,10 +723,10 @@ require_once "./../ficha/aconfig_ficha.php";
             <span class="pericia enganacao"><?= $enganacao ?></span>
             <span class="pericia fortitude"><?= $fortitude ?></span>
             <span class="pericia furtividade"><?= $furtividade ?></span>
+            <span class="pericia iniciativa"><?= $iniciativa ?></span>
             <span class="pericia intimidacao"><?= $intimidacao ?></span>
             <span class="pericia intuicao"><?= $intuicao ?></span>
             <span class="pericia investigacao"><?= $investigacao ?></span>
-            <span class="pericia iniciativa"><?= $iniciativa ?></span>
             <span class="pericia luta"><?= $luta ?></span>
             <span class="pericia medicina"><?= $medicina ?></span>
             <span class="pericia ocultismo"><?= $ocultismo ?></span>
@@ -735,7 +746,6 @@ require_once "./../ficha/aconfig_ficha.php";
 			if ($s[1]->num_rows) {
 				for ($i = 0; (($i < count($rs[1])) && ($i < 6)); $i++): ?>
                     <span class="Slot<?= $i + 1 ?> Arma"><?= $rs[1][$i]["arma"] ?></span>
-                    <span class="Slot<?= $i + 1 ?> Tipo"><?= $rs[1][$i]["tipo"] ?></span>
                     <span class="Slot<?= $i + 1 ?> Ataque"><?= $rs[1][$i]["ataque"] ?></span>
                     <span class="Slot<?= $i + 1 ?> Alcance"><?= $rs[1][$i]["alcance"] ?></span>
                     <span class="Slot<?= $i + 1 ?> Dano"><?= $rs[1][$i]["dano"] ?></span>
@@ -752,6 +762,7 @@ require_once "./../ficha/aconfig_ficha.php";
 			<?php
 			if ($s[4]->num_rows > 0) {
 				for ($i = 0; ($i < count($rs[4]) && $i <= 17); $i++):?>
+                    <div class="Inv<?= $i + 1 ?> Quantidade text-truncate"><?= $rs[4][$i]["quantidade"] ?>x</div>
                     <div class="Inv<?= $i + 1 ?> Item text-truncate"><?= $rs[4][$i]["nome"] ?></div>
                     <div class="Inv<?= $i + 1 ?> Detalhes text-truncate"><?= $rs[4][$i]["descricao"] ?></div>
                     <div class="Inv<?= $i + 1 ?> Espacos text-truncate"><?= $rs[4][$i]["espaco"] ?></div>
@@ -777,6 +788,8 @@ require_once "./../ficha/aconfig_ficha.php";
         <img alt="Ficha frontal" src="/assets/img/Print2.webp"/>
     </div>
 </div>
-
+<script>
+    alert("Essa pagina será removida em breve: Por não ser muito usada e por dar muito problema")
+</script>
 </body>
 </html>

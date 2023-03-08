@@ -9,8 +9,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content rounded-3 shadow">
             <div class="modal-body p-4 text-center">
-                <h5 class="mb-0 title"></h5>
-                <p class="mb-0 desc"></p>
+                <div class="mb-0 title fs-5"></div>
+                <div class="mb-0 desc"></div>
             </div>
             <div class="modal-footer flex-nowrap p-0">
                 <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 cancel" data-bs-dismiss="modal">
@@ -25,7 +25,9 @@
 <script>
 </script>
 <script type="text/babel">
-
+    function striphtml(s){
+        return s.textContent || s.innerText || "";
+    }
     function getCookie(key) {
         let value = ''
         document.cookie.split(';').forEach((e) => {
@@ -146,6 +148,24 @@
 
 
     $(document).ready(function () {
+        $("*[data-bs-toggle=tooltip]").each((i,e)=>{
+            new bootstrap.Tooltip(e);
+        })
+        
+        $.fn.serializeObject = function(){
+            var obj = {};
+
+            $.each( this.serializeArray(), function(i,o){
+                var n = o.name,
+                    v = o.value;
+
+                obj[n] = obj[n] === undefined ? v
+                    : $.isArray( obj[n] ) ? obj[n].concat( v )
+                        : [ obj[n], v ];
+            });
+
+            return obj;
+        };
         $("#sitethemeselect").on("change",()=>{
             let theme = $("#sitethemeselect").val();
             console.log(getCookie("theme"));
@@ -216,7 +236,6 @@
         $('#passr').submit(function (e) {
             e.preventDefault();
             const form = $(this);
-            console.log("t3este")
             if (!recup)
                 $.post({
                     url: "",
@@ -256,19 +275,20 @@
             if (!regis)
                 $.post({
                     beforeSend: function () {
+                        console.log("enviando..")
                         $("#cadastrar .btn").attr("disabled", true);
                         $("#cadastrar .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto criamos sua conta...</div>");
                         regis = true;
                     },
                     url: "",
-                    data: form.serialize() + "&status=cadastro",
+                    data: form.serialize() + "&query=conta_cadastro",
                     dataType: "JSON",
                     success: (data) => {
                         if (!data.success) {
+                            regis = false;
                             $("#cadastrar .btn").attr("disabled", false);
                             $("#cadastrar .return").html('<div class="alert alert-danger"><i class="fal fa-x"></i> ' + data.msg + "</div>");
                         } else {
-                            regis = false;
                             $("#cadastrar .return").html('<div class="alert alert-success"><i class="fal fa-check"></i> ' + data.msg + '</div>');
                             window.location.href = "./";
                         }
@@ -278,9 +298,7 @@
                         $("#cadastrar .btn").attr("disabled", false);
                         $("#cadastrar .return").html("<div class='alert alert-danger'><i class='fal fa-x'></i> Houve um erro ao fazer a solicitação, contate um administrador!</div>");
                     },
-                }).done(function (data) {
-
-                });
+                })
         });
         $('#login').submit(function (e) {
             e.preventDefault();
@@ -294,7 +312,7 @@
                         $("#login .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto fazemos um rolamento no login...</div>");
                     },
                     url: "/",
-                    data: form.serialize() + "&status=login",
+                    data: form.serialize() + "&query=conta_login",
                     dataType: "JSON",
                     success: (data) => {
                         if (!data.success) {
@@ -327,36 +345,6 @@
         let up;
         let enviando = false;
 
-        $('#btnaddmarca').on('click', function () {
-            const url = $('#addfotomarca input').val();
-            console.log("afas")
-            if (url.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") || url == "") {
-                if (!up) {
-                    $.post({
-                        url: '',
-                        data: {status: 'addmarca', urlmarca: url},
-                        dataType: "JSON"
-                    }).done(function (data) {
-                        console.log(data)
-                        if (data.msg) {
-                            if (!data.success) {
-                                $("#addfotomarca .return").html('<div class="alert alert-danger">' + data.msg + "</div>");
-                            } else {
-                                up = true;
-                                $("#addfotomarca .return").html('<div class="alert alert-success">' + data.msg + '</div>');
-                            }
-                        }
-                    }).fail(function (d) {
-                        console.log(d);
-                        $("#perfil .return").html(`<div class="alert alert-success m-2">Houve uma falha ao fazer a alteração.
-								<span class="float-end" role="button" onclick="copiar(\`${d.responseText}\`)"><i class="fas fa-copy" aria-hidden="true"></i></span>
-									</div>`);
-                    })
-                }
-            } else {
-
-            }
-        })
 
         $('#addfotomarca input').on('input', function () {
             var src = jQuery(this).val();
@@ -395,7 +383,7 @@
                 if (!enviando) {
                     $.post({
                         url: '',
-                        data: $this.serialize() + "&status=conta",
+                        data: $this.serialize() + "&query=conta_update",
                         dataType: "json",
                         beforeSend: () => {
                             enviando = true;
@@ -452,7 +440,7 @@
             $.ajax({
                 url: "",
                 method: "post",
-                data: {status: "addmarca", urlmarca: $("#addmarcadiv input").val()},
+                data: {query: "conta_update_marca", urlmarca: $("#addmarcadiv input").val()},
                 dataType: "json",
                 beforeSend: () => {
                     $("#addmarcadiv input, #addmarcadiv button").attr("disabled", true);

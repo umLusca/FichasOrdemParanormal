@@ -117,21 +117,20 @@
 <?php }
 if (isset($_SESSION["UserID"])) { ?>
     <div class="modal fade" id="perfil" tabindex="-1" aria-label="Perfil Modal" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-xl">
             <div class="modal-content border-secondary">
                 <div class="modal-header">
                     <h1 class="fs-5 modal-title">Configurações</h1>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" title="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row row-cols-2 row-cols-md-2 g-2 m-3">
+                    <div class="row row-cols-1 row-cols-lg-2 g-2 m-3">
                         <div class="col">
                             <div class="card border-secondary h-100">
                                 <div class="card-header">
                                     <h1 class="fs-4 card-title">Personalizar</h1>
                                 </div>
                                 <div class="card-body">
-
                                     <label class="form-floating">
                                         <select class="form-select" id="sitethemeselect" aria-label="Tema do site">
 	                                        <?=Super_options("tema",$_SESSION["theme"])?>
@@ -164,7 +163,7 @@ if (isset($_SESSION["UserID"])) { ?>
                                                 <i class="fal fa-send"></i>
                                             </button>
                                         </div>
-                                        <div class="preview d-flex justify-content-center">
+                                        <div class="preview d-flex justify-content-center m-2">
                                             <img src="<?= $_SESSION["UserMarca"] ?>" style="width: 50%;  max-width: 200px;" alt="Marca">
                                         </div>
                                     </div>

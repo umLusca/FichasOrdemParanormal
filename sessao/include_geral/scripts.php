@@ -1,4 +1,5 @@
 <script type="text/babel">
+    const ToastDados = new bootstrap.Toast($('#Toastdados'));
     const modaleditardado = new bootstrap.Modal('#editardado')
     var i = 0, timeOut = 0;
     $(document).on("hidden.bs.toast", () => {
@@ -13,26 +14,12 @@
         modaleditardado.toggle();
     }
     
-    function rolar(dado1, dado2 = undefined, dado3 = undefined) {
-
-        if (typeof dado1 === "string") {
-
-            let dano, nome, dado;
-            dado = dado1;
-            typeof dado2 !== "object" && dado2 ? dano = dado2 : dano = false;
-            typeof dado3 === "string" ? nome = dado3 : nome = "Teste";
-
-            dado1 = {
-                nome: nome,
-                dado: dado,
-                dano: dano,
-            }
-            dado2 = undefined;
-            dado3 = undefined;
+    function rolar(dados) {
+        console.log("teste")
+        if(!(dados instanceof Array)){
+            dados = [dados];
         }
-        console.log(dado1)
-        let ficha = '<?=$fichat ?: ''?>';
-
+        let ficha = '<?=$token ?: ''?>';
 
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -40,10 +27,10 @@
                 method: "post",
                 data: {
                     query: "rolar_dado",
-                    dado: dado1["dado"],
-                    dano: dado1["dano"],
-                    nome: dado1["nome"],
-                    margem: dado1["margem"] ? dado1["margem"] : 20
+                    dado: dados[0]["dado"],
+                    dano: dados[0]["dano"],
+                    nome: dados[0]["nome"],
+                    margem: dados[0]["margem"] ? dados[0]["margem"] : 20
                     
                 },
                 dataType: "json",
@@ -51,10 +38,9 @@
                     $("main button").attr("disabled", true);
                 },
                 success: (data) => {
-                    console.log(data)
-                    if (data.success) {
-                        socket.emit('<?=$missao_token ?: $fichat?>', {dado: {nome: dado1["nome"], ...data}, ficha: ficha});
-
+                    console.log(data);
+                    if (data["success"]) {
+                        data = data.dado
                         function RolledDices(p) {
                             let retorno = [];
                             console.log(p);
@@ -89,12 +75,12 @@
 
                             return retorno;
                         }
-
+                        
                         if (data["critico"]) {
                             console.log("critou")
                             $("#Toastdados").addClass("border-danger").removeClass("border-info");
                             $("#Toastdados .toast-body").addClass("vibrate");
-                        } else if (dado1["dano"]) {
+                        } else if (dados[0]["dano"]) {
                             $("#Toastdados").addClass("border-danger").removeClass("border-info");
                             $("#Toastdados .toast-body").removeClass("vibrate");
                         } else {
@@ -104,19 +90,19 @@
                         }
 
                         let footer = [];
-                        if (typeof dado2 === "object") {
+                        if (typeof dados[1] === "object") {
                             footer[footer.length] =
-                                <button className="btn btn-sm btn-outline-danger" onClick={() => rolar(dado2)}>Rolar
+                                <button className="btn btn-sm btn-outline-danger" onClick={() => rolar(dados[1])}>Rolar
                                     Dano</button>;
                         }
-                        if (typeof dado3 === "object") {
+                        if (typeof dados[2] === "object") {
                             footer[footer.length] =
-                                <button className="btn btn-sm btn-outline-danger" onClick={() => rolar(dado3)}>Rolar
+                                <button className="btn btn-sm btn-outline-danger" onClick={() => rolar(dados[2])}>Rolar
                                     Crítico</button>;
                         }
                         ReactDOM.createRoot($("#Toastdados")[0]).render([
                             <div className="toast-header">
-                                <span className="me-auto fs-5">{dado1["nome"]}</span>
+                                <span className="me-auto fs-5">{dados[0]["nome"]}</span>
                                 <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>,
                             <div className={"toast-body pb-0 " + (data["critico"] ? "vibrate" : "")}>
@@ -128,21 +114,21 @@
                             <div className="toast-footer btn-group w-100">
                                 {footer}
                             </div>])
-                        new bootstrap.Toast($('#Toastdados')).show();
+                        ToastDados.show();
                         resolve({status: true});
                     } else {
                         ReactDOM.createRoot($("#Toastdados")[0]).render([
                             <div className="toast-header">
-                                <span className="me-auto fs-5">{dado1["nome"]}</span>
+                                <span className="me-auto fs-5">{dados[0]["nome"]}</span>
                                 <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>,
                             <div className={"toast-body pb-0"}>
                                 <div>
                                     <h3>Falha...</h3>
-                                    <p>{data.msg}</p>
+                                    <p>{data["msg"]}</p>
                                 </div>
                             </div>])
-                        new bootstrap.Toast($('#Toastdados')).show();
+                        ToastDados.show();
                         
                         $("main button").attr("disabled", false);
                         resolve({status: false, ...data});
@@ -151,8 +137,20 @@
 
 
                 },
-                error: () => {
-                    
+                error: (d) => {
+                    console.log(d);
+                    ReactDOM.createRoot($("#Toastdados")[0]).render([
+                        <div className="toast-header">
+                            <span className="me-auto fs-5">Erro de conexão</span>
+                            <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>,
+                        <div className={"toast-body pb-0"}>
+                            <div>
+                                <h3>Falha...</h3>
+                                <p>Houve um erro, verifique sua internet...</p>
+                            </div>
+                        </div>])
+                    ToastDados.show();
                     $("main button").attr("disabled", false);
                     resolve({status: false});
                 },
@@ -160,13 +158,15 @@
         })
     }
 
-
+    let pattern = /^([+-]?((100|\d{1,2}|\/[ADEFGINOPRTV]{3,4}\/)?((d)(100|[1-9]\d?|\/[ADEFGINOPRTV]{3,4}\/))?)|(\d{0,3}|1000))([+-]((100|\d{1,2}|\/[ADEFGINOPRTV]{3,4}\/)?((d)(100|[1-9]\d?|\/[ADEFGINOPRTV]{3,4}\/))?)|([+-]\d{0,3}|1000)?)*$/g;
+    
+    
+    
     $(() => {
         $("#formfastdice input").on("input", () => {
             let dado = $("#formfastdice input").val();
-            let pattern = /^[AdDEFGINOPRTV\d/+-]+\S$/g;
             if (!dado.match(pattern) && dado !== "") {
-                $("#formfastdice .return").html(`<div class="alert alert-danger">Esse dado não é válido</div>`)
+                $("#formfastdice .return").html(`<div class="alert alert-danger">Esse dado é inválido, para dúvidas clique em <i class="far fa-circle-info"></i></div>`)
             } else {
                 $("#formfastdice .return").html(``)
             }
@@ -174,7 +174,6 @@
         })
         $("#formfastdice").on("submit", (t) => {
             t.preventDefault();
-            let pattern = /^[AdDEFGINOPRTV\d/+-]+\S$/g;
             let dado = $("#formfastdice input").val();
 
             console.log(dado);
@@ -184,11 +183,7 @@
                     nome: "Teste rápido",
                     dano: false,
                     margem: 100
-                }).then((d)=>{
-                    if(!d.status){
-                        $("#formfastdice .return").html(`<div class="alert alert-danger">${d.msg}</div>`)
-                    }
-                });
+                })
             }
 
         })

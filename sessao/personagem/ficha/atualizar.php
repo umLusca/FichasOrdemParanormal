@@ -319,15 +319,15 @@ if ($edit) {
 				$a->execute();
 				break;
 			case 'editpri':
-				$ra = $rqs;
+				$ra = $ficha;
 				$nex = $ra["nex"];
-				if ($rqs["nex"] == 99) {
+				if ($ficha["nex"] == 99) {
 					$nex = 100;
 				}
 				//Saúde
 				$pv = minmax((int)$_POST["pv"], $minimo_PV, $maximo_PV);
 				if ($pv == 1) {
-					$pv = calcularvida($nex, $rqs["classe"], $rqs["vigor"], $rqs["trilha"], $rqs["origem"]);
+					$pv = calcularvida($nex, $ficha["classe"], $ficha["vigor"], $ficha["trilha"], $ficha["origem"]);
 					if ($pva < ($pv + $maximo_PVA)) {
 						$pva = $pv;
 					}
@@ -335,7 +335,7 @@ if ($edit) {
 
 				$san = minmax((int)$_POST["san"], $minimo_SAN, $maximo_SAN);
 				if ($san == 1) {
-					$san = calcularsan($nex, $rqs["classe"], $rqs["trilha"], $rqs["origem"]);
+					$san = calcularsan($nex, $ficha["classe"], $ficha["trilha"], $ficha["origem"]);
 					if ($sana < ($san + $maximo_SANA)) {
 						$sana = $san;
 					}
@@ -343,7 +343,7 @@ if ($edit) {
 
 				$pe = minmax((int)$_POST["pe"], $minimo_PE, $maximo_PE);
 				if ($pe == 1) {
-					$pe = calcularpe($nex, $rqs["classe"], $rqs["presenca"], $rqs["trilha"], $rqs["origem"]);
+					$pe = calcularpe($nex, $ficha["classe"], $ficha["presenca"], $ficha["trilha"], $ficha["origem"]);
 					if ($pea < ($pe + $maximo_PEA)) {
 						$pea = $pe;
 					}
@@ -496,13 +496,13 @@ if ($edit) {
 
 
 				if ($pv == 1) {
-					$pv = calcularvida($rqs["nex"], $rqs["classe"], $vigor, $rqs["trilha"], $rqs["origem"]);
+					$pv = calcularvida($ficha["nex"], $ficha["classe"], $vigor, $ficha["trilha"], $ficha["origem"]);
 				}
 				if ($san == 1) {
-					$san = calcularsan($rqs["nex"], $rqs["classe"], $rqs["trilha"], $rqs["origem"]);
+					$san = calcularsan($ficha["nex"], $ficha["classe"], $ficha["trilha"], $ficha["origem"]);
 				}
 				if ($pe == 1) {
-					$pe = calcularpe($rqs["nex"], $rqs["classe"], $presenca, $rqs["trilha"], $rqs["origem"]);
+					$pe = calcularpe($ficha["nex"], $ficha["classe"], $presenca, $ficha["trilha"], $ficha["origem"]);
 				}
 				if ($pva > ($pv + $maximo_PVA)) {
 					$pva = $pv + $maximo_PVA;

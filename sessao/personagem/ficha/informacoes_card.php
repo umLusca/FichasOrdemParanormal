@@ -3,7 +3,7 @@
         <div class="card-header d-flex justify-content-between">
             <?php if (!isset($_GET["popout"]) and $edit) { ?>
                 <div class="float-start">
-                    <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
+                    <button class="btn btn-sm text-secondary fa-lg popout" title="PopOut">
                         <i class="fal fa-rectangle-vertical-history"></i>
                     </button>
                 </div>
@@ -32,30 +32,30 @@
                     </div>
                 </div>
                 <?php
-                if (!empty($rqs["classe"])) {
+                if (!empty($ficha["classe"])) {
                     ?>
                     <div class="col">
                         <div class="m-2 p-1">
                             <div class="bg-body position-absolute mx-2 pt-1 px-1 text-center">Classe</div>
-                            <div class="p-2 my-3 border border-secondary"><?= $rqs["classe"] ?></div>
+                            <div class="p-2 my-3 border border-secondary"><?= $ficha["classe"] ?></div>
                         </div>
                     </div>
                 <?php } ?>
                 <?php
-                if (!empty($rqs["trilha"])) {
+                if (!empty($ficha["trilha"])) {
                     ?>
                     <div class="col">
                         <div class="m-2 p-1">
                             <div class="bg-body position-absolute mx-2 pt-1 px-1 text-center">Trilha</div>
-                            <div class="p-2 my-3 border border-secondary"><?= $rqs["trilha"] ?></div>
+                            <div class="p-2 my-3 border border-secondary"><?= $ficha["trilha"] ?></div>
                         </div>
                     </div>
                 <?php } ?>
-                <?php if (!empty($rqs["origem"])) { ?>
+                <?php if (!empty($ficha["origem"])) { ?>
                     <div class="col">
                         <div class="m-2 p-1">
                             <div class="bg-body position-absolute mx-2 pt-1 px-1 text-center">Origem</div>
-                            <div class="p-2 my-3 border border-secondary"><?= $rqs["origem"] ?></div>
+                            <div class="p-2 my-3 border border-secondary"><?= $ficha["origem"] ?></div>
                         </div>
                     </div>
                 <?php } ?>
@@ -92,11 +92,11 @@
                         </div>
                     </div>
                 <?php } ?>
-                <?php if (!empty($rqs["afinidade"])) { ?>
+                <?php if (!empty($ficha["afinidade"])) { ?>
                     <div class="col">
                         <div class="m-2 p-1">
                             <div class="bg-body position-absolute mx-2 pt-1 px-1 text-center">Afinidade</div>
-                            <div class="p-2 my-3 border border-secondary"><?= $rqs["afinidade"] ?></div>
+                            <div class="p-2 my-3 border border-secondary"><?= $ficha["afinidade"] ?></div>
                         </div>
                     </div>
                 <?php } ?>

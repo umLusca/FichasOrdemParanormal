@@ -1,36 +1,135 @@
-<!-- Modal proeficiencias-->
+<!-- Modal proficiencias-->
 <form class="modal modal-xl fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
-        <div class="modal-content bg-black border-light">
+        <div class="modal-content">
             <div class="modal-header">
                 <span class="fs-4 modal-title">Editar Status</span>
-                <button type="button" class="btn-close btn-close-white"
-                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
-                        <span class="text-info fa-solid fa-circle-info"> Os campos em azuis pode ser calculados automaticamente colocando 1.</span>
+                <span class="text-info"><i class="fa-solid fa-circle-info"></i> Sua vida, sanidade e esforço não atualiza quando muda de nex! para isso abra essa janela e clique em salvar quando alterar</span>
 
-                <h4 class="text-center mt-3">Saúde</h4>
-                <div class="row row-cols-1 row-cols-md-3 g-2">
-                    <div class="">
-                        <label class="input-group input-group-sm">
-                            <span class="border-info input-group-text bg-black text-white border-end-0">Vida: total</span>
-                            <input class="border-info form-control bg-black text-white border-start-0"
-                                   min="1" max="999" type="number" name="pv" value="<?= $pv ?>"/>
-                        </label>
+                <h4 class="text-center mt-3">Saúde <button class="btn btn-sm btn-outline-info" type="button">Ajuda</button></h4>
+                <div class="row g-2">
+                    <div class="col-12 col-xl-6">
+                        <div class="card m-2">
+                            <h5 class="card-header">Vida</h5>
+                            <div class="card-body">
+                                <label class="form-check form-switch">
+                                    <input class="form-check-input changecalc" data-fop-type="pv" type="checkbox" role="switch">
+                                    <span class="form-check-label">Calculo Automático</span>
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="input-group">
+                                            <span class="input-group-text border-end-0">Total</span>
+                                            <input class="form-control  border-start-0" min="0" max="<?=$maximo_PV?>" type="number" name="pv" value="<?=  $ficha["pv"] ?>"/>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-10" max="10" disabled type="number" name="bpv" value="<?=  $ficha["bpv"] ?>" required/>
+                                            <label class="">Bônus por nível</label>
+                                            
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="0" max="20" disabled type="number" name="skippedpv" value="<?=  $ficha["skippedpv"] ?>" required/>
+                                            <label class="">Níveis Pulados</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-999" max="999" disabled type="number" name="somapv" value="<?=  $ficha["somapv"] ?>" required/>
+                                            <label class="">Soma no total</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="">
-                        <label class="input-group input-group-sm">
-                            <span class="border-info input-group-text bg-black text-white border-end-0">Sanidade: total</span>
-                            <input class="border-info form-control bg-black text-white border-start-0"
-                                   type="number" min=1 max="999" name="san" value="<?= $san ?>"/>
-                        </label>
+                    <div class="col-12 col-xl-6">
+                        <div class="card m-2">
+                            <h5 class="card-header">Sanidade</h5>
+                            <div class="card-body">
+                                <label class="form-check form-switch">
+                                    <input class="form-check-input changecalc" data-fop-type="san" value="true" type="checkbox" role="switch">
+                                    <span class="form-check-label">Calculo Automático</span>
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="input-group">
+                                            <span class="input-group-text border-end-0">Total</span>
+                                            <input class="form-control  border-start-0" min="0" max="<?=$maximo_SAN?>" type="number" name="san" value="<?=  $ficha["san"] ?>"/>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-10" max="10" disabled type="number" name="bsan" value="<?= $ficha["bsan"] ?>"/>
+                                            <label class="">Bônus por nível</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="0" max="20" disabled type="number" name="skippedsan" value="<?=  $ficha["skippedsan"] ?>"/>
+                                            <label class="">Níveis Pulados</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-999" max="999" disabled type="number" name="somasan" value="<?=  $ficha["somasan"] ?>"/>
+                                            <label class="">Soma no total</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-12">
+                        <div class="card m-2">
+                            <h5 class="card-header">Esforço</h5>
+                            <div class="card-body">
+                                <label class="form-check form-switch">
+                                    <input class="form-check-input changecalc" data-fop-type="pe" type="checkbox" role="switch">
+                                    <span class="form-check-label">Calculo Automático</span>
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="input-group">
+                                            <span class="input-group-text border-end-0">Total</span>
+                                            <input class="form-control  border-start-0" min="0" max="<?=$maximo_PE?>" type="number" name="pe" value="<?=  $ficha["pe"] ?>"/>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-10" max="10" disabled type="number" name="bpe" value="<?=  $ficha["bpe"] ?>"/>
+                                            <label class="">Bônus por nível</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="0" max="20" disabled  type="number" name="skippedpe" value="<?=  $ficha["skippedpe"] ?>"/>
+                                            <label class="">Níveis Pulados</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-floating" style="display: none">
+                                            <input class="form-control" min="-999" max="999" disabled type="number" name="somape" value="<?=  $ficha["somape"] ?>"/>
+                                            <label class="">Soma no total</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="text-center mt-3">Conta-balas</h4>
+                <div class="row row-cols-1 g-2">
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="border-info input-group-text bg-black text-white border-end-0">Esforço: total</span>
-                            <input class="border-info form-control bg-black text-white border-start-0"
-                                   min="0" max="200" type="number" name="pe" value="<?= $pe ?>"/>
+                            <span class="input-group-text  border-end-0">Quantidade de balas:</span>
+                            <input class="form-control  border-start-0" type="number" min="0" max="30" name="balas" value="<?= $ficha["balas"] ?>"/>
                         </label>
                     </div>
                 </div>
@@ -38,20 +137,20 @@
                 <div class="row row-cols-1 row-cols-md-3 g-2">
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Passiva:</span>
-                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="passiva" value="<?= $passiva ?>"/>
+                            <span class="input-group-text  border-end-0">Passiva:</span>
+                            <input class="form-control  border-start-0" type="number" min="0" max="999" name="passiva" value="<?= $passiva ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Esquiva:</span>
-                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="esquiva" value="<?= $esquiva ?>"/>
+                            <span class="input-group-text  border-end-0">Esquiva:</span>
+                            <input class="form-control  border-start-0" type="number" min="0" max="999" name="esquiva" value="<?= $esquiva ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Bloqueio:</span>
-                            <input class="form-control bg-black text-white border-start-0" type="number" min="0" max="999" name="bloqueio" value="<?= $bloqueio ?>"/>
+                            <span class="input-group-text  border-end-0">Bloqueio:</span>
+                            <input class="form-control  border-start-0" type="number" min="0" max="999" name="bloqueio" value="<?= $bloqueio ?>"/>
                         </label>
                     </div>
                 </div>
@@ -59,36 +158,36 @@
                 <div class="row row-cols-1 row-cols-md-2 g-1">
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Mental:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Mental:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="mental" value="<?= $insanidade ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Morte:</span>
-                            <input class="form-control bg-black text-white border-start-0" type="number" min="0"
+                            <span class="input-group-text  border-end-0">Morte:</span>
+                            <input class="form-control  border-start-0" type="number" min="0"
                                    max="50" name="morte" value="<?= $morte ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Conhecimento:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Conhecimento:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="conhecimento" value="<?= $conhecimento ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Sangue:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Sangue:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="sangue" value="<?= $sangue ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Energia:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Energia:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="energia" value="<?= $energia ?>"/>
                         </label>
                     </div>
@@ -100,77 +199,77 @@
 
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Física:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Física:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="fisica" value="<?= $fisica ?>"/>
                         </label>
                     </div>
                     <div class="">
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Balística:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Balística:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="balistica" value="<?= $balistica ?>"/>
                         </label>
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Corte:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Corte:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="corte" value="<?= $corte ?>"/>
                         </label>
 
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Impacto:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Impacto:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="impacto" value="<?= $impacto ?>"/>
                         </label>
 
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Perfuração:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Perfuração:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="perfuracao" value="<?= $perfuracao ?>"/>
                         </label>
 
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Eletricidade:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Eletricidade:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="eletricidade" value="<?= $eletricidade ?>"/>
                         </label>
 
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Fogo:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Fogo:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="fogo" value="<?= $fogo ?>"/>
                         </label>
 
                     </div>
                     <div>
                         <label class="input-group input-group-sm"><span
-                                    class="input-group-text bg-black text-white border-end-0">Frio:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                                    class="input-group-text  border-end-0">Frio:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="frio" value="<?= $frio ?>"/></label>
                     </div>
                     <div>
                         <label class="input-group input-group-sm">
-                            <span class="input-group-text bg-black text-white border-end-0">Química:</span>
-                            <input class="form-control bg-black text-white border-start-0"
+                            <span class="input-group-text  border-end-0">Química:</span>
+                            <input class="form-control  border-start-0"
                                    type="number" min="0" max="50" name="quimico" value="<?= $quimica ?>"/>
                         </label>
                     </div>
 
 
-                    <input type="hidden" name="status" value="editpri"/>
                 </div>
             </div>
             <div class="modal-footer">
+                <input type="hidden" name="query" value="ficha_update_status"/>
                 <button class="btn btn-outline-success w-100" type="submit">Salvar</button>
             </div>
         </div>
@@ -188,41 +287,40 @@
             </div>
 
             <div class="modal-body justify-content-center text-center">
-
-                <?php
-                $k = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "' AND `id_ficha` IS NOT NULL;");
-                if ($k->num_rows) {
-                    echo "<h5>Com missão</h5>";
-                    foreach ($k as $r):
-                        $ks = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` = '" . $r["id_ficha"] . "'");
-                        $rs = mysqli_fetch_array($ks);
-                        ?>
+				
+				<?php
+				$k = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario` = '" . $_SESSION["UserID"] . "' AND `id_ficha` IS NOT NULL;");
+				if ($k->num_rows) {
+					echo "<h5>Com missão</h5>";
+					foreach ($k as $r):
+						$ks = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` = '" . $r["id_ficha"] . "'");
+						$rs = mysqli_fetch_array($ks);
+						?>
                         <div class="d-grid gap-2 m-2">
                             <a class="btn btn-primary" href="./?token=<?= $rs["token"] ?>"><?= $rs["nome"] ?></a>
                         </div>
-                    <?php
-                    endforeach;
-                }
-                $k = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "';");
-                if ($k->num_rows) {
-                    echo "<h5>Todas as Fichas</h5>";
-                    foreach ($k as $r):
-                        ?>
+					<?php
+					endforeach;
+				}
+				$k = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '" . $_SESSION["UserID"] . "';");
+				if ($k->num_rows) {
+					echo "<h5>Todas as Fichas</h5>";
+					foreach ($k as $r):
+						?>
                         <div class="d-grid gap-2 m-2">
                             <a class="btn btn-primary" href="./?token=<?= $r["token"] ?>"><?= $r["nome"] ?></a>
                         </div>
-                    <?php
-                    endforeach;
-                }
-
-                ?>
+					<?php
+					endforeach;
+				}
+				
+				?>
             </div>
         </div>
     </div>
 </div>
 
 
-<!-- Modal proeficiencias-->
 <form class="modal modal-xl fade" id="editfoto" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
         <div class="modal-content bg-black border-light">
@@ -264,7 +362,7 @@
                                         <label class="progress" style="display: none;">
                                             <label class="progress-bar" id="fp_progress" role="progressbar"></label>
                                         </label>
-                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp" id="fp_file" onchange="uploadFile('fp_',this,'<?= $fichat ?>','fp',()=>editupdatefoto($('#fp_input').val(),'#editfoto img'))" hidden/>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp" id="fp_file" onchange="uploadFile('fp_',this,'<?= $token ?>','fp',()=>editupdatefoto($('#fp_input').val(),'#editfoto img'))" hidden/>
                                     </label>
                                 </div>
                                 <div class="m-2 input-group">
@@ -277,7 +375,7 @@
                                         <label class="progress" style="display: none;">
                                             <label class="progress-bar" id="ff_progress" role="progressbar"></label>
                                         </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('ff_',this,'<?= $fichat ?>','ff',()=>editupdatefoto($('#ff_input').val(),'#editfoto img'))" hidden/>
+                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('ff_',this,'<?= $token ?>','ff',()=>editupdatefoto($('#ff_input').val(),'#editfoto img'))" hidden/>
                                     </label>
                                 </div>
                                 <div class="m-2 input-group">
@@ -290,7 +388,7 @@
                                         <label class="progress" style="display: none;">
                                             <label class="progress-bar" id="fm_progress" role="progressbar"></label>
                                         </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fm_',this,'<?= $fichat ?>','fm',()=>editupdatefoto($('#fm_input').val(),'#editfoto img'))" hidden/>
+                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fm_',this,'<?= $token ?>','fm',()=>editupdatefoto($('#fm_input').val(),'#editfoto img'))" hidden/>
                                     </label>
                                 </div>
                                 <div class="m-2 input-group">
@@ -303,7 +401,7 @@
                                         <label class="progress" style="display: none;">
                                             <label class="progress-bar" id="fe_progress" role="progressbar"></label>
                                         </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fe_',this,'<?= $fichat ?>','fe',()=>editupdatefoto($('#fe_input').val(),'#editfoto img'))" hidden/>
+                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fe_',this,'<?= $token ?>','fe',()=>editupdatefoto($('#fe_input').val(),'#editfoto img'))" hidden/>
                                     </label>
 
                                 </div>
@@ -317,7 +415,7 @@
                                         <label class="progress" style="display: none;">
                                             <label class="progress-bar" id="fef_progress" role="progressbar"></label>
                                         </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fef_',this,'<?= $fichat ?>','fef',()=>editupdatefoto($('#fef_input').val(),'#editfoto img'))" hidden/>
+                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fef_',this,'<?= $token ?>','fef',()=>editupdatefoto($('#fef_input').val(),'#editfoto img'))" hidden/>
                                     </label>
                                 </div>
                             </div>
@@ -328,9 +426,9 @@
                         <div class="return"></div>
                     </div>
                 </div>
-                <input type="hidden" name="status" value="editfoto">
             </div>
             <div class="modal-footer">
+                <input type="hidden" name="query" value="ficha_update_foto">
                 <button class="btn btn-outline-success w-100" type="submit">Salvar</button>
             </div>
         </div>

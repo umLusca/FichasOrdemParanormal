@@ -1,14 +1,16 @@
 
 function desvincular(p) {
-    let text = "DESEJA DESVINCULAR ESSA FICHA?\nNÃO SERÁ POSSIVEL REVERTER!";
-    if (confirm(text) === true) {
-        $.post({
-            data: {query: "mestre_desvincular_player", p: p},
-            url: "",
-        }).done(function (data) {
-            console.log(data);
-        });
-    }
+    confirmar("Tem certeza?", "Tem certeza que quer desvincular essa ficha?").then(s=>{
+        if (s){
+            $.post({
+                data: {query: "mestre_delete_player", p: p},
+                url: "",
+            }).done(function () {
+                location.reload();
+            });
+
+        }
+    })
 }
 
 
@@ -24,6 +26,14 @@ function toggleCombate(t) {
         $(t).addClass("btn-warning").removeClass("btn-outline-warning");
         $(t).find(".fa-slash").hide()
     }
+    checked = $(t).attr("aria-checked");
+    console.log(checked);
+    $.ajax({
+        url:"",
+        method: "post",
+        data:{query:"mestre_toggle_combate","token":token,"combate":checked},
+        success:(d)=>console.log(d),
+    })
     $(t).blur();
 }
 

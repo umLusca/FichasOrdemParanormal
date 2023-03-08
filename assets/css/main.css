@@ -1,8 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Cagliostro&display=swap&family=Concert+One&family=EB+Garamond&family=Flow+Circular&family=IM+Fell+English+SC&family=Lemon&family=Permanent+Marker&family=Special+Elite&family=Yuji+Boku&display=swap');
 /* Chrome, Edge, and Safari */
 @font-face {
-    font-family: sigilos;
-    src: url('https://beta.fichasop.com/assets/css/sigilos.ttf');
+    font-family: 'sigilos';
+    src: url('/assets/css/sigilos.ttf');
+}
+@font-face {
+    font-family: 'desconjuras';
+    src: url("/assets/css/iknowaghost.ttf");
+}
+@font-face {
+    font-family: 'sinais';
+    src: url('/assets/css/SinaisEstrangeiro.ttf');
+}
+@font-face {
+    font-family: 'daisywheelregular';
+    src: url('../../../assets/css/daisywhl-webfont.woff2') format('woff2'),
+    url('../../../assets/css/daisywhl-webfont.woff') format('woff');
+
 }
 
 .border-dotted {
@@ -15,7 +29,12 @@
 
 .sigilos {
     font-family: sigilos;
-    color: yellow;
+}
+.sinais {
+    font-family: sinais;
+}
+.desconjuras {
+    font-family: desconjuras;
 }
 
 *::-webkit-scrollbar {
@@ -32,6 +51,12 @@ html[data-bs-theme=dark] *::-webkit-scrollbar-thumb {
     border: 0 none #000000;
 }
 
+
+html[data-bs-theme=light] .foto_ritual {
+
+    -webkit-filter: invert(100%);
+
+}
 
 html[data-bs-theme=light] *::-webkit-scrollbar-track {
     background: #ffffff00;
@@ -56,12 +81,6 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-@font-face {
-    font-family: 'daisywheelregular';
-    src: url('../../../assets/css/daisywhl-webfont.woff2') format('woff2'),
-    url('../../../assets/css/daisywhl-webfont.woff') format('woff');
-
-}
 
 .font1 {
     font-family: 'Concert One', cursive;
@@ -103,13 +122,21 @@ input[type=number] {
     font-family: 'Cagliostro', sans-serif;
 }
 
+html[data-bs-theme=light] .containera {
+    background-image: url(/assets/img/Atributes_light.webp);
+}
+html[data-bs-theme=dark] .containera {
+    background-image: url(/assets/img/Atributes.webp);
+}
 .containera {
+    background-repeat: no-repeat;
+    background-size: 300px auto;
     position: relative;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     width: 300px;
-    height: auto;
+    height: 302px;
     color: white;
 }
 
@@ -120,6 +147,7 @@ input[type=number] {
 
 .atributos {
     font-size: 30px;
+    transform: translate(-167%, 0%);
     position: absolute;
     text-align: center;
     height: 88px;

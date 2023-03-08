@@ -161,24 +161,24 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="my-2">
                                     <h4>Resistências</h4>
                                     <div class="row m-2 g-2 justify-content-center">
-	
-	                                    <?= pill("Morte", $r["morte"]) ?>
-	                                    <?= pill("Sangue", $r["sangue"]) ?>
-	                                    <?= pill("Energia", $r["energia"]) ?>
-	                                    <?= pill("Conhecimento", $r["conhecimento"]) ?>
-	                                    <?= pill("Mental", $r["mental"]) ?>
-	                                    <?= pill("Física", $r["fisica"]) ?>
-	                                    <?= pill("Balística", $r["balistica"]) ?>
-                                     
-                                     
-								  </div>
+										
+										<?= pill("Morte", $r["morte"]) ?>
+										<?= pill("Sangue", $r["sangue"]) ?>
+										<?= pill("Energia", $r["energia"]) ?>
+										<?= pill("Conhecimento", $r["conhecimento"]) ?>
+										<?= pill("Mental", $r["mental"]) ?>
+										<?= pill("Física", $r["fisica"]) ?>
+										<?= pill("Balística", $r["balistica"]) ?>
+
+
+                                    </div>
                                     </div><?php }
 								?>
                             </div>
                             <div class="tab-pane fade" id="pills-pericias<?= $r["id"] ?>" role="tabpanel" aria-labelledby="pills-pericias-tab<?= $r["id"] ?>" tabindex="0">
 								<?php
 								if ($r["acrobacia"] != 0 || $r["adestramento"] != 0 || $r["atletismo"] != 0 ||
-									$r["atualidade"] != 0 || $r["ciencia"] != 0 || $r["diplomacia"] != 0 ||
+									$r["atualidade"] != 0 || $r["artes"] != 0 || $r["ciencia"] != 0 || $r["diplomacia"] != 0 ||
 									$r["enganacao"] != 0 || $r["fortitude"] != 0 || $r["furtividade"] != 0 ||
 									$r["iniciativa"] != 0 || $r["intimidacao"] != 0 || $r["intuicao"] != 0 ||
 									$r["investigacao"] != 0 || $r["luta"] != 0 || $r["medicina"] != 0 ||
@@ -190,34 +190,35 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="mt-4 pericias">
                                         <h4>Perícias</h4>
                                         <div class="row g-2 m-2 justify-content-center">
-	                                        <?= pillbutton("Acobracia", $r["acrobacia"],true,"rolar('{$r["acrobacia"]}d20',false,'Acobracia')") ?>
-	                                        <?= pillbutton("Adestramento", $r["adestramento"],true,"rolar('{$r["adestramento"]}d20',false,'Adestramento')") ?>
-	                                        <?= pillbutton("Atletismo", $r["atletismo"],true,"rolar('{$r["atletismo"]}d20',false,'Atletismo')") ?>
-	                                        <?= pillbutton("Atualidade", $r["atualidade"],true,"1drolar('{$r["atualidade"]}d20',false,'Atualidade')") ?>
-	                                        <?= pillbutton("Ciência", $r["ciencia"],true,"rolar('{$r["ciencia"]}d20',false,'Ciência')") ?>
-	                                        <?= pillbutton("Crime", $r["crime"],true,"rolar('{$r["crime"]}d20',false,'Crime')") ?>
-	                                        <?= pillbutton("Diplomacia", $r["diplomacia"],true,"rolar('{$r["diplomacia"]}d20',false,'Diplomacia')") ?>
-	                                        <?= pillbutton("Enganação", $r["enganacao"],true,"rolar('{$r["enganacao"]}d20',false,'Enganação')") ?>
-	                                        <?= pillbutton("Fortitude", $r["fortitude"],true,"rolar('{$r["fortitude"]}d20',false,'Fortitude')") ?>
-	                                        <?= pillbutton("Furtividade", $r["furtividade"],true,"rolar('{$r["furtividade"]}d20',false,'Furtividade')") ?>
-	                                        <?= pillbutton("Iniciativa", $r["iniciativa"],true,"rolar('{$r["iniciativa"]}d20',false,'Iniciativa')") ?>
-	                                        <?= pillbutton("Intimidação", $r["intimidacao"],true,"rolar('{$r["intimidacao"]}d20',false,'Intimidação')") ?>
-	                                        <?= pillbutton("Intuição", $r["intuicao"],true,"rolar('{$r["intuicao"]}d20',false,'Intuição')") ?>
-	                                        <?= pillbutton("Investigação", $r["investigacao"],true,"rolar('{$r["investigacao"]}d20',false,'Investigação')") ?>
-	                                        <?= pillbutton("Luta", $r["luta"],true,"rolar('{$r["luta"]}d20'),false,'Luta'") ?>
-	                                        <?= pillbutton("Medicina", $r["medicina"],true,"rolar('{$r["medicina"]}d20',false,'Medicina')") ?>
-	                                        <?= pillbutton("Ocultismo", $r["ocultismo"],true,"rolar('{$r["ocultismo"]}d20',false,'Ocultismo')") ?>
-	                                        <?= pillbutton("Percepção", $r["percepcao"],true,"rolar('{$r["percepcao"]}d20',false,'Percepção')") ?>
-	                                        <?= pillbutton("Pilotagem", $r["pilotagem"],true,"rolar('{$r["pilotagem"]}d20',false,'Pilotagem')") ?>
-	                                        <?= pillbutton("Pontaria", $r["pontaria"],true,"rolar('{$r["pontaria"]}d20',false,'Pontaria')") ?>
-	                                        <?= pillbutton("Profissão", $r["profissao"],true,"rolar('{$r["profissao"]}d20',false,'Profissão')") ?>
-	                                        <?= pillbutton("Reflexos", $r["reflexos"],true,"rolar('{$r["reflexos"]}d20',false,'Reflexos')") ?>
-	                                        <?= pillbutton("Religião", $r["religiao"],true,"rolar('{$r["religiao"]}d20',false,'Religião')") ?>
-	                                        <?= pillbutton("Sobrevivência", $r["sobrevivencia"],true,"rolar('{$r["sobrevivencia"]}d20',false,'Sobrevivência')") ?>
-	                                        <?= pillbutton("Tática", $r["tatica"],true,"rolar('{$r["tatica"]}d20',false,'Tática')") ?>
-	                                        <?= pillbutton("Tecnologia", $r["tecnologia"],true,"rolar('{$r["tecnologia"]}d20',false,'Tecnologia')") ?>
-	                                        <?= pillbutton("Vontade", $r["vontade"],true,"rolar('{$r["vontade"]}d20',false,'Vontade')") ?>
-	                                      </div>
+											<?= pillbutton("Acobracia", $r["acrobacia"], true, "rolar({dado:'{$r["acrobacia"]}d20',dano:false,nome:'Acobracia'})") ?>
+											<?= pillbutton("Adestramento", $r["adestramento"], true, "rolar('{$r["adestramento"]}d20',false,'Adestramento')") ?>
+											<?= pillbutton("Artes", $r["artes"], true, "rolar('{$r["artes"]}d20',false,'Atualidade')") ?>
+											<?= pillbutton("Atletismo", $r["atletismo"], true, "rolar('{$r["atletismo"]}d20',false,'Atletismo')") ?>
+											<?= pillbutton("Atualidade", $r["atualidade"], true, "rolar('{$r["atualidade"]}d20',false,'Atualidade')") ?>
+											<?= pillbutton("Ciência", $r["ciencia"], true, "rolar('{$r["ciencia"]}d20',false,'Ciência')") ?>
+											<?= pillbutton("Crime", $r["crime"], true, "rolar('{$r["crime"]}d20',false,'Crime')") ?>
+											<?= pillbutton("Diplomacia", $r["diplomacia"], true, "rolar('{$r["diplomacia"]}d20',false,'Diplomacia')") ?>
+											<?= pillbutton("Enganação", $r["enganacao"], true, "rolar('{$r["enganacao"]}d20',false,'Enganação')") ?>
+											<?= pillbutton("Fortitude", $r["fortitude"], true, "rolar('{$r["fortitude"]}d20',false,'Fortitude')") ?>
+											<?= pillbutton("Furtividade", $r["furtividade"], true, "rolar('{$r["furtividade"]}d20',false,'Furtividade')") ?>
+											<?= pillbutton("Iniciativa", $r["iniciativa"], true, "rolar('{$r["iniciativa"]}d20',false,'Iniciativa')") ?>
+											<?= pillbutton("Intimidação", $r["intimidacao"], true, "rolar('{$r["intimidacao"]}d20',false,'Intimidação')") ?>
+											<?= pillbutton("Intuição", $r["intuicao"], true, "rolar('{$r["intuicao"]}d20',false,'Intuição')") ?>
+											<?= pillbutton("Investigação", $r["investigacao"], true, "rolar('{$r["investigacao"]}d20',false,'Investigação')") ?>
+											<?= pillbutton("Luta", $r["luta"], true, "rolar('{$r["luta"]}d20'),false,'Luta'") ?>
+											<?= pillbutton("Medicina", $r["medicina"], true, "rolar('{$r["medicina"]}d20',false,'Medicina')") ?>
+											<?= pillbutton("Ocultismo", $r["ocultismo"], true, "rolar('{$r["ocultismo"]}d20',false,'Ocultismo')") ?>
+											<?= pillbutton("Percepção", $r["percepcao"], true, "rolar('{$r["percepcao"]}d20',false,'Percepção')") ?>
+											<?= pillbutton("Pilotagem", $r["pilotagem"], true, "rolar('{$r["pilotagem"]}d20',false,'Pilotagem')") ?>
+											<?= pillbutton("Pontaria", $r["pontaria"], true, "rolar('{$r["pontaria"]}d20',false,'Pontaria')") ?>
+											<?= pillbutton("Profissão", $r["profissao"], true, "rolar('{$r["profissao"]}d20',false,'Profissão')") ?>
+											<?= pillbutton("Reflexos", $r["reflexos"], true, "rolar('{$r["reflexos"]}d20',false,'Reflexos')") ?>
+											<?= pillbutton("Religião", $r["religiao"], true, "rolar('{$r["religiao"]}d20',false,'Religião')") ?>
+											<?= pillbutton("Sobrevivência", $r["sobrevivencia"], true, "rolar('{$r["sobrevivencia"]}d20',false,'Sobrevivência')") ?>
+											<?= pillbutton("Tática", $r["tatica"], true, "rolar('{$r["tatica"]}d20',false,'Tática')") ?>
+											<?= pillbutton("Tecnologia", $r["tecnologia"], true, "rolar('{$r["tecnologia"]}d20',false,'Tecnologia')") ?>
+											<?= pillbutton("Vontade", $r["vontade"], true, "rolar('{$r["vontade"]}d20',false,'Vontade')") ?>
+                                        </div>
                                     </div>
 								<?php } ?>
                             </div>
@@ -247,15 +248,22 @@ function Echo_FichaNPC($fichas, $type): void
 ?>
 <div class="col-12" id="npc">
     <div class="card h-100 border-secondary">
-        <div class="card-body p-0">
-            <div class="position-absolute end-0">
-                <button class="btn text-success fa-lg" data-bs-toggle="modal" data-bs-target="#addnpc">
-                    <i class="fa-regular fa-square-plus"></i>
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-flex">
+                <h4 class="card-title m-0">Fichas NPCs</h4>
+				<?php if (!isset($_GET["popout"])) { ?>
+                    <button class="btn text-secondary fa-lg mx-1 p-1 popout" data-fop-pop="npc" style="height: 30px; width: 30px;">
+                        <i class="fal fa-rectangle-vertical-history"></i>
+                    </button>
+				<?php } ?>
+            </div>
+            <div class="">
+                <button class="btn btn-outline-success fa-lg p-1" data-bs-toggle="modal" data-bs-target="#addnpc">
+                    <i class="fal fa-plus"></i>
                 </button>
             </div>
-            <div class="card-header border-0">
-                <h3 class="card-title text-center font6 m-0">Fichas NPCs</h3>
-            </div>
+        </div>
+        <div class="card-body p-0">
             <div class="container-fluid p-0">
                 <nav>
                     <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">

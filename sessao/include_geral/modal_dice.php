@@ -112,6 +112,10 @@
                         <input class="form-check-input" type="checkbox" role="switch" id="switchdano" name="dano">
                         <label class="form-check-label" for="switchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
+                    <div class="form-check form-switch m-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switchglobal" name="global">
+                        <label class="form-check-label" for="switchglobal" >Global (Aparece em todos os lugares)</label>
+                    </div>
                     <input type="hidden" name="query" value="add_dado_customizado"/>
                     <input type="hidden" name="token" value="<?=$token?>"/>
                 </div>

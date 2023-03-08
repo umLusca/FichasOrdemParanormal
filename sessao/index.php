@@ -290,10 +290,6 @@ $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_fic
                                                     title="Desvincular Ficha da missão" onclick="desvincular('<?= $f["token"] ?>')">
                                                 <i class="fal fa-chain"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-info"
-                                                    title="Desvincular Ficha da missão" onclick="query('duplicate','<?= $f["token"] ?>',true,'Deseja Duplicar essa ficha?')">
-                                                <i class="fal fa-copy"></i>
-                                            </button>
                                             <a class="btn btn-sm btn-outline-info"
                                                href="personagem/portrait?token=<?= $f["token"]; ?>"><i
                                                         class="fal fa-user"></i></a>

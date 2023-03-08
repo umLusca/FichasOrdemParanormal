@@ -2,10 +2,10 @@
 
 function proibido()
 {
-    return header('location: ..');
+	return header('location: ..');
 }
 
-const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9","597d795ea0028f95a051c1df0ab85dce","0f32daed2d725ef44d874f98798422f3","15d1789295f623f383308ce4fd56e842","dcb7e42b1a76ff5a1faa70af080fcf4b"];
+const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9", "597d795ea0028f95a051c1df0ab85dce", "0f32daed2d725ef44d874f98798422f3", "15d1789295f623f383308ce4fd56e842", "dcb7e42b1a76ff5a1faa70af080fcf4b"];
 
 /**
  * Retorna os parâmetros necessários para fazer um mysqli_prepare();
@@ -59,66 +59,66 @@ const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9","597d795ea0028f95a051c1df
  */
 function get_stmt(array $array, array $excludes = null, array|string $includes = null, mysqli $con = null): array
 {
-    $bind = "";
-    $values = [];
-    $query = "";
-    
-    if (isset($includes, $con) && is_string($includes)) {
-        $_d = $con->query("SHOW COLUMNS FROM {$includes} ;");
-        
-        $includes = [];
-        foreach ($_d as $f) {
-            $includes[] = $f["Field"];
-        }
-    }
-    foreach ($array as $item => $valor) {
-        $i++;
-        if (isset($excludes) && is_array($excludes) && in_array($item, $excludes, true)) {
-            $continue = true;
-        }
-        if (isset($includes) && is_array($includes) && !in_array($item, $includes, true)) {
-            $continue = true;
-        }
-        if ($i === count($array) && $continue) {
-            $query = substr($query,0,-2);
-            continue;
-        }
-        if($continue) {
-            continue;
-        }
-        switch (gettype($valor)) {
-            case "string":
-                $bind .= "s";
-                break;
-            case "boolean":
-            case "integer":
-                $bind .= "i";
-                break;
-            case "NULL":
-                continue 2;
-                break;
-        }
-        $query .= "$item = ?";
-        
-        if ($i < count($array)) {
-            $query .= ", ";
-        }
-        
-        $values[] = $valor;
-    }
-    return array(
-        "bind" => $bind,
-        "query" => $query,
-        "values" => $values
-    );
+	$bind = "";
+	$values = [];
+	$query = "";
+	
+	if (isset($includes, $con) && is_string($includes)) {
+		$_d = $con->query("SHOW COLUMNS FROM {$includes} ;");
+		
+		$includes = [];
+		foreach ($_d as $f) {
+			$includes[] = $f["Field"];
+		}
+	}
+	foreach ($array as $item => $valor) {
+		$i++;
+		if (isset($excludes) && is_array($excludes) && in_array($item, $excludes, true)) {
+			$continue = true;
+		}
+		if (isset($includes) && is_array($includes) && !in_array($item, $includes, true)) {
+			$continue = true;
+		}
+		if ($i === count($array) && $continue) {
+			$query = substr($query, 0, -2);
+			continue;
+		}
+		if ($continue) {
+			continue;
+		}
+		switch (gettype($valor)) {
+			case "string":
+				$bind .= "s";
+				break;
+			case "boolean":
+			case "integer":
+				$bind .= "i";
+				break;
+			case "NULL":
+				continue 2;
+				break;
+		}
+		$query .= "$item = ?";
+		
+		if ($i < count($array)) {
+			$query .= ", ";
+		}
+		
+		$values[] = $valor;
+	}
+	return array(
+		"bind" => $bind,
+		"query" => $query,
+		"values" => $values
+	);
 }
 
-function duplicate_row($row_infos, array $updates = null, array $excludes = null){
+function duplicate_row($row_infos, array $updates = null, array $excludes = null)
+{
 	$query_columns = "";
 	$query_values = "";
 	$bind_types = "";
 	$bind_values = [];
-	
 	
 	
 	foreach ($row_infos as $item => $valor) {
@@ -129,7 +129,7 @@ function duplicate_row($row_infos, array $updates = null, array $excludes = null
 		}
 		if (isset($excludes) && in_array($item, $excludes, true)) {
 			$continue = true;
-		}else {
+		} else {
 			switch (gettype($valor)) {
 				case "string":
 					$bind_types .= "s";
@@ -144,7 +144,7 @@ function duplicate_row($row_infos, array $updates = null, array $excludes = null
 			}
 		}
 		
-		if(!$continue) {
+		if (!$continue) {
 			$bind_values[] = $valor;
 			$query_columns .= $item;
 			$query_values .= "?";
@@ -155,8 +155,8 @@ function duplicate_row($row_infos, array $updates = null, array $excludes = null
 				
 			}
 		} else if ($i === count($row_infos)) {
-			$query_values = substr($query_values,0,-2);
-			$query_columns = substr($query_columns,0,-2);
+			$query_values = substr($query_values, 0, -2);
+			$query_columns = substr($query_columns, 0, -2);
 		}
 	}
 	return array(
@@ -169,49 +169,46 @@ function duplicate_row($row_infos, array $updates = null, array $excludes = null
 
 function Image_Upload($image, $name = null)
 {
-    foreach (UploadKeys as $chave){
-        $API_KEY = $chave;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $API_KEY);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-        $file_name = ($name) ? $name . '.' . $extension : $image['name'];
-        $data = array('image' => base64_encode(file_get_contents($image['tmp_name'])), 'name' => $file_name);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            //return 'Error:' . curl_error($ch);
-            curl_close($ch);
-        } else {
-            curl_close($ch);
-            $result =  json_decode($result, true);
-            if($result["status"] == 200){
-                return $result;
-            }
-        }
-    }
-    return $result;
+	foreach (UploadKeys as $chave) {
+		$API_KEY = $chave;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $API_KEY);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		$extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+		$file_name = ($name) ? $name . '.' . $extension : $image['name'];
+		$data = array('image' => base64_encode(file_get_contents($image['tmp_name'])), 'name' => $file_name);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		$result = curl_exec($ch);
+		if (curl_errno($ch)) {
+			//return 'Error:' . curl_error($ch);
+			curl_close($ch);
+		} else {
+			curl_close($ch);
+			$result = json_decode($result, true);
+			if ($result["status"] == 200) {
+				return $result;
+			}
+		}
+	}
+	return $result;
 }
 
 function Check_Name($nome): bool
 {
-    $nome = cleanstring($nome);
-
-
-    if (strlen($nome) < 2 || strlen($nome) > 50)
-        return false;
-    else return (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙ]*$/', $nome));
+	$nome = cleanstring($nome);
+	
+	return (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙ]{2,50}$/u', $nome));
 
 
 }
 
 function Check_Login($login): bool
 {
-    $login = cleanstring($login);
-    if (empty($login) || strlen($login) < 2 || strlen($login) > 16) {
-        return false;
-    }
+	$login = cleanstring($login);
+	if (empty($login) || strlen($login) < 2 || strlen($login) > 16) {
+		return false;
+	}
 	
 	return (preg_match('/^[\w\s-]*$/', $login));
 	
@@ -219,46 +216,47 @@ function Check_Login($login): bool
 
 function Check_Email($email): bool
 {
-    $email = cleanstring($email,200);
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-
+	$email = cleanstring($email, 200);
+	return filter_var($email, FILTER_VALIDATE_EMAIL);
+	
 }
 
 function Check_Pass($senha, $senha2, $debug = false): bool|array
 {
-    $senha = cleanstring($senha);
-    $senha2 = cleanstring($senha2);
-    $data = [];
-    $success = true;
-    if ($senha === $senha2) {
-        if (strlen($senha) < 8 || strlen($senha) > 50) {
-            $msg = "Senha deve conter entre 8 e 50 digitos.";
-            $success = false;
-        }
-        if (!preg_match("/[A-Z]/", $senha)) {
-            $msg = "Senha precisa conter letras maiúsculas.";
-            $success = false;
-        }
-        if (!preg_match("/[a-z]/", $senha)) {
-            $msg = "Senha precisa conter letras minúsculas.";
-            $success = false;
-        }
-        if (preg_match("/\s/", $senha)) {
-            $msg = "Senha não pode conter espaços!";
-            $success = false;
-        }
-    } else {
-        $msg = "As senhas não são iguais.";
-        $success = false;
-    }
-    if ($debug) {
-        $data["success"] = $success;
-        $data["msg"] = $msg;
-        return $data;
-    } else {
-        return $success;
-    }
+	$senha = cleanstring($senha);
+	$senha2 = cleanstring($senha2);
+	$data = [];
+	$success = true;
+	if ($senha === $senha2) {
+		if (strlen($senha) < 8 || strlen($senha) > 50) {
+			$msg = "Senha deve conter entre 8 e 50 digitos.";
+			$success = false;
+		}
+		if (!preg_match("/[A-Z]/", $senha)) {
+			$msg = "Senha precisa conter letras maiúsculas.";
+			$success = false;
+		}
+		if (!preg_match("/[a-z]/", $senha)) {
+			$msg = "Senha precisa conter letras minúsculas.";
+			$success = false;
+		}
+		if (preg_match("/\s/", $senha)) {
+			$msg = "Senha não pode conter espaços!";
+			$success = false;
+		}
+	} else {
+		$msg = "As senhas não são iguais.";
+		$success = false;
+	}
+	if ($debug) {
+		$data["success"] = $success;
+		$data["msg"] = $msg;
+		return $data;
+	} else {
+		return $success;
+	}
 }
+
 /*
 function Send_Email($Assunto, $Destinatario, $Mensagem): bool
 {
@@ -268,7 +266,7 @@ function Send_Email($Assunto, $Destinatario, $Mensagem): bool
 */
 function Convite($Destinatario): string
 {
-    return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
+	return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
   <head>
     <!-- Compiled with Bootstrap Email version: 1.2.0 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -414,7 +412,7 @@ function Convite($Destinatario): string
 
 function Confirmar_Conta($token): string
 {
-    return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
+	return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
   <head>
     <!-- Compiled with Bootstrap Email version: 1.3.1 --><meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="x-apple-disable-message-reformatting">
@@ -557,154 +555,176 @@ function Confirmar_Conta($token): string
 
 function minmax($int, $min = 0, $max = 99, $float = 0)
 {
-    return $float ? min(max(intval($int), $min), $max) : min(max(floatval($int), $min), $max);
+	return $float ? min(max(intval($int), $min), $max) : min(max(floatval($int), $min), $max);
 }
 
 function cleanstring($data, $limit = 1000): string
 {
-    return substr(htmlspecialchars(stripslashes(trim($data))), 0, $limit);
+	return substr(htmlspecialchars(stripslashes(trim($data))), 0, $limit);
 }
 
 
 function Check_Token(string $sid): bool
 {
-    $con = con();
-    $q = $con->prepare("SELECT * FROM `auth` WHERE `token` = ?  AND expire > NOW();");
-    $q->bind_param("s", $sid);
-    $q->execute();
-    $q = $q->get_result();
-    if ($q->num_rows) {
-        return true;
-
-    } else {
-        return false;
-    }
+	$con = con();
+	$q = $con->prepare("SELECT * FROM `auth` WHERE `token` = ?  AND expire > NOW();");
+	$q->bind_param("s", $sid);
+	$q->execute();
+	$q = $q->get_result();
+	if ($q->num_rows) {
+		return true;
+		
+	} else {
+		return false;
+	}
 }
 
 function logout($type = "UKN"): void
 {
-    $con = con();
-    $q = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ?");
-    $q->bind_param("is", $_SESSION["UserID"], $type);
-    $q->execute();
-    if (is_user_logged_in()) {
-        unset($_SESSION["UserID"]);
-        if (isset($_COOKIE['remember_me'])) {
-            unset($_COOKIE['remember_me']);
-            setcookie('remember_user', null, -1);
-        }
-    }
-    session_unset();
-    session_destroy();
+	$con = con();
+	$q = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ?");
+	$q->bind_param("is", $_SESSION["UserID"], $type);
+	$q->execute();
+	if (is_user_logged_in()) {
+		unset($_SESSION["UserID"]);
+		if (isset($_COOKIE['remember_me'])) {
+			unset($_COOKIE['remember_me']);
+			setcookie('remember_user', null, -1);
+		}
+	}
+	session_unset();
+	session_destroy();
 }
 
 function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
 {
-    $con = con();
-    $b = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ? ");
-    $b->bind_param("is", $user_id, $type);
-    $b->execute();
-
-
-    $selector = bin2hex(random_bytes(16));
-    $validator = bin2hex(random_bytes(32));
-
-    $token = $selector . ':' . $validator;
-
-
-    $expired_seconds = time() + 60 * 60 * 24 * $day;
-    $expiry = date('Y-m-d H:i:s', $expired_seconds);
-
-    $hash_validator = password_hash($validator, PASSWORD_DEFAULT);
-
-
-    $a = $con->prepare("INSERT INTO `user_tokens` (`selector`, `hashed_validator`, `user_id`,`type`, `expiry`) VALUES ( ? , ? , ? , ? , ? );");
-    $a->bind_param("ssiss", $selector, $hash_validator, $user_id, $type, $expiry);
-    if ($a->execute()) {
-        setcookie('remember_me', $token, $expired_seconds);
-
-        return $token;
-    } else {
-        return "falha";
-    }
+	$con = con();
+	$b = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ? ");
+	$b->bind_param("is", $user_id, $type);
+	$b->execute();
+	
+	
+	$selector = bin2hex(random_bytes(16));
+	$validator = bin2hex(random_bytes(32));
+	
+	$token = $selector . ':' . $validator;
+	
+	
+	$expired_seconds = time() + 60 * 60 * 24 * $day;
+	$expiry = date('Y-m-d H:i:s', $expired_seconds);
+	
+	$hash_validator = password_hash($validator, PASSWORD_DEFAULT);
+	
+	
+	$a = $con->prepare("INSERT INTO `user_tokens` (`selector`, `hashed_validator`, `user_id`,`type`, `expiry`) VALUES ( ? , ? , ? , ? , ? );");
+	$a->bind_param("ssiss", $selector, $hash_validator, $user_id, $type, $expiry);
+	if ($a->execute()) {
+		setcookie('remember_me', $token, $expired_seconds);
+		
+		return $token;
+	} else {
+		return "falha";
+	}
 }
 
 function check_session($token)
 {
-    $con = con();
-    $token = cleanstring($token);
-    if (empty($token)) {
-        return false;
-    }
-
-    $e = explode(':', $token);
-    $string = $e[0];
-    $Secret = $e[1];
-
-
-    $a = $con->prepare("SELECT id, selector, hashed_validator, user_id, expiry FROM user_tokens WHERE selector = ? AND expiry >= now() LIMIT 1;");
-    $a->bind_param("s", $string);
-    $a->execute();
-    $tokens = mysqli_fetch_assoc($a->get_result());
-
-    if ($token && password_verify($Secret, $tokens['hashed_validator'])) {
-        $a = $con->prepare('SELECT usuarios.id, usuarios.login FROM usuarios INNER JOIN user_tokens ON user_id = usuarios.id WHERE selector = ? AND expiry > now() LIMIT 1');
-        $a->bind_param("s", $string);
-        $a->execute();
-        $ra = $a->get_result();
-        if ($ra->num_rows) {
-            $user = mysqli_fetch_assoc($ra);
-            return $user['login'];
-        }
-    }
-    return false;
-
+	$con = con();
+	$token = cleanstring($token);
+	if (empty($token)) {
+		return false;
+	}
+	
+	$e = explode(':', $token);
+	$string = $e[0];
+	$Secret = $e[1];
+	
+	
+	$a = $con->prepare("SELECT id, selector, hashed_validator, user_id, expiry FROM user_tokens WHERE selector = ? AND expiry >= now() LIMIT 1;");
+	$a->bind_param("s", $string);
+	$a->execute();
+	$tokens = mysqli_fetch_assoc($a->get_result());
+	
+	if ($token && password_verify($Secret, $tokens['hashed_validator'])) {
+		$a = $con->prepare('SELECT usuarios.id, usuarios.login FROM usuarios INNER JOIN user_tokens ON user_id = usuarios.id WHERE selector = ? AND expiry > now() LIMIT 1');
+		$a->bind_param("s", $string);
+		$a->execute();
+		$ra = $a->get_result();
+		if ($ra->num_rows) {
+			$user = mysqli_fetch_assoc($ra);
+			return $user['login'];
+		}
+	}
+	return false;
+	
 }
 
 function is_user_logged_in($token = null)
 {
-    $con = con();
-    if (isset($_SESSION['UserLogin'])) {
-        return true;
-    }
-
-
-    if ($token === null) {
-        $token = filter_input(INPUT_COOKIE, 'remember_me');
-    }
-    if (empty($token)) {
-        return false;
-    }
-
-    $e = explode(':', $token);
-    $string = $e[0];
-    $Secret = $e[1];
-
-
-    $a = $con->prepare("SELECT id, selector, hashed_validator, user_id, expiry FROM user_tokens WHERE selector = ? AND expiry >= now() LIMIT 1;");
-    $a->bind_param("s", $string);
-    $a->execute();
-    $tokens = mysqli_fetch_assoc($a->get_result());
-
-    if ($token && password_verify($Secret, $tokens['hashed_validator'])) {
-
-        $tokens = [$string, $Secret];
-
-        $a = $con->prepare('SELECT usuarios.id, usuarios.login FROM usuarios INNER JOIN user_tokens ON user_id = usuarios.id WHERE selector = ? AND expiry > now() LIMIT 1');
-        $a->bind_param("s", $string);
-        $a->execute();
-        $ra = $a->get_result();
-        if ($ra->num_rows) {
-            $user = mysqli_fetch_assoc($ra);
-            logar($user['login']);
-            return $user['login'];
-        }
-    }
-    return false;
+	$con = con();
+	if (isset($_SESSION['UserLogin'])) {
+		return true;
+	}
+	
+	
+	if ($token === null) {
+		$token = filter_input(INPUT_COOKIE, 'remember_me');
+	}
+	if (empty($token)) {
+		return false;
+	}
+	
+	$e = explode(':', $token);
+	$string = $e[0];
+	$Secret = $e[1];
+	
+	
+	$a = $con->prepare("SELECT id, selector, hashed_validator, user_id, expiry FROM user_tokens WHERE selector = ? AND expiry >= now() LIMIT 1;");
+	$a->bind_param("s", $string);
+	$a->execute();
+	$tokens = mysqli_fetch_assoc($a->get_result());
+	
+	if ($token && password_verify($Secret, $tokens['hashed_validator'])) {
+		
+		$tokens = [$string, $Secret];
+		
+		$a = $con->prepare('SELECT usuarios.id, usuarios.login FROM usuarios INNER JOIN user_tokens ON user_id = usuarios.id WHERE selector = ? AND expiry > now() LIMIT 1');
+		$a->bind_param("s", $string);
+		$a->execute();
+		$ra = $a->get_result();
+		if ($ra->num_rows) {
+			$user = mysqli_fetch_assoc($ra);
+			logar($user['login']);
+			return $user['login'];
+		}
+	}
+	return false;
 }
 
 
 function Tirar_Acento($string): array|string|null
 {
-    return preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/","/(Ñ)/", "/(ç)/", "/(Ç)/","/(ý|ÿ)/", "(Ý)"), explode(" ","a A e E i I o O u U n N ç Ç y Y"),$string);
+	return preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/", "/(ç)/", "/(Ç)/", "/(ý|ÿ)/", "(Ý)"), explode(" ", "a A e E i I o O u U n N ç Ç y Y"), $string);
 }
+
+function logar(string $login): bool
+{
+	$con = con();
+	$q = $con->prepare("select * from `usuarios` WHERE `login` = ?");
+	$q->bind_param("s", $login);
+	$q->execute();
+	$rq = $q->get_result();
+	if ($rq->num_rows) {
+		$dados = mysqli_fetch_array($rq);
+		$_SESSION["UserID"] = $dados["id"];
+		$_SESSION["UserLogin"] = $dados["login"];
+		$_SESSION["UserName"] = $dados["nome"];
+		$_SESSION["UserEmail"] = $dados["email"];
+		$_SESSION["UserElite"] = $dados["elite"];
+		$_SESSION["UserAdmin"] = $dados["admin"];
+		$_SESSION["UserMarca"] = $dados["marca"];
+		return true;
+	} else {
+		return false;
+	}
+} //Inicia a sessão

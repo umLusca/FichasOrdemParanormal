@@ -1,27 +1,7 @@
 <?php
 
 $success = true;
-function logar(string $login): bool
-{
-	$con = con();
-	$q = $con->prepare("select * from `usuarios` WHERE `login` = ?");
-	$q->bind_param("s", $login);
-	$q->execute();
-	$rq = $q->get_result();
-	if ($rq->num_rows) {
-		$dados = mysqli_fetch_array($rq);
-		$_SESSION["UserID"] = $dados["id"];
-		$_SESSION["UserLogin"] = $dados["login"];
-		$_SESSION["UserName"] = $dados["nome"];
-		$_SESSION["UserEmail"] = $dados["email"];
-		$_SESSION["UserElite"] = $dados["elite"];
-		$_SESSION["UserAdmin"] = $dados["admin"];
-		$_SESSION["UserMarca"] = $dados["marca"];
-		return true;
-	} else {
-		return false;
-	}
-} //Inicia a sessão
+
 $con = con();
 $data = [];
 $msg = "";

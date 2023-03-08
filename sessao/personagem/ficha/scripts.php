@@ -1,33 +1,66 @@
 <script>
 	<?php if ($edit){?>
-    let changingtimer, x, y;                //timer identifier
+    let changingtimer, morrendo, combate;                //timer identifier
     const donetimer = 1500;
 
 
     function editupdatefoto(SRC, EL) {
-        console.log(SRC,EL)
+        console.log(SRC, EL)
         $(EL).prop("src", SRC);
 
     }
+
+    function item(action, id) {
+        let x = 0
+        if (action === "plus") {
+            x = 1
+        } else {
+            x = -1
+        }
+        $("#itens tr[data-fop-item=" + id + "] .quantidade").text(parseInt($("#itens tr[data-fop-item=" + id + "] .quantidade").text()) + x);
+
+        let pesoatual = 0;
+        $("#itens tr[data-fop-item]").each((i, e) => {
+            pesoatual += parseInt($(e).find(".peso").text()) * parseInt($(e).find(".quantidade").text());
+            console.log($(e).find(".quantidade").text())
+            $("#editinv trtr[data-fop-item=" + id + "]").find(".quantidade").text($(e).find(".quantidade").text());
+        })
+
+        $("#card_inventario .pesoatual").text(pesoatual)
+        $.ajax({
+            method: "post",
+            data: {query: "ficha_update_itemquantidade", action: action, item: id},
+            complete: (e) => console.log(e),
+        })
+
+    }
+
     function deletar(id, nome, tipo) {
-        confirmar("Tem certeza?", "Essa ação não poderá ser desfeita.").then((r) => {
+        confirmar("Tem certeza que deseja apagar " + nome + "?", "Essa ação não poderá ser desfeita.").then((r) => {
             if (r) {
                 $.post({
-                    url: "?token=<?=$fichat?>",
-                    data: {did: id, status: tipo,},
+                    url: "?token=<?= $token ?>",
+                    data: {iid: id, query: "ficha_delete_switch", type: tipo,},
                     complete: () => {
-                        window.location.reload();
+                        location.reload();
                     },
                 });
             }
         })
+    }
+    function editarhab(id, tipo) {
+        $("#habedit input[name=name]").val($("*[data-fop-"+tipo+"="+id+"]").find("."+tipo+"name").text())
+        $("#habedit textarea[name=desc]").val($("*[data-fop-"+tipo+"="+id+"]").find("."+tipo+"desc").text());
+        $("#habedit input[name=type]").val(tipo);
+        $("#habedit input[name=id]").val(id);
+        $("#habedit").modal("show");
     }//Deletar Arma
-    function edit(type,id) {
-        switch (type){
+    function edit(type, id) {
+        switch (type) {
             case "arma":
                 let emodal = new bootstrap.Modal($("#editarma"));
                 $('#editarma input[name=foto]').val($("#arma" + id + " img").attr("src"));
-                $('#editarma img').attr("src",$("#arma" + id + " img").attr("src"));
+                $('#editarma img').attr("src", $("#arma" + id + " img").attr("src"));
                 $('#editarma input[name=nome]').val($("#arma" + id + " .arma").text());
                 $('#editarma input[name=tipo]').val($("#arma" + id + " .tipo").text());
                 $('#editarma input[name=ataque]').val($("#arma" + id + " .ataque").attr("data-dado"));
@@ -43,10 +76,10 @@
         }
     }// Editar Arma
     function edititem(id) {
-        $('#edititemtitle, #enom').val($("#itemid" + id + " .nome").text());
-        $('#edes').val($("#itemid" + id + " .desc").text());
-        $('#epes').val($("#itemid" + id + " .espaco").text());
-        $('#epre').val($("#itemid" + id + " .prestigio").text());
+        $('#edititemtitle, #enom').val($("tr[data-fop-item=" + id + "] .nome").text());
+        $('#edes').val($("tr[data-fop-item=" + id + "] .desc").text());
+        $('#epes').val($("tr[data-fop-item=" + id + "] .espaco").text());
+        $('#epre').val($("tr[data-fop-item=" + id + "] .prestigio").text());
         $('#edititid').val(id);
     }// Editar Item
     function cleanedit() {
@@ -68,7 +101,7 @@
         clearTimeout(changingtimer);
         changingtimer = setTimeout(subsaude, donetimer);
     }
-    
+
     function updtsaude(valor, type) {
         let atual = type + 'a';
         let total = type;
@@ -77,49 +110,47 @@
             return eval(val1 + type + val2) ? val2 : val1;
         }
         $el(atual).val(parseInt($el(atual).val()) + valor);
-        
-        
+
+
         $el(atual).val(diff($el(atual).val(), ">", parseInt($el(total).val()) + 20));
         $el(atual).val(diff($el(atual).val(), "<", (type === "pv") ? <?=$minimo_PVA?> : 0));
         $("#barra" + atual).width(percent($el(atual).val(), $el(total).val()) + '%');
-        
+
         subtimer();
     }
 
     function subsaude() {
-        let data = $('#saude :input').serialize();
-        if ($('#morrendo').is(":checked")) {
-            x = 1;
-        } else {
-            x = 0;
+        let data = $('#saude :input').serializeObject();
+        morrendo = $('#morrendo').is(":checked");
+        combate = $('#combate').is(":checked");
+        let oc = {
+            pv: $('#opv').is(":checked"),
+            pe: $('#ope').is(":checked"),
+            san: $('#osan').is(":checked")
         }
-        data += '&status=usau&mor=' + x;
+        data["query"] = "ficha_sync_status";
+        data["mor"] = morrendo;
+        data["com"] = combate;
+        data["ocult"] = oc;
         console.log(data);
         $.post({
-            url: '?token=<?=$fichat?>',
+            url: '?token=<?=$token?>',
             dataType: 'json',
             data: data,
             complete: (d) => {
                 console.log(d)
             },
         }).done(function (data) {
-            console.log(data);
             const msg = {};
-            if ($('#combate').is(":checked")) {
-                y = true;
-            } else {
-                y = false;
-            }
             msg["vida"] = data;
-            msg["vida"]["combate"] = y;
-            msg["ficha"] = '<?=$fichat?>';
+            msg["vida"]["combate"] = combate;
+            msg["ficha"] = '<?=$token?>';
             console.log(msg.vida.pv);
             $('#saude .pv').val(msg.vida.pv);
             $('#saude .san').val(msg.vida.san);
             $('#saude .pe').val(msg.vida.pe);
             console.log($('#saude .pe').val());
             updatefoto()
-            socket.emit('<?=$missao_token?:$fichat?>', msg);
         });
     }
 
@@ -128,15 +159,15 @@
         editritual_modal.show();
         $("#editritual .url").val($("#but-ritual-" + i + " .foto").prop("src"));
         $("#editritual .foto").prop("src", $("#but-ritual-" + i + " .foto").prop("src"));
-        $("#editritual .ritual").val($("#but-ritual-" + i + " .nome").html());
-        $("#editritual .elemento").val($("#but-ritual-" + i + " .elemento").html());
-        $("#editritual .circulo").val($("#but-ritual-" + i + " .circulo").html());
-        $("#editritual .conjuracao").val($("#but-ritual-" + i + " .conjuracao").html());
-        $("#editritual .alcance").val($("#but-ritual-" + i + " .alcance").html());
-        $("#editritual .alvo").val($("#but-ritual-" + i + " .alvo").html());
-        $("#editritual .duracao").val($("#but-ritual-" + i + " .duracao").html());
-        $("#editritual .resistencia").val($("#but-ritual-" + i + " .resistencia").html());
-        $("#editritual .desc").val($("#but-ritual-" + i + " .desc").html());
+        $("#editritual .ritual").val($("#but-ritual-" + i + " .nome").text());
+        $("#editritual .elemento").val($("#but-ritual-" + i + " .elemento").text());
+        $("#editritual .circulo").val($("#but-ritual-" + i + " .circulo").text());
+        $("#editritual .conjuracao").val($("#but-ritual-" + i + " .conjuracao").text());
+        $("#editritual .alcance").val($("#but-ritual-" + i + " .alcance").text());
+        $("#editritual .alvo").val($("#but-ritual-" + i + " .alvo").text());
+        $("#editritual .duracao").val($("#but-ritual-" + i + " .duracao").text());
+        $("#editritual .resistencia").val($("#but-ritual-" + i + " .resistencia").text());
+        $("#editritual .desc").val(striphtml($("#but-ritual-" + i + " .desc")[0]));
         $("#editritual .normal").val($("#but-ritual-" + i + " .normal").attr("data-dado"));
         $("#editritual .discente").val($("#but-ritual-" + i + " .discente").attr("data-dado"));
         $("#editritual .verdadeiro").val($("#but-ritual-" + i + " .verdadeiro").attr("data-dado"));
@@ -171,8 +202,58 @@
         }
     }
 
+    let typingTimer;                //timer identifier
+    const doneTypingInterval = 2500;  //time in ms, 5 seconds for example
+
     $(document).ready(function () {
-        $('#morrendo,#combate').change(function () {
+
+        $('#card_personagem textarea').on('keyup', function (e) {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                $.post({
+                    url: "",
+                    data: {query:"ficha_sync_nota",type:$(e.currentTarget).attr("name"),text:$(e.currentTarget).val()},
+                    success: (d) => {
+                        console.log(d)
+                        if(d["success"]){
+                            $("#card_personagem *[data-fop-icon]").attr("class", "text-success").html("<i class='far fa-cloud-check'></i>")
+                        } else {
+                            $("#card_personagem *[data-fop-icon]").attr("class", "text-danger").html("<i class='far fa-cloud-slash'></i>");
+                        }
+                    },
+                    error: () => {
+                        $("#card_personagem *[data-fop-icon]").attr("class", "text-danger").html("<i class='far fa-cloud-slash'></i>");
+                    }
+                })
+
+            }, doneTypingInterval);
+        }).on('keydown', function () {
+            console.log("teste")
+            clearTimeout(typingTimer);
+            $("#card_personagem *[data-fop-icon]").attr("class", "text-warning").children().prop("class", 'fal fa-arrow-rotate-right fa-spin');
+        });
+
+
+        $("#editprincipal .changecalc").on("change", (e) => {
+            let v = $(e.currentTarget).is(":checked");
+            let t = $(e.currentTarget).attr("data-fop-type");
+            console.log(t)
+            if (v) {
+                $(`#editprincipal input[name=${t}]`).attr("disabled", true).parent().slideUp();
+                $(`#editprincipal input[name=b${t}]`).attr("disabled", false).parent().slideDown();
+                $(`#editprincipal input[name=skipped${t}]`).attr("disabled", false).parent().slideDown();
+                $(`#editprincipal input[name=soma${t}]`).attr("disabled", false).parent().slideDown();
+            } else {
+                $(`#editprincipal input[name=${t}]`).attr("disabled", false).parent().slideDown();
+                $(`#editprincipal input[name=b${t}]`).attr("disabled", true).parent().slideUp();
+                $(`#editprincipal input[name=skipped${t}]`).attr("disabled", true).parent().slideUp();
+                $(`#editprincipal input[name=soma${t}]`).attr("disabled", true).parent().slideUp();
+
+            }
+            console.log(v);
+        })
+
+        $('#butmor input').change(function () {
             subtimer();
         })
 
@@ -375,29 +456,22 @@
                 updateritualfoto($("#addritual #simbolourl input"));
             }
         })
-
-
-    socket = io.connect('https://portrait.fichasop.com', {
-        reconnectionDelay: 2500,
-        transports: ['websocket', 'polling', 'flashsocket']
-    });
-    socket.on("connect", function () {
-        console.log("Conectado");
-    });
-    socket.on("disconnect", function () {
-        console.log("Desconectado");
-    });
-	    <?php if(isset($dados_missao) AND $dados_missao["id"]==5887){?>
+		
+		
+		<?php if(isset($dados_missao) and $dados_missao["id"] == 5887){?>
         $('#portrait').prop('checked', true);
-        socket.emit('create', '<?=$missao_token?:$fichat?>');
-        socket.emit('auth', '<?=$missao_token?:$fichat?>');
-	    <?php }?>
+        socket.emit('create', '<?=$missao_token ?: $token?>');
+        socket.emit('auth', '<?=$missao_token ?: $token?>');
+		<?php }?>
 
         $('#portrait').change(function () {
             if ($('#portrait').is(":checked")) {
-                socket = io.connect('https://portrait.fichasop.com', {reconnectionDelay: 2500,transports: ['websocket', 'polling', 'flashsocket']});
-                socket.emit('create', '<?=$missao_token ?: $fichat?>');
-                socket.emit('<?=$missao_token ?: $fichat?>', {auth: '<?=$fichat?>'});
+                socket = io.connect('https://portrait.fichasop.com', {
+                    reconnectionDelay: 2500,
+                    transports: ['websocket', 'polling', 'flashsocket']
+                });
+                socket.emit('create', '<?=$missao_token ?: $token?>');
+                socket.emit('<?=$missao_token ?: $token?>', {auth: '<?=$token?>'});
             } else {
                 socket.disconnect();
             }
@@ -413,13 +487,13 @@
             } else {
                 event.preventDefault();
                 $.post({
-                    url: '?token=<?=$fichat?>',
+                    url: '?token=<?=$token?>',
                     data: $(this).serialize(),
                     complete: (d) => {
                         console.log(d)
                     },
                 }).done(function (data) {
-                    location.reload();
+                    // location.reload();
                 })
             }
         })// Enviar qualquer formulario via jquery
@@ -516,48 +590,48 @@
         }) //Ativar/Desativar Inventario em adicionar arma
 
         $('#card_principal .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=principal&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=principal&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_dados .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=dados&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=dados&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_atributos .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=atributos&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=atributos&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_inventario .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=inventario&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=inventario&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_pericias .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=pericias&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=pericias&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_habilidades .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=habilidades&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=habilidades&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
-        $('#card_proeficiencias .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=proeficiencias&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+        $('#card_proficiencias .popout').on('click', function () {
+            window.open("/sessao/personagem?popout=proficiencias&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_rituais .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=rituais&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=rituais&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#card_rolar .popout').on('click', function () {
-            window.open("/sessao/personagem?popout=rolar&token=<?=$fichat?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
+            window.open("/sessao/personagem?popout=rolar&token=<?=$token?>", "yyyyy", "width=480,height=360,resizable=no,toolbar=no,menubar=no,location=no,status=no");
             return false;
         })
         $('#pe input[type=checkbox]').change(function () {
             var checkboxes = $('#pe input:checkbox:checked').length;
             $.post({
-                url: '?token=<?=$fichat?>',
+                url: '?token=<?=$token?>',
                 data: {status: 'pe', value: checkboxes},
             }).done(function () {
-                $("#peatual").load("index.php?token=<?=$fichat?> #peatual");
+                $("#peatual").load("index.php?token=<?=$token?> #peatual");
             })
         });
         $("#verp").click(function () {

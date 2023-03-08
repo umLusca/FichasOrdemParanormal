@@ -3,7 +3,7 @@
         <div class="card-header d-flex justify-content-center">
                 <div class="float-start">
                     <?php if (!isset($_GET["popout"]) AND $edit) { ?>
-                        <button class="btn btn-sm text-secondary fa-lg popout"  title="PopOut">
+                        <button class="btn text-secondary btn-sm fa-lg popout"  title="PopOut">
                             <i class="fal fa-rectangle-vertical-history"></i>
                         </button>
                     <?php } ?>
@@ -19,7 +19,7 @@
         </div>
         <div class="card-body p-0 ">
             <div class="container-fluid p-0 my-2">
-                <?=atributos($forca,$agilidade,$intelecto,$vigor,$presenca)?>
+                <?=atributos($forca,$agilidade,$intelecto,$vigor,$presenca,$edit)?>
             </div>
             <div class="mx-1">
                 <i class="fa-regular fa-circle-info"></i>

@@ -240,7 +240,7 @@ if (isset($_SESSION["UserID"])) {
             $habdes = "Sempre que faz um teste para ajudar, você pode gastar 1 PE para aumentar o bônus concedido em +2.";
             $intuicao = $vontade = 5;
             break;
-        case "Teórico": // Teórico
+        case "Teórico da Conspiração": // Teórico
             $habnam = "Eu Já Sabia. (Origem)";
             $habdes = "Você não se abala com entidades ou anomalias. Afinal, sempre soube que isso tudo existia. Você recebe resistência a dano mental igual ao seu Intelecto.";
 			$investigacao = $ocultismo = 5;

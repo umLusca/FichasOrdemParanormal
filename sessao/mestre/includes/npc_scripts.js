@@ -14,7 +14,7 @@ function copynpc(id){
 function editnpc(id,category = 0) {
     $.post({
         url: ' ?token=<?=$missao_token?>',
-        data: {query: 'mestre_npc', ficha: id},
+        data: {query: 'mestre_get_npc', ficha: id},
         dataType: 'json',
         success: (data) => {
             $('#enome').val(data.nome);
@@ -110,7 +110,7 @@ function updt(type, valor, ficha) {
     $.ajax({
         url: '?token=<?=$missao_token?>',
         method: "POST",
-        data: {query: 'mestre_update_status_fichasnpc', data: Data, ficha: ficha},
+        data: {query: 'mestre_sync_fichasnpc', data: Data, ficha: ficha},
     })
 }
 

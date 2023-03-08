@@ -1,11 +1,16 @@
-<div class="col-12" id="notas">
+<div class="col-12" id="notas" style="min-height: 360px">
     <div class="card h-100 w-100 border-secondary">
+        <div class="card-header d-flex">
+            <h4 class="card-title m-0">Anotações <span id="syncnotes"><i class="fas"></i></span></h4>
+	        <?php if (!isset($_GET["popout"])) { ?>
+                <button class="btn text-secondary fa-lg mx-1 p-1 popout"  data-fop-pop="notas" style="height: 30px; width: 30px;">
+                    <i class="fal fa-rectangle-vertical-history"></i>
+                </button>
+	        <?php } ?>
+        </div>
         <div class="card-body p-0">
-            <div class="card-header border-0">
-                <div class="card-title fs-3 text-center font6 m-0">Anotações <span id="syncnotes"><i class="fas"></i></span></div>
-            </div>
             <form class="container-fluid p-0" id="noteform">
-                <ul class="nav nav-tabs" id="notestitle" role="tablist">
+                <ul class="nav nav-tabs px-2 my-2" id="notestitle" role="tablist">
                     <?php foreach ($q["notas"] as $ff => $r): ?>
                         <li class="nav-item title" role="presentation">
                             <button class="nav-link  <?=$ff===0?"active":""?>" id="a<?= $r["id"] ?>-tab" data-bs-toggle="pill" data-bs-target="#a<?= $r["id"] ?>" type="button" role="tab"><?= $r["nome"] ?></button>

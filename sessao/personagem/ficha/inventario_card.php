@@ -4,13 +4,13 @@
 			<?php if ($edit) { ?>
                 <div class="float-start">
 					<?php if (!isset($_GET["popout"])) { ?>
-                        <button class="btn btn-sm text-white fa-lg popout" title="PopOut">
+                        <button class="btn btn-sm text-secondary fa-lg popout" title="PopOut">
                             <i class="fa-regular fa-rectangle-vertical-history"></i>
                         </button>
 					<?php } ?>
                 </div>
 			<?php } ?>
-            <h4 class="m-0">Inventário (<?= $espacosusados ?>/<?= $invmax ?>)</h4>
+            <h4 class="m-0">Inventário (<span class="pesoatual"><?= $espacosusados ?></span>/<?= $invmax ?>)</h4>
 			<?php if ($edit) { ?>
                 <div class="float-end">
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editinv"
@@ -22,12 +22,14 @@
         </div>
         <div class="card-body p-0">
             <h3 class="text-center">Armas</h3>
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-1 m-2">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-2 m-2">
 				<?php foreach ($s[1] as $i => $arma): ?>
                     <div class="col">
-                        <div class="card h-100 border position-relative" id="arma<?= $arma["id"] ?>">
+                        <div class="card h-100 border position-relative" style="min-height: 100px" id="arma<?= $arma["id"] ?>">
+	
+	                        <?php if ($edit) { ?>
                             <div class="position-absolute start-0-0 top-0">
-                                <button type="button" class="btn btn-sm btn-outline-danger" title="Apagar Arma" onclick="deletar(<?= $arma["id"] ?>, '<?= $arma["arma"] ?>', 'delarma')">
+                                <button type="button" class="btn btn-sm btn-outline-danger" title="Apagar Arma" onclick="deletar(<?= $arma["id"] ?>, '<?= $arma["arma"] ?>', 'arma')">
                                     <i class="fa-regular fa-trash"></i>
                                 </button>
                             </div>
@@ -36,6 +38,7 @@
                                     <i class="fat fa-pencil"></i>
                                 </button>
                             </div>
+	                        <?php } ?>
                             <img class="card-img-top oto" src="<?= $arma["foto"] ?>">
                             <div class="card-body p-0">
                                 <div class="card-title text-center arma"><?= $arma["arma"] ?></div>
@@ -69,7 +72,7 @@
                                 <div class="top-100 position-sticky">
 									<?php if (!empty($arma["ataque"])) { ?>
                                         <div class="d-grid">
-                                            <button class="btn btn-sm p-0 btn-outline-info rounded-0 ataque" data-dado="<?= $arma["ataque"] ?>" onclick='rolar(<?= "{nome:`Teste {$arma["arma"]}`,dado: `{$arma["ataque"]}`, dano: false,margem:{$arma["margem"]}}" ?>,<?= "{nome:`Dano {$arma["arma"]}`,dado: `{$arma["dano"]}`, dano: 1}" ?>,<?= "{nome:`Crítico {$arma["arma"]}`,dado: `{$arma["critico"]}`, dano: 1}" ?>)'>
+                                            <button class="btn btn-sm p-0 btn-outline-info rounded-0 ataque" data-dado="<?= $arma["ataque"] ?>" onclick='rolar(<?= "[{nome:`Teste {$arma["arma"]}`,dado: `{$arma["ataque"]}`, dano: false,margem:{$arma["margem"]}}" ?>,<?= "{nome:`Dano {$arma["arma"]}`,dado: `{$arma["dano"]}`, dano: 1}" ?>,<?= "{nome:`Crítico {$arma["arma"]}`,dado: `{$arma["critico"]}`, dano: 1}]" ?>)'>
                                                 Teste<br>
 												<?= $arma["ataque"] ?>
                                             </button>
@@ -79,13 +82,13 @@
 										?>
                                         <div class="btn-group btn-group-sm btn-group-sm rounded-0 w-100">
 											<?php if (!empty($arma["dano"])) { ?>
-                                                <button class="btn btn-outline-danger position-relative rounded-0 p- dano" data-dado="<?= $arma["dano"] ?>" onclick="rolar('<?= $arma['dano'] ?>', 1, 'Dano Arma')">
+                                                <button class="btn btn-outline-danger position-relative rounded-0 p- dano" data-dado="<?= $arma["dano"] ?>" onclick="rolar({dado:'<?= $arma['dano'] ?>',dano:1,nome:'Dano Arma'})">
                                                     Normal<br>
 													<?= $arma["dano"] ?>
                                                 </button>
 											<?php }
 											if (!empty($arma["critico"])) { ?>
-                                                <button class="btn btn-outline-danger position-relative rounded-0 p-0 critico" data-margem="<?= $arma["margem"] ?>" data-dado="<?= $arma["critico"] ?>" onclick="rolar('<?= $arma['critico'] ?>', 1, 'Crítico Arma')">
+                                                <button class="btn btn-outline-danger position-relative rounded-0 p-0 critico" data-margem="<?= $arma["margem"] ?>" data-dado="<?= $arma["critico"] ?>" onclick="rolar({dado:'<?= $arma['critico'] ?>',dano:true,nome: 'Crítico Arma'})">
                                                     Crítico<br>
 													<?= $arma["critico"] ?>/<?= $arma["margem"] ?>
                                                 </button>
@@ -97,6 +100,8 @@
                         </div>
                     </div>
 				<?php endforeach; ?>
+	
+	            <?php if ($edit) { ?>
                 <div class="col">
                     <div class="card btn btn-outline-success bg-transparent border-dashed h-100" data-bs-toggle="modal" data-bs-target="#addarma">
                         <div class="m-auto">
@@ -104,6 +109,8 @@
                         </div>
                     </div>
                 </div>
+	
+	            <?php } ?>
             </div>
             <div class="py-2" id="inv">
 				<?php
@@ -117,6 +124,7 @@
                                 <col>
                                 <col style="width: 75px">
                                 <col style="width: 50px">
+                                <col style="width: 85px">
                             </colgroup>
                             <thead>
                             <tr>
@@ -129,15 +137,17 @@
                                 <th scope="col">Descrição</th>
                                 <th scope="col">Categoria</th>
                                 <th scope="col">Peso</th>
+                                <th scope="col">Quantidade</th>
                             </tr>
                             </thead>
                             <tbody>
 							<?php foreach ($s[4] as $row): ?>
-                                <tr>
+                                <tr data-fop-item="<?=$row["id"]?>">
                                     <td><?= $row['nome']; ?></td>
                                     <td><?= $row['descricao']; ?></td>
                                     <td><?= $row['prestigio']; ?></td>
-                                    <td><?= $row['espaco']; ?></td>
+                                    <td><span class="peso"><?= $row['espaco']; ?></span></td>
+                                    <td><span class="quantidade"><?= $row['quantidade']; ?></span>x <button class="btn btn-sm text-info p-1" onclick="item('plus',<?=$row['id']?>)"><i class="fal fa-plus-circle"></i></button><button class="btn btn-sm text-info p-1" onclick="item('minus',<?=$row['id']?>)"><i class="fal fa-minus-circle"></i></button></td>
                                 </tr>
 							<?php endforeach; ?>
                             </tbody>
