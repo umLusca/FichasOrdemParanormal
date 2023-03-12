@@ -161,5 +161,7 @@
         }
 
         updt();
+
+        tick();
     })
 </script>

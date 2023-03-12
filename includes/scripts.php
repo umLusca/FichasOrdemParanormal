@@ -23,8 +23,6 @@
     </div>
 </div>
 <script>
-</script>
-<script type="text/babel">
     function striphtml(s){
         return s.textContent || s.innerText || "";
     }
@@ -36,7 +34,8 @@
             }
         })
         return value
-    }function setCookie(name,value,days) {
+    }
+    function setCookie(name,value,days) {
         var expires = "";
         if (days) {
             var date = new Date();
@@ -45,7 +44,6 @@
         }
         document.cookie = name + "=" + (value || "")  + expires + "; path=/";
     }
-
     function confirmar(title, text) {
         $("#confirmar .title").html(title);
         $("#confirmar .desc").html(text);
@@ -62,7 +60,6 @@
             })
         });
     }
-
     function uploadFile(PREFIX_, element = null, token, Upload_name = "file", callback = null) {
         const FILE = element.files[0];
 
@@ -119,8 +116,8 @@
             },
             success: (d) => {
                 console.log(d)
-                if (d["data"]["url"]) {
-                    inputurl.val(d["data"]["url"]);
+                if (d["url"]) {
+                    inputurl.val(d["url"]);
                 } else {
                     returndiv.html("Falha. Limite estourado.");
                     progressbar.addClass("bg-danger").removeClass("bg-primary,bg-success,bg-warning");
@@ -132,7 +129,6 @@
             },
         })
     }
-
     function percent(max, min = 0) {
         if ((max === 0 && min === 0) || max === 0) {
             return 0;
@@ -145,8 +141,53 @@
         }
     }
 
+    const storedTheme = getCookie("theme");
+    const autotheme = getCookie("auto_theme");
+    console.log(getCookie("theme"))
+    const getPreferredTheme = () => {
+        if(autotheme !== "true"){
+            if (storedTheme) {
+                return storedTheme
+            }
+        } else {
+            setCookie("theme",window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
 
+    }
+    const setTheme = function (theme) {
+        console.log(theme)
+        console.log("teste")
+        switch (theme){
+            default:
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    $(document.documentElement).attr("data-bs-theme", "dark")
+                } else {
+                    $(document.documentElement).attr("data-bs-theme", "light")
+                }
+                break;
+            case "dark":
+                $(document.documentElement).attr("data-bs-theme", "dark")
+                break;
+            case "light":
+                $(document.documentElement).attr("data-bs-theme", "light")
+                break;
+        }
+    }
+    setTheme(getPreferredTheme())
 
+    $.fn.isValid = function () {
+        return this[0].checkValidity()
+    } // Função para checar validade de formularios
+
+    $('.modal').on('show.bs.modal', function () {
+        $('.modal').not($(this)).each(function () {
+            $(this).modal('hide');
+        });
+    });
+
+</script>
+<script type="text/babel">
     $(document).ready(function () {
         $("*[data-bs-toggle=tooltip]").each((i,e)=>{
             new bootstrap.Tooltip(e);
@@ -168,11 +209,13 @@
         };
         $("#sitethemeselect").on("change",()=>{
             let theme = $("#sitethemeselect").val();
-            console.log(getCookie("theme"));
-            console.log(theme)
-            setTheme(theme);
-            setCookie("theme",theme,365)
-            console.log(getCookie("theme"));
+            if(theme === "auto"){
+                setCookie("auto_theme",true,365)
+            } else {
+                setCookie("auto_theme",false,365)
+                setCookie("theme",theme,365)
+            }
+            setTheme(theme)
         })
         
         
@@ -183,51 +226,17 @@
  * Changed by Lucas (https://github.com/LucasMeGames)
  */
 
-        const storedTheme = getCookie("theme");
-        const getPreferredTheme = () => {
-            if (storedTheme) {
-                return storedTheme
-            }
-
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        }
-        const setTheme = function (theme) {
-            switch (theme){
-                default:
-                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        $(document.documentElement).attr("data-bs-theme", "dark")
-                    } else {
-                        $(document.documentElement).attr("data-bs-theme", "light")
-                    }
-                    break;
-                case "dark":
-                    $(document.documentElement).attr("data-bs-theme", "dark")
-                    break;
-                case "light":
-                    $(document.documentElement).attr("data-bs-theme", "light")
-                    break;
-            }
-        }
-        setTheme(getPreferredTheme())
-        
         $(window.matchMedia('(prefers-color-scheme: dark)')).on("change",()=>{
-            if (storedTheme !== 'light' || storedTheme !== 'dark') {
-                setTheme(getPreferredTheme())
-            }
+          
+                if (storedTheme !== 'light' || storedTheme !== 'dark') {
+                    console.log(storedTheme)
+                    setTheme(getPreferredTheme())
+                }
+            
         })
         
      
 
-
-        $.fn.isValid = function () {
-            return this[0].checkValidity()
-        } // Função para checar validade de formularios
-
-        $('.modal').on('show.bs.modal', function () {
-            $('.modal').not($(this)).each(function () {
-                $(this).modal('hide');
-            });
-        });
 		<?php if (!isset($_SESSION["UserID"])) {?>
 
         let recup = false;

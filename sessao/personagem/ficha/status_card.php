@@ -30,7 +30,7 @@
                                     <div>
                                         <h5>Status</h5>
                                         <div class="p-1">
-                                            <input type="checkbox" class="btn-check" id="combate" <?= $ficha["combate"] ? "checked" : "" ?>>
+                                            <input type="checkbox" class="btn-check" <?=isset($dados_missao)?"disabled":""?> id="combate" <?= $ficha["combate"] ? "checked" : "" ?>>
                                             <label class="d-grid btn btn-sm btn-outline-warning fw-bolder" for="combate">Combate</label>
                                         </div>
                                         <div class="p-1">

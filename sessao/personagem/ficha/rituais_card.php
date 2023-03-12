@@ -97,19 +97,19 @@ function elicon($el)
                                                 <div class="row g-1">
                                                     <div class="col-4 d-grid">
                                                         <button class="btn btn-sm btn-outline-secondary normal" data-dado="<?= $r["dano"] ?>"
-                                                                onclick="rolar({dado:`<?= $r["dano"] ?>`,dano:true,nome:`Ritual: Normal`})" <?= $edit ?: "disabled" ?>>
+                                                                onclick="rolar({dado:`<?= $r["dano"] ?>`,dano:1,nome:`Ritual: Normal`})" <?= $edit ?: "disabled" ?>>
                                                             Normal
                                                         </button>
                                                     </div>
                                                     <div class="col-4 d-grid">
                                                         <button class="btn btn-sm btn-outline-secondary discente" data-dado="<?= $r["dano2"] ?>"
-                                                                onclick="rolar({dado:'<?= $r["dano2"] ?>',dano:true,nome:'Ritual: Discente'})" <?= $edit ?: "disabled" ?>>
+                                                                onclick="rolar({dado:'<?= $r["dano2"] ?>',dano:1,nome:'Ritual: Discente'})" <?= $edit ?: "disabled" ?>>
                                                             Discente
                                                         </button>
                                                     </div>
                                                     <div class="col-4 d-grid">
                                                         <button class="btn btn-sm btn-outline-secondary verdadeiro" data-dado="<?= $r["dano3"] ?>"
-                                                                onclick="rolar({dado:'<?= $r["dano3"] ?>',dano:true, nome: 'Ritual: Verdadeiro'})" <?= $edit ?: "disabled" ?>>
+                                                                onclick="rolar({dado:'<?= $r["dano3"] ?>',dano:1, nome: 'Ritual: Verdadeiro'})" <?= $edit ?: "disabled" ?>>
                                                             Verdadeiro
                                                         </button>
                                                     </div>

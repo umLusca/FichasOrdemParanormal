@@ -1,7 +1,8 @@
 <div class="col">
     <div class="card h-100" id="card_pericias">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="m-0 order-2">Perícias</h4>
+            <h4 class="m-0 order-2">Perícias <i class="fal fa-info-circle text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_pericias"></i></h4>
+        
             <div class="order-1">
                 <?php if (!isset($_GET["popout"]) and $edit) { ?>
                     <button class="btn btn-sm text-secondary fa-lg popout" title="PopOut">

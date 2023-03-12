@@ -4,7 +4,7 @@ require_once "./../ficha/aconfig_ficha.php";
 
 ?>
 <!DOCTYPE html>
-<html lang="br" data-bs-theme="<?=$_SESSION["theme"]?>">
+<html lang="br" data-bs-theme="<?=$_COOKIE["theme"]?>">
     <head>
         <?php require_once './../../../includes/head.html';?>
         <meta charset="UTF-8">
@@ -24,7 +24,7 @@ require_once "./../ficha/aconfig_ficha.php";
                         <span>Resolução Recomendada: 1000x1500></span>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="./fichasop?token=<?=$token?>">Abrir Portrait OSNF</a>
+                        <a class="btn btn-sm btn-outline-primary" href="./fichasop?token=<?=$token?>">Abrir Portrait</a>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@ require_once "./../ficha/aconfig_ficha.php";
                         <span>Resolução Recomendada: 2200x1200</span>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="./PlayRay?token=<?=$token?>">Abrir Portrait Espiral</a>
+                        <a class="btn btn-sm btn-outline-primary" href="./PlayRay?token=<?=$token?>">Abrir Portrait Playray</a>
                     </div>
                 </div>
             </div>
@@ -91,14 +91,14 @@ require_once "./../ficha/aconfig_ficha.php";
                     </div>
                     <div class="card-body">
                         <p>Portrait baseado em Desconjuração, tentado ser o mais fiel com o da temporada</p><br>
-                        <span>Resolução Recomendada: 1800x1200</span>
+                        <span>Resolução Recomendada: 1900x1200</span>
                         <label class="form-floating">
                             <input class="form-control form-control-color w-100" id="cordesc" type="color" autocomplete="off"/>
                             <label>Selecione a cor</label>
                         </label>
                     </div>
                     <div class="card-footer">
-                        <a id="descbtn" class="btn btn-sm btn-outline-primary" href="./desconjuracao?token=<?=$token?>">Abrir Portrait OSNI</a>
+                        <a id="descbtn" class="btn btn-sm btn-outline-primary" href="./desconjuracao?token=<?=$token?>">Abrir Portrait</a>
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@ require_once "./../ficha/aconfig_ficha.php";
                         <span>Resolução Recomendada: 1800x1200</span>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="./calamidade?token=<?=$token?>">Abrir Portrait OSNI</a>
+                        <a class="btn btn-sm btn-outline-primary" href="./calamidade?token=<?=$token?>">Abrir Portrait</a>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@ require_once "./../ficha/aconfig_ficha.php";
                         <span>Resolução Recomendada: 1700x1200</span>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-sm btn-outline-primary" href="./osni?token=<?=$token?>">Abrir Portrait OSNI</a>
+                        <a class="btn btn-sm btn-outline-primary" href="./osni?token=<?=$token?>">Abrir Portrait</a>
                     </div>
                 </div>
             </div>

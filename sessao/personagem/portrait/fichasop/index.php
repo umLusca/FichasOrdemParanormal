@@ -286,7 +286,8 @@ require_once "./../includes/scripts.php";
 <script type="text/babel">
 
     function tick() {
-        updtsaude()
+        
+        updtsaude();
         const element = (
             <div className="portrait">
                     <div className="status">
@@ -340,7 +341,6 @@ require_once "./../includes/scripts.php";
         portrait.render(element);
     }
 
-    tick();
 </script>
 </body>
 </html>

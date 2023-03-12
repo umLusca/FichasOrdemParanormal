@@ -146,7 +146,7 @@ $c = $con->query("SELECT L.*, m.nome,m.descricao as m_token FROM ligacoes L INNE
 $z = $con->query("SELECT * from fichas_personagem WHERE id not in (SELECT id_ficha from ligacoes WHERE id_ficha is not null) AND usuario = '" . $_SESSION["UserID"] . "';");
 ?>
 <!DOCTYPE html>
-<html lang="br" data-bs-theme="<?=$_SESSION["theme"]?>">
+<html lang="br" data-bs-theme="<?=$_COOKIE["theme"]?:"auto"?>">
 <head>
 	<?php require_once "./../includes/head.html"; ?>
     <title>Sessões - FichasOP</title>

@@ -130,7 +130,7 @@ html[data-bs-theme=dark] .containera {
 }
 .containera {
     background-repeat: no-repeat;
-    background-size: 300px auto;
+    background-size: 300px 302px;
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -142,7 +142,7 @@ html[data-bs-theme=dark] .containera {
 
 .containera img {
     width: 300px;
-    height: auto;
+    height: 302px;
 }
 
 .atributos {

@@ -31,7 +31,7 @@ function toggleCombate(t) {
     $.ajax({
         url:"",
         method: "post",
-        data:{query:"mestre_toggle_combate","token":token,"combate":checked},
+        data:{query:"mestre_toggle_combate","combate":checked},
         success:(d)=>console.log(d),
     })
     $(t).blur();

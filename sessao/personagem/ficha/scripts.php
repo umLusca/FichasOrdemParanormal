@@ -493,7 +493,7 @@
                         console.log(d)
                     },
                 }).done(function (data) {
-                    // location.reload();
+                    location.reload();
                 })
             }
         })// Enviar qualquer formulario via jquery

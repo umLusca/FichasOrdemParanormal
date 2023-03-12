@@ -10,7 +10,8 @@
 					<?php } ?>
                 </div>
 			<?php } ?>
-            <h4 class="m-0">Inventário (<span class="pesoatual"><?= $espacosusados ?></span>/<?= $invmax ?>)</h4>
+            <h4 class="m-0">Inventário <i class="fal fa-info-circle text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_inventario"></i>
+            (<span class="pesoatual"><?= $espacosusados ?></span>/<?= $invmax ?>)</h4>
 			<?php if ($edit) { ?>
                 <div class="float-end">
                     <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editinv"
@@ -88,7 +89,7 @@
                                                 </button>
 											<?php }
 											if (!empty($arma["critico"])) { ?>
-                                                <button class="btn btn-outline-danger position-relative rounded-0 p-0 critico" data-margem="<?= $arma["margem"] ?>" data-dado="<?= $arma["critico"] ?>" onclick="rolar({dado:'<?= $arma['critico'] ?>',dano:true,nome: 'Crítico Arma'})">
+                                                <button class="btn btn-outline-danger position-relative rounded-0 p-0 critico" data-margem="<?= $arma["margem"] ?>" data-dado="<?= $arma["critico"] ?>" onclick="rolar({dado:'<?= $arma['critico'] ?>',dano:1,nome: 'Crítico Arma'})">
                                                     Crítico<br>
 													<?= $arma["critico"] ?>/<?= $arma["margem"] ?>
                                                 </button>
@@ -128,12 +129,7 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th scope="col">
-                                    <button class="btn btn-sm btn-outline-info" id="vera" title="Ver informações inventario">
-                                        <i class="fa-regular fa-eye"></i>
-                                    </button>
-                                    Nome
-                                </th>
+                                <th scope="col">Nome</th>
                                 <th scope="col">Descrição</th>
                                 <th scope="col">Categoria</th>
                                 <th scope="col">Peso</th>

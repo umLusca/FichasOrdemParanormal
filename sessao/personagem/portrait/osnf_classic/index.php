@@ -363,7 +363,6 @@ require_once "./../includes/scripts.php";
         portrait.render(element);
     }
 
-    tick();
 </script>
 </body>
 </html>

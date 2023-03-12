@@ -6,11 +6,7 @@ function atributos($for, $agi, $int, $vig, $pre, $enabled = 1, $input = 0, $min 
 {
 	global $minimo_atributo;
 	global $maximo_atributo;
-	if ($theme === "auto") {
-		$_theme = $_SESSION["theme"];
-	} else {
-		$_theme = $theme;
-	}
+	$_theme = $_COOKIE["theme"]?:"auto";
 	if (!$input) {
 		$return = "
             <div class='containera mx-auto'>

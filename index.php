@@ -34,7 +34,7 @@ Cubra o arroz com as fatias de queijo. Tampe a panela novamente e deixe que o va
 
 Sirva acompanhado de carne-de-sol frita ou assada.
 -->
-<html lang="pt-BR" data-bs-theme="dark">
+<html lang="pt-BR" data-bs-theme="<?=$_SESSION["theme"]?>">
 <head>
     <!-- Required meta tags -->
     <title>Fichas Ordem Paranormal</title>

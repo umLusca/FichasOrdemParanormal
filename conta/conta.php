@@ -59,6 +59,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input class="form-control" name="query" type="hidden" value="conta_recuperar"/>
                     <button type="submit" class="btn btn-success w-100">Recuperar</button>
                 </div>
             </div>
@@ -133,7 +134,7 @@ if (isset($_SESSION["UserID"])) { ?>
                                 <div class="card-body">
                                     <label class="form-floating">
                                         <select class="form-select" id="sitethemeselect" aria-label="Tema do site">
-	                                        <?=Super_options("tema",$_SESSION["theme"])?>
+	                                        <?=Super_options("tema",$_COOKIE["theme"])?>
                                             <option value="dark" disabled>Escuro > Claro ;)</option>
                                         </select>
                                         <label>Tema do site</label>

@@ -3,12 +3,12 @@ header("X-Robots-Tag: none");
 require_once "./../../../config/includes.php";
 $con = con();
 if (!isset($_SESSION['UserID'])) {
-    proibido();
+	proibido();
 }
 $id = cleanstring($_GET["convite"]);
 ?>
 <!DOCTYPE html>
-<html lang="br">
+<html lang="br" data-bs-theme="<?= $_COOKIE["theme"] ?>">
 <head>
 	<?php require_once "./../../../includes/head.html"; ?>
     <title>Criar Personagem - FichasOP</title>
@@ -24,7 +24,8 @@ $id = cleanstring($_GET["convite"]);
             <div class="row">
                 <div class="col-12 col-xl-6">
                     <div class="text-center">
-                        <h4>Detalhes Principais</h4>
+                        <span class="fs-4">Detalhes Principais</span><span class="text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_detalhes"> <i class="fal fa-info-circle"></i></span>
+
                     </div>
                     <div class="m-2">
                         <label class="form-floating">
@@ -73,7 +74,7 @@ $id = cleanstring($_GET["convite"]);
                                 <span class="invalid-feedback">
                         Coloque a idade do seu personagem.
                         Coloque 0 Para Desconhecido.
-                    </span>
+                                </span>
                             </label>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-lg-1 col-xl-3">
@@ -95,7 +96,7 @@ $id = cleanstring($_GET["convite"]);
                                 <span class="invalid-feedback">Esse campo é obrigatório</span>
                             </label>
                             <datalist id="origens">
-			                    <?= Super_options("origens") ?>
+								<?= Super_options("origens") ?>
                             </datalist>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 col-xl-6">
@@ -137,7 +138,8 @@ $id = cleanstring($_GET["convite"]);
                 </div>
                 <div class="col-12 col-xl-6">
                     <div class="text-center">
-                        <h4>Atributos</h4>
+                        <span class="fs-4">Atributos</span>
+                        <span class="text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_atributos"><i class="fal fa-info-circle"></i></span>
                     </div>
                     <i class="text-info"><i class="fa-regular fa-circle-info"></i> Clique nos circulos</i>
                     <div class="containera" id="atributos" title="Atributos, clique para editar">
@@ -176,9 +178,82 @@ $id = cleanstring($_GET["convite"]);
         <input type="hidden" value="<?= $id ?>" name="convite">
     </form>
 </main>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_detalhes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Sobre os Atributos</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+						<?php if ($_COOKIE["theme"] === "light") { ?>
+                            <div class="carousel-item active">
+                                <img src="/assets/img/helper_conceito_dark.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/assets/img/helper_origens_dark.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/assets/img/helper_classes_dark.png" class="d-block w-100" alt="...">
+                            </div>
+						<?php } else { ?>
+                            <div class="carousel-item active">
+                                <img src="/assets/img/helper_conceito_light.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/assets/img/helper_origens_light.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/assets/img/helper_classes_light.png" class="d-block w-100" alt="...">
+                            </div>
+						
+						<?php } ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_atributos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Sobre os Atributos</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+				
+                <div class="img-fluid">
+					<?php if ($_COOKIE["theme"] !== "light") { ?>
+                        <img src="/assets/img/helper_atributos_dark.png" class="d-block w-100" alt="...">
+					<?php } else { ?>
+                        <img src="/assets/img/helper_atributos_light.png" class="d-block w-100" alt="...">
+					<?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php require_once "./../../../includes/scripts.php"; ?>
 <script>
-    $(()=>{
+    $(() => {
         $('#fotourl').on('input', function () {
             var src = jQuery(this).val();
 
@@ -209,7 +284,7 @@ $id = cleanstring($_GET["convite"]);
             $("#criar").addClass("was-validated")
             event.preventDefault()
             event.stopPropagation()
-            
+
             if ($("#criar")[0].checkValidity()) {
                 $.post({
                     url: "salvar.php",
@@ -222,8 +297,8 @@ $id = cleanstring($_GET["convite"]);
                                 $('#modalfooter').html('<a class="btn btn-success" href="./../?id=' + data.id + '" >Abrir Ficha</a><a class="btn btn-success">Fechar</a>');
                                 $("#submit input").attr('disabled', true);
                                 confirmar("Personagem criado!", "Deseja abrir a ficha?").then(s => {
-                                    if(s){
-                                        location.href = "/sessao/personagem/?id="+data["id"];
+                                    if (s) {
+                                        location.href = "/sessao/personagem/?id=" + data["id"];
                                     } else {
                                         location.href = "/sessao";
                                     }

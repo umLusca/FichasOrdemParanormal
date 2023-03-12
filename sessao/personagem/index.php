@@ -5,7 +5,7 @@ require_once "./ficha/aconfig_ficha.php";
 
 ?>
 <!DOCTYPE html>
-<html lang="br" data-bs-theme="<?= $_SESSION["theme"] ?>">
+<html lang="br" data-bs-theme="<?= $_COOKIE["theme"] ?>">
 <head>
 	<?php require_once './../../includes/head.html'; ?>
     <meta charset="UTF-8">
@@ -89,6 +89,7 @@ require_once "./ficha/aconfig_ficha.php";
 <div id="modalsaki">
 	<?php if ($edit) {
 		require_once "./ficha/inventario_modal.php";
+		require_once "./ficha/helper_modals.php";
 		require_once "./ficha/proficiencias_modal.php";
 		require_once "./ficha/rituais_modal.php";
 		require_once "./ficha/informacoes_modal.php";

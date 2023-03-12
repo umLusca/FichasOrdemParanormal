@@ -17,21 +17,16 @@ if ($edit) {
 				};
                 $type = false;
 				if(isset($_FILES["file"])){
-					$return = Image_Upload($_FILES["file"], uniqid('pf_', true));
-					if ($return["status"] == 200) {
-						if($type) {
-							$b = $con->prepare("UPDATE `fichas_personagem` SET $type = ? WHERE `token` = ? AND usuario = ?;");
-							$b->bind_param("sii", $return['data']['url'], $fichat, $_SESSION["UserID"]);
-						//	$b->execute();
-						}
-						$data = $return;
+					$return = save_image($_FILES["file"],$type);
+					if ($return) {
+						$data["url"] = $return;
 						$data["success"] = true;
 						$data["msg"]= "Sucesso!";
 					} else {
+						$data["url"] = "";
 						$data["success"] = false;
 						$data["msg"]= "Falha!";
 					}
-                    $data["return"] = $return;
 				}
 				exit(json_encode($data,JSON_PRETTY_PRINT));
 				break;

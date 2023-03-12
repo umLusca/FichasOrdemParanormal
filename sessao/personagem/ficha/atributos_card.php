@@ -8,7 +8,7 @@
                         </button>
                     <?php } ?>
                 </div>
-            <h4 class="m-0 mx-auto">Atributos</h4>
+            <h4 class="m-0 mx-auto">Atributos <i class="fal fa-info-circle text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_atributos"></i></h4>
                     <div class="float-end">
                         <?php if ($edit) { ?>
                         <button class="btn btn-sm text-warning fa-lg" data-bs-toggle="modal" data-bs-target="#editatrr" title="Editar Atributos">

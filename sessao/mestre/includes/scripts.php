@@ -1,10 +1,5 @@
-<script type="text/babel">
-    const token = '<?=$token?>';
-    <?php require_once "dadosjogados_script.js";?>
-    <?php require_once "iniciativas_script.js";?>
-    <?php require_once "jogadores_script.js";?>
-    <?php require_once "notas_script.js";?>
-    <?php require_once "npc_scripts.js";?>
+<script>
+
     const editnpcmodal = new bootstrap.Modal('#editnpc')
     const players = [
 		<?php
@@ -18,6 +13,14 @@
 		}
 		?>
     ]
+</script>
+<script type="text/babel">
+    const token = '<?=$token?>';
+    <?php require_once "dadosjogados_script.js";?>
+    <?php require_once "iniciativas_script.js";?>
+    <?php require_once "jogadores_script.js";?>
+    <?php require_once "notas_script.js";?>
+    <?php require_once "npc_scripts.js";?>
 
     $(document).ready(function () {
 

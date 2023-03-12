@@ -51,7 +51,7 @@ if (isset($_GET["id"])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="br" data-bs-theme="<?= $_SESSION["theme"] ?>">
+<html lang="br" data-bs-theme="<?= $_COOKIE["theme"]?:"dark"?>">
 <head>
 	<?php require_once "./../../includes/head.html"; ?>
     <title>Mestre - FichasOP</title>
