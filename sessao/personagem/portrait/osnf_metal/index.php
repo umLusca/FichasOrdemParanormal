@@ -154,6 +154,7 @@ require_once "./../../ficha/aconfig_ficha.php";
             position: absolute;
             margin-top: 15%;
             margin-left: 48%;
+            color: white;
             width: -webkit-fill-available;
             text-shadow: 0px 0px 20px;
         }

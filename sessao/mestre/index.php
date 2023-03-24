@@ -41,7 +41,7 @@ $q["iniciativas"] = $con->query("SELECT * FROM `iniciativas` WHERE `id_missao` =
 $q["personagens"] = $con->query("SELECT * FROM fichas_personagem where id in (SELECT id_ficha FROM ligacoes WHERE id_missao = '" . $id . "');");
 
 $q["npcs"] = $con->query("SELECT * FROM `fichas_npc` WHERE `missao` = '$id'");
-$q["dados_player"] = $con->query("SELECT * FROM dados_rolados_mestre WHERE missao = {$id} ORDER BY `data` desc");
+$q["dados_player"] = $con->query("SELECT * FROM dados_rolados_mestre WHERE missao = {$id} ORDER BY `data` desc LIMIT 10;");
 
 
 $missao_token = $token;

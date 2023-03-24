@@ -463,7 +463,7 @@
 </form>
 
 <!-- Modal EDITAR ITEMpeso inv -->
-<form class="modal fade" id="editpesoinv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="editpesoinv" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content ">
             <div class="modal-header">

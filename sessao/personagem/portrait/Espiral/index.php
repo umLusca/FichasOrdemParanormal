@@ -28,6 +28,7 @@ require_once "./../../ficha/aconfig_ficha.php";
             position: absolute;
             overflow: hidden;
             height: 930px;
+            width: 930px;
             margin: 60px;
             border-radius: 0% 0% 100% 100%;
         }

@@ -112,7 +112,7 @@
         $el(atual).val(parseInt($el(atual).val()) + valor);
 
 
-        $el(atual).val(diff($el(atual).val(), ">", parseInt($el(total).val()) + 20));
+        $el(atual).val(diff($el(atual).val(), ">", (type==="pv")?parseInt($el(total).val())+<?=$maximo_PVA?>:parseInt($el(total).val())));
         $el(atual).val(diff($el(atual).val(), "<", (type === "pv") ? <?=$minimo_PVA?> : 0));
         $("#barra" + atual).width(percent($el(atual).val(), $el(total).val()) + '%');
 

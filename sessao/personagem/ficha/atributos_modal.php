@@ -1,5 +1,5 @@
 <!-- Modal ATRIBUTOS-->
-<form class="modal fade" id="editatrr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="editatrr" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-secondary">
             <div class="modal-header">

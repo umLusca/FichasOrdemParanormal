@@ -22,11 +22,11 @@
 				<?php if ($edit) { ?>
                     <div class="col-auto justify-content-center align-self-center" id="butmor">
                         <div class="card m-2">
-                            <div class="card-header text-center p-0">
+                            <div class="card-header text-center">
                                 <h5 class="m-0"><span>Portrait</span></h5>
                             </div>
                             <div class="card-body p-1">
-                                <div class="row row-cols-auto justify-content-center">
+                                <div class="row row-cols-auto justify-content-center text-center">
                                     <div>
                                         <h5>Status</h5>
                                         <div class="p-1">

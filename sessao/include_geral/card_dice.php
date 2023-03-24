@@ -66,7 +66,7 @@
 						        $iconedado = "fa-dice-six";
 						        break;
 				        } ?>
-                        <div class="col dado" aria-foto="<?= $dado["foto"] ?>" aria-dado="<?= $dado["dado"] ?>" aria-id="<?= $dado["token"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar({'dado':'<?= $dado["dado"] ?>','dano':'<?=$dado["dano"]?>','nome':'<?= $dado["nome"]?>'})">
+                        <div class="col dado" aria-foto="<?= $dado["foto"] ?>" aria-dado="<?= $dado["dado"] ?>" aria-token="<?= $dado["token"]; ?>" aria-nome="<?= $dado["nome"]; ?>" title="<?= $dado["dado"] ?>" onclick="rolar({'dado':'<?= $dado["dado"] ?>','dano':'<?=$dado["dano"]?>','nome':'<?= $dado["nome"]?>'})">
                             <button class="btn btn-lg text-body-emphasis" <?=(!isset($edit) OR $edit)?:"disabled"?>>
                                 <i class="fal <?= $iconedado ?> fa-2x"></i><br><?= $dado["nome"] ?>
                             </button>

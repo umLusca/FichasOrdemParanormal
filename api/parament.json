@@ -1,0 +1,141 @@
+{
+  "query": {
+    "roll": {
+      "POST": {
+        "dado": "ex: '2d20'",
+        "dano": "bool",
+        "margem": "int 1-20",
+        "for": "INT 0-10",
+        "agi": "INT 0-10",
+        "int": "INT 0-10",
+        "vig": "INT 0-10",
+        "pre": "INT 0-10",
+      },
+      "RETORNO": {
+        "dado": {
+          "Parametros do dado": "Tais como, resultados, se foi critico, a soma, dados rolados e afins"
+        },
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "get_fichas": {
+      "POST": {
+        "sessid": "ID de Sessão"
+      },
+      "RETORNO": {
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "get_account": {
+      "POST": {
+        "sessid": "ID de Sessão"
+      },
+      "RETORNO": {
+        "conta": {
+          "nome": "Nome",
+          "email": "Email",
+          "login": "Login/Username",
+          "elite": "Premium/Vip", // Inútil, foi criado mas não é usado em momento algum...
+        },
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "update_ficha": {
+      "POST": {
+        "sessid": "ID de Sessão",
+        "token": "Token da ficha",
+        "dados": {
+          "Indice do dado ex: nome": "Valor: Ex: João",
+          "Indice do dado ex: historia": "Valor: Ex: João",
+          "Indice do dado ex: foto": "Valor: Ex: João...."
+        }
+      },
+      "RETORNO": {
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "check_session": {
+      "POST": {
+        "sessid": "ID de Sessão"
+      },
+      "RETORNO": {
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "login": {
+      "POST": {
+        "login": "Username / Email",
+        "senha": "Senha do usuario",
+      },
+      "RETORNO": {
+        "sessid": "ID de Sessão",
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    },
+    "create_ficha": {
+      "POST": {
+        "sessid": "ID de Sessão",
+        "origem": "Dado da ficha",
+        "classe": "Dado da ficha",
+        "trilha": "Dado da ficha",
+        "nex": "Dado da ficha",
+        "patente": "Dado da ficha",
+        "idade": "Dado da ficha",
+        "local": "Dado da ficha",
+        "forca": "Dado da ficha",
+        "agilidade": "Dado da ficha",
+        "presenca": "Dado da ficha",
+        "vigor": "Dado da ficha",
+        "intelecto": "Dado da ficha",
+        "sangue": "Dado da ficha",
+        "morte": "Dado da ficha",
+        "conhecimento": "Dado da ficha",
+        "energia": "Dado da ficha",
+        "sanidade": "Dado da ficha",
+        "fisico": "Dado da ficha",
+        "balistico": "Dado da ficha",
+        "acrobacia": "Dado da ficha",
+        "adestramento": "Dado da ficha",
+        "artes": "Dado da ficha",
+        "atletismo": "Dado da ficha",
+        "atualidades": "Dado da ficha",
+        "ciencia": "Dado da ficha",
+        "crime": "Dado da ficha",
+        "diplomacia": "Dado da ficha",
+        "enganacao": "Dado da ficha",
+        "fortitude": "Dado da ficha",
+        "furtividade": "Dado da ficha",
+        "intimidacao": "Dado da ficha",
+        "intuicao": "Dado da ficha",
+        "investigacao": "Dado da ficha",
+        "iniciativa": "Dado da ficha",
+        "luta": "Dado da ficha",
+        "medicina": "Dado da ficha",
+        "ocultismo": "Dado da ficha",
+        "percepcao": "Dado da ficha",
+        "pilotagem": "Dado da ficha",
+        "pontaria": "Dado da ficha",
+        "profissao": "Dado da ficha",
+        "reflexo": "Dado da ficha",
+        "religiao": "Dado da ficha",
+        "sobrevivencia": "Dado da ficha",
+        "tatica": "Dado da ficha",
+        "tecnologia": "Dado da ficha",
+        "vontade": "Dado da ficha",
+        "passiva": "Dado da ficha",
+        "bloqueio": "Dado da ficha",
+        "esquiva": "Dado da ficha"
+      },
+      "RETORNO": {
+        "msg":"Mensagem de retorno",
+        "success":"Boolean"
+      }
+    }
+  }
+}

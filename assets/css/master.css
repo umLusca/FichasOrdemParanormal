@@ -123,10 +123,10 @@ input[type=number] {
 }
 
 html[data-bs-theme=light] .containera {
-    background-image: url(/assets/img/Atributes_light.webp);
+    background-image: url(/assets/img/Atributos_debug_light.webp);
 }
 html[data-bs-theme=dark] .containera {
-    background-image: url(/assets/img/Atributes.webp);
+    background-image: url(/assets/img/Atributos_debug.webp);
 }
 .containera {
     background-repeat: no-repeat;

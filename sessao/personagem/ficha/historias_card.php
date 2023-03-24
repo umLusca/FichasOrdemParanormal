@@ -8,7 +8,7 @@
                     </button>
                 </div>
 			<?php } ?>
-            <h4 class="m-0">ETC <span data-fop-icon class="icon"><i class="fas"></i></span></h4>
+            <h4 class="m-0">Sobre <span data-fop-icon class="icon"><i class="fas"></i></span></h4>
             <div class="float-end">
             </div>
         </div>

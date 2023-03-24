@@ -50,11 +50,11 @@ function Echo_FichaNPC($fichas, $type): void
                                 <div class="my-2">
                                     <strong>Atributos</strong>
                                     <div class="row justify-content-center g-1 mt-2">
-										<?= pillbutton("FOR", $r["forca"], true, "rolar('" . ValorParaRolarDado($r["forca"]) . "d20')") ?>
-										<?= pillbutton("FOR", $r["agilidade"], true, "rolar('" . ValorParaRolarDado($r["agilidade"]) . "d20')") ?>
-										<?= pillbutton("FOR", $r["inteligencia"], true, "rolar('" . ValorParaRolarDado($r["inteligencia"]) . "d20')") ?>
-										<?= pillbutton("FOR", $r["presenca"], true, "rolar('" . ValorParaRolarDado($r["presenca"]) . "d20')") ?>
-										<?= pillbutton("FOR", $r["vigor"], true, "rolar('" . ValorParaRolarDado($r["vigor"]) . "d20')") ?>
+										<?= pillbutton("FOR", $r["forca"], true, "rolar({nome:'Força',dado:'" . ValorParaRolarDado($r["forca"]) . "d20'})") ?>
+										<?= pillbutton("AGI", $r["agilidade"], true, "rolar({nome:'Agilidade',dado:'" . ValorParaRolarDado($r["agilidade"]) . "d20'})") ?>
+										<?= pillbutton("INT", $r["inteligencia"], true, "rolar({nome:'Intelecto',dado:'" . ValorParaRolarDado($r["inteligencia"]) . "d20'})") ?>
+										<?= pillbutton("PRE", $r["presenca"], true, "rolar({nome:'Presença',dado:'" . ValorParaRolarDado($r["presenca"]) . "d20'})") ?>
+										<?= pillbutton("VIG", $r["vigor"], true, "rolar({nome:'Vigor',dado:'" . ValorParaRolarDado($r["vigor"]) . "d20'})") ?>
                                     </div>
                                 </div>
                                 <div class="my-2">
@@ -190,34 +190,34 @@ function Echo_FichaNPC($fichas, $type): void
                                     <div class="mt-4 pericias">
                                         <h4>Perícias</h4>
                                         <div class="row g-2 m-2 justify-content-center">
-											<?= pillbutton("Acobracia", $r["acrobacia"], true, "rolar({dado:'{$r["acrobacia"]}d20',dano:false,nome:'Acobracia'})") ?>
-											<?= pillbutton("Adestramento", $r["adestramento"], true, "rolar('{$r["adestramento"]}d20',false,'Adestramento')") ?>
-											<?= pillbutton("Artes", $r["artes"], true, "rolar('{$r["artes"]}d20',false,'Atualidade')") ?>
-											<?= pillbutton("Atletismo", $r["atletismo"], true, "rolar('{$r["atletismo"]}d20',false,'Atletismo')") ?>
-											<?= pillbutton("Atualidade", $r["atualidade"], true, "rolar('{$r["atualidade"]}d20',false,'Atualidade')") ?>
-											<?= pillbutton("Ciência", $r["ciencia"], true, "rolar('{$r["ciencia"]}d20',false,'Ciência')") ?>
-											<?= pillbutton("Crime", $r["crime"], true, "rolar('{$r["crime"]}d20',false,'Crime')") ?>
-											<?= pillbutton("Diplomacia", $r["diplomacia"], true, "rolar('{$r["diplomacia"]}d20',false,'Diplomacia')") ?>
-											<?= pillbutton("Enganação", $r["enganacao"], true, "rolar('{$r["enganacao"]}d20',false,'Enganação')") ?>
-											<?= pillbutton("Fortitude", $r["fortitude"], true, "rolar('{$r["fortitude"]}d20',false,'Fortitude')") ?>
-											<?= pillbutton("Furtividade", $r["furtividade"], true, "rolar('{$r["furtividade"]}d20',false,'Furtividade')") ?>
-											<?= pillbutton("Iniciativa", $r["iniciativa"], true, "rolar('{$r["iniciativa"]}d20',false,'Iniciativa')") ?>
-											<?= pillbutton("Intimidação", $r["intimidacao"], true, "rolar('{$r["intimidacao"]}d20',false,'Intimidação')") ?>
-											<?= pillbutton("Intuição", $r["intuicao"], true, "rolar('{$r["intuicao"]}d20',false,'Intuição')") ?>
-											<?= pillbutton("Investigação", $r["investigacao"], true, "rolar('{$r["investigacao"]}d20',false,'Investigação')") ?>
-											<?= pillbutton("Luta", $r["luta"], true, "rolar('{$r["luta"]}d20'),false,'Luta'") ?>
-											<?= pillbutton("Medicina", $r["medicina"], true, "rolar('{$r["medicina"]}d20',false,'Medicina')") ?>
-											<?= pillbutton("Ocultismo", $r["ocultismo"], true, "rolar('{$r["ocultismo"]}d20',false,'Ocultismo')") ?>
-											<?= pillbutton("Percepção", $r["percepcao"], true, "rolar('{$r["percepcao"]}d20',false,'Percepção')") ?>
-											<?= pillbutton("Pilotagem", $r["pilotagem"], true, "rolar('{$r["pilotagem"]}d20',false,'Pilotagem')") ?>
-											<?= pillbutton("Pontaria", $r["pontaria"], true, "rolar('{$r["pontaria"]}d20',false,'Pontaria')") ?>
-											<?= pillbutton("Profissão", $r["profissao"], true, "rolar('{$r["profissao"]}d20',false,'Profissão')") ?>
-											<?= pillbutton("Reflexos", $r["reflexos"], true, "rolar('{$r["reflexos"]}d20',false,'Reflexos')") ?>
-											<?= pillbutton("Religião", $r["religiao"], true, "rolar('{$r["religiao"]}d20',false,'Religião')") ?>
-											<?= pillbutton("Sobrevivência", $r["sobrevivencia"], true, "rolar('{$r["sobrevivencia"]}d20',false,'Sobrevivência')") ?>
-											<?= pillbutton("Tática", $r["tatica"], true, "rolar('{$r["tatica"]}d20',false,'Tática')") ?>
-											<?= pillbutton("Tecnologia", $r["tecnologia"], true, "rolar('{$r["tecnologia"]}d20',false,'Tecnologia')") ?>
-											<?= pillbutton("Vontade", $r["vontade"], true, "rolar('{$r["vontade"]}d20',false,'Vontade')") ?>
+											<?= pillbutton("Acobracia", $r["acrobacia"], true,       "rolar({dado:'{$r["agilidade"]}d20+{$r["acrobacia"]}',dano:0,nome:'Acobracia'})") ?>
+											<?= pillbutton("Adestramento", $r["adestramento"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["adestramento"]}',dano:0,nome:'Adestramento'})") ?>
+											<?= pillbutton("Artes", $r["artes"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["artes"]}',dano:0,nome:'Atualidade'})") ?>
+											<?= pillbutton("Atletismo", $r["atletismo"], true, "rolar({dado:'{$r["forca"]}d20+{$r["atletismo"]}',nome:'Atletismo'})") ?>
+											<?= pillbutton("Atualidade", $r["atualidade"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["atualidade"]}', nome:'Atualidade'})") ?>
+											<?= pillbutton("Ciência", $r["ciencia"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["ciencia"]}', nome:'Ciência'})") ?>
+											<?= pillbutton("Crime", $r["crime"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["crime"]}', nome:'Crime'})") ?>
+											<?= pillbutton("Diplomacia", $r["diplomacia"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["diplomacia"]}', nome:'Diplomacia'})") ?>
+											<?= pillbutton("Enganação", $r["enganacao"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["enganacao"]}', nome:'Enganação'})") ?>
+											<?= pillbutton("Fortitude", $r["fortitude"], true, "rolar({dado:'{$r["vigor"]}d20+{$r["fortitude"]}', nome:'Fortitude'})") ?>
+											<?= pillbutton("Furtividade", $r["furtividade"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["furtividade"]}', nome:'Furtividade'})") ?>
+											<?= pillbutton("Iniciativa", $r["iniciativa"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["iniciativa"]}', nome:'Iniciativa'})") ?>
+											<?= pillbutton("Intimidação", $r["intimidacao"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["intimidacao"]}', nome:'Intimidação'})") ?>
+											<?= pillbutton("Intuição", $r["intuicao"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["intuicao"]}', nome:'Intuição'})") ?>
+											<?= pillbutton("Investigação", $r["investigacao"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["investigacao"]}', nome:'Investigação'})") ?>
+											<?= pillbutton("Luta", $r["luta"], true, "rolar({dado:'{$r["forca"]}d20+{$r["luta"]}', nome:'Luta'})") ?>
+											<?= pillbutton("Medicina", $r["medicina"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["medicina"]}', nome:'Medicina'})") ?>
+											<?= pillbutton("Ocultismo", $r["ocultismo"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["ocultismo"]}', nome:'Ocultismo'})") ?>
+											<?= pillbutton("Percepção", $r["percepcao"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["percepcao"]}', nome:'Percepção'})") ?>
+											<?= pillbutton("Pilotagem", $r["pilotagem"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["pilotagem"]}', nome:'Pilotagem'})") ?>
+											<?= pillbutton("Pontaria", $r["pontaria"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["pontaria"]}', nome:'Pontaria'})") ?>
+											<?= pillbutton("Profissão", $r["profissao"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["profissao"]}', nome:'Profissão'})") ?>
+											<?= pillbutton("Reflexos", $r["reflexos"], true, "rolar({dado:'{$r["agilidade"]}d20+{$r["reflexos"]}', nome:'Reflexos'})") ?>
+											<?= pillbutton("Religião", $r["religiao"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["religiao"]}', nome:'Religião'})") ?>
+											<?= pillbutton("Sobrevivência", $r["sobrevivencia"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["sobrevivencia"]}', nome:'Sobrevivência'})") ?>
+											<?= pillbutton("Tática", $r["tatica"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["tatica"]}', nome:'Tática'})") ?>
+											<?= pillbutton("Tecnologia", $r["tecnologia"], true, "rolar({dado:'{$r["inteligencia"]}d20+{$r["tecnologia"]}', nome:'Tecnologia'})") ?>
+											<?= pillbutton("Vontade", $r["vontade"], true, "rolar({dado:'{$r["presenca"]}d20+{$r["vontade"]}', nome:'Vontade'})") ?>
                                         </div>
                                     </div>
 								<?php } ?>

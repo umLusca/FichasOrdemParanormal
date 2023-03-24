@@ -165,8 +165,7 @@
                         <label class="form-check-label" for="eswitchdano" >Rolar como dano (Soma todos os dados)</label>
                     </div>
                 <input type="hidden" id="eds" name="query" value=""/>
-                <input type="hidden" id="edidd" name="token_pai"/>
-                <input type="hidden" name="token" value="<?=$token?>"/>
+                <input type="hidden" id="dtoken" name="dadotoken"/>
             </div>
             <div class="modal-footer justify-content-between">
                 <button class="btn btn-outline-danger deletar" type="submit">Deletar</button>

@@ -1,5 +1,5 @@
 <!-- Modal proficiencias-->
-<form class="modal modal-xl fade" id="editprincipal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal modal-xl fade" id="editprincipal" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
         <div class="modal-content">
             <div class="modal-header">

@@ -9,11 +9,11 @@
         $("main button").attr("disabled", false)
     });
 
-    function editdado(id, dado, nome, foto) {
+    function editdado(token, dado, nome, foto) {
         $('#edicone').val(foto);
         $('#eddado').val(dado);
         $('#ednome').val(nome);
-        $('#edidd').val(id);
+        $('#dtoken').val(token);
         modaleditardado.toggle();
     }
     
@@ -209,13 +209,13 @@
 
         $('#dados .dado').on('mousedown touchstart', function (e) {
             $(this).addClass('active');
-            let id = $(this).attr("aria-id");
+            let token = $(this).attr("aria-token");
             let dado = $(this).attr("aria-dado");
             let nome = $(this).attr("aria-nome");
             let foto = $(this).attr("aria-foto");
             timeOut = setInterval(function () {
                 clearInterval(timeOut);
-                editdado(id, dado, nome, foto);
+                editdado(token, dado, nome, foto);
             }, 500);
         }).bind('mouseup mouseleave touchend', function () {
             $(this).removeClass('active');

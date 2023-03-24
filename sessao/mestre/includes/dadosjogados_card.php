@@ -19,7 +19,7 @@
                             <div class="text-center align-self-center p-1 px-3">
                                 <img alt="Foto perfil" src="<?= $dado["foto"] ?>" height="50" width="50" class="rounded-circle border border-1 border-secondary">
                                 <h6 class="text-truncate font7"><?= $dado["nome"] ?></h6>
-                                <small><?=date("d/m/y \a\s H:i:s",strtotime($dados["data"]))?></small>
+                                <small><?=TempoDecorrido(strtotime($dados["data"]))?></small>
                             </div>
                             <div class="p-1 px-3">
                                 <h6><?= $dado["dado"]["nome"] ?></h6>

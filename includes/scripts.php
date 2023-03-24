@@ -186,27 +186,24 @@
         });
     });
 
-</script>
-<script type="text/babel">
+    $.fn.serializeObject = function(){
+        var obj = {};
+
+        $.each( this.serializeArray(), function(i,o){
+            var n = o.name,
+                v = o.value;
+
+            obj[n] = obj[n] === undefined ? v
+                : $.isArray( obj[n] ) ? obj[n].concat( v )
+                    : [ obj[n], v ];
+        });
+
+        return obj;
+    };
     $(document).ready(function () {
         $("*[data-bs-toggle=tooltip]").each((i,e)=>{
             new bootstrap.Tooltip(e);
         })
-        
-        $.fn.serializeObject = function(){
-            var obj = {};
-
-            $.each( this.serializeArray(), function(i,o){
-                var n = o.name,
-                    v = o.value;
-
-                obj[n] = obj[n] === undefined ? v
-                    : $.isArray( obj[n] ) ? obj[n].concat( v )
-                        : [ obj[n], v ];
-            });
-
-            return obj;
-        };
         $("#sitethemeselect").on("change",()=>{
             let theme = $("#sitethemeselect").val();
             if(theme === "auto"){
@@ -217,15 +214,6 @@
             }
             setTheme(theme)
         })
-        
-        
-        /*!
- * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)
- * Copyright 2011-2022 The Bootstrap Authors
- * Licensed under the Creative Commons Attribution 3.0 Unported License.
- * Changed by Lucas (https://github.com/LucasMeGames)
- */
-
         $(window.matchMedia('(prefers-color-scheme: dark)')).on("change",()=>{
           
                 if (storedTheme !== 'light' || storedTheme !== 'dark') {
@@ -234,9 +222,6 @@
                 }
             
         })
-        
-     
-
 		<?php if (!isset($_SESSION["UserID"])) {?>
 
         let recup = false;

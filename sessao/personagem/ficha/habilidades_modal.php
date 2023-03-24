@@ -1,5 +1,5 @@
 <!-- Modal Habilidades-->
-<form class="modal fade" id="addhab" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="addhab" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-secondary">
             <div class="modal-header">
@@ -33,7 +33,7 @@
 </form>
 
 
-<form class="modal fade" id="habedit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<form class="modal fade" id="habedit" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-secondary">
             <div class="modal-header">

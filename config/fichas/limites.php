@@ -1,7 +1,7 @@
 <?php
 
 $maximo_PV = 10000;
-$maximo_PVA = 20;//temporario
+$maximo_PVA = 100;//temporario
 $maximo_SAN = 10000;
 $maximo_SANA =  20;//temporario
 $maximo_PE = 10000;

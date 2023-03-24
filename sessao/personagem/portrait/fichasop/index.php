@@ -313,9 +313,9 @@ require_once "./../includes/scripts.php";
                             <div className="PE progress rounded-0">
                                 <div className="progress-bar sec" role="progressbar" style={{
 
-                                    width: percent(sana, san) + '%'
+                                    width: percent(pea, pe) + '%'
                                 }}></div>
-                                <span className="sec">{sana}/{san}</span>
+                                <span className="sec">{pea}/{pe}</span>
                             </div>
                         </div>
                     </div>
