@@ -28,7 +28,7 @@
                 <div class="col">
                     <div class="m-2 p-1">
                         <div class="bg-body position-absolute mx-2 pt-1 px-1 text-center">Jogador</div>
-                        <div class="p-2 my-3 border border-secondary"><?= $usuario ?></div>
+                        <div class="p-2 my-3 border border-secondary"><?= $ficha["usuario"] ?></div>
                     </div>
                 </div>
                 <?php

@@ -20,7 +20,7 @@ if(isset($_GET["id"])) {
 	if (empty($token)){
 		header("Location: ./..");
 	}
-	$sq = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `token` = ? ;");
+	$sq = $con->prepare("SELECT fichas_personagem.*, u.nome as usuario FROM `fichas_personagem` inner join usuarios u on fichas_personagem.usuario = u.id WHERE `token` = ? ;");
 	$sq->bind_param("s",$token);
 	$sq->execute();
 	$ficha = mysqli_fetch_array($sq->get_result());
@@ -55,11 +55,6 @@ if ((isset($_SESSION["UserAdmin"]) && $_SESSION["UserAdmin"])){
 //Pega todos os dados da ficha: Principal
 
 if (isset($ficha)) {
-
-	$nu = $con->query("SELECT * FROM `usuarios` WHERE `usuarios`.`id` = " . ($ficha["usuario"] ?: 0));
-	$rnu = mysqli_fetch_array($nu);
-	$usuario = $rnu["nome"];
-	$marca = $rnu["marca"];
 
 	$nome = $ficha["nome"];
 	$elemento = $ficha["afinidade"];
@@ -198,13 +193,11 @@ if (isset($ficha)) {
 } else {
 	header("Location: ./..");
 }
-//pega todos os dados da ficha: Rituais
-//pega todos os dados da ficha: Armas
+
 $rs = [];
 $s[1] = $con->query("Select * From `armas` where `id_ficha` = '$id';");
-foreach($s[1] as $r):
-	$rs[1][] = $r;
-endforeach;
+$s[8] = $con->query("Select *,armas.id as id,i.foto as foto From armas left join inventario i on i.id = armas.item_id where i.id_ficha = '$id' ;");
+
 $s[2] = $con->query("SELECT * FROM `habilidades` WHERE `id_ficha` = '" . $id . "';");
 $s[3] = $con->query("SELECT * FROM `proeficiencias` WHERE `id_ficha` = '" . $id . "';");
 $s[4] = $con->query("Select * From `inventario` where `id_ficha` = '$id';");
