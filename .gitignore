@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 assets/js/ckeditor
+assets/users
 assets/img/
 assets/js/fa.js
 assets/js/all.min.js
