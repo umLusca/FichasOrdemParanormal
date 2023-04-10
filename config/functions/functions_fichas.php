@@ -172,7 +172,7 @@ function is($arr, $arg): bool
 function VerificarPermissaoFicha(string $token, int|null $user): bool
 {
 	$token = cleanstring($token);
-	$con = con();
+	global $con;
 	if (isset($user, $token) && !empty($user) && !empty($token)) {
 		$q = $con->prepare("Select * FROM `fichas_personagem` WHERE `token` = ?;");
 		$q->bind_param("s", $token);
@@ -182,7 +182,6 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 			$q = mysqli_fetch_assoc($q);
 			
 			if ($q["usuario"] === $user) {
-				$con->close();
 				return true;
 			}
 			
@@ -193,7 +192,6 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 			if ($a->num_rows) {
 				$a = mysqli_fetch_assoc($a);
 				if ($a["id_usuario"] === $user) {
-					$con->close();
 					return true;
 				}
 				
@@ -204,7 +202,6 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 				if ($b->num_rows) {
 					$b = mysqli_fetch_assoc($b);
 					if ($b["mestre"] === $user) {
-						$con->close();
 						return true;
 					}
 				}
@@ -212,7 +209,6 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 			}
 		}
 	}
-	$con->close();
 	return false;
 }
 
@@ -295,15 +291,25 @@ function ClearRolar($dado, $Return_Error = false, $custom_dado = false): bool|ar
 	return $success;
 }
 
-function RolarMkII($dado_bruto, $dano = false, $margem = 20): array
-{
+/**
+ * @throws Exception
+ */
+function RolarMkII($dado_bruto, bool $dano = false, $margem = 20): array
+{//todo corrigr dando crítico quando dado negativo dá 20 em algum dos dados
 	$index = 0;
 	$resultado = $print = $soma = null;
 	$critico = false;
 	$somatotal = 0;
 	
+	$saida = array(
+		"soma" => 0,
+		"margem" => $margem,
+		"isDano" => $dano,
+		"critico" => false,
+		"print" => "",
+		"resultado" => 0,
+	);
 	
-	$saida = [];
 	$dado_bruto = str_replace("-", "+-", $dado_bruto);
 	$dado_fragmentado = explode('+', $dado_bruto);
 	foreach ($dado_fragmentado as $valor_dado) {
@@ -312,10 +318,10 @@ function RolarMkII($dado_bruto, $dano = false, $margem = 20): array
 			
 			$quantidade = (int)$separador[0];
 			$faces = (int)$separador[1];
-			if ($quantidade == 0 and $faces) {
+			if ($quantidade === 0 && $faces) {
 				$quantidade = 1;
 			}
-			if ($quantidade < 0 and $faces) {
+			if ($quantidade <= 0 && $faces) {
 				$quantidade = abs($quantidade);
 				$negative = true;
 			} else {
@@ -326,43 +332,32 @@ function RolarMkII($dado_bruto, $dano = false, $margem = 20): array
 					$saida["dados"][$index]["dado"] = "d" . $faces;
 					for ($i = 0; $i < $quantidade; $i++):
 						$saida["dados"][$index]["rolagens"] = $i + 1;
-						$saida["dados"][$index]["resultados"][$i] = random_int(1, $faces);
-						$resultado += $saida["dados"][$index]["resultados"][$i];
-						$print .= (isset($print) ? '+' : "") . $saida["dados"][$index]["resultados"][$i];
+						$saida["dados"][$index]["resultados"][$i] = rand(1, $faces);
+						$saida["resultado"] += $saida["dados"][$index]["resultados"][$i];
+						$saida["print"] .= (!empty($saida["print"]) ? '+' : "") . $saida["dados"][$index]["resultados"][$i];
 					endfor;
 				} else {
 					for ($i = 0; $i < $quantidade; $i++):
-						$saida["dados"][$index]["resultados"][$i] = random_int(1, $faces);
-						if ((int)$faces === 20 && $saida["dados"][$index]["resultados"][$i] >= $margem) {
-							$critico = true;
-						}
+						$saida["dados"][$index]["resultados"][$i] = rand(1, $faces);
 					endfor;
 					$saida["dados"][$index]["rolagens"] = $quantidade;
 					$saida["dados"][$index]["dado"] = "d" . $faces;
 					$saida["dados"][$index]["melhor"] = max($saida["dados"][$index]["resultados"]);
 					$saida["dados"][$index]["pior"] = min($saida["dados"][$index]["resultados"]);
-					$resultado += $saida["dados"][$index][$negative ? "pior" : "melhor"];
-					$print .= (isset($print) ? "+" : '') . $saida["dados"][$index][$negative ? "pior" : "melhor"];
+					$saida["resultado"] += $saida["dados"][$index][$negative ? "pior" : "melhor"];
+					$saida["critico"] = ($saida["dados"][$index][$negative ? "pior" : "melhor"] >= $margem);
+					$saida["print"] .= (!empty($saida["print"]) ? "+" : '') . $saida["dados"][$index][$negative ? "pior" : "melhor"];
 					$saida["dados"][$index]["resultado"] += $saida["dados"][$index][$negative ? "pior" : "melhor"];
 				}
 				$index++;
 			} else {
-				$somatotal += $quantidade;
-				if ($quantidade > 0) {
-					$quantidade = (isset($saida["print"]) ? "+" : ($negative ? "-" : "+")) . $quantidade;
-				}
-				$resultado += $quantidade;
-				$print .= $quantidade;
-				$soma .= $quantidade;
+				$saida["soma"] += $quantidade;
+				$saida["resultado"] += $quantidade;
+				$saida["soma"] += $quantidade;
+				$saida["print"] .= (($quantidade <= -1) ?"": "+") . $quantidade;
 			}
 		}
 	}
-	$saida["dano"] = (bool)$dano;
-	$saida["critico"] = (bool)$critico;
-	$saida["margem"] = $margem;
-	$saida["soma"] = $somatotal;
-	$saida["resultado"] = $resultado;
-	$saida["print"] = $print;
 	return ($saida);
 	
 }

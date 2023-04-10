@@ -3,6 +3,10 @@
     let changingtimer, morrendo, combate;                //timer identifier
     const donetimer = 1500;
 
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
     function editupdatefoto(SRC, EL) {
         console.log(SRC, EL)
@@ -48,9 +52,10 @@
             }
         })
     }
+
     function editarhab(id, tipo) {
-        $("#habedit input[name=name]").val($("*[data-fop-"+tipo+"="+id+"]").find("."+tipo+"name").text())
-        $("#habedit textarea[name=desc]").val($("*[data-fop-"+tipo+"="+id+"]").find("."+tipo+"desc").text());
+        $("#habedit input[name=name]").val($("*[data-fop-" + tipo + "=" + id + "]").find("." + tipo + "name").text())
+        $("#habedit textarea[name=desc]").val($("*[data-fop-" + tipo + "=" + id + "]").find("." + tipo + "desc").text());
         $("#habedit input[name=type]").val(tipo);
         $("#habedit input[name=id]").val(id);
         $("#habedit").modal("show");
@@ -73,15 +78,18 @@
                 $('#editarma input[name=did]').val(id);
                 emodal.show();
                 break;
+            case "item":
+                $('#edititem input[name=foto]').val($("#item" + id + " *[data-fop-info=foto]").attr("src"));
+                $('#edititem img').attr("src", $("#item" + id + " *[data-fop-info=foto]").attr("src"));
+                $('#edititem input[name=nome]').val($("#item" + id + " *[data-fop-info=nome]").text());
+                $('#edititem input[name=peso]').val($("#item" + id + " *[data-fop-info=espaco]").text());
+                $('#edititem input[name=prestigio]').val($("#item" + id + " *[data-fop-info=prestigio]").text());
+                $('#edititem textarea[name=descricao]').val(striphtml($("#item" + id + " *[data-fop-info=descricao]")[0]));
+                $('#edititem input[name=did]').val(id);
+                $("#edititem").modal("show");
+                break;
         }
     }// Editar Arma
-    function edititem(id) {
-        $('#edititemtitle, #enom').val($("tr[data-fop-item=" + id + "] .nome").text());
-        $('#edes').val($("tr[data-fop-item=" + id + "] .desc").text());
-        $('#epes').val($("tr[data-fop-item=" + id + "] .espaco").text());
-        $('#epre').val($("tr[data-fop-item=" + id + "] .prestigio").text());
-        $('#edititid').val(id);
-    }// Editar Item
     function cleanedit() {
         $('#deletarid,#deletarnome,#deletarstatus, #enome,#etipo,#eataque,#ealcance,#edano,#ecritico,#erecarga,#eespecial,#editarmaid,#enom,#edes,#epes,#epre,#edititid,#anom,#ades,#apes,#apre,#additemid').val('');
     }// Limpar modal edições
@@ -112,7 +120,7 @@
         $el(atual).val(parseInt($el(atual).val()) + valor);
 
 
-        $el(atual).val(diff($el(atual).val(), ">", (type==="pv")?parseInt($el(total).val())+<?=$maximo_PVA?>:parseInt($el(total).val())));
+        $el(atual).val(diff($el(atual).val(), ">", (type === "pv") ? parseInt($el(total).val()) + <?=$maximo_PVA?> : parseInt($el(total).val())));
         $el(atual).val(diff($el(atual).val(), "<", (type === "pv") ? <?=$minimo_PVA?> : 0));
         $("#barra" + atual).width(percent($el(atual).val(), $el(total).val()) + '%');
 
@@ -207,15 +215,20 @@
 
     $(document).ready(function () {
 
+
         $('#card_personagem textarea').on('keyup', function (e) {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(() => {
                 $.post({
                     url: "",
-                    data: {query:"ficha_sync_nota",type:$(e.currentTarget).attr("name"),text:$(e.currentTarget).val()},
+                    data: {
+                        query: "ficha_sync_nota",
+                        type: $(e.currentTarget).attr("name"),
+                        text: $(e.currentTarget).val()
+                    },
                     success: (d) => {
                         console.log(d)
-                        if(d["success"]){
+                        if (d["success"]) {
                             $("#card_personagem *[data-fop-icon]").attr("class", "text-success").html("<i class='far fa-cloud-check'></i>")
                         } else {
                             $("#card_personagem *[data-fop-icon]").attr("class", "text-danger").html("<i class='far fa-cloud-slash'></i>");

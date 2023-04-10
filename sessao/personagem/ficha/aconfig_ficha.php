@@ -20,7 +20,7 @@ if(isset($_GET["id"])) {
 	if (empty($token)){
 		header("Location: ./..");
 	}
-	$sq = $con->prepare("SELECT fichas_personagem.*, u.nome as usuario FROM `fichas_personagem` inner join usuarios u on fichas_personagem.usuario = u.id WHERE `token` = ? ;");
+	$sq = $con->prepare("SELECT fichas_personagem.*, u.nome as usuario, u.marca as marca FROM `fichas_personagem` inner join usuarios u on fichas_personagem.usuario = u.id WHERE fichas_personagem.`token` = ? ;");
 	$sq->bind_param("s",$token);
 	$sq->execute();
 	$ficha = mysqli_fetch_array($sq->get_result());
@@ -183,6 +183,7 @@ if (isset($ficha)) {
 		"PILO" =>  $ficha["pilotagem"],
 		"PONT" =>  $ficha["pontaria"],
 		"PROF" =>  $ficha["profissao"],
+		"RELI" =>  $ficha["religiao"],
 		"REFL" =>  $ficha["reflexos"],
 		"SOBR" =>  $ficha["sobrevivencia"],
 		"TATi" =>  $ficha["tatica"],
@@ -200,7 +201,7 @@ $s[8] = $con->query("Select *,armas.id as id,i.foto as foto From armas left join
 
 $s[2] = $con->query("SELECT * FROM `habilidades` WHERE `id_ficha` = '" . $id . "';");
 $s[3] = $con->query("SELECT * FROM `proeficiencias` WHERE `id_ficha` = '" . $id . "';");
-$s[4] = $con->query("Select * From `inventario` where `id_ficha` = '$id';");
+$s[4] = $con->query("SELECT i.* FROM inventario i LEFT JOIN armas a ON a.item_id = i.id WHERE a.item_id is null AND i.id_ficha = '$id';");
 foreach($s[4] as $r):
 	$rs[4][] = $r;
 endforeach;

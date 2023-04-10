@@ -9,7 +9,7 @@ require_once "./ficha/aconfig_ficha.php";
 <head>
 	<?php require_once './../../includes/head.html'; ?>
     <meta charset="UTF-8">
-    <title><?= $fichas["nome"] ?> - FichasOP</title>
+    <title><?= $ficha["nome"] ?> - FichasOP</title>
 	<?php require_once "./../../includes/scripts.php"; ?>
 </head>
 <body>

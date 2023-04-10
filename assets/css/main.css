@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Cagliostro&display=swap&family=Concert+One&family=EB+Garamond&family=Flow+Circular&family=IM+Fell+English+SC&family=Lemon&family=Permanent+Marker&family=Special+Elite&family=Yuji+Boku&display=swap');
+/* Chrome, Edge, and Safari */
+@font-face {
+    font-family: 'sigilos';
+    src: url('/assets/css/sigilos.ttf');
+}
+@font-face {
+    font-family: 'desconjuras';
+    src: url("/assets/css/iknowaghost.ttf");
+}
+@font-face {
+    font-family: 'sinais';
+    src: url('/assets/css/SinaisEstrangeiro.ttf');
+}
+@font-face {
+    font-family: 'daisywheelregular';
+    src: url('../../../assets/css/daisywhl-webfont.woff2') format('woff2'),
+    url('../../../assets/css/daisywhl-webfont.woff') format('woff');
+
+}
+
+.border-dotted {
+    border: var(--bs-border-width) dotted var(--bs-border-color);
+}
+
+.border-dashed {
+    border: var(--bs-border-width) dashed var(--bs-border-color);
+}
+
+.sigilos {
+    font-family: sigilos;
+}
+.sinais {
+    font-family: sinais;
+}
+.desconjuras {
+    font-family: desconjuras;
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+html[data-bs-theme=dark] *::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+html[data-bs-theme=dark] *::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 3px;
+    border: 0 none #000000;
+}
+
+
+html[data-bs-theme=light] .foto_ritual {
+
+    -webkit-filter: invert(100%);
+
+}
+
+html[data-bs-theme=light] *::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+html[data-bs-theme=light] *::-webkit-scrollbar-thumb {
+    background-color: #00000088;
+    border-radius: 3px;
+    border: 0 none #ffffff;
+}
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+.font1 {
+    font-family: 'Concert One', cursive;
+}
+
+.font2 {
+    font-family: 'EB Garamond', serif;
+}
+
+.flow {
+    font-family: 'Flow Circular', cursive;
+}
+
+.font4 {
+    font-family: 'Lemon', cursive;
+}
+
+.font5 {
+    font-family: 'Permanent Marker', cursive;
+}
+
+.font6 {
+    font-family: 'Special Elite', cursive;
+}
+
+.font7 {
+    font-family: 'IM Fell English SC', serif;
+}
+
+.font8 {
+    font-family: 'daisywheelregular', cursive;
+}
+
+.font9 {
+    font-family: 'Yuji Boku', serif;
+}
+
+.font10 {
+    font-family: 'Cagliostro', sans-serif;
+}
+
+html[data-bs-theme=light] .containera {
+    background-image: url(/assets/img/Atributos_debug_light.webp);
+}
+html[data-bs-theme=dark] .containera {
+    background-image: url(/assets/img/Atributos_debug.webp);
+}
+.containera {
+    background-repeat: no-repeat;
+    background-size: 300px 302px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 300px;
+    height: 302px;
+    color: white;
+}
+
+.containera img {
+    width: 300px;
+    height: 302px;
+}
+
+.atributos {
+    font-size: 30px;
+    transform: translate(-167%, 0%);
+    position: absolute;
+    text-align: center;
+    height: 88px;
+    width: 90px;
+}
+
+.atributos > span {
+    color: lightgray;
+    font-size: 40px;
+    position: absolute;
+    margin: -50% -40%;
+    width: 70px;
+    text-align: center;
+}
+
+.atributos:hover > span {
+    color: rgb(225 116 126);
+    text-shadow: 0 0 10px red;
+}
+
+.overname {
+    margin: 11px 1%;
+    font-size: 14px;
+}
+
+.atributos-input {
+    background-color: transparent;
+    color: var(--bs-emphasis-color);
+    padding: 0 0 25px 0;
+    font-size: 2rem;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.for {
+    margin-top: 26.75%;
+    margin-left: 3.5%;
+}
+
+.agi {
+    margin-top: 6%;
+    margin-left: 35%;
+}
+
+.int {
+    margin-top: 27%;
+    margin-left: 66%;
+}
+
+.pre {
+    margin-top: 65%;
+    margin-left: 12.75%;
+}
+
+.vig {
+    margin-top: 65%;
+    margin-left: 57%;
+}
+
+.hex {
+    -webkit-clip-path: polygon(5% 25%, 50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%);
+    clip-path: polygon(5% 25%, 50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%);
+}
+
+:root {
+    --bs-black-rgb: 25, 25, 25;
+}
+
+.form-control-dark {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0) !important;
+    border: 1px solid #ced4da;
+}
+
+label.form-floating {
+    width: 100%;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+    10% {
+        transform: translate(-1px, -1px) rotate(-0.5deg);
+    }
+    20% {
+        transform: translate(-1px, 1px) rotate(.5deg);
+    }
+    30% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+    40% {
+        transform: translate(-1px, -1px) rotate(.5deg);
+    }
+    50% {
+        transform: translate(1px, -1px) rotate(-.5deg);
+    }
+    60% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+    70% {
+        transform: translate(-1px, -1px) rotate(-0.5deg);
+    }
+    80% {
+        transform: translate(-1px, -1px) rotate(.5deg);
+    }
+    90% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+    100% {
+        transform: translate(1px, 1px) rotate(.5deg);
+    }
+}
+
+.vibrate {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}

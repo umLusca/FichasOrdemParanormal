@@ -35,6 +35,8 @@
                             </label>
                         </div>
                     </div>
+
+
                 </div>
                 <div class="modal-footer footer">
                     <button type="submit" class="btn btn-success w-100">Entrar</button>
@@ -154,19 +156,23 @@ if (isset($_SESSION["UserID"])) { ?>
                                 </div>
                                 <div class="card-body" id="addmarcadiv">
                                     <div class="return"></div>
-                                    <div class="m-2">
+                                    <div class="m-2" data-fop-initialize="Upload">
                                         <div class="input-group">
                                             <label class="form-floating border-secondary">
                                                 <input placeholder="URL da MARCA" value="<?= $_SESSION["UserMarca"] ?>" type="url" class="form-control"/>
                                                 <label>URL da marca</label>
                                             </label>
-                                            <button class="btn btn-outline-secondary border-secondary-subtle submit" type="button">
-                                                <i class="fal fa-send"></i>
-                                            </button>
+                                            <label class="btn btn-outline-secondary border-dashed">
+                                                <span class="msg">Enviar foto</span>
+                                                <span class="progress" style="display: none;"><span class="progress-bar" role="progressbar"></span></span>
+                                                <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
+                                            </label>
                                         </div>
+
                                         <div class="preview d-flex justify-content-center m-2">
                                             <img src="<?= $_SESSION["UserMarca"] ?>" style="width: 50%;  max-width: 200px;" alt="Marca">
                                         </div>
+                                        <button class="btn btn-sm btn-success w-100 submit" type="button">Salvar</button>
                                     </div>
                                 </div>
                             </div>

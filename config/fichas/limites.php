@@ -18,8 +18,6 @@ $minimo_PEA = 0;//
 
 
 
-$minimo_peso = -10;
-$maximo_peso = 30;
 $inv_float = 1;
 
 $minimo_pericia = 0;
@@ -31,7 +29,34 @@ $maximo_resistencia = 99;
 
 //Config de limites gerais:
 //Limites de input
+//todo remove "pex",
+$ficha_nomes = 50;
 $limite_nome_inv = 50;
+$urllimit = 300;
+
+$Inv_desc = 300;
+$ficha_detalhes= 5000;
+$inv_peso_min =$minimo_peso = -20;
+$inv_peso_max =$maximo_peso = 50;
+
+
+$ficha_idade_max = 9999;
+$ficha_idade_min = 0;
+$local = 50;
+$classe= 50;
+$trilha = 50;
+$patente = 50;
+$pp = 999999;
+$deslocamente = 99;
+$perodada = 99;
+$afinidade = 50;
+$camposhistorias = 5000;
+$fotos = 255;
+
+
+
+
+
 $Arma_tipo = 25;
 $Arma_ataq = 50;
 $Arma_alca = 30;
@@ -41,7 +66,6 @@ $Arma_reca = 50;
 $Arma_espe = 30;
 $Dado_nome = 50;
 $Dado_dado = 50;
-$Inv_desc = 300;
 $Hab_nome = $Pro_nome = 100;
 $Hab_desc = 5000;
 $Ritu_nome = 50;

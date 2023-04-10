@@ -279,11 +279,10 @@
 <!---TROCAR DE PERFIL MODAL--->
 <div class="modal fade" id="trocarficha" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content bg-black border-light">
+        <div class="modal-content">
             <div class="modal-header">
                 <span class="fs-4 modal-title">Trocar Rápido</span>
-                <button type="button" class="btn-close btn-close-white"
-                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
 
             <div class="modal-body justify-content-center text-center">
@@ -323,7 +322,7 @@
 
 <form class="modal modal-xl fade" id="editfoto" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down">
-        <div class="modal-content bg-black border-light">
+        <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title fs-4">Editar foto de personagem</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
@@ -335,7 +334,7 @@
                         <div class="col-12">
                             <div class="m-2">
                                 <label class="form-floating w-100">
-                                    <select class="form-select bg-black text-light border-light selector" name="foto">
+                                    <select class="form-select selector" name="foto">
                                         <option value="0" selected>Customizada</option>
                                         <option value="1">Desconhecido - Masculino</option>
                                         <option value="2">Desconhecido - Feminino</option>
@@ -352,70 +351,70 @@
                         </div>
                         <div class="row row-cols-1 row-cols-lg-2 justify-content-center">
                             <div class="col">
-                                <div class="m-2 input-group">
+                                <div class="m-2 input-group" data-fop-initialize="Upload">
                                     <label class="form-floating">
-                                        <input class="foto-perfil form-control form-control-sm bg-black text-light border-light" id="fp_input" name="fotourl" type="url" value="<?= $urlphoto ?>" required/>
+                                        <input class="foto-perfil form-control form-control-sm border-secondary" name="fotourl" type="url" value="<?= $urlphoto ?>" required/>
                                         <label>Normal:</label>
                                     </label>
-                                    <label class="btn btn-outline-light border-dashed" for="fp_file">
-                                        <span id="fp_label" class="">Ou Selecione uma foto</span>
-                                        <label class="progress" style="display: none;">
-                                            <label class="progress-bar" id="fp_progress" role="progressbar"></label>
-                                        </label>
-                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp" id="fp_file" onchange="uploadFile('fp_',this,'<?= $token ?>','fp',()=>editupdatefoto($('#fp_input').val(),'#editfoto img'))" hidden/>
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
                                     </label>
                                 </div>
-                                <div class="m-2 input-group">
+                                <div class="m-2 input-group" data-fop-initialize="Upload">
                                     <label class="form-floating">
-                                        <input class="foto-perfil form-control form-control-sm bg-black text-light border-light" id="ff_input" name="fotofer" type="url" value="<?= $urlphotofer ?>" required/>
+                                        <input class="foto-perfil form-control form-control-sm border-secondary" id="ff_input" name="fotofer" type="url" value="<?= $urlphotofer ?>" required/>
                                         <label>Ferido:</label>
                                     </label>
-                                    <label class="btn btn-outline-light border-dashed">
-                                        <span id="ff_label" class="">Ou Selecione uma foto</span>
-                                        <label class="progress" style="display: none;">
-                                            <label class="progress-bar" id="ff_progress" role="progressbar"></label>
-                                        </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('ff_',this,'<?= $token ?>','ff',()=>editupdatefoto($('#ff_input').val(),'#editfoto img'))" hidden/>
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
                                     </label>
                                 </div>
-                                <div class="m-2 input-group">
+                                <div class="m-2 input-group" data-fop-initialize="Upload">
                                     <label class="form-floating">
-                                        <input class="foto-perfil form-control form-control-sm bg-black text-light border-light" id="fm_input" name="fotomor" type="url" value="<?= $urlphotomor ?>" required/>
+                                        <input class="foto-perfil form-control form-control-sm border-secondary" id="fm_input" name="fotomor" type="url" value="<?= $urlphotomor ?>" required/>
                                         <label>Morrendo:</label>
                                     </label>
-                                    <label class="btn btn-outline-light border-dashed">
-                                        <span id="fm_label" class="">Ou Selecione uma foto</span>
-                                        <label class="progress" style="display: none;">
-                                            <label class="progress-bar" id="fm_progress" role="progressbar"></label>
-                                        </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fm_',this,'<?= $token ?>','fm',()=>editupdatefoto($('#fm_input').val(),'#editfoto img'))" hidden/>
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
                                     </label>
                                 </div>
-                                <div class="m-2 input-group">
+                                <div class="m-2 input-group" data-fop-initialize="Upload">
                                     <label class="form-floating">
-                                        <input class="foto-perfil form-control form-control-sm bg-black text-light border-light" id="fe_input" name="fotoenl" type="url" value="<?= $urlphotoenl ?>" required/>
+                                        <input class="foto-perfil form-control form-control-sm border-secondary" id="fe_input" name="fotoenl" type="url" value="<?= $urlphotoenl ?>" required/>
                                         <label>Enlouquecendo:</label>
                                     </label>
-                                    <label class="btn btn-outline-light border-dashed">
-                                        <span id="fe_label" class="">Ou Selecione uma foto</span>
-                                        <label class="progress" style="display: none;">
-                                            <label class="progress-bar" id="fe_progress" role="progressbar"></label>
-                                        </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fe_',this,'<?= $token ?>','fe',()=>editupdatefoto($('#fe_input').val(),'#editfoto img'))" hidden/>
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
                                     </label>
 
                                 </div>
-                                <div class="m-2 input-group">
+                                <div class="m-2 input-group" data-fop-initialize="Upload">
                                     <label class="form-floating">
-                                        <input class="foto-perfil form-control form-control-sm bg-black text-light border-light" id="fef_input" name="fotoef" type="url" value="<?= $urlphotoef ?>" required/>
+                                        <input class="foto-perfil form-control form-control-sm border-secondary" id="fef_input" name="fotoef" type="url" value="<?= $urlphotoef ?>" required/>
                                         <label>Ferido e Enlouquecendo:</label>
                                     </label>
-                                    <label class="btn btn-outline-light border-dashed">
-                                        <span id="fef_label" class="">Ou Selecione uma foto</span>
-                                        <label class="progress" style="display: none;">
-                                            <label class="progress-bar" id="fef_progress" role="progressbar"></label>
-                                        </label>
-                                        <input type="file" name="video" accept=".png,.gif,.jpeg,.jpg,.webp" onchange="uploadFile('fef_',this,'<?= $token ?>','fef',()=>editupdatefoto($('#fef_input').val(),'#editfoto img'))" hidden/>
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
                                     </label>
                                 </div>
                             </div>

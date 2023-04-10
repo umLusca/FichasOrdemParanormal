@@ -26,6 +26,11 @@ $_QUERY = $_DATA["query"];
 
 
 
+
+
+
+
+
 //NEW API //
 
 /*
@@ -1966,7 +1971,7 @@ if (isset($_QUERY)) {
 			preg_match('/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|png|jpeg|webp)$/', cleanstring($_DATA["urlmarca"]), $marca);
 			if ($marca) {
 				$marca = cleanstring($_DATA["urlmarca"]);
-				$q = $con->prepare("SELECT * FROM `usuarios` WHERE `id` in (SELECT user from auth WHERE token = ?);");
+				$q = $con->prepare("SELECT * FROM `usuarios` WHERE `id` = ?;");
 				$q->bind_param("s", $sid);
 				$q->execute();
 				$q = $q->get_result();
@@ -2034,7 +2039,7 @@ if (isset($_QUERY)) {
 				$g->execute();
 				$g = $g->get_result();
 				
-				$u = $con->prepare("SELECT * FROM `usuarios` WHERE `id`  in (SELECT id FROM usuarios WHERE `login` = ?);;");
+				$u = $con->prepare("SELECT * FROM `usuarios` WHERE `id` = ?;");
 				$u->bind_param("s", $user);
 				$u->execute();
 				$u = mysqli_fetch_array($u->get_result());
@@ -2224,7 +2229,7 @@ if (isset($_QUERY)) {
 			$sid = cleanstring($_DATA["sessid"] ?: session_id());
 			if (check_session($sid)) {
 				$user = check_session($sid);
-				$a = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `usuario` in (SELECT id FROM usuarios WHERE `login` = ?);");
+				$a = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `usuario` = ?;");
 				$a->bind_param("s", $user);
 				$a->execute();
 				$a = $a->get_result();
@@ -2769,6 +2774,7 @@ if (isset($_QUERY)) {
 						$rq = mysqli_fetch_assoc($qu);
 						$sessid = remember_me($rq["id"]);
 						if (cryptthis($senha) === $rq["senha"]) {
+							$sessid = remember_me($rq["id"]);
 							$msg = "Sucesso ao fazer login!";
 							
 							$f = $con->prepare("UPDATE usuarios SET senha = ? WHERE usuarios.login = ?");
@@ -2787,6 +2793,7 @@ if (isset($_QUERY)) {
 							
 							
 						} elseif (PassCheck($senha, $rq["senha"])) {
+							$sessid = remember_me($rq["id"]);
 							$msg = "Sucesso ao fazer login!";
 							
 							$conta = [];
@@ -2884,9 +2891,8 @@ if (isset($_QUERY)) {
 			$sid = cleanstring($_DATA["sessid"] ?: session_id());
 			if (check_session($sid)) {
 				$user = check_session($sid);
-				$q = $con->prepare("SELECT * FROM `usuarios` WHERE `login`  = ?;");
-				$q->bind_param("s", $user);
-				$q->execute();
+				$q = $con->prepare("SELECT * FROM `usuarios` WHERE `id`  = ?;");
+				$q->execute([$user]);
 				
 				$q = $q->get_result();
 				if ($q->num_rows) {

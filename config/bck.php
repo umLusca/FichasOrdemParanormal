@@ -1515,12 +1515,12 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 										case 'item':
 											$nome = cleanstring($_POST["nome"], $limite_nome_inv);
 											$desc = cleanstring($_POST["descricao"], $Inv_desc);
-											$foto = cleanstring($_POST["foto"], $urllimit);
 											$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
-											$pres = minmax($_POST["prestigio"], $minimo_peso, $maximo_peso, $inv_float);
-										
-											$rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`foto`,`nome`,`descricao`,`espaco`,`prestigio`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ?),? , ? , ? , ? , ?)");
-											$rr->execute([$token, $foto,$nome, $desc, $peso, $pres]);
+											$quantidade = minmax($_POST["quantidade"], 0, $maximo_peso);
+											$pres = minmax($_POST["prestigio"], 0, 10);
+											$rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`nome`,`descricao`,`espaco`,`prestigio`,`quantidade`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ?) , ? , ? , ? , ?, ?)");
+											$rr->bind_param("sssiii", $token, $nome, $desc, $peso, $pres, $quantidade);
+											$rr->execute();
 											break;
 										case 'arma':
 											$n = cleanstring($_POST["nome"], $limite_nome_inv);
@@ -1544,8 +1544,13 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 												
 												$rr = $con->prepare("INSERT INTO `armas`(`item_id`,`tipo`,`ataque`,`alcance`,`dano`,`critico`, `margem`,`recarga`,`especial`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 												$rr->execute([$item_id, $t, $at, $al, $d, $c, $m, $r, $e]);
-												$data["msg"] = "Sucesso ao adicionar itens";
 												
+											}
+											
+											if ($_POST["invtoo"] === 'on' || $_POST["invtoo"] === true) {
+											}
+											if ($con->affected_rows) {
+												$data["msg"] = "Sucesso ao adicionar itens";
 											}
 											break;
 									}

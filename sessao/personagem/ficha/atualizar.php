@@ -5,28 +5,28 @@ if ($edit) {
 		switch ($_POST['status']) {
 			case "upload_foto":
 				$data = [];
-				$ft = cleanstring($_POST["type"]);
-
-				$type = match (true){
-					default => false,
-					($ft === "fp") => "foto",
-					($ft === "ff") => "foto_ferido",
-					($ft === "fm") => "foto_morrendo",
-					($ft === "fe") => "foto_enlouquecendo",
-					($ft === "fef") => "foto_ferenl",
-				};
-                $type = false;
 				if(isset($_FILES["file"])){
-					$return = save_image($_FILES["file"],$type);
-					if ($return) {
-						$data["url"] = $return;
-						$data["success"] = true;
-						$data["msg"]= "Sucesso!";
+					$file_size = $_FILES['file']['size'];
+					if (($file_size!==0 && $file_size < 1024*1024)){
+						$return = save_image($_FILES["file"],$type);
+						if ($return) {
+							$data["url"] = $return;
+							$data["success"] = true;
+							$data["msg"]= "Sucesso!";
+						} else {
+							$data["url"] = "";
+							$data["success"] = false;
+							$data["msg"]= "Falha!";
+						}
 					} else {
 						$data["url"] = "";
 						$data["success"] = false;
-						$data["msg"]= "Falha!";
+						$data["msg"]= "Arquivo grande (>1MB)";
 					}
+				} else {
+					$data["url"] = "";
+					$data["success"] = false;
+					$data["msg"]= "Arquivo não encontrado.";
 				}
 				exit(json_encode($data,JSON_PRETTY_PRINT));
 				break;
