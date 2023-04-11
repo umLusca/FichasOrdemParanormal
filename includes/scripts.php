@@ -202,95 +202,106 @@
     };
 
 
-
-
-
-
-    var formData = new FormData();
-    var imagefile = document.querySelector('#file');
-    formData.append("image", imagefile.files[0]);
-    axios.post('upload_file', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-        onUploadProgress: function ({loaded, total, progress, bytes, estimated, rate, upload = true}) {
-        
-        },
-    })
     
     
     $(document).ready(function () {
         $("*[data-fop-initialize]").each((i, e) => {
-            if ($(e).attr('data-fop-initialize') === "Upload") {
-                let urlInput = $(e).find("input[type=url]");
-                let fileInput = $(e).find("input[type=file]");
-                let progressBar = $(e).find(".progress-bar");
-                let returnDiv = $(e).find("span.msg");
-                console.log(returnDiv)
-                let formulario = new FormData();
-                fileInput.on("change", (e) => {
-                    const FILE = fileInput[0].files[0];
+            switch ($(e).attr('data-fop-initialize')){
+                case "Upload":
+                    if ($(e).attr('data-fop-initialize') === "Upload") {
+                        let urlInput = $(e).find("input[type=url]");
+                        let fileInput = $(e).find("input[type=file]");
+                        let progressBar = $(e).find(".progress-bar");
+                        let returnDiv = $(e).find("span.msg");
+                        console.log(returnDiv)
+                        let formulario = new FormData();
+                        fileInput.on("change", (e) => {
+                            const FILE = fileInput[0].files[0];
 
-                    formulario.append("file", FILE);
-                    formulario.append("query", "etc_foto_upload");
-                    $.ajax({
-                        url: "",
-                        type: "POST",
-                        data: formulario,
-                        dataType: "json",
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        beforeSend: () => {
-                            console.log("Before");
-                            progressBar.parent().show();
-                            progressBar.addClass("bg-primary").removeClass("bg-danger bg-success bg-warning");
-                            returnDiv.text("Aguarde...");
-                        },
-                        xhr: () => {
-                            const xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener("progress", (evt) => {
-                                if (evt.lengthComputable) {
-                                    const percent = (evt.loaded / evt.total) * 100;
-                                    progressBar.css("width", Math.round(percent) + "%")
-                                }
-                            }, false);
-                            xhr.addEventListener("error", () => {
-                                returnDiv.text("Falhou.");
-                                progressBar.addClass("bg-danger").removeClass("bg-primary bg-success bg-warning");
-                            })
-                            xhr.addEventListener("load", (e) => {
-                                returnDiv.text("Sucesso!");
-                                progressBar.addClass("bg-success").removeClass("bg-danger bg-primary bg-warning");
-                            })
-                            xhr.addEventListener("abort", () => {
-                                returnDiv.text("Envio cancelado.");
-                                progressBar.addClass("bg-warning").removeClass("bg-danger bg-primary");
-                            })
-                            return xhr;
-                        },
-                        error: () => {
-                            returnDiv.text("Falha. Verifique sua conexão");
-                            progressBar.addClass("bg-danger").removeClass("bg-primary bg-success bg-warning");
-                        },
-                        success: (d) => {
-                            if (d["success"]) {
-                                progressBar.addClass("bg-success").removeClass("bg-danger bg-primary bg-warning");
-                                urlInput.val(d["url"]);
-                                returnDiv.text("Enviado");
+                            formulario.append("file", FILE);
+                            formulario.append("query", "etc_foto_upload");
+                            $.ajax({
+                                url: "",
+                                type: "POST",
+                                data: formulario,
+                                dataType: "json",
+                                cache: false,
+                                processData: false,
+                                contentType: false,
+                                beforeSend: () => {
+                                    console.log("Before");
+                                    progressBar.parent().show();
+                                    progressBar.addClass("bg-primary").removeClass("bg-danger bg-success bg-warning");
+                                    returnDiv.text("Aguarde...");
+                                },
+                                xhr: () => {
+                                    const xhr = new window.XMLHttpRequest();
+                                    xhr.upload.addEventListener("progress", (evt) => {
+                                        if (evt.lengthComputable) {
+                                            const percent = (evt.loaded / evt.total) * 100;
+                                            progressBar.css("width", Math.round(percent) + "%")
+                                        }
+                                    }, false);
+                                    xhr.addEventListener("error", () => {
+                                        returnDiv.text("Falhou.");
+                                        progressBar.addClass("bg-danger").removeClass("bg-primary bg-success bg-warning");
+                                    })
+                                    xhr.addEventListener("load", (e) => {
+                                        returnDiv.text("Sucesso!");
+                                        progressBar.addClass("bg-success").removeClass("bg-danger bg-primary bg-warning");
+                                    })
+                                    xhr.addEventListener("abort", () => {
+                                        returnDiv.text("Envio cancelado.");
+                                        progressBar.addClass("bg-warning").removeClass("bg-danger bg-primary");
+                                    })
+                                    return xhr;
+                                },
+                                error: () => {
+                                    returnDiv.text("Falha. Verifique sua conexão");
+                                    progressBar.addClass("bg-danger").removeClass("bg-primary bg-success bg-warning");
+                                },
+                                success: (d) => {
+                                    if (d["success"]) {
+                                        progressBar.addClass("bg-success").removeClass("bg-danger bg-primary bg-warning");
+                                        urlInput.val(d["url"]);
+                                        returnDiv.text("Enviado");
 
-                            } else {
-                                returnDiv.text(d["msg"]);
-                                progressBar.addClass("bg-warning").removeClass("bg-primary bg-danger bg-success");
-                            }
-                        },
-                        complete: (d) => {
-                            console.log(d);
-                            urlInput.trigger("input");
-                        },
+                                    } else {
+                                        returnDiv.text(d["msg"]);
+                                        progressBar.addClass("bg-warning").removeClass("bg-primary bg-danger bg-success");
+                                    }
+                                },
+                                complete: (d) => {
+                                    console.log(d);
+                                    urlInput.trigger("input");
+                                },
+                            })
+
+                        })
+                    }
+                    break;
+                case "ToggleArma":
+                    let $btn = $(e).find("button[data-fop-function=toggle]");
+                    let $ia = $(e).find(".infoarma");
+                    let $ii = $(e).find(".infoitem");
+                    console.log($btn);
+
+                    $btn.data("toggled",false)
+                    $ii.hide();
+                    $btn.on("click",()=>{
+                        if($btn.data("toggled")){
+                            $btn.data("toggled",false)
+                            $btn.find(".fa-eye-slash").removeClass("fa-eye-slash").addClass("fa-eye")
+                            $ii.hide();
+                            $ia.show();
+                        } else {
+                            $btn.data("toggled",true)
+                            $btn.find(".fa-eye").removeClass("fa-eye").addClass("fa-eye-slash")
+                            $ii.show();
+                            $ia.hide();
+                        }
                     })
-
-                })
+                    break;
             }
         })
         

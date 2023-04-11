@@ -4,7 +4,7 @@ $con = con();
 $missao = 0;
 
 //Importante para evitar XSS INJECTIOn e um bucado de coisa
-$id = (int)($_GET["id"] ?: 0);
+if(isset($_GET["id"])) $id = (int)($_GET["id"] ?: 0);
 if(isset($_GET["id"])) {
 	$qs = $con->query("SELECT * FROM `fichas_personagem` WHERE `id` = '$id'");
 	if ($qs->num_rows) {

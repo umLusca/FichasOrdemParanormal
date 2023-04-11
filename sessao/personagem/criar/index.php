@@ -3,14 +3,14 @@ header("X-Robots-Tag: none");
 require_once "./../../../config/includes.php";
 $con = con();
 if (!isset($_SESSION['UserID'])) {
-	proibido();
+    proibido();
 }
 $id = cleanstring($_GET["convite"]);
 ?>
 <!DOCTYPE html>
 <html lang="br" data-bs-theme="<?= $_COOKIE["theme"] ?>">
 <head>
-	<?php require_once "./../../../includes/head.html"; ?>
+    <?php require_once "./../../../includes/head.html"; ?>
     <title>Criar Personagem - FichasOP</title>
 </head>
 <body class="">
@@ -25,35 +25,48 @@ $id = cleanstring($_GET["convite"]);
                 <div class="col-12 col-xl-6">
                     <div class="text-center">
                         <span class="fs-4">Detalhes Principais</span><span class="text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_detalhes"> <i class="fal fa-info-circle"></i></span>
-
                     </div>
-                    <div class="m-2">
-                        <label class="form-floating">
-                            <select class="form-select" id="foto" name="foto">
-                                <option value="1">Desconhecido - Masculino</option>
-                                <option value="2">Desconhecido - Feminino</option>
-                                <option value="3">Mauro Nunes</option>
-                                <option value="4">Maya Shiruze</option>
-                                <option value="5">Bruna Sampaio</option>
-                                <option value="6">Leandro Weiss</option>
-                                <option value="7">Jaime Orthuga</option>
-                                <option value="8">Aniela Ukryty</option>
-                                <option value="9">Customizada</option>
-                            </select>
-                            <label>Estilo de foto.</label>
-                        </label>
-                    </div>
-                    <div class="m-2" id="divfotourl" style="display: none;">
-                        <div class="row">
-                            <div class="col">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <div class="m-2">
                                 <label class="form-floating">
-                                    <input id="fotourl" class="form-control" name="fotourl" type="url" required disabled/>
-                                    <label>Link da imagem</label>
-                                    <span class="invalid-feedback">A Imagem precisa ser valida</span>
-                                    <span id="warning"></span>
+                                    <select class="form-select" id="foto" name="foto">
+                                        <option value="1">Desconhecido - Masculino</option>
+                                        <option value="2">Desconhecido - Feminino</option>
+                                        <option value="3">Mauro Nunes</option>
+                                        <option value="4">Maya Shiruze</option>
+                                        <option value="5">Bruna Sampaio</option>
+                                        <option value="6">Leandro Weiss</option>
+                                        <option value="7">Jaime Orthuga</option>
+                                        <option value="8">Aniela Ukryty</option>
+                                        <option value="9">Customizada</option>
+                                    </select>
+                                    <label>Estilo de foto.</label>
                                 </label>
                             </div>
-                            <div id="prev" class="col-auto d-flex align-items-center"></div>
+                            <div class="m-2 customurl" style="display: none">
+                                <div class="input-group" data-fop-initialize="Upload">
+                                    <label class="form-floating">
+                                        <input class="form-control" name="fotourl" type="url" required disabled/>
+                                        <label>Link da imagem</label>
+                                        <span class="invalid-feedback">A Imagem precisa ser valida (https, .png,.gif,.webp etc)</span>
+                                        <span id="return"></span>
+                                    </label>
+
+                                    <label class="btn btn-outline-secondary border-dashed">
+                                        <span class="msg">Enviar foto</span>
+                                        <span class="progress" style="display: none;">
+                                            <span class="progress-bar" role="progressbar"></span>
+                                        </span>
+                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp" hidden/>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-1" id="prev" style="max-height: 140px; max-width: 140px;">
+                            <div class="m-2">
+                            <img class="rounded-circle border border-light imgpreview img-fluid" style="aspect-ratio: 1/1;" src="" alt="foto">
+                            </div>
                         </div>
                     </div>
                     <div class="row mx-1 g-2">
@@ -61,9 +74,7 @@ $id = cleanstring($_GET["convite"]);
                             <label class="form-floating">
                                 <input class="form-control" name="nome" required="required"/>
                                 <label for="nome">Nome do Personagem</label>
-                                <span class="invalid-feedback">
-                        Coloque o Nome do seu personagem.(Apenas letras e espaços).
-                    </span>
+                                <span class="invalid-feedback">Coloque o Nome do seu personagem.(Apenas letras e espaços).</span>
                             </label>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-lg-1 col-xl-3">
@@ -96,7 +107,7 @@ $id = cleanstring($_GET["convite"]);
                                 <span class="invalid-feedback">Esse campo é obrigatório</span>
                             </label>
                             <datalist id="origens">
-								<?= Super_options("origens") ?>
+                                <?= Super_options("origens") ?>
                             </datalist>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 col-xl-6">
@@ -106,7 +117,7 @@ $id = cleanstring($_GET["convite"]);
                                 <span class="invalid-feedback">Preencha a classe do seu personagem</span>
                             </label>
                             <datalist id="classes">
-								<?= Super_options("classes") ?>
+                                <?= Super_options("classes") ?>
                             </datalist>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 col-xl-6">
@@ -116,7 +127,7 @@ $id = cleanstring($_GET["convite"]);
                                 <span class="invalid-feedback">Preencha a trilha do seu personagem</span>
                             </label>
                             <datalist id="trilhas">
-								<?= Super_options("trilhas") ?>
+                                <?= Super_options("trilhas") ?>
                             </datalist>
                         </div>
                         <div class="col-12 col-lg-4 col-xl-12">
@@ -125,7 +136,7 @@ $id = cleanstring($_GET["convite"]);
                                 <label>Patente</label>
                             </label>
                             <datalist id="patentes">
-								<?= Super_options("patentes") ?>
+                                <?= Super_options("patentes") ?>
                             </datalist>
                         </div>
                         <div class="col-12">
@@ -143,7 +154,7 @@ $id = cleanstring($_GET["convite"]);
                     </div>
                     <i class="text-info"><i class="fa-regular fa-circle-info"></i> Clique nos circulos</i>
                     <div class="containera" id="atributos" title="Atributos, clique para editar">
-						<?= atributos(1, 1, 1, 1, 1, 1, 1) ?>
+                        <?= atributos(1, 1, 1, 1, 1, 1, 1) ?>
                     </div>
                     <div class="text-center mt-2">
                         <h4>Saúde</h4>
@@ -195,7 +206,7 @@ $id = cleanstring($_GET["convite"]);
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-						<?php if ($_COOKIE["theme"] === "light") { ?>
+                        <?php if ($_COOKIE["theme"] === "light") { ?>
                             <div class="carousel-item active">
                                 <img src="/assets/img/helper_conceito_dark.png" class="d-block w-100" alt="...">
                             </div>
@@ -205,7 +216,7 @@ $id = cleanstring($_GET["convite"]);
                             <div class="carousel-item">
                                 <img src="/assets/img/helper_classes_dark.png" class="d-block w-100" alt="...">
                             </div>
-						<?php } else { ?>
+                        <?php } else { ?>
                             <div class="carousel-item active">
                                 <img src="/assets/img/helper_conceito_light.png" class="d-block w-100" alt="...">
                             </div>
@@ -215,8 +226,8 @@ $id = cleanstring($_GET["convite"]);
                             <div class="carousel-item">
                                 <img src="/assets/img/helper_classes_light.png" class="d-block w-100" alt="...">
                             </div>
-						
-						<?php } ?>
+
+                        <?php } ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -239,13 +250,13 @@ $id = cleanstring($_GET["convite"]);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-				
+
                 <div class="img-fluid">
-					<?php if ($_COOKIE["theme"] !== "light") { ?>
+                    <?php if ($_COOKIE["theme"] !== "light") { ?>
                         <img src="/assets/img/helper_atributos_dark.png" class="d-block w-100" alt="...">
-					<?php } else { ?>
+                    <?php } else { ?>
                         <img src="/assets/img/helper_atributos_light.png" class="d-block w-100" alt="...">
-					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -254,31 +265,67 @@ $id = cleanstring($_GET["convite"]);
 <?php require_once "./../../../includes/scripts.php"; ?>
 <script>
     $(() => {
-        $('#fotourl').on('input', function () {
-            var src = jQuery(this).val();
-
+        $('.customurl input[name=fotourl]').on('input', function () {
+            let $input = $(".customurl input[name=fotourl]")
+            let src = $input.val();
             if (!src.match("^https?://(?:[a-z\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png|jpeg|webp)$") && src != "") {
-                $("#warning").html("Precisa ser HTTPS, e Terminar com com extensão de imagem(.jpg, .png ...)!");
-                $('#prev').html('');
+                $('#prev .imgpreview').attr('src', "");
+                $input.addClass("is-invalid");
                 return false;
             } else {
-                $("#warning").html("");
-                $('#prev').html('<img class="rounded-circle border border-light" style="max-width:100px;" src="' + src + '">');
+                $input.removeClass("is-invalid");
+                $('#prev .imgpreview').attr('src', src);
             }
 
         })
+
+        $('#editfoto .selector').change(function () {
+            let foto;
+
+            $("#editfoto .foto-perfil").val(foto)
+            $("#editfoto .return").html("");
+            $('#editfoto .preview img').prop("src", foto).parent().show();
+
+        })
         $('#foto').change(function () {
-            let fotovalor = $('#foto').val()
-            console.log(fotovalor);
-            if (fotovalor == '9') {
-                $('#divfotourl').show();
-                $("#fotourl").attr("disabled", false)
-                console.log("show");
-            } else {
-                $('#divfotourl').hide();
-                $("#fotourl").attr("disabled", true)
-                console.log("hide");
+            let fotovalor = $('#foto').val();
+            let foto;
+            switch (fotovalor) {
+                case 1:
+                    foto = 'https://fichasop.com/assets/img/Man.webp';
+                    break;
+                case 2:
+                    foto = 'https://fichasop.com/assets/img/Woman.webp';
+                    break;
+                case 3:
+                    foto = 'https://fichasop.com/assets/img/Mauro.webp';
+                    break;
+                case 4:
+                    foto = 'https://fichasop.com/assets/img/Maya.webp';
+                    break;
+                case 5:
+                    foto = 'https://fichasop.com/assets/img/Bruna.webp';
+                    break;
+                case 6:
+                    foto = 'https://fichasop.com/assets/img/Leandro.webp';
+                    break;
+                case 7:
+                    foto = 'https://fichasop.com/assets/img/Jaime.webp';
+                    break;
+                case 8:
+                    foto = 'https://fichasop.com/assets/img/Aniela.webp';
+                    break;
+                case 9:
+                    $('.customurl').slideDown();
+                    foto = "";
+                    break;
+
             }
+            $(".customurl input[name=fotourl]").val(foto).attr("disabled", false);
+            if(fotovalor === 9){
+                $('.customurl').slideUp();
+            }
+
         });
         $('#criar').submit(function (event) {
             $("#criar").addClass("was-validated")
