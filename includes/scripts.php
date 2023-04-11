@@ -202,7 +202,7 @@
     };
 
 
-    
+
     
     $(document).ready(function () {
         $("*[data-fop-initialize]").each((i, e) => {

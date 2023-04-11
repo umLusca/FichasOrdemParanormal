@@ -125,7 +125,15 @@ if (empty($_QUERY)) {
 }
 [$category, $subcategory, $action] = explode("_", $_QUERY);
 
-
+function generateRandomString($length = 10) {
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[random_int(0, $charactersLength - 1)];
+	}
+	return $randomString;
+}
 $session_id = cleanstring($_DATA["sessid"] ?: "");
 
 if (!empty($category)) {
@@ -172,7 +180,7 @@ if (!empty($category)) {
 																	$return["success"] = true;
 																	$return["msg"] = "Conta criada!";
 																	
-																	$token = remember_me($f["id"], 7, isMobile() ? "APP" : "WEB");
+																	$token = remember_me($f["id"], 7, string);
 																	$conta["nome"] = $f["nome"];
 																	$conta["email"] = $f["email"];
 																	$conta["login"] = $f["login"];
@@ -276,7 +284,7 @@ if (!empty($category)) {
 									$qu = $qu->get_result();
 									if ($qu->num_rows) {
 										$rq = mysqli_fetch_assoc($qu);
-										$token = remember_me($rq["id"], 7, isMobile() ? "APP" : "WEB");
+										$token = remember_me($rq["id"], 7, generateRandomString(3));
 										if (cryptthis($senha) === $rq["senha"] || PassCheck($senha, $rq["senha"])) {
 											logar($rq["id"]);
 											$return["success"] = true;
@@ -614,6 +622,16 @@ if (!empty($category)) {
 												}
 												$return["success"] = true;
 											}
+											if (isset($_DATA["dados"]["itens"]) && is_array($_DATA["dados"]["itens"])) {
+												foreach ($_DATA["dados"]["itens"] as $item) {
+													$stmt = autoPrepare($item, ["id", "id_ficha"], "inventario", $con);
+													$stmt["values"][] = $item["id"];
+													$stmt["values"][] = $token;
+													$r = $con->prepare("UPDATE inventario SET {$stmt["query"]} WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
+													$r->execute($stmt["values"]);
+												}
+												$return["success"] = true;
+											}
 											if (isset($_DATA["dados"]["poderes"]) && is_array($_DATA["dados"]["poderes"])) {
 												foreach ($_DATA["dados"]["poderes"] as $poder) {
 													$stmt = autoPrepare($poder, ["id", "id_ficha"], "poderes", $con);
@@ -700,11 +718,11 @@ if (!empty($category)) {
 									$d->execute([$ficha["id"]]);
 									$d = $d->get_result();
 									
-									$e = $con->prepare("SELECT * FROM `inventario` WHERE `id_ficha` = ? ;");
+									$e = $con->prepare("SELECT i.* FROM inventario i LEFT JOIN armas a ON a.item_id = i.id WHERE a.item_id is null AND i.id_ficha = ? ;");
 									$e->execute([$ficha["id"]]);
 									$e = $e->get_result();
 									
-									$f = $con->prepare("SELECT * FROM `armas` WHERE `id_ficha` = ? ;");
+									$f = $con->prepare("Select *,armas.id as id,i.foto as foto From armas left join inventario i on i.id = armas.item_id where i.id_ficha = ? ;");
 									$f->execute([$ficha["id"]]);
 									$f = $f->get_result();
 									
@@ -787,6 +805,23 @@ if (!empty($category)) {
 												foreach ($_DATA["dados"]["poderes"] as $poder) {
 													$r = $con->prepare("DELETE FROM poderes WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
 													$r->execute([$poder["id"], $token]);
+												}
+												$return["success"] = true;
+											}
+											if (isset($_DATA["dados"]["itens"]) && is_array($_DATA["dados"]["itens"])) {
+												foreach ($_DATA["dados"]["itens"] as $item) {
+													$r = $con->prepare("DELETE FROM inventario WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
+													$r->execute([$item["id"], $token]);
+												}
+												$return["success"] = true;
+											}
+											
+											if (isset($_DATA["dados"]["armas"]) && is_array($_DATA["dados"]["armas"])) {
+												foreach ($_DATA["dados"]["armas"] as $arma) {
+													$q = $con->prepare("DELETE from inventario WHERE id in (SELECT item_id FROM armas WHERE id = ?) AND id_ficha  in (SELECT id from fichas_personagem where token = ?);");
+													$q->execute([$arma["id"], $token]);
+													$r = $con->prepare("DELETE FROM armas WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
+													$r->execute([$arma["id"], $token]);
 												}
 												$return["success"] = true;
 											}
