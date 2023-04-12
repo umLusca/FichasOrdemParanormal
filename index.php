@@ -367,7 +367,7 @@ Sirva acompanhado de carne-de-sol frita ou assada.
             </div>
         </div>
     </div>
-
+	<?=$gclient? $gclient->createAuthUrl():""; ?>
 
 </section>
 <?php require_once RootDir . "sessao/include_geral/modal_dice.php"; ?>

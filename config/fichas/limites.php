@@ -57,13 +57,15 @@ $fotos = 255;
 
 
 
-$Arma_tipo = 25;
-$Arma_ataq = 50;
+$Arma_tipo = 30;
+$Arma_ataq = 30;
 $Arma_alca = 30;
 $Arma_dano = 30;
 $Arma_crit = 30;
-$Arma_reca = 50;
+$Arma_reca = 30;
 $Arma_espe = 30;
+
+
 $Dado_nome = 50;
 $Dado_dado = 50;
 $Hab_nome = $Pro_nome = 100;

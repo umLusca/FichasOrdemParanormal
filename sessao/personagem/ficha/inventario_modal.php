@@ -268,7 +268,7 @@
                         </label>
                         <hr>
                         <label class="form-floating">
-                            <input name="prestigio" placeholder="Categoria" type="number" min="-10" max="50" class="form-control "/>
+                            <input name="prestigio" placeholder="Categoria" type="number" min="-10" max="30" class="form-control "/>
                             <label>Categoria</label>
                         </label>
                     </div>

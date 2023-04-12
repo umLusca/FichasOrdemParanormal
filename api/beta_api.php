@@ -125,15 +125,6 @@ if (empty($_QUERY)) {
 }
 [$category, $subcategory, $action] = explode("_", $_QUERY);
 
-function generateRandomString($length = 10) {
-	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$charactersLength = strlen($characters);
-	$randomString = '';
-	for ($i = 0; $i < $length; $i++) {
-		$randomString .= $characters[random_int(0, $charactersLength - 1)];
-	}
-	return $randomString;
-}
 $session_id = cleanstring($_DATA["sessid"] ?: "");
 
 if (!empty($category)) {
@@ -548,7 +539,7 @@ if (!empty($category)) {
 						case "get": // ok
 							if (checksession($session_id)) {
 								$user = checksession($session_id);
-								$a = $con->prepare("SELECT fichas_personagem.nome, fichas_personagem.token, foto, trilha, classe, origem, nex, local, idade, missoes.nome as missao FROM fichas_personagem left join (ligacoes left join missoes on ligacoes.id_missao = missoes.id) on ligacoes.id_ficha = fichas_personagem.id  where fichas_personagem.usuario = ?;");
+								$a = $con->prepare("SELECT fichas_personagem.nome, fichas_personagem.token,public, foto, trilha, classe, origem, nex, local, idade, missoes.nome as missao FROM fichas_personagem left join (ligacoes left join missoes on ligacoes.id_missao = missoes.id) on ligacoes.id_ficha = fichas_personagem.id  where fichas_personagem.usuario = ?;");
 								$a->bind_param("i", $user);
 								$a->execute();
 								$a = $a->get_result();
@@ -604,14 +595,24 @@ if (!empty($category)) {
 											}
 											if (isset($_DATA["dados"]["armas"]) && is_array($_DATA["dados"]["armas"])) {
 												foreach ($_DATA["dados"]["armas"] as $arma) {
+													$inv = autoPrepare($arma, ["id", "id_ficha"], "inventario", $con);
+													$inv["values"][] = $arma["id"];
+													$inv["values"][] = $token;
+													$a = $con->prepare("UPDATE inventario SET {$inv["query"]} WHERE id in (SELECT item_id FROM armas WHERE id = ?) and id_ficha in (select id from fichas_personagem where token = ?);");
+													$a->execute($inv["values"]);
+													
 													$stmt = autoPrepare($arma, ["id", "id_ficha"], "armas", $con);
 													$stmt["values"][] = $arma["id"];
 													$stmt["values"][] = $token;
-													$r = $con->prepare("UPDATE armas SET {$stmt["query"]} WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
+													$stmt["query"] = str_replace("foto","i.foto",$stmt["query"]);
+													$r = $con->prepare("UPDATE armas JOIN inventario i ON armas.item_id = i.id SET {$stmt["query"]} WHERE armas.id = ? AND i.id_ficha in (select id from fichas_personagem where token = ?);");
 													$r->execute($stmt["values"]);
+													
+													
 												}
 												$return["success"] = true;
 											}
+											
 											if (isset($_DATA["dados"]["habilidades"]) && is_array($_DATA["dados"]["habilidades"])) {
 												foreach ($_DATA["dados"]["habilidades"] as $hab) {
 													$stmt = autoPrepare($hab, ["id", "id_ficha"], "habilidades", $con);
@@ -690,9 +691,10 @@ if (!empty($category)) {
 								$return["msg"] = 'Sua sessão encerrou.';
 							}
 							break;
+						
 						case "get":
 							$token = cleanstring($_DATA["token"]);
-							if (checksession($session_id)) {
+							if (empty($_DATA["sessid"])||checksession($session_id)) {
 								$user = checksession($session_id);
 								if (VerificarPermissaoFicha($token, $user)) {
 									$editable = true;
@@ -704,61 +706,61 @@ if (!empty($category)) {
 								$a = $a->get_result();
 								if ($a->num_rows) {
 									$ficha = mysqli_fetch_assoc($a);
-									if((int)$ficha["public"] === 1 || $editable){
-									$ficha["blockperm"] = !$editable;
-									$b = $con->prepare("SELECT * FROM `poderes` WHERE `id_ficha` = ? ;");
-									$b->execute([$ficha["id"]]);
-									$b = $b->get_result();
-									
-									$c = $con->prepare("SELECT * FROM `habilidades` WHERE `id_ficha` = ? ;");
-									$c->execute([$ficha["id"]]);
-									$c = $c->get_result();
-									
-									$d = $con->prepare("SELECT * FROM `rituais` WHERE `id_ficha` = ? ;");
-									$d->execute([$ficha["id"]]);
-									$d = $d->get_result();
-									
-									$e = $con->prepare("SELECT i.* FROM inventario i LEFT JOIN armas a ON a.item_id = i.id WHERE a.item_id is null AND i.id_ficha = ? ;");
-									$e->execute([$ficha["id"]]);
-									$e = $e->get_result();
-									
-									$f = $con->prepare("Select *,armas.id as id,i.foto as foto From armas left join inventario i on i.id = armas.item_id where i.id_ficha = ? ;");
-									$f->execute([$ficha["id"]]);
-									$f = $f->get_result();
-									
-									$g = $con->prepare("SELECT * FROM `dados_customizados` WHERE `token_pai` = ? ");
-									$g->execute([$ficha["token"]]);
-									$g = $g->get_result();
-									
-									$h = $con->prepare("SELECT * FROM `proeficiencias` WHERE `id_ficha` = ?;");
-									$h->execute([$ficha["id"]]);
-									$h = $h->get_result();
-									
-									$ficha["habilidades"] = $ficha["poderes"] = $ficha["rituais"] = $ficha["itens"] = $ficha["armas"] = $ficha["dices"] = [];
-									foreach ($c as $rf) {
-										$ficha["habilidades"][] = $rf;
-									}
-									foreach ($b as $rf) {
-										$ficha["poderes"][] = $rf;
-									}
-									foreach ($d as $rf) {
-										$ficha["rituais"][] = $rf;
-									}
-									foreach ($e as $rf) {
-										$ficha["itens"][] = $rf;
-									}
-									foreach ($f as $rf) {
-										$ficha["armas"][] = $rf;
-									}
-									foreach ($g as $d) {
-										$ficha["dices"][] = $d;
-									}
-									foreach ($h as $d) {
-										$ficha["proficiencias"][] = $d;
-									}
-									$return["success"] = true;
-									$return["ficha"] = $ficha;
-									
+									if ((int)$ficha["public"] === 1 || $editable) {
+										$ficha["blockperm"] = !$editable;
+										$b = $con->prepare("SELECT * FROM `poderes` WHERE `id_ficha` = ? ;");
+										$b->execute([$ficha["id"]]);
+										$b = $b->get_result();
+										
+										$c = $con->prepare("SELECT * FROM `habilidades` WHERE `id_ficha` = ? ;");
+										$c->execute([$ficha["id"]]);
+										$c = $c->get_result();
+										
+										$d = $con->prepare("SELECT * FROM `rituais` WHERE `id_ficha` = ? ;");
+										$d->execute([$ficha["id"]]);
+										$d = $d->get_result();
+										
+										$e = $con->prepare("SELECT i.* FROM inventario i LEFT JOIN armas a ON a.item_id = i.id WHERE a.item_id is null AND i.id_ficha = ? ;");
+										$e->execute([$ficha["id"]]);
+										$e = $e->get_result();
+										
+										$f = $con->prepare("Select *,armas.id as id,i.foto as foto From armas left join inventario i on i.id = armas.item_id where i.id_ficha = ? ;");
+										$f->execute([$ficha["id"]]);
+										$f = $f->get_result();
+										
+										$g = $con->prepare("SELECT * FROM `dados_customizados` WHERE `token_pai` = ? ");
+										$g->execute([$ficha["token"]]);
+										$g = $g->get_result();
+										
+										$h = $con->prepare("SELECT * FROM `proeficiencias` WHERE `id_ficha` = ?;");
+										$h->execute([$ficha["id"]]);
+										$h = $h->get_result();
+										
+										$ficha["habilidades"] = $ficha["poderes"] = $ficha["rituais"] = $ficha["itens"] = $ficha["armas"] = $ficha["dices"] = [];
+										foreach ($c as $rf) {
+											$ficha["habilidades"][] = $rf;
+										}
+										foreach ($b as $rf) {
+											$ficha["poderes"][] = $rf;
+										}
+										foreach ($d as $rf) {
+											$ficha["rituais"][] = $rf;
+										}
+										foreach ($e as $rf) {
+											$ficha["itens"][] = $rf;
+										}
+										foreach ($f as $rf) {
+											$ficha["armas"][] = $rf;
+										}
+										foreach ($g as $d) {
+											$ficha["dices"][] = $d;
+										}
+										foreach ($h as $d) {
+											$ficha["proficiencias"][] = $d;
+										}
+										$return["success"] = true;
+										$return["ficha"] = $ficha;
+										
 									} else {
 										$return["success"] = false;
 										$return["msg"] = "Sem permissão.";
@@ -820,12 +822,9 @@ if (!empty($category)) {
 												foreach ($_DATA["dados"]["armas"] as $arma) {
 													$q = $con->prepare("DELETE from inventario WHERE id in (SELECT item_id FROM armas WHERE id = ?) AND id_ficha  in (SELECT id from fichas_personagem where token = ?);");
 													$q->execute([$arma["id"], $token]);
-													$r = $con->prepare("DELETE FROM armas WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
-													$r->execute([$arma["id"], $token]);
+													$return["success"] = true;
 												}
-												$return["success"] = true;
 											}
-											
 											if (isset($_DATA["dados"]["rituais"]) && is_array($_DATA["dados"]["rituais"])) {
 												foreach ($_DATA["dados"]["rituais"] as $ritual) {
 													$r = $con->prepare("DELETE FROM rituais WHERE id = ? AND id_ficha in (SELECT id from fichas_personagem where token = ?) ");
@@ -872,25 +871,25 @@ if (!empty($category)) {
 							if (isset($_FILES["file"])) {
 								$file_size = $_FILES['file']['size'];
 								if (($file_size !== 0 && $file_size < 1024 * 1024)) {
-									$return = save_image($_FILES["file"], $type);
-									if ($return) {
-										$data["url"] = $return;
-										$data["success"] = true;
-										$data["msg"] = "Sucesso!";
+									$url = save_image($_FILES["file"], $type);
+									if ($url) {
+										$return["url"] = $url;
+										$return["success"] = true;
+										$return["msg"] = "Sucesso!";
 									} else {
-										$data["url"] = "";
-										$data["success"] = false;
-										$data["msg"] = "Falha!";
+										$return["url"] = "";
+										$return["success"] = false;
+										$return["msg"] = "Falha!";
 									}
 								} else {
-									$data["url"] = "";
-									$data["success"] = false;
-									$data["msg"] = "Arquivo grande (>1MB)";
+									$return["url"] = "";
+									$return["success"] = false;
+									$return["msg"] = "Arquivo grande (>1MB)";
 								}
 							} else {
-								$data["url"] = "";
-								$data["success"] = false;
-								$data["msg"] = "Arquivo não encontrado.";
+								$return["url"] = "";
+								$return["success"] = false;
+								$return["msg"] = "Arquivo não encontrado.";
 							}
 							break;
 					}
