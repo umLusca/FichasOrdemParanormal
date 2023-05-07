@@ -34,7 +34,7 @@ Cubra o arroz com as fatias de queijo. Tampe a panela novamente e deixe que o va
 
 Sirva acompanhado de carne-de-sol frita ou assada.
 -->
-<html lang="pt-BR" data-bs-theme="<?=$_SESSION["theme"]?>">
+<html lang="pt-BR" data-bs-theme="<?= $_SESSION["theme"] ?>">
 <head>
     <!-- Required meta tags -->
     <title>Fichas Ordem Paranormal</title>
@@ -257,19 +257,34 @@ Sirva acompanhado de carne-de-sol frita ou assada.
 <?php require_once RootDir . "includes/top.php"; ?>
 <main style="width: calc(100vw - 5px); height: calc(100vh - 45px)" class="first">
     <div class="container position-relative">
-        <h1 class="text-center fade-in fichasop" style="font-size: calc(5vh + 5vw); padding-top: 20vh">
-            <span class="font6">F</span><span class="font6">i</span><span class="font6">c</span><span class="font6">h</span class="font6"><span class="font6">a</span><span class="font6">s</span><span class="font6">O</span><span class="font6">P</span>
-        </h1>
-        <p class="fs-5 text-center mb-0">O SITE DE FICHAS PARA ORDEM PARANORMAL RPG</p>
-        <p class="fs-5 text-center">Oque está esperando? Clique abaixo e começe a criar sua ficha!</p>
-        <div class="w-100 text-center">
-			<?php if (!isset($_SESSION["UserID"])) { ?>
-                <button class="m-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cadastrar">Criar uma conta
-                </button>
-			<?php } else { ?>
-                <button class="m-2 btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastrar">Ir para Sessões
-                </button>
-			<?php } ?>
+        <div class="row row-cols-sm-2 row-cols-1 justify-content-between g-2" style="padding-top: calc( 20vh - 5vw )">
+            <div class="align-self-center text-center">
+                <h1 class="text-center fichasop">Está pronto!</h1>
+                <p>Aplicativo está na fase final! já é possível utilizar o aplicativo.</p>
+                <a href='https://play.google.com/store/apps/details?id=com.fichasop.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                    <img style="width: 120px" alt='Disponível no Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/pt-br_badge_web_generic.png'/>
+                </a><br>
+                <small>IOS ou outros? Temos uma solução <a href="https://m.fichasop.com">Aqui</a></small>
+                <br>
+            </div>
+            <div>
+                <h1 class="text-center fade-in fichasop" style="font-size: calc(5vh + 5vw); ">
+                    <span class="font6">F</span><span class="font6">i</span><span class="font6">c</span><span class="font6">h</span class="font6"><span class="font6">a</span><span class="font6">s</span><span class="font6">O</span><span class="font6">P</span>
+                </h1>
+                <p class="fs-5 text-center mb-0">O SITE DE FICHAS PARA ORDEM PARANORMAL RPG</p>
+                <p class="fs-5 text-center">Oque está esperando? Clique abaixo e começe a criar sua ficha!</p>
+                <div class="w-100 text-center">
+					<?php if (!isset($_SESSION["UserID"])) { ?>
+                        <button class="m-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cadastrar">Criar uma
+                            conta
+                        </button>
+					<?php } else { ?>
+                        <button class="m-2 btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastrar">Ir para
+                            Sessões
+                        </button>
+					<?php } ?>
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -282,7 +297,8 @@ Sirva acompanhado de carne-de-sol frita ou assada.
                 <p>Com mais de 16.000 pessoas, contamos com a comunidade mais zica que existe, que nos ajudam com
                     decisões, Updates, e Sugestões.</p>
                 <div class="text-center mt-auto">
-                    <a class="btn btn-primary" role="button" href="https://discord.gg/5asNxZg3rU"><i class="fab fa-discord"></i> Discord</a>
+                    <a class="btn btn-primary" role="button" href="https://discord.gg/5asNxZg3rU"><i class="fab fa-discord"></i>
+                        Discord</a>
                 </div>
             </div>
         </div>
@@ -352,7 +368,8 @@ Sirva acompanhado de carne-de-sol frita ou assada.
                     <div class="layer">
                         <div class="p-1">
                             <h3 class="text-center" style="font-size: calc(2vh + 2vw)">Portraits</h3>
-                            <p class="text-info" style="font-size: calc(2vh + 0.5vw)">Para streamar ou para gravar vídeos, como desejar! incluem portraits:</p>
+                            <p class="text-info" style="font-size: calc(2vh + 0.5vw)">Para streamar ou para gravar
+                                vídeos, como desejar! incluem portraits:</p>
                             <ul style="font-size: calc(2vh + 0.5vw)">
                                 <li>1 Especial FichasOP</li>
                                 <li>2 Especial Parceiros</li>
@@ -367,7 +384,6 @@ Sirva acompanhado de carne-de-sol frita ou assada.
             </div>
         </div>
     </div>
-	<?=$gclient? $gclient->createAuthUrl():""; ?>
 
 </section>
 <?php require_once RootDir . "sessao/include_geral/modal_dice.php"; ?>
@@ -397,6 +413,9 @@ Sirva acompanhado de carne-de-sol frita ou assada.
         setTimeout(glitch2, 250);
     })
 </script>
+<?php
+/*
+<?= $gclient ? $gclient->createAuthUrl() : ""; ?>
 <div id="g_id_onload"
      data-client_id="209829554208-1d5agmucudbmmbu9c5r4pjcggpg1t975.apps.googleusercontent.com"
      data-context="signin"
@@ -412,6 +431,6 @@ Sirva acompanhado de carne-de-sol frita ou assada.
      data-text="continue_with."
      data-size="large"
      data-logo_alignment="left">
-</div>
+</div>*/ ?>
 </body>
 </html>

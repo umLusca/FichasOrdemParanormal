@@ -36,8 +36,8 @@ $urllimit = 300;
 
 $Inv_desc = 300;
 $ficha_detalhes= 5000;
-$inv_peso_min =$minimo_peso = -20;
-$inv_peso_max =$maximo_peso = 50;
+$inv_peso_min =$minimo_peso = -10;
+$inv_peso_max =$maximo_peso = 30;
 
 
 $ficha_idade_max = 9999;

@@ -1168,15 +1168,48 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$tat = minmax($_POST["tatica"], $minimo_pericia, $maximo_pericia);
 													$tec = minmax($_POST["tecnologia"], $minimo_pericia, $maximo_pericia);
 													$von = minmax($_POST["vontade"], $minimo_pericia, $maximo_pericia);
+													
+													$nprof = cleanstring($_POST["nprofissao"], 20);
+													$ncien = cleanstring($_POST["nciencia"], 20);
+													
+													$tacr = minmax($_POST["tacrobacias"], 0, 3);
+													$tade = minmax($_POST["tadestramento"], 0, 3);
+													$tart = minmax($_POST["tartes"], 0, 3);
+													$tatl = minmax($_POST["tatletismo"], 0, 3);
+													$tatu = minmax($_POST["tatualidades"], 0, 3);
+													$tcie = minmax($_POST["tciencia"], 0, 3);
+													$tcri = minmax($_POST["tcrime"], 0, 3);
+													$tdip = minmax($_POST["tdiplomacia"], 0, 3);
+													$teng = minmax($_POST["tenganacao"], 0, 3);
+													$tfort = minmax($_POST["tfortitude"], 0, 3);
+													$tfur = minmax($_POST["tfurtividade"], 0, 3);
+													$tinic = minmax($_POST["tiniciativa"], 0, 3);
+													$tinti = minmax($_POST["tintimidacao"], 0, 3);
+													$tintu = minmax($_POST["tintuicao"], 0, 3);
+													$tinv = minmax($_POST["tinvestigacao"], 0, 3);
+													$tlut = minmax($_POST["tluta"], 0, 3);
+													$tmed = minmax($_POST["tmedicina"], 0, 3);
+													$tocu = minmax($_POST["tocultismo"], 0, 3);
+													$tperc = minmax($_POST["tpercepcao"], 0, 3);
+													$tpilo = minmax($_POST["tpilotagem"], 0, 3);
+													$tpont = minmax($_POST["tpontaria"], 0, 3);
+													$tprof = minmax($_POST["tprofissao"], 0, 3);
+													$tref = minmax($_POST["treflexo"], 0, 3);
+													$trel = minmax($_POST["treligiao"], 0, 3);
+													$tsob = minmax($_POST["tsobrevivencia"], 0, 3);
+													$ttat = minmax($_POST["ttatica"], 0, 3);
+													$ttec = minmax($_POST["ttecnologia"], 0, 3);
+													$tvon = minmax($_POST["tvontade"], 0, 3);
 													$q = $con->prepare("UPDATE `fichas_personagem` SET
                                `acrobacias` = ?, `adestramento` = ?, `artes` = ?, `atletismo` = ?, `atualidades` = ?,
                                `ciencia` = ?, `crime` = ?, `diplomacia` = ?, `enganacao` = ?, `fortitude` = ?,
                                `furtividade` = ?, `intimidacao` = ?, `iniciativa` = ?, `intuicao` = ?, `investigacao` = ?,
                                `luta` =?, `medicina` =?, `ocultismo` =?, `percepcao` =?, `pilotagem` =?,
                                `pontaria` =?, `profissao`= ?,`reflexos`= ?, `religiao`= ?, `sobrevivencia`= ?,
-                               `tatica`= ?, `tecnologia`= ?, `vontade`= ? WHERE `token` = ?;");
-													$q->bind_param("iiiiiiiiiiiiiiiiiiiiiiiiiiiis", $acr, $ade, $art, $atl, $atu, $cie, $cri, $dip, $eng, $fort, $fur, $inti, $inic, $intu, $inv, $lut, $med, $ocu, $perc, $pilo, $pont, $prof, $ref, $rel, $sob, $tat, $tec, $von, $token);
-													$q->execute();
+                               `tatica`= ?, `tecnologia`= ?, `vontade`= ?, tacrobacia = ?,tadestramento = ?,tarte = ?,tatletismo = ?,tatualidade = ?,tciencia = ?,tcrime = ?,tdiplomacia = ?,tenganacao = ?,tfortitude = ?,
+                               tfurtividade = ?,tintimidacao = ?,tiniciativa = ?,tintuicao = ?,tinvestigacao = ?,tluta = ?,tmedicina = ?,tocultismo = ?,tpercepcao = ?,tpilotagem = ?,tpontaria = ?,tprofissao = ?,treflexo = ?,treligiao = ? ,tsobrevivencia = ?,ttatica = ?,ttecnologia = ?,tvontade = ?, nprofissao = ?, nciencia = ? WHERE `token` = ?;");
+													$q->execute([$acr, $ade, $art, $atl, $atu, $cie, $cri, $dip, $eng, $fort, $fur, $inti, $inic, $intu, $inv, $lut, $med, $ocu, $perc, $pilo, $pont, $prof, $ref, $rel, $sob, $tat, $tec, $von, $tacr, $tade, $tart, $tatl, $tatu, $tcie, $tcri, $tdip, $teng, $tfort, $tfur, $tinti, $tinic, $tintu, $tinv, $tlut, $tmed, $tocu, $tperc, $tpilo, $tpont, $tprof, $tref, $trel, $tsob, $ttat, $ttec, $tvon,$nprof,$ncien,$token]);
+											
 												} else {
 													$data["success"] = false;
 													$data["msg"] = "Sem permissão";
@@ -1217,7 +1250,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$sana = $rqs["sana"];
 													$pea = $rqs["pea"];
 													$nex = $rqs["nex"];
-													$balas = minmax((int)$_POST["balas"], 0, 30);
+													$balas = minmax((int)$_POST["balas"], 0, 50);
 													
 													if ($rqs["nex"] == 99) {
 														$nex = 100;
@@ -1347,9 +1380,17 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 												break;
 											case 'arma':
 												if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
+													
+													
 													$aid = (int)$_POST["did"];
+													
 													$n = cleanstring($_POST["nome"], $limite_nome_inv);
 													$f = cleanstring($_POST["foto"], 300);
+													$desc = cleanstring($_POST["desc"], $Inv_desc);
+													$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
+													$pres = minmax($_POST["prestigio"], $minimo_peso, $maximo_peso);
+													
+													
 													$t = cleanstring($_POST["tipo"], $Arma_tipo);
 													$at = cleanstring($_POST["ataque"], $Arma_ataq);
 													$al = cleanstring($_POST["alcance"], $Arma_alca);
@@ -1358,8 +1399,14 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$m = minmax($_POST["margem"], 1, 20);
 													$r = cleanstring($_POST["recarga"], $Arma_reca);
 													$e = cleanstring($_POST["especial"], $Arma_espe);
-													$rr = $con->prepare("UPDATE `armas` SET `arma` = ?, `foto` = ? , `tipo` = ?, `ataque` = ?, `alcance` = ?, `dano` = ?, `critico` = ?, `margem` = ?, `recarga` = ?, `especial` = ? WHERE `armas`.`id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
-													$rr->bind_param("sssssssissis", $n, $f, $t, $at, $al, $d, $c, $m, $r, $e, $aid, $token);
+													
+													$b = $con->prepare("UPDATE inventario SET nome = ?, foto = ?, descricao = ?, quantidade = 1, espaco = ?, prestigio = ? WHERE id in (SELECT item_id FROM armas WHERE id = ?) AND id_ficha in (SELECT id FRom fichas_personagem where token = ?);");
+													$b->execute([$n,$f,$desc,$peso,$pres,$aid,$token]);
+													
+													$a = $con->prepare("UPDATE armas JOIN inventario i on armas.item_id = i.id SET tipo = ? , ataque = ? , alcance = ? , dano = ? , margem = ?, critico = ? , recarga = ? , especial = ? WHERE  armas.id = ? AND i.id_ficha in (select id from fichas_personagem where token = ?);;");
+													$a->execute([$t,$at,$al,$d,$m,$c,$r,$e,$aid,$token]);
+													
+													
 													$data["success"] = $rr->execute();
 												} else {
 													$data["success"] = false;
@@ -1437,7 +1484,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 														$q = $con->prepare("DELETE FROM `poderes` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
 														break;
 													case "arma":
-														$q = $con->prepare("DELETE FROM `armas` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
+														$q = $con->prepare("DELETE from armas WHERE id = ? AND id_ficha  in (SELECT id from fichas_personagem where token = ?);");
 														break;
 													case "item":
 														$q = $con->prepare("DELETE FROM `inventario` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
@@ -1518,9 +1565,9 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 											$foto = cleanstring($_POST["foto"], $urllimit);
 											$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
 											$pres = minmax($_POST["prestigio"], $minimo_peso, $maximo_peso, $inv_float);
-										
+											
 											$rr = $con->prepare("INSERT INTO `inventario`(`id_ficha`,`foto`,`nome`,`descricao`,`espaco`,`prestigio`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ?),? , ? , ? , ? , ?)");
-											$rr->execute([$token, $foto,$nome, $desc, $peso, $pres]);
+											$rr->execute([$token, $foto, $nome, $desc, $peso, $pres]);
 											break;
 										case 'arma':
 											$n = cleanstring($_POST["nome"], $limite_nome_inv);
@@ -1585,7 +1632,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 			break;
 		case 'mestre_sync_fichasnpc':
 			$ficha_id = (int)$_POST["ficha"];
-			
+			$data = $_POST["data"];
 			if ($data["pva"] >= $data["pv"] + 20) $data["pva"] = $data["pv"] + 20;
 			if ($data["pva"] < 0) $data["pva"] = 0;
 			
@@ -1600,10 +1647,8 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 			$st["values"][] = $ficha_id;
 			$st["values"][] = $token;
 			$st["values"][] = $_SESSION["UserID"];
-			
 			$_a = $con->prepare("UPDATE fichas_npc SET {$st["query"]} WHERE id =? AND missao in (SELECT id from missoes WHERE token = ? AND mestre = ?)");
-			$_a->bind_param($st["bind"], ...$st["values"]);
-			$_a->execute();
+			$_a->execute($st["values"]);
 			
 			break;
 		case "mestre_duplicar_fichanpc":

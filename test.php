@@ -1,6 +1,8 @@
 <?php
-$time = strtotime('now');
 
-echo TempoDecorrido(strtotime("now - 12mon"));
+
+
+echo  uuid_time(uuid_create());
+//uuid_variant();
 
 ?>

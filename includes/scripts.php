@@ -559,16 +559,6 @@
         })
 
 
-        $('#foto').change(function () {
-            let fotovalor = $('#foto').val()
-            if (fotovalor == '9') {
-                $('#divfotourl').show();
-                $("#fotourl,#fotofemor,#fotourenl,#fotourfer").attr("disabled", false)
-            } else {
-                $('#divfotourl').hide();
-                $("#fotourl,#fotomor,#fotoenl,#fotofer,").attr("disabled", true)
-            }
-        })
 		<?php }?>
     })
 </script>

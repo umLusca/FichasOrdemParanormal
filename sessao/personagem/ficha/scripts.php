@@ -66,7 +66,7 @@
                 let emodal = new bootstrap.Modal($("#editarma"));
                 $('#editarma input[name=foto]').val($("#arma" + id + " img").attr("src"));
                 $('#editarma img').attr("src", $("#arma" + id + " img").attr("src"));
-                $('#editarma input[name=nome]').val($("#arma" + id + " .arma").text());
+                $('#editarma input[name=nome]').val($("#arma" + id + " .nome").text());
                 $('#editarma input[name=tipo]').val($("#arma" + id + " .tipo").text());
                 $('#editarma input[name=ataque]').val($("#arma" + id + " .ataque").attr("data-dado"));
                 $('#editarma input[name=alcance]').val($("#arma" + id + " .alcance").text());
@@ -75,6 +75,10 @@
                 $('#editarma input[name=margem]').val($("#arma" + id + " .critico").attr("data-margem"));
                 $('#editarma input[name=recarga]').val($("#arma" + id + " .recarga").text());
                 $('#editarma input[name=especial]').val($("#arma" + id + " .especial").text());
+                console.log($("#arma" + id + " *[data-fop-info=descricao]").text())
+                $('#editarma textarea[name=desc]').val($("#arma" + id + " *[data-fop-info=descricao]").text());
+                $('#editarma input[name=prestigio]').val($("#arma" + id + " *[data-fop-info=prestigio]").text());
+                $('#editarma input[name=peso]').val($("#arma" + id + " *[data-fop-info=espaco]").text());
                 $('#editarma input[name=did]').val(id);
                 emodal.show();
                 break;
@@ -503,10 +507,9 @@
                     url: '?token=<?=$token?>',
                     data: $(this).serialize(),
                     complete: (d) => {
+                        location.reload();
                         console.log(d)
                     },
-                }).done(function (data) {
-                    location.reload();
                 })
             }
         })// Enviar qualquer formulario via jquery

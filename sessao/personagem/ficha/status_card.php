@@ -229,11 +229,11 @@
 							<?php } ?>
                             <div class="fs-4 justify-content-center mx-auto align-items-center font4 row g-0 dblclick">
                                 <div class="col-5 me-0">
-                                    <input type="number" title="Balas restantes" name="balaa" min="0" max="30" value="<?= $ficha["balasusadas"] ?>" class="balaa border-0 peatual form-control form-control-sm text-end" readonly>
+                                    <input type="number" title="Balas restantes" name="balaa" min="0" max="50" value="<?= $ficha["balasusadas"] ?>" class="balaa border-0 peatual form-control form-control-sm text-end" readonly>
                                 </div>
                                 <div class="col-auto">/</div>
                                 <div class="col-5 ms-0">
-                                    <input type="number" title="Balas total" name="bala" min="0" max="30" value="<?= $ficha["balas"] ?>" class="bala border-0 pemaxima form-control form-control-sm" readonly>
+                                    <input type="number" title="Balas total" name="bala" min="0" max="50" value="<?= $ficha["balas"] ?>" class="bala border-0 pemaxima form-control form-control-sm" readonly>
                                 </div>
                             </div>
 							<?php if ($edit) { ?>

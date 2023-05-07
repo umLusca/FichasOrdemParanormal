@@ -129,7 +129,7 @@
                     <div class="">
                         <label class="input-group input-group-sm">
                             <span class="input-group-text  border-end-0">Quantidade de balas:</span>
-                            <input class="form-control  border-start-0" type="number" min="0" max="30" name="balas" value="<?= $ficha["balas"] ?>"/>
+                            <input class="form-control  border-start-0" type="number" min="0" max="50" name="balas" value="<?= $ficha["balas"] ?>"/>
                         </label>
                     </div>
                 </div>

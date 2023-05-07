@@ -23,8 +23,30 @@
         </div>
         <div class="card-body font10">
             <div class="row justify-content-between" id="pericias">
+                <style></style>
                 <?php
-
+                
+                function button_per($label,$atr,$bonus,int $level,$name = false): void
+                {
+                    global $edit;
+	                $level_color = match ($level){
+		                default => "text-secondary",
+		                1 => "text-success",
+		                2 => "text-primary",
+		                3 => "text-warning",
+	                };
+	
+	                ?>
+                    <div class="col-auto text-center">
+                        <button onclick="rolar({dado:'<?="{$atr}d20+{$bonus}"?>', dano: false, nome:'<?=$label?>'});" class="btn btn-lg text-secondary">
+                            <i class="fa-thin fa-dice-d20 fa-2x"></i><span class="fs-2"> +<?= $bonus ?></span>
+                            <h3 class="<?= $level_color ?> m-0"><?=$label?> <?=$name?"($name)":""?></h3>
+                        </button>
+                    </div>
+                    <?php
+                }
+                
+                
                 $dadode["acrobacias"] = 2;
                 $dadode["adestramento"] = 4;
                 $dadode["atletismo"] = 1;
@@ -96,6 +118,35 @@
                 }
 
                 ?>
+                <?=button_per("Acrobacias",$rd["acrobacias"],$ficha["acrobacias"],$ficha["tacrobacia"])?>
+                <?=button_per("Adestramento",$rd["adestramento"],$ficha["adestramento"],$ficha["tadestramento"])?>
+                <?=button_per("Artes",$rd["artes"],$ficha["artes"],$ficha["tarte"])?>
+                <?=button_per("Atletismo",$rd["atletismo"],$ficha["atletismo"],$ficha["tatletismo"])?>
+                <?=button_per("Atualidades",$rd["atualidades"],$ficha["atualidades"],$ficha["tatualidade"])?>
+                <?=button_per("Ciência",$rd["ciencia"],$ficha["ciencia"],$ficha["tciencia"],$ficha["nciencia"])?>
+                <?=button_per("Crime",$rd["crime"],$ficha["crime"],$ficha["tcrime"])?>
+                <?=button_per("Diplomacia",$rd["diplomacia"],$ficha["diplomacia"],$ficha["tdiplomacia"])?>
+                <?=button_per("Enganação",$rd["enganacao"],$ficha["enganacao"],$ficha["tenganacao"])?>
+                <?=button_per("Fortitude",$rd["fortitude"],$ficha["fortitude"],$ficha["tfortitude"])?>
+                <?=button_per("Furtividade",$rd["furtividade"],$ficha["furtividade"],$ficha["tfurtividade"])?>
+                <?=button_per("Iniciativa",$rd["iniciativa"],$ficha["iniciativa"],$ficha["tiniciativa"])?>
+                <?=button_per("Intimidação",$rd["intimidacao"],$ficha["intimidacao"],$ficha["tintimidacao"])?>
+                <?=button_per("Intuição",$rd["intuicao"],$ficha["intuicao"],$ficha["tintuicao"])?>
+                <?=button_per("Investigação",$rd["investigacao"],$ficha["investigacao"],$ficha["tinvestigacao"])?>
+                <?=button_per("Luta",$rd["luta"],$ficha["luta"],$ficha["tluta"])?>
+                <?=button_per("Medicina",$rd["medicina"],$ficha["medicina"],$ficha["tmedicina"])?>
+                <?=button_per("Ocultismo",$rd["ocultismo"],$ficha["ocultismo"],$ficha["tocultismo"])?>
+                <?=button_per("Percepção",$rd["percepcao"],$ficha["percepcao"],$ficha["tpercepcao"])?>
+                <?=button_per("Pilotagem",$rd["pilotagem"],$ficha["pilotagem"],$ficha["tpilotagem"])?>
+                <?=button_per("Pontaria",$rd["pontaria"],$ficha["pontaria"],$ficha["tpontaria"])?>
+                <?=button_per("Profissão",$rd["profissao"],$ficha["profissao"],$ficha["tprofissao"],$ficha["nprofissao"])?>
+                <?=button_per("Reflexos",$rd["reflexos"],$ficha["reflexos"],$ficha["treflexo"])?>
+                <?=button_per("Religião",$rd["religiao"],$ficha["religiao"],$ficha["treligiao"])?>
+                <?=button_per("Sobrevivência",$rd["sobrevivencia"],$ficha["sobrevivencia"],$ficha["tsobrevivencia"])?>
+                <?=button_per("Tática",$rd["tatica"],$ficha["tatica"],$ficha["ttatica"])?>
+                <?=button_per("Tecnologias",$rd["tecnologia"],$ficha["tecnologia"],$ficha["ttecnologia"])?>
+                <?=button_per("Vontade",$rd["vontade"],$ficha["vontade"],$ficha["tvontade"])?>
+                <!--
                 <div style="display: <?= $acrobacias ? "unset" : "none" ?>;" class="<?= $acrobacias ? "treinado" : "destreinado" ?> col-auto text-center">
                     <button <?= $edit ? "" : "disabled" ?> onclick="rolar({dado:'<?= $rd["acrobacias"] ?>d20+<?= $acrobacias ?>', dano: false ,nome:'Acrobacias'});" class="btn btn-lg text-secondary">
                         <i class="fa-thin fa-dice-d20 fa-2x"></i><span> +<?= $acrobacias ?></span>
@@ -263,7 +314,7 @@
                         <i class=" fa-thin fa-dice-d20 fa-2x"></i><span> +<?= $vontade ?></span>
                     </button>
                     <h3 class="text-<?= Trenado($vontade) ?>">Vontade</h3>
-                </div>
+                </div> -->
             </div>
             <div class="text-center m-2">
                 <span class="text-secondary">Não treinadas</span>

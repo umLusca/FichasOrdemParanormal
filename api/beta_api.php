@@ -491,7 +491,7 @@ if (!empty($category)) {
 										
 										$hash = md5(md5($email) . md5($ds["nome"]) . strtotime(date('m/d/Y h:i:s')));
 										
-										$k = $con->prepare("INSERT INTO `recuperar_senha` (`id_usuario`,`hash`,`email`,`return`) VALUES ( ? , ? , ? ,NOW())");
+										$k = $con->prepare("INSERT INTO `recuperar_senha` (`id_usuario`,`hash`,`email`,`data`) VALUES ( ? , ? , ? ,NOW())");
 										
 										if ($k->execute([$ds["id"], $hash, $email])) {
 											$link = "https://fichasop.com/conta/recuperar?recovery=" . $hash;
@@ -566,11 +566,11 @@ if (!empty($category)) {
 					switch ($action) {
 						default:
 							goto notFound;
+							
 						case "update":
 							$token = cleanstring($_DATA["token"]);
 							if (checksession($session_id)) {
 								$user = checksession($session_id);
-								
 								if (VerificarPermissaoFicha($token, $user)) {
 									
 									$a = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `token`= ?");
@@ -581,18 +581,7 @@ if (!empty($category)) {
 										if (isset($_DATA["dados"]) && !empty($_DATA["dados"] && is_array($_DATA["dados"]))) {
 											
 											$return["success"] = false;
-											// rituais|poderes|proficiencias|habilidade|armas|dados
-											if (isset($_DATA["dados"]["dices"]) && is_array($_DATA["dados"]["dices"])) {
-												foreach ($_DATA["dados"]["dices"] as $dice) {
-													$stmt = autoPrepare($dice, ["token", "token_pai", "owner"], "dados_customizados", $con);
-													$stmt["values"][] = $dice["token"];
-													$stmt["values"][] = $token;
-													$r = $con->prepare("UPDATE dados_customizados SET {$stmt["query"]} WHERE token = ? AND token_pai = ?");
-													$r->execute($stmt["values"]);
-													
-												}
-												$return["success"] = true;
-											}
+											// rituais|poderes|proficiencias|habilidade|armas
 											if (isset($_DATA["dados"]["armas"]) && is_array($_DATA["dados"]["armas"])) {
 												foreach ($_DATA["dados"]["armas"] as $arma) {
 													$inv = autoPrepare($arma, ["id", "id_ficha"], "inventario", $con);
@@ -604,7 +593,7 @@ if (!empty($category)) {
 													$stmt = autoPrepare($arma, ["id", "id_ficha"], "armas", $con);
 													$stmt["values"][] = $arma["id"];
 													$stmt["values"][] = $token;
-													$stmt["query"] = str_replace("foto","i.foto",$stmt["query"]);
+													$stmt["query"] = str_replace("foto", "i.foto", $stmt["query"]);
 													$r = $con->prepare("UPDATE armas JOIN inventario i ON armas.item_id = i.id SET {$stmt["query"]} WHERE armas.id = ? AND i.id_ficha in (select id from fichas_personagem where token = ?);");
 													$r->execute($stmt["values"]);
 													
@@ -683,7 +672,146 @@ if (!empty($category)) {
 										$return["msg"] = 'Falha ao encontrar ficha.';
 									}
 								} else {
-									$return = false;
+									$return["success"] = false;
+									$return["msg"] = 'Sem permissão.';
+								}
+							} else {
+								$return["success"] = false;
+								$return["msg"] = 'Sua sessão encerrou.';
+							}
+							break;
+							
+						case "create":
+							$token = cleanstring($_DATA["token"]);
+							if (checksession($session_id)) {
+								$user = checksession($session_id);
+								if (VerificarPermissaoFicha($token, $user)) {
+									$a = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `token`= ?");
+									$a->bind_param("s", $token);
+									$a->execute();
+									$a = $a->get_result();
+									if ($a->num_rows) {# Encontrou a ficha
+										$ficha = mysqli_fetch_assoc($a);
+										if (isset($_DATA["dados"]) && !empty($_DATA["dados"] && is_array($_DATA["dados"]))) {
+											$return["success"] = false;
+											// rituais|poderes|proficiencias|habilidade|armas|dados
+											if (isset($_DATA["dados"]["armas"]) && is_array($_DATA["dados"]["armas"])) {
+												foreach ($_DATA["dados"]["armas"] as $arma) {
+													if (isset($arma["nome"]) && !empty($arma["nome"])) {
+														$nome = cleanstring($arma["nome"], 50);
+														$foto = cleanstring($arma["foto"], 300);
+														$desc = cleanstring($arma["desc"], 500);
+														$peso = minmax($arma["peso"], -10, 30);
+														$cate = minmax($arma["categoria"], -10, 30);
+														
+														$i = $con->prepare("INSERT INTO inventario(id_ficha, foto, nome, descricao, espaco, prestigio) VALUES ( ? , ? , ? , ? , ? , ?)");
+														if ($i->execute([$ficha["id"], $foto, $nome, $desc, $peso, $cate])) {
+															$tipo = cleanstring($arma["tipo"], 30);
+															$ataque = cleanstring($arma["ataque"], 30);
+															$alcance = cleanstring($arma["alcance"], 30);
+															$dano = cleanstring($arma["dano"], 30);
+															$critico = cleanstring($arma["critico"], 30);
+															$recarga = cleanstring($arma["recarga"], 30);
+															$especial = cleanstring($arma["especial"], 30);
+															$margem = minmax($arma["margem"], 1, 20);
+															$iid = $con->insert_id;
+															$a = $con->prepare("INSERT INTO armas (item_id, tipo, ataque, alcance, dano, critico, margem, recarga, especial) VALUES (?,?,?,?,?,?,?,?,?);");
+															if ($a->execute([$iid, $tipo, $ataque, $alcance, $dano, $critico, $margem, $recarga, $especial])) {
+																$return["success"] = true;
+															}
+														}
+													}
+												}
+											}
+											
+											if (isset($_DATA["dados"]["habilidades"]) && is_array($_DATA["dados"]["habilidades"])) {
+												foreach ($_DATA["dados"]["habilidades"] as $hab) {
+													if (isset($hab["nome"]) && !empty($hab["nome"])) {
+														$nome = cleanstring($hab["nome"], 50);
+														$desc = cleanstring($hab["desc"], 3000);
+														$h = $con->prepare("INSERT INTO habilidades(id_ficha, nome, descricao) VALUES (?,?,?);");
+														if ($h->execute([$ficha["id"], $nome, $desc])) {
+															$return["success"] = true;
+														}
+													}
+												}
+											}
+											if (isset($_DATA["dados"]["poderes"]) && is_array($_DATA["dados"]["poderes"])) {
+												foreach ($_DATA["dados"]["poderes"] as $poder) {
+													if (isset($poder["nome"]) and !empty($poder["nome"])) {
+														$nome = cleanstring($poder["nome"], 50);
+														$desc = cleanstring($poder["desc"], 3000);
+														$p = $con->prepare("INSERT INTO poderes(id_ficha, nome, descricao) VALUES (?,?,?);");
+														if ($p->execute([$ficha["id"], $nome, $desc])) {
+															$return["success"] = true;
+														}
+													}
+												}
+											}
+											if (isset($_DATA["dados"]["itens"]) && is_array($_DATA["dados"]["itens"])) {
+												foreach ($_DATA["dados"]["itens"] as $item) {
+													if (isset($item["nome"]) && !empty($item["nome"])) {
+														$nome = cleanstring($item["nome"], 50);
+														$foto = cleanstring($item["foto"], 300);
+														$desc = cleanstring($item["desc"], 3000);
+														$cate = minmax($item["categoria"], -10, 30);
+														$peso = minmax($item["peso"], -10, 30);
+														$quantidade = minmax($item["peso"], 0, 30);
+														$i = $con->prepare("INSERT INTO inventario(id_ficha, foto, nome, descricao, quantidade, espaco, prestigio) VALUES (?,?,?,?,?,?,?)");
+														if ($i->execute([$ficha["id"], $foto, $nome, $desc, $quantidade, $peso, $cate])) {
+															$return["success"] = true;
+														}
+													}
+												}
+											}
+											
+											
+											if (isset($_DATA["dados"]["proficiencias"]) && is_array($_DATA["dados"]["proficiencias"])) {
+												foreach ($_DATA["dados"]["proficiencias"] as $proficiencia) {
+													if (isset($proficiencia["nome"]) && !empty($proficiencia["nome"])) {
+														$nome = cleanstring($proficiencia["nome"], 50);
+														$p = $con->prepare("INSERT INTO proeficiencias(id_ficha, nome) VALUES (?,?)");
+														if ($p->execute([$ficha["id"], $nome])) {
+															$return["success"] = true;
+														}
+													}
+												}
+											}
+											if (isset($_DATA["dados"]["rituais"]) && is_array($_DATA["dados"]["rituais"])) {
+												foreach ($_DATA["dados"]["rituais"] as $ritual) {
+													if (isset($ritual["nome"]) && !empty($ritual["nome"])) {
+														$nome = cleanstring($ritual["nome"], 50);
+														$foto = cleanstring($ritual["foto"], 300);
+														$circ = cleanstring($ritual["circ"], 15);
+														$elem = cleanstring($ritual["elem"], 50);
+														$exec = cleanstring($ritual["exec"], 30);
+														$alca = cleanstring($ritual["alca"], 30);
+														$alvo = cleanstring($ritual["alvo"], 30);
+														$dura = cleanstring($ritual["dura"], 30);
+														$resi = cleanstring($ritual["resi"], 50);
+														$efei = cleanstring($ritual["efei"], 3000);
+														$dano = cleanstring($ritual["norm"], 50);
+														$dano2 = cleanstring($ritual["disc"], 50);
+														$dano3 = cleanstring($ritual["verd"], 50);
+														
+														$r = $con->prepare("INSERT INTO rituais(id_ficha, foto, nome, circulo, elemento, conjuracao, alcance, alvo, duracao, resistencia, efeito, dano, dano2, dano3) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+														if ($r->execute([$ficha["id"], $foto, $nome, $circ, $elem, $exec, $alca, $alvo, $dura, $resi, $efei, $dano, $dano2, $dano3])) {
+															
+															$return["success"] = true;
+														}
+													}
+												}
+											}
+										} else {
+											$return["msg"] = "Nenhum dado a ser alterado..";
+											$return["success"] = false;
+										}
+									} else {
+										$return["success"] = false;
+										$return["msg"] = 'Falha ao encontrar ficha.';
+									}
+								} else {
+									$return["success"] = false;
 									$return["msg"] = 'Sem permissão.';
 								}
 							} else {
@@ -694,7 +822,7 @@ if (!empty($category)) {
 						
 						case "get":
 							$token = cleanstring($_DATA["token"]);
-							if (empty($_DATA["sessid"])||checksession($session_id)) {
+							if (empty($_DATA["sessid"]) || checksession($session_id)) {
 								$user = checksession($session_id);
 								if (VerificarPermissaoFicha($token, $user)) {
 									$editable = true;
@@ -775,6 +903,7 @@ if (!empty($category)) {
 								$return["msg"] = "Sua sessão encerrou.";
 							}
 							break;
+							
 						case "delete":
 							$token = cleanstring($_DATA["token"]);
 							if (checksession($session_id)) {
@@ -899,6 +1028,47 @@ if (!empty($category)) {
 						case "submit":
 							break;
 						case "get":
+							if (is_array($_DATA["dado"])){
+								$dado = json_decode($_DATA["dado"],true);
+								$token = checksession($_DATA["token"]);
+								$user = checksession($session_id);
+								if($user){
+									if (VerificarPermissaoFicha($token,$user)){
+										$f = $con->prepare("SELECT * FROM fichas_personagem WHERE token = ?");
+										$f->execute([$token]);
+										$ficha = mysqli_fetch_assoc($f->get_result());
+										$m = $con->prepare("SELECT * FROM missoes WHERE id in (SELECT id_missao FROM ligacoes WHERE id_ficha = ?)");
+										$m->execute($ficha["id"]);
+										$m = $m->get_result();
+										if ($m->num_rows){
+											$missao = mysqli_fetch_assoc($m);
+											$dado["ficha"] = $ficha["token"];
+											$dado["foto"] = $ficha["foto"];
+											$d = $con->prepare("INSERT INTO dados_rolados_mestre(dados, missao, token) VALUES (?,?,?)");
+											
+											$jsondado = json_encode($dado);
+											$d->execute([$jsondado,$missao["id"],$ficha["token"]]);
+										} else {
+											$returm["success"] = false;
+											$returm["msg"] = "Essa ficha não tem missão.";
+										}
+									} else {
+										$returm["success"] = false;
+										$returm["msg"] = "Sem permissão.";
+									}
+									
+									
+								} else {
+									$returm["success"] = false;
+									$returm["msg"] = "Sua sessão encerrou.";
+								}
+							}
+							/*
+							$dado = cleanstring($_DATA["dado"], 50);
+							
+							$dano = minmax((int)$_DATA["dano"], 0, 1);
+							$margem = (int)$_DATA["margem"];
+							$atributos = false;
 							if (!empty($token)) {
 								$ret = [];
 								
@@ -994,13 +1164,28 @@ if (!empty($category)) {
 								$data["dado"] = $dado;
 							}
 							
-							
+							*/
+							break;
+						case "update":
+							if(checksession($session_id)){
+								$user = checksession($session_id);
+								if (isset($_DATA["dados"]["dices"]) && is_array($_DATA["dados"]["dices"])) {
+									foreach ($_DATA["dados"]["dices"] as $dice) {
+										$stmt = autoPrepare($dice, ["token", "token_pai", "owner"], "dados_customizados", $con);
+										$stmt["values"][] = $dice["token"];
+										$stmt["values"][] = $user;
+										$r = $con->prepare("UPDATE dados_customizados SET {$stmt["query"]} WHERE token = ? AND owner = ?");
+										$r->execute($stmt["values"]);
+										
+									}
+									$return["success"] = true;
+								}
+							} else {
+								$return["msg"] = "Sua sessão encerrou.";
+								$return["success"] = false;
+							}
 							break;
 					}
-					$dano = minmax((int)$_DATA["dano"], 0, 1);
-					$margem = (int)$_DATA["margem"];
-					$dado = cleanstring($_DATA["dado"], 50);
-					$atributos = false;
 					break;
 			}
 			break;

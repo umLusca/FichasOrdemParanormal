@@ -291,39 +291,46 @@ $id = cleanstring($_GET["convite"]);
             let fotovalor = $('#foto').val();
             let foto;
             switch (fotovalor) {
-                case 1:
+                case "1":
                     foto = 'https://fichasop.com/assets/img/Man.webp';
                     break;
-                case 2:
+                case "2":
                     foto = 'https://fichasop.com/assets/img/Woman.webp';
                     break;
-                case 3:
+                case "3":
                     foto = 'https://fichasop.com/assets/img/Mauro.webp';
                     break;
-                case 4:
+                case "4":
                     foto = 'https://fichasop.com/assets/img/Maya.webp';
                     break;
-                case 5:
+                case "5":
                     foto = 'https://fichasop.com/assets/img/Bruna.webp';
                     break;
-                case 6:
+                case "6":
                     foto = 'https://fichasop.com/assets/img/Leandro.webp';
                     break;
-                case 7:
+                case "7":
                     foto = 'https://fichasop.com/assets/img/Jaime.webp';
                     break;
-                case 8:
+                case "8":
                     foto = 'https://fichasop.com/assets/img/Aniela.webp';
                     break;
-                case 9:
+                case "9":
                     $('.customurl').slideDown();
                     foto = "";
+                    console.log($('.customurl'))
                     break;
 
             }
-            $(".customurl input[name=fotourl]").val(foto).attr("disabled", false);
-            if(fotovalor === 9){
+            console.log($('.customurl'))
+            if(fotovalor === '9'){
+                console.log("teste")
+                $('.customurl').slideDown();
+                $(".customurl input[name=fotourl]").val(foto).attr("disabled", false);
+            } else {
                 $('.customurl').slideUp();
+                $(".customurl input[name=fotourl]").attr("disabled", true);
+                
             }
 
         });

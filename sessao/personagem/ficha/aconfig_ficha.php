@@ -1,4 +1,5 @@
 <?php
+
 $con = con();
 //Importante para evitar futuros ERROS!
 $missao = 0;
@@ -68,6 +69,7 @@ if (isset($ficha)) {
 	$local = $ficha["local"];
 	$historia = $ficha["historia"];
 	$encontro = $ficha["encontro"];
+	$marca = $ficha["marca"];
 	$aparencia = $ficha["aparencia"];
 	$medos = $ficha["medos"];
 	$pesadelo = $ficha["pior_pesadelo"];
