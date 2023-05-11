@@ -598,259 +598,6 @@ if (!empty($category)) {
 								$return["msg"] = "Sua sessão encerrou.";
 							}
 							break;
-						case "create": // ok
-							$sid = cleanstring($_DATA["sessid"]);
-							if (checksession($sid)) {
-								$user = checksession($sid);
-								$convite = cleanstring($_DATA["convite"]);
-								$foto = cleanstring($_DATA["fotourl"]) ?: 'https://fichasop.com/assets/img/Man.webp';
-								$nex = minmax($_DATA["nex"], 0, 100);
-								$idade = minmax($_DATA["idade"], 0, 150);
-								
-								$patente = minmax($_DATA["patente"], 0, 5);
-								$local = cleanstring($_DATA["local"] ?: '');
-								$historia = $_DATA["historia"];
-								
-								$forca = (int)$_DATA["forca"];
-								$agilidade = (int)$_DATA["agilidade"];
-								$intelecto = (int)$_DATA["intelecto"];
-								$presenca = (int)$_DATA["presenca"];
-								$vigor = (int)$_DATA["vigor"];
-								
-								$pv = calcularvida($nex, $classe, $vigor, $trilha, $origem);
-								$san = calcularsan($nex, $classe, $trilha, $origem);
-								$pe = calcularpe($nex, $classe, $presenca, $trilha, $origem);
-								
-								switch ($origem) {
-									default:
-										break;
-									case "Acadêmico": //Academico
-										$habnam = "Saber é Poder (Origem)";
-										$habdes = "Quando faz um teste usando Intelecto, você pode gastar 2 PE para receber +5 nesse teste.";
-										$ciencia = $investigacao = 5;
-										break;
-									case "Agente de Saúde": // Agente de Sáudeo
-										$habnam = "Técnicas Medicinais (Origem)";
-										$habdes = "Sempre que você cura um personagem, você adiciona seu Intelecto no total de PV curados.";
-										$intuicao = $medicina = 5;
-										break;
-									case "Amnésico":// Amnésico
-										$habnam = 'Vislumbres do Passado. (Origem)';
-										$habdes = ' Uma vez por missão, você pode fazer um teste de Intelecto (DT 10) para reconhecer pessoas ou lugares familiares, que tenha encontrado antes de perder a memória. Se passar, recebe 1d4 PE temporários e, a critério do mestre, uma informação útil.';
-										break;
-									case "Artista": // Artista
-										$habnam = "Magnum Opus (Origem)";
-										$habdes = "Você é famoso por uma de suas obras. Uma vez por missão, pode determinar que um personagem envolvido em uma cena de Interação o reconheça. Você recebe +5 em testes de Diplomacia, Enganação, Intuição e Intimidação contra aquele personagem. A critério do mestre, pode receber esses bônus em outras situações nas quais seria reconhecido.";
-										$artes = $enganacao = 5;
-										break;
-									case "Atleta": // Atleta
-										$habnam = "110% (Origem)";
-										$habdes = "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste.";
-										$atletismo = $acrobacia = 5;
-										break;
-									case "Chef": // Chef
-										$habnam = "Ingrediente Secreto (Origem)";
-										$habdes = "Em cenas de interlúdio, você pode gastar uma ação para cozinhar um prato gostoso. Cada membro do grupo (incluindo você) que gastar uma ação para se alimentar recebe o benefício de dois pratos (caso o mesmo benefício seja escolhido duas vezes, seus efeitos se acumulam).";
-										$fortitude = $profissao = 5;
-										break;
-									case "Criminoso": // criminalidades
-										$habnam = "O Crime Compensa (Origem)";
-										$habdes = "No final de uma missão, escolha um item encontrado na missão. Em sua próxima missão, você pode incluir esse item em seu inventário sem que ele conte em seu limite de itens por patente.";
-										$crime = $furtividade = 5;
-										break;
-									case "Cultista Arrependido": // Cultista Arrependido
-										$habnam = "Traços do Outro Lado. (Origem)";
-										$habdes = "Você possui um poder paranormal à sua escolha. Porém, começa o jogo com metade da Sanidade normal para sua classe.";
-										$religiao = $ocultismo = 5;
-										break;
-									case "Desgarrado": // Desgarradp
-										$habnam = "Calejado. (Origem)";
-										$habdes = "Você recebe +1 PV para cada 5% de NEX. (Adicionado Automáticamente!)";
-										$fortitude = $sobrevivencia = 5;
-										break;
-									case "Engenheiro": // Engenheiro
-										$habnam = "Ferramentas Favoritas. (Origem)";
-										$habdes = "Um item a sua escolha (exceto armas) conta como uma categoria abaixo (por exemplo, um item de categoria II conta como categoria I para você).";
-										$profissao = $tecnologia = 5;
-										break;
-									case "Executivo": //Executivo
-										$habnam = "Processo Otimizado. (Origem)";
-										$habdes = "Sempre que faz um teste de perícia durante um teste estendido, pode pagar 2 PE para receber +5 nesse teste.";
-										$diplomacia = $profissao = 5;
-										break;
-									case "Investigador": //Inbestigador
-										$habnam = "Faro para Pistas. (Origem)";
-										$habdes = "Uma vez por cena, quando fizer um teste para procurar pistas, você pode gastar 1 PE para receber +5 nesse teste.";
-										$investigacao = $percepcao = 5;
-										break;
-									case "Lutador": // Lutador
-										$habnam = "Mão Pesada. (Origem)";
-										$habdes = "Você recebe +2 em rolagens de dano com ataques corpo a corpo.";
-										$luta = $reflexo = 5;
-										break;
-									case "Magnata": // Magnata
-										$habnam = "Patrocinador da Ordem. (Origem)";
-										$habdes = "Seu limite de crédito é sempre considerado um acima do atual.";
-										$diplomacia = $pilotagem = 5;
-										break;
-									case "Mercenário": // Mercenário
-										$habnam = "Posição de Combate (Origem)";
-										$habdes = " No primeiro turno de cada cena de ação, você pode gastar 2 PE para receber uma ação de movimento adicional.";
-										$iniciativa = $intimidacao = 5;
-										break;
-									case "Militar": // mlitar
-										$habnam = "Para Bellum. (Origem)";
-										$habdes = "Você recebe +2 em rolagens de dano com armas de fogo.";
-										$tatica = $pontaria = 5;
-										break;
-									case "Operário": // Operário
-										$habnam = "Ferramenta de Trabalho. (Origem)";
-										$habdes = "Escolha uma arma simples ou tática que, a critério do mestre, poderia ser usada como ferramenta em sua profissão (como uma marreta para um pedreiro). Você sabe usar a arma escolhida e recebe +1 em testes de ataque, rolagens de dano e margem de ameaça com ela.";
-										$fortitude = $profissao = 5;
-										break;
-									case "Policial": // Policiaçl
-										$habnam = "Patrulha (Origem)";
-										$habdes = "Você recebe +2 em Defesa.";
-										$percepcao = $pontaria = 5;
-										break;
-									case "Religioso": // Religioso
-										$habnam = "Acalentar. (Origem)";
-										$habdes = "Você recebe +5 em testes de Religião para acalmar. Além disso, quando acalma uma pessoa, ela recebe um número de pontos de Sanidade igual a 1d6 + a sua Presença.";
-										$religiao = $vontade = 5;
-										break;
-									case "Servidor Público": // Servidor Público
-										$habnam = "Espírito Cívico. (Origem)";
-										$habdes = "Sempre que faz um teste para ajudar, você pode gastar 1 PE para aumentar o bônus concedido em +2.";
-										$intuicao = $vontade = 5;
-										break;
-									case "Teórico": // Teórico
-										$habnam = "Eu Já Sabia. (Origem)";
-										$habdes = "Você não se abala com entidades ou anomalias. Afinal, sempre soube que isso tudo existia. Você recebe resistência a dano mental igual ao seu Intelecto.";
-										$investigacao = $ocultismo = 5;
-										break;
-									case "TI": // ti
-										$habnam = "Motor de Busca (Origem)";
-										$habdes = "A critério do Mestre, sempre que tiver acesso a internet, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Tecnologia.";
-										$investigacao = $tecnologia = 5;
-										break;
-									case "Trabalhador Rural": // trabaiador
-										$habnam = "Desbravador. (Origem)";
-										$habdes = "Quando faz um teste de Adestramento ou Sobrevivência, você pode gastar 2 PE para receber +5 nesse teste. Além disso, você não sofre penalidade em deslocamento por terreno dif ícil.";
-										$adestramento = $sobrevivencia = 5;
-										break;
-									case "Trambiqueiro": // rambiqueiro
-										$habnam = "Impostor. (Origem)";
-										$habdes = "Uma vez por cena, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Enganação.";
-										$crime = $enganacao = 5;
-										break;
-									case "Universitário": // Universitário
-										$habnam = "Dedicação. (Origem)";
-										$habdes = "ocê recebe +1 PE, e mais 1 PE adicional a cada NEX ímpar (15%, 25%...). Além disso, seu limite de PE por turno aumenta em 1 (em NEX 5% seu limite é 2, em NEX 10% é 3 e assim por diante).";
-										$investigacao = $atualidades = 5;
-										break;
-									case "Vítima": // Vítima
-										$habnam = "Cicatrizes Psicológicas. (Origem)";
-										$habdes = "Você recebe +1 de Sanidade para cada 5% de NEX (Adicionado automaticamente.)";
-										$reflexo = $vontade = 5;
-										break;
-								}
-								switch ($classe) {
-									default:
-										break;
-									case "Mundano": //Combatente
-										$hcn = "Empenho (Classe)";
-										$hcd = "Você pode não ter treinamento especial, mas compensa com dedicação e esforço. Quando faz um teste de perícia, você pode gastar 1 PE para receber +2 nesse teste.";
-										$pt[0] = "Armas Simples";
-										break;
-									case "Combatente": //Combatente
-										$hcn = "Ataque Especial (Classe)";
-										$hcd = "Quando faz um ataque, você pode gastar 2 PE para receber +5 no teste de ataque ou na rolagem de dano.";
-										$pt[0] = "Armas Simples";
-										$pt[3] = "Armas de táticas";
-										$pt[4] = "Proteções leves";
-										break;
-									case "Especialista":
-										$hcn = "Perito (Classe)";
-										$hcd = "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. ";
-										$hcn2 = "Eclético (Classe)";
-										$hcd2 = "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia.";
-										$pt[0] = "Armas Simples";
-										$pt[2] = "Proteções leves";
-										break;
-									case "Ocultista":
-										$hcn = "Escolhido pelo Outro Lado (Classe)";
-										$hcd = "Você pode lançar rituais de 1º círculo.";
-										$ocultismo = $vontade = 5;
-										$pt[0] = "Armas Simples";
-										break;
-									
-								}
-								
-								$trilha = cleanstring($_DATA["trilha"], 50);
-								if (!empty($_DATA["nome"])) {
-									$nome = cleanstring($_DATA["nome"]);
-									if (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙçÇ]*$/', $nome)) {
-										if (!empty($_DATA["origem"])) {
-											$origem = cleanstring($_DATA["origem"], 50);
-											if (!empty($_DATA["classe"])) {
-												$classe = cleanstring($_DATA["classe"], 50);
-												
-												$qp = $con->prepare("INSERT INTO `fichas_personagem`(`token`, `usuario`, `nome`, `foto`, `origem`, `classe`, `trilha`, `nex`, `patente`, `idade`, `local`, `historia`, `forca`, `agilidade`, `inteligencia`, `presenca`, `vigor`, `pv`, `pva`, `san`, `sana`, `pe`, `pea`,`acrobacias`,`adestramento`,`artes`,`atualidades`,`atletismo`,`ciencia`,`crime`,`diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,`ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,`vontade`) VALUES (UUID(), ?, ?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );");
-												
-												if ($qp->execute([$user, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao, $reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade])) {
-													$id = $qp->insert_id;
-													$ficha_id = $id;
-													if (!empty($convite)) {
-														
-														$al = $con->query("UPDATE `ligacoes` SET `id_ficha` = '$ficha_id' WHERE `token` = '$convite' AND `id_usuario` = '$iduser';");
-														
-													}
-													
-													
-													if (!empty($hcn)) {
-														$dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn','$hcd','')");
-													}
-													if (!empty($hcn2)) {
-														$dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn2','$hcd2','')");
-													}
-													if (!empty($habnam)) {
-														$dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$habnam','$habdes','')");
-													}
-													if (isset($pt)) {
-														foreach ($pt as $i) {
-															if (!empty($i)) {
-																$p = $con->query("INSERT INTO `proeficiencias` (`nome`,`id_ficha`) VALUES ('" . $i . "','" . $id . "');");
-															}
-														}
-													}
-												} else {
-													$success = false;
-													$msg = "Houve uma falha ao criar, verifique os dados.";
-												}
-											} else {
-												$success = false;
-												$msg = "Preencha a classe do seu personagem.";
-											}
-										} else {
-											$success = false;
-											$msg = "Preencha a origem do personagem";
-											
-										}
-									} else {
-										$msg = "Apenas Letras e Espaços são permitidos no nome.";
-										$success = false;
-									}
-								} else {
-									$success = false;
-									$msg = "Preencha o nome do seu personagem.";
-								}
-								
-								
-							} else {
-								$success = false;
-								$msg = "Sua sessão, faça login novamente.";
-							}
-							break;
 					}
 					break;
 				
@@ -1188,7 +935,102 @@ if (!empty($category)) {
 										$h->execute([$ficha["id"]]);
 										$h = $h->get_result();
 										
-										$ficha["habilidades"] = $ficha["poderes"] = $ficha["rituais"] = $ficha["itens"] = $ficha["armas"] = $ficha["dices"] = [];
+										
+										
+										$ficha["habilidades"] = $ficha["poderes"] = $ficha["rituais"] = $ficha["itens"] = $ficha["armas"] = $ficha["dices"] = $atrpericia = $valoratr = [];
+										
+										$atrpericia["acrobacias"] = "agi";
+										$atrpericia["adestramento"] = "pre";
+										$atrpericia["atletismo"] = "for";
+										$atrpericia["artes"] = "pre";
+										$atrpericia["atualidades"] = "int";
+										$atrpericia["ciencia"] = "int";
+										
+										$atrpericia["crime"] = "agi";
+										$atrpericia["diplomacia"] = "pre";
+										$atrpericia["enganacao"] = "pre";
+										$atrpericia["fortitude"] = "vig";
+										$atrpericia["furtividade"] = "agi";
+										
+										$atrpericia["iniciativa"] = "agi";
+										$atrpericia["intimidacao"] = "pre";
+										$atrpericia["intuicao"] = "pre";
+										$atrpericia["investigacao"] = "int";
+										$atrpericia["luta"] = "for";
+										
+										$atrpericia["medicina"] = "int";
+										$atrpericia["ocultismo"] = "int";
+										$atrpericia["percepcao"] = "pre";
+										$atrpericia["pilotagem"] = "agi";
+										$atrpericia["pontaria"] = "agi";
+										
+										$atrpericia["profissao"] = "int";
+										$atrpericia["reflexo"] = "agi";
+										$atrpericia["religiao"] = "pre";
+										$atrpericia["sobrevivencia"] = "int";
+										$atrpericia["tatica"] = "int";
+										
+										$atrpericia["tecnologia"] = "int";
+										$atrpericia["vontade"] = "pre";
+										
+										
+										foreach ($atrpericia as $pericia => $atr) {
+											switch ($atr) {
+												case "for":
+													$valoratr = $ficha["forca"];
+													break;
+												case "agi":
+													$valoratr = $ficha["agilidade"] ?: 0;
+													break;
+												case "int":
+													$valoratr = $ficha["inteligencia"] ?: 0;
+													break;
+												case "pre":
+													$valoratr = $ficha["presenca"] ?: 0;
+													break;
+												case "vig":
+													$valoratr = $ficha["vigor"] ?: 0;
+													break;
+											}
+											if ($valoratr === 0) {
+												$atrpericia[$pericia] = -2;
+											} elseif ($valoratr <= 1) {
+												$atrpericia[$pericia] = $valoratr - 2;
+											} else {
+												$atrpericia[$pericia] = $valoratr;
+											}
+										}
+										
+										
+										$ficha["pericias"][] = array("nome" => "acrobacias", "grau" => $ficha["tacrobacias"], "bonus" => $ficha["acrobacias"], "ramo" => false, "atributoChave" => $atrpericia["acrobacias"]);
+										$ficha["pericias"][] = array("nome" => "adestramento", "grau" => $ficha["tadestramento"], "bonus" => $ficha["adestramento"], "ramo" => false, "atributoChave" => $atrpericia["adestramento"]);
+										$ficha["pericias"][] = array("nome" => "artes", "grau" => $ficha["tartes"], "bonus" => $ficha["artes"], "ramo" => false, "atributoChave" => $atrpericia["artes"]);
+										$ficha["pericias"][] = array("nome" => "atletismo", "grau" => $ficha["tatletismo"], "bonus" => $ficha["atletismo"], "ramo" => false, "atributoChave" => $atrpericia["atletismo"]);
+										$ficha["pericias"][] = array("nome" => "atualidades", "grau" => $ficha["tatualidades"], "bonus" => $ficha["atualidades"], "ramo" => false, "atributoChave" => $atrpericia["atualidades"]);
+										$ficha["pericias"][] = array("nome" => "ciencia", "grau" => $ficha["tciencia"], "bonus" => $ficha["ciencia"], "ramo" => $ficha["nciencia"], "atributoChave" => $atrpericia["ciencia"]);
+										$ficha["pericias"][] = array("nome" => "crime", "grau" => $ficha["tcrime"], "bonus" => $ficha["crime"], "ramo" => false, "atributoChave" => $atrpericia["crime"]);
+										$ficha["pericias"][] = array("nome" => "diplomacia", "grau" => $ficha["tdiplomacia"], "bonus" => $ficha["diplomacia"], "ramo" => false, "atributoChave" => $atrpericia["diplomacia"]);
+										$ficha["pericias"][] = array("nome" => "enganacao", "grau" => $ficha["tenganacao"], "bonus" => $ficha["enganacao"], "ramo" => false, "atributoChave" => $atrpericia["enganacao"]);
+										$ficha["pericias"][] = array("nome" => "fortitude", "grau" => $ficha["tfortitude"], "bonus" => $ficha["fortitude"], "ramo" => false, "atributoChave" => $atrpericia["fortitude"]);
+										$ficha["pericias"][] = array("nome" => "furtividade", "grau" => $ficha["tfurtividade"], "bonus" => $ficha["furtividade"], "ramo" => false, "atributoChave" => $atrpericia["furtividade"]);
+										$ficha["pericias"][] = array("nome" => "iniciativa", "grau" => $ficha["tiniciativa"], "bonus" => $ficha["iniciativa"], "ramo" => false, "atributoChave" => $atrpericia["iniciativa"]);
+										$ficha["pericias"][] = array("nome" => "intimidacao", "grau" => $ficha["tintimidacao"], "bonus" => $ficha["intimidacao"], "ramo" => false, "atributoChave" => $atrpericia["intimidacao"]);
+										$ficha["pericias"][] = array("nome" => "intuicao", "grau" => $ficha["tintuicao"], "bonus" => $ficha["intuicao"], "ramo" => false, "atributoChave" => $atrpericia["intuicao"]);
+										$ficha["pericias"][] = array("nome" => "investigacao", "grau" => $ficha["tinvestigacao"], "bonus" => $ficha["investigacao"], "ramo" => false, "atributoChave" => $atrpericia["investigacao"]);
+										$ficha["pericias"][] = array("nome" => "luta", "grau" => $ficha["tluta"], "bonus" => $ficha["luta"], "ramo" => false, "atributoChave" => $atrpericia["luta"]);
+										$ficha["pericias"][] = array("nome" => "medicina", "grau" => $ficha["tmedicina"], "bonus" => $ficha["medicina"], "ramo" => false, "atributoChave" => $atrpericia["medicina"]);
+										$ficha["pericias"][] = array("nome" => "ocultismo", "grau" => $ficha["tocultismo"], "bonus" => $ficha["ocultismo"], "ramo" => false, "atributoChave" => $atrpericia["ocultismo"]);
+										$ficha["pericias"][] = array("nome" => "percepcao", "grau" => $ficha["tpercepcao"], "bonus" => $ficha["percepcao"], "ramo" => false, "atributoChave" => $atrpericia["percepcao"]);
+										$ficha["pericias"][] = array("nome" => "pilotagem", "grau" => $ficha["tpilotagem"], "bonus" => $ficha["pilotagem"], "ramo" => false, "atributoChave" => $atrpericia["pilotagem"]);
+										$ficha["pericias"][] = array("nome" => "pontaria", "grau" => $ficha["tpontaria"], "bonus" => $ficha["pontaria"], "ramo" => false, "atributoChave" => $atrpericia["pontaria"]);
+										$ficha["pericias"][] = array("nome" => "profissao", "grau" => $ficha["tprofissao"], "bonus" => $ficha["profissao"], "ramo" => $ficha["nprofissao"], "atributoChave" => $atrpericia["profissao"]);
+										$ficha["pericias"][] = array("nome" => "reflexo", "grau" => $ficha["treflexo"], "bonus" => $ficha["reflexo"], "ramo" => false, "atributoChave" => $atrpericia["reflexo"]);
+										$ficha["pericias"][] = array("nome" => "religiao", "grau" => $ficha["treligiao"], "bonus" => $ficha["religiao"], "ramo" => false, "atributoChave" => $atrpericia["religiao"]);
+										$ficha["pericias"][] = array("nome" => "sobrevivencia", "grau" => $ficha["tsobrevivencia"], "bonus" => $ficha["sobrevivencia"], "ramo" => false, "atributoChave" => $atrpericia["sobrevivencia"]);
+										$ficha["pericias"][] = array("nome" => "tatica", "grau" => $ficha["ttatica"], "bonus" => $ficha["tatica"], "ramo" => false, "atributoChave" => $atrpericia["tatica"]);
+										$ficha["pericias"][] = array("nome" => "tecnologia", "grau" => $ficha["ttecnologia"], "bonus" => $ficha["tecnologia"], "ramo" => false, "atributoChave" => $atrpericia["tecnologia"]);
+										$ficha["pericias"][] = array("nome" => "vontade", "grau" => $ficha["tvontade"], "bonus" => $ficha["vontade"], "ramo" => false, "atributoChave" => $atrpericia["vontade"]);
+										
 										foreach ($c as $rf) {
 											$ficha["habilidades"][] = $rf;
 										}

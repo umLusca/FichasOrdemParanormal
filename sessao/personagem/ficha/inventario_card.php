@@ -302,6 +302,9 @@
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr data-fop-item="armas" style="display: none;">
+                                <td><span class="peso"><?php $peso = 0; foreach ($s[8] as $i){$peso += (int)$i["espaco"];}echo $peso;?></span></td>
+                                <td><span class="quantidade">1</span></td>
                             </tbody>
                         </table>
                     </div>

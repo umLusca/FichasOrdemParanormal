@@ -35,7 +35,7 @@
 											<?= $level === 3 ? "selected" : "" ?>>Expert
                                         </option>
                                     </select>
-                                    <input class="form-control" type="number" min="0" max="99" placeholder="Outros" value="<?= $value ?: "" ?>" name="<?= $name ?>"/>
+                                    <input class="form-control"  aria-label="Bonus da perícia" type="number" min="0" max="99" placeholder="Bonûs" value="<?= $value ?: "" ?>" name="<?= $name ?>"/>
 
                                 </div>
                             </div>
@@ -45,11 +45,11 @@
 					}
 					
 					?>
-					<?= input_per("Acrobacias", $acrobacias, $ficha["tacrobacia"], "acrobacias") ?>
+					<?= input_per("Acrobacias", $acrobacias, $ficha["tacrobacias"], "acrobacias") ?>
 					<?= input_per("Adestramento", $adestramento, $ficha["tadestramento"], "adestramento") ?>
-					<?= input_per("Artes", $artes, $ficha["tarte"], "artes") ?>
+					<?= input_per("Artes", $artes, $ficha["tartes"], "artes") ?>
 					<?= input_per("Atletismo", $atletismo, $ficha["tatletismo"], "atletismo") ?>
-					<?= input_per("Atualidades", $atualidades, $ficha["tatualidade"], "atualidades") ?>
+					<?= input_per("Atualidades", $atualidades, $ficha["tatualidades"], "atualidades") ?>
 					<?= input_per("Ciência", $ciencia, $ficha["tciencia"], "ciencia",$ficha["nciencia"]) ?>
 					<?= input_per("Crime", $crime, $ficha["tcrime"], "crime") ?>
 					<?= input_per("Diplomacia", $diplomacia, $ficha["tdiplomacia"], "diplomacia") ?>

@@ -1206,7 +1206,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
                                `furtividade` = ?, `intimidacao` = ?, `iniciativa` = ?, `intuicao` = ?, `investigacao` = ?,
                                `luta` =?, `medicina` =?, `ocultismo` =?, `percepcao` =?, `pilotagem` =?,
                                `pontaria` =?, `profissao`= ?,`reflexos`= ?, `religiao`= ?, `sobrevivencia`= ?,
-                               `tatica`= ?, `tecnologia`= ?, `vontade`= ?, tacrobacia = ?,tadestramento = ?,tarte = ?,tatletismo = ?,tatualidade = ?,tciencia = ?,tcrime = ?,tdiplomacia = ?,tenganacao = ?,tfortitude = ?,
+                               `tatica`= ?, `tecnologia`= ?, `vontade`= ?, tacrobacias = ?,tadestramento = ?,tartes = ?,tatletismo = ?,tatualidades = ?,tciencia = ?,tcrime = ?,tdiplomacia = ?,tenganacao = ?,tfortitude = ?,
                                tfurtividade = ?,tintimidacao = ?,tiniciativa = ?,tintuicao = ?,tinvestigacao = ?,tluta = ?,tmedicina = ?,tocultismo = ?,tpercepcao = ?,tpilotagem = ?,tpontaria = ?,tprofissao = ?,treflexo = ?,treligiao = ? ,tsobrevivencia = ?,ttatica = ?,ttecnologia = ?,tvontade = ?, nprofissao = ?, nciencia = ? WHERE `token` = ?;");
 													$q->execute([$acr, $ade, $art, $atl, $atu, $cie, $cri, $dip, $eng, $fort, $fur, $inti, $inic, $intu, $inv, $lut, $med, $ocu, $perc, $pilo, $pont, $prof, $ref, $rel, $sob, $tat, $tec, $von, $tacr, $tade, $tart, $tatl, $tatu, $tcie, $tcri, $tdip, $teng, $tfort, $tfur, $tinti, $tinic, $tintu, $tinv, $tlut, $tmed, $tocu, $tperc, $tpilo, $tpont, $tprof, $tref, $trel, $tsob, $ttat, $ttec, $tvon,$nprof,$ncien,$token]);
 											
@@ -1368,11 +1368,11 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$iid = (int)$_POST["did"];
 													$nome = cleanstring($_POST["nome"], $limite_nome_inv);
 													$desc = cleanstring($_POST["descricao"], $Inv_desc);
+													$foto = cleanstring($_POST["foto"], $urllimit);
 													$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
 													$pres = minmax($_POST["prestigio"], 0, 10);
-													$rr = $con->prepare("UPDATE `inventario` SET `nome` = ? , `descricao` = ?, `espaco` = ?, `prestigio` = ? WHERE `inventario`.`id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
-													$rr->bind_param("ssdiis", $nome, $desc, $peso, $pres, $iid, $token);
-													$data["success"] = $rr->execute();
+													$rr = $con->prepare("UPDATE `inventario` SET `nome` = ? , `descricao` = ?, `espaco` = ?, `prestigio` = ?, foto = ? WHERE `inventario`.`id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
+													$data["success"] = $rr->execute([$nome, $desc, $peso, $pres,$foto, $iid, $token]);
 												} else {
 													$data["success"] = false;
 													$data["msg"] = "Sem permissão";
@@ -1484,7 +1484,8 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 														$q = $con->prepare("DELETE FROM `poderes` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
 														break;
 													case "arma":
-														$q = $con->prepare("DELETE from armas WHERE id = ? AND id_ficha  in (SELECT id from fichas_personagem where token = ?);");
+														$q = $con->prepare("DELETE from inventario WHERE id in (SELECT item_id FROM armas WHERE id = ?) AND id_ficha in (SELECT id from fichas_personagem where token = ?);");
+														
 														break;
 													case "item":
 														$q = $con->prepare("DELETE FROM `inventario` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
@@ -1496,8 +1497,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 														$q = $con->prepare("DELETE FROM `rituais` WHERE `id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
 														break;
 												}
-												$q->bind_param("is", $iid, $token);
-												$q->execute();
+												$q->execute([$iid, $token]);
 											} else {
 												$data["success"] = false;
 												$data["msg"] = "Sem permissão";
