@@ -4,6 +4,23 @@ $con = con();
 //Importante para evitar futuros ERROS!
 $missao = 0;
 
+function elicon($el): bool|string
+{
+	switch (strtolower($el)) {
+		default:
+			return false;
+		case "energia":
+			return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Energia.webp" class="img-fluid"></i>';
+		case "morte":
+			return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Morte.webp" class="img-fluid"></i>';
+		case "conhecimento":
+			return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Conhecimento.webp" class="img-fluid"></i>';
+		case "sangue":
+			return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Sangue.webp" class="img-fluid"></i>';
+		case "medo":
+			return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Medo.webp" class="img-fluid"></i>';
+	}
+}
 //Importante para evitar XSS INJECTIOn e um bucado de coisa
 if(isset($_GET["id"])) $id = (int)($_GET["id"] ?: 0);
 if(isset($_GET["id"])) {
@@ -201,7 +218,6 @@ $rs = [];
 $s[1] = $con->query("Select * From `armas` where `id_ficha` = '$id';");
 $s[8] = $con->query("Select *,armas.id as id,i.foto as foto From armas left join inventario i on i.id = armas.item_id where i.id_ficha = '$id' ;");
 
-$s[2] = $con->query("SELECT * FROM `habilidades` WHERE `id_ficha` = '" . $id . "';");
 $s[3] = $con->query("SELECT * FROM `proeficiencias` WHERE `id_ficha` = '" . $id . "';");
 $s[4] = $con->query("SELECT i.* FROM inventario i LEFT JOIN armas a ON a.item_id = i.id WHERE a.item_id is null AND i.id_ficha = '$id';");
 foreach($s[4] as $r):
@@ -211,8 +227,13 @@ $s[6] = $con->query("Select * From `rituais` where `id_ficha` = '$id';");
 foreach($s[6] as $r):
 	$rs[6][] = $r;
 endforeach;
-$s[7] = $con->query("SELECT * FROM `poderes` WHERE `id_ficha` = '" . $id . "';");
 $s[5] = $con->query("Select SUM(espaco*quantidade) AS pesototal From `inventario` where `id_ficha` = '$id';");
+
+
+$s[9] = $con->query("SELECT * FROM habilidades_tab WHERE id_ficha = '$id';");
+$s[2] = $con->query("SELECT * FROM `habilidades` WHERE `id_ficha` = '" . $id . "';");
+$s[7] = $con->query("SELECT * FROM `poderes` WHERE `id_ficha` = '" . $id . "';");
+
 
 
 $m = $con->query("SELECT * FROM `dados_ficha` WHERE `id_ficha` = '" . $id . "';");
