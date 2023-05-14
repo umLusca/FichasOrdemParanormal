@@ -26,49 +26,6 @@ $id = cleanstring($_GET["convite"]);
                     <div class="text-center">
                         <span class="fs-4">Detalhes Principais</span><span class="text-info" role="button" data-bs-toggle="modal" data-bs-target="#modal_detalhes"> <i class="fal fa-info-circle"></i></span>
                     </div>
-                    <div class="d-flex">
-                        <div class="flex-grow-1">
-                            <div class="m-2">
-                                <label class="form-floating">
-                                    <select class="form-select" id="foto" name="foto">
-                                        <option value="1">Desconhecido - Masculino</option>
-                                        <option value="2">Desconhecido - Feminino</option>
-                                        <option value="3">Mauro Nunes</option>
-                                        <option value="4">Maya Shiruze</option>
-                                        <option value="5">Bruna Sampaio</option>
-                                        <option value="6">Leandro Weiss</option>
-                                        <option value="7">Jaime Orthuga</option>
-                                        <option value="8">Aniela Ukryty</option>
-                                        <option value="9">Customizada</option>
-                                    </select>
-                                    <label>Estilo de foto.</label>
-                                </label>
-                            </div>
-                            <div class="m-2 customurl" style="display: none">
-                                <div class="input-group" data-fop-initialize="Upload">
-                                    <label class="form-floating">
-                                        <input class="form-control" name="fotourl" type="url" required disabled/>
-                                        <label>Link da imagem</label>
-                                        <span class="invalid-feedback">A Imagem precisa ser valida (https, .png,.gif,.webp etc)</span>
-                                        <span id="return"></span>
-                                    </label>
-
-                                    <label class="btn btn-outline-secondary border-dashed">
-                                        <span class="msg">Enviar foto</span>
-                                        <span class="progress" style="display: none;">
-                                            <span class="progress-bar" role="progressbar"></span>
-                                        </span>
-                                        <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp" hidden/>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-shrink-1" id="prev" style="max-height: 140px; max-width: 140px;">
-                            <div class="m-2">
-                            <img class="rounded-circle border border-light imgpreview img-fluid" style="aspect-ratio: 1/1;" src="" alt="foto">
-                            </div>
-                        </div>
-                    </div>
                     <div class="row mx-1 g-2">
                         <div class="col-12 col-md-6 col-lg-4 col-xl-6">
                             <label class="form-floating">

@@ -30,7 +30,7 @@ if (isset($_SESSION["UserID"])) {
         $sucesso = false;
         $msg = "Preencha o nome do seu personagem!";
     }
-    $fotos = intval($_POST["foto"]);
+    $fotos = "https://fichasop.com/assets/img/Man.webp";
     $fotourl = cleanstring($_POST["fotourl"]);
     if ($fotos >= 1 and $fotos <= 9) {
         if ($fotos == 9) {
