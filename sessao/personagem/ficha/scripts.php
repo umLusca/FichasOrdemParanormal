@@ -37,6 +37,10 @@
 
     }
 
+    
+    
+    
+    
     function deletar(id, nome, tipo) {
         confirmar("Tem certeza que deseja apagar " + nome + "?", "Essa ação não poderá ser desfeita.").then((r) => {
             if (r) {
@@ -205,44 +209,98 @@
     let typingTimer;                //timer identifier
     const doneTypingInterval = 2500;  //time in ms, 5 seconds for example
 
-    
+
     const togglebutton = $("#card_pericias button.toggleview");
 
     togglebutton.on("click", (e) => {
         let order = parseInt(togglebutton.attr("data-fop-status"));
-        if(status !== 2){
+        if (status !== 2) {
             $("#pericias .hiddable").slideDown();
         }
-        switch (order){
+        switch (order) {
             default://Alfabetica
                 $("#pericias .pericia").sortElements((a, b) => {
-                    togglebutton.children().attr("class","fal fa-arrow-down-a-z")
+                    togglebutton.children().attr("class", "fal fa-arrow-down-a-z")
                     return $(a).attr("data-fop-uid").localeCompare($(b).attr("data-fop-uid"), 'br', {sensitivity: 'base'});
                 })
-                togglebutton.attr("data-fop-status",0)
+                togglebutton.attr("data-fop-status", 0)
                 break;
             case 0://Por bonus
                 $("#pericias .pericia").sortElements((a, b) => {
-                    togglebutton.children().attr("class","fal fa-arrow-down-9-1")
-                    return (parseInt($(a).attr("data-fop-bonus")) < parseInt($(b).attr("data-fop-bonus"))?1:-1);
+                    togglebutton.children().attr("class", "fal fa-arrow-down-9-1")
+                    return (parseInt($(a).attr("data-fop-bonus")) < parseInt($(b).attr("data-fop-bonus")) ? 1 : -1);
                 })
-                togglebutton.attr("data-fop-status",1)
+                togglebutton.attr("data-fop-status", 1)
                 break;
             case 1://Por grau
                 $("#pericias .pericia").sortElements((a, b) => {
-                    togglebutton.children().attr("class","fal fa-arrow-down-big-small")
-                    return (parseInt($(a).attr("data-fop-level")) < parseInt($(b).attr("data-fop-level"))?1:-1);
+                    togglebutton.children().attr("class", "fal fa-arrow-down-big-small");
+                    let levela = parseInt($(a).attr("data-fop-level"));
+                    let levelb = parseInt($(b).attr("data-fop-level"));
+
+                    let bonusa = parseInt($(a).attr("data-fop-bonus"));
+                    let bonusb = parseInt($(b).attr("data-fop-bonus"));
+
+
+                    console.log(levela, "+", levelb, "-", bonusa, "+", bonusb);
+
+
+                    if (levela === levelb) {
+                        return 0;
+                    } else if (levela < levelb) {
+                        return 1
+                    } else if (levela > levelb) {
+                        return -1;
+                    }
                 })
-                togglebutton.attr("data-fop-status",2)
+                togglebutton.attr("data-fop-status", 2)
                 break;
             case 2://Por Ocultar
-                togglebutton.children().attr("class","fal fa-eye-slash");
+                togglebutton.children().attr("class", "fal fa-eye-slash");
                 $("#pericias .hiddable").slideUp();
-                togglebutton.attr("data-fop-status",3)
+                togglebutton.attr("data-fop-status", 3)
                 break;
         }
     })
     $(document).ready(function () {
+        
+        $("#card_habilidades button.addtab").on("click",()=>{
+            console.log("criar");
+            $("#habaddtab").modal("show");
+        })
+
+        var timeoutId = 0;
+
+        $('#card_habilidades button.habtab').on('mousedown', function(e) {
+            console.log("touchstart")
+            timeoutId = setTimeout(()=>{
+                e.preventDefault();
+                if ($(e.currentTarget).hasClass("noteditable")){
+                    alert("Não é editável.")
+                } else {
+                    $("#habedttab input[name=name]").val($(e.currentTarget).text());
+                    $("#habedttab input[name=token]").val($(e.currentTarget).attr("data-fop-token"));
+                    $("#habedttab").modal("show");
+                }
+                
+            }, 300);
+        }).on('mouseup mouseleave', function() {
+            console.log("not edit")
+            clearTimeout(timeoutId);
+        });
+        
+        $("#habedttab .deletehabtab").on("click",(e)=>{
+            confirmar("Tem certeza?","Ao deletar essa aba, as habilidades irão para a aba \"Habilidades\".\nNão será possível desfazer").then((r)=>{
+                if(r){
+                    $.ajax({
+                        method:"post",
+                        data:{token:"<?=$token?>",id:$("#habedttab input[name=token]").val(),query:"ficha_delete_habtab"}
+                    })
+                }
+            });
+        })
+        
+        
         $('#card_personagem textarea').on('keyup', function (e) {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(() => {
@@ -523,7 +581,7 @@
                     url: '?token=<?=$token?>',
                     data: $(this).serialize(),
                     complete: (d) => {
-                        location.reload();
+                       // location.reload();
                     },
                 })
             }

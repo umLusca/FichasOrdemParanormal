@@ -1,4 +1,6 @@
 <?php
+
+
 if (isset($_POST["query"]) && !empty($_POST["query"])) {
 	header("Content-Type: application/json");
 	$data = array(
@@ -1052,6 +1054,12 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													"msg" => "Query não encontrado!"
 												);
 												break;
+											case "habtab":
+												$nome = cleanstring($_POST["name"],30);
+												$token = cleanstring($_POST["token"],36);
+												$f = $con->prepare("UPDATE habilidades_tab SET nome = ? WHERE token = ?");
+												$f->execute([$nome,$token]);
+												break;
 											case 'proficiencia':
 												if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
 													for ($i = 0; $i < count($_POST['did']); $i++):
@@ -1067,25 +1075,14 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 												}
 												break;
 											case "habilidade":
-												if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
-													$tipo = cleanstring($_POST["type"], 3);
 													$eid = (int)$_POST["id"];
 													$title = cleanstring($_POST["name"], 200);
 													$desc = cleanstring($_POST["desc"]);
-													switch ($tipo) {
-														case "hab":
-															$a = $con->prepare("UPDATE habilidades SET nome =?, descricao =? WHERE id = ? AND id_ficha  in (SELECT id FROM fichas_personagem WHERE token = ?)");
-															break;
-														case "pod":
-															$a = $con->prepare("UPDATE poderes SET nome =?, descricao =? WHERE id = ? AND id_ficha  in (SELECT id FROM fichas_personagem WHERE token = ?)");
-															break;
-													}
-													$a->bind_param("ssis", $title, $desc, $eid, $token);
-													$a->execute();
-												} else {
-													$data["success"] = false;
-													$data["msg"] = "Sem permissão";
-												}
+													$tab = cleanstring($_POST["tab"], 36);
+													strlen($tab) === 36 ?: $tab = null;
+													
+													$a = $con->prepare("UPDATE habilidades SET nome =?, descricao = ?, tab = ? WHERE id = ? AND id_ficha  in (SELECT id FROM fichas_personagem WHERE token = ?)");
+													$a->execute([$title, $desc,$tab, $eid, $token]);
 												break;
 											case 'atributos':
 												if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
@@ -1208,8 +1205,8 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
                                `pontaria` =?, `profissao`= ?,`reflexos`= ?, `religiao`= ?, `sobrevivencia`= ?,
                                `tatica`= ?, `tecnologia`= ?, `vontade`= ?, tacrobacias = ?,tadestramento = ?,tartes = ?,tatletismo = ?,tatualidades = ?,tciencia = ?,tcrime = ?,tdiplomacia = ?,tenganacao = ?,tfortitude = ?,
                                tfurtividade = ?,tintimidacao = ?,tiniciativa = ?,tintuicao = ?,tinvestigacao = ?,tluta = ?,tmedicina = ?,tocultismo = ?,tpercepcao = ?,tpilotagem = ?,tpontaria = ?,tprofissao = ?,treflexo = ?,treligiao = ? ,tsobrevivencia = ?,ttatica = ?,ttecnologia = ?,tvontade = ?, nprofissao = ?, nciencia = ? WHERE `token` = ?;");
-													$q->execute([$acr, $ade, $art, $atl, $atu, $cie, $cri, $dip, $eng, $fort, $fur, $inti, $inic, $intu, $inv, $lut, $med, $ocu, $perc, $pilo, $pont, $prof, $ref, $rel, $sob, $tat, $tec, $von, $tacr, $tade, $tart, $tatl, $tatu, $tcie, $tcri, $tdip, $teng, $tfort, $tfur, $tinti, $tinic, $tintu, $tinv, $tlut, $tmed, $tocu, $tperc, $tpilo, $tpont, $tprof, $tref, $trel, $tsob, $ttat, $ttec, $tvon,$nprof,$ncien,$token]);
-											
+													$q->execute([$acr, $ade, $art, $atl, $atu, $cie, $cri, $dip, $eng, $fort, $fur, $inti, $inic, $intu, $inv, $lut, $med, $ocu, $perc, $pilo, $pont, $prof, $ref, $rel, $sob, $tat, $tec, $von, $tacr, $tade, $tart, $tatl, $tatu, $tcie, $tcri, $tdip, $teng, $tfort, $tfur, $tinti, $tinic, $tintu, $tinv, $tlut, $tmed, $tocu, $tperc, $tpilo, $tpont, $tprof, $tref, $trel, $tsob, $ttat, $ttec, $tvon, $nprof, $ncien, $token]);
+													
 												} else {
 													$data["success"] = false;
 													$data["msg"] = "Sem permissão";
@@ -1372,7 +1369,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$peso = minmax($_POST["peso"], $minimo_peso, $maximo_peso, $inv_float);
 													$pres = minmax($_POST["prestigio"], 0, 10);
 													$rr = $con->prepare("UPDATE `inventario` SET `nome` = ? , `descricao` = ?, `espaco` = ?, `prestigio` = ?, foto = ? WHERE `inventario`.`id` = ? AND `id_ficha` in (SELECT id FROM fichas_personagem WHERE token = ?);");
-													$data["success"] = $rr->execute([$nome, $desc, $peso, $pres,$foto, $iid, $token]);
+													$data["success"] = $rr->execute([$nome, $desc, $peso, $pres, $foto, $iid, $token]);
 												} else {
 													$data["success"] = false;
 													$data["msg"] = "Sem permissão";
@@ -1401,10 +1398,10 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 													$e = cleanstring($_POST["especial"], $Arma_espe);
 													
 													$b = $con->prepare("UPDATE inventario SET nome = ?, foto = ?, descricao = ?, quantidade = 1, espaco = ?, prestigio = ? WHERE id in (SELECT item_id FROM armas WHERE id = ?) AND id_ficha in (SELECT id FRom fichas_personagem where token = ?);");
-													$b->execute([$n,$f,$desc,$peso,$pres,$aid,$token]);
+													$b->execute([$n, $f, $desc, $peso, $pres, $aid, $token]);
 													
 													$a = $con->prepare("UPDATE armas JOIN inventario i on armas.item_id = i.id SET tipo = ? , ataque = ? , alcance = ? , dano = ? , margem = ?, critico = ? , recarga = ? , especial = ? WHERE  armas.id = ? AND i.id_ficha in (select id from fichas_personagem where token = ?);;");
-													$a->execute([$t,$at,$al,$d,$m,$c,$r,$e,$aid,$token]);
+													$a->execute([$t, $at, $al, $d, $m, $c, $r, $e, $aid, $token]);
 													
 													
 													$data["success"] = $rr->execute();
@@ -1472,6 +1469,20 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 												"msg" => "Query não encontrado!"
 											);
 											break;
+										case "habtab":
+											if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
+												$id = cleanstring($_POST["id"], 36);
+												
+												$a = $con->prepare("DELETE FROM habilidades_tab WHERE token = ? and id_ficha in (SELECT id FROM fichas_personagem WHERE token = ?);");
+												$a->execute([$id, $token]);
+												$data["success"] = true;
+												$data["msg"] = "Deletado".$id;
+											} else {
+												
+												$data["success"] = false;
+												$data["msg"] = "Sem permissão";
+											}
+											break;
 										case "switch":
 											if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
 												$type = cleanstring($_POST["type"]);
@@ -1513,17 +1524,21 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 												"msg" => "Query não encontrado!"
 											);
 											break;
+										case 'habtab':
+											$name = cleanstring($_POST["name"], 30);
+											$t = $con->prepare("INSERT INTO habilidades_tab(token,nome,id_ficha) VALUES (uuid(),?,(SELECT id From fichas_personagem WHERE token = ?));");
+											$t->execute([$name, $token]);
+											
+											//OK
+											break;
 										case 'habilidade':
 											if (VerificarPermissaoFicha($token, $_SESSION["UserID"])) {
 												$habname = cleanstring($_POST["hab"], $Hab_nome);
 												$habdesc = cleanstring($_POST["desc"], $Hab_desc);
-												if (isset($_POST["poder"]) && ($_POST["poder"] == 1 || $_POST["poder"] == "on")) {
-													$a = $con->prepare("INSERT INTO `poderes` (`id_ficha`, `nome`, `descricao`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ? ), ? , ? );");
-												} else {
-													$a = $con->prepare("INSERT INTO `habilidades` (`id_ficha`, `nome`, `descricao`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ? ) , ? , ? );");
-												}
-												$a->bind_param("sss", $token, $habname, $habdesc);
-												$a->execute();
+												$habtab = cleanstring($_POST["tab"], 36);
+												strlen($habtab) === 36 ?: $habtab = null;
+												$a = $con->prepare("INSERT INTO `habilidades` (`id_ficha`, `nome`, `descricao`,`tab`) VALUES ( (SELECT id FROM fichas_personagem WHERE token = ? ) , ? , ? , ?);");
+												$a->execute([$token, $habname, $habdesc, $habtab]);
 											} else {
 												$data["success"] = false;
 												$data["msg"] = "Sem permissão";
