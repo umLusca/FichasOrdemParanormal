@@ -1,21 +1,4 @@
 
-<?php
-function elicon($el)
-{
-    switch (strtolower($el)) {
-        case "energia":
-            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Energia.webp" class="img-fluid"></i>';
-        case "morte":
-            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Morte.webp" class="img-fluid"></i>';
-        case "conhecimento":
-            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Conhecimento.webp" class="img-fluid"></i>';
-        case "sangue":
-            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Sangue.webp" class="img-fluid"></i>';
-        case "medo":
-            return '<i class="d-inline-block user-select-none" style="width: 19px;height: 19px;"><img src="/assets/img/Medo.webp" class="img-fluid"></i>';
-    }
-}
-?>
 <div class="col">
     <div class="card h-100" id="card_rituais">
         <div class="card-header d-flex justify-content-between">
