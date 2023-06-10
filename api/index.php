@@ -592,7 +592,7 @@ if (!empty($category)) {
                             $msg = [];
                             $sucesso = true;
                             $iduser = checksession($session_id);
-                            if ($user) {
+                            if ($iduser) {
                                 $convite = cleanstring($_DATA["convite"]);
 
                                 if (!empty($_DATA["nome"])) {
