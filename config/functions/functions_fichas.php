@@ -6,7 +6,7 @@ function atributos($for, $agi, $int, $vig, $pre, $enabled = 1, $input = 0, $min 
 {
 	global $minimo_atributo;
 	global $maximo_atributo;
-	$_theme = $_COOKIE["theme"]?:"auto";
+	$_theme = $_COOKIE["theme"] ?: "auto";
 	if (!$input) {
 		$return = "
             <div class='containera mx-auto'>
@@ -38,7 +38,7 @@ function Super_options($tipo, $selecionado = null): string
 			$conjunto = ["Nenhuma", "Aniquilador", "Comandante de Campo", "Guerreiro", "Operações Especiais", "Tropa de Choque", "Atirador de Elite", "Infiltrador", "Médico de Campo", "Negociador", "Técnico", "Conduíte", "Flagelador", "Graduado", "Intuitivo", "Lâmina Paranormal"];
 			break;
 		case "origens":
-			$conjunto = ["Acadêmico", "Agente de Saúde", "Amnésico", "Artista", "Atleta", "Chef", "Criminoso", "Cultista Arrependido", "Desgarrado", "Engenheiro", "Executivo", "Investigador", "Lutador", "Magnata", "Mercenário", "Militar", "Operário", "Policial", "Religioso", "Servidor Público", "Teórico da Conspiração", "TI", "Trabalhador Rural", "Trambiqueiro", "Universitário", "Vítima"];
+			$conjunto = ["Acadêmico", "Agente de Saúde", "Amnésico", "Artista", "Atleta", "Chef", "Cientista Forense", "Criminoso", "Cultista Arrependido", "Desgarrado", "Engenheiro", "Executivo", "Escritor", "Investigador", "Jornalista", "Lutador", "Magnata", "Mercenário", "Militar", "Operário", "Policial", "Professor", "Religioso", "Servidor Público", "Teórico da Conspiração", "TI", "Trabalhador Rural", "Trambiqueiro", "Universitário", "Vítima"];
 			break;
 		case "patentes":
 			$conjunto = ["Recruta", "Operador", "Agente Especial", "Oficial de Operações", "Agente de Elite"];
@@ -212,18 +212,21 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 	return false;
 }
 
-function VerificarMestre($mid): bool
+function VerificarMestre($mid, $userid = null): bool
 {
-	$con = con();
-	if (isset($_SESSION["UserID"]) and isset($mid)) {
-		$t = $con->prepare("Select * FROM `missoes` WHERE `mestre` = ? AND (`token` = ? OR `id` = ?) ;");
-		$t->bind_param('isi', $_SESSION["UserID"], $mid, $mid);
-		$t->execute();
-		$rt = $t->get_result();
-		return $rt->num_rows;
+	global $con;
+	if ($userid) {
+		$user = $userid;
+	} elseif (isset($_SESSION["UserID"])) {
+		$user = $_SESSION["UserID"];
 	} else {
 		return false;
 	}
+	
+	$t = $con->prepare("Select * FROM `missoes` WHERE `mestre` = ? AND (`token` = ? OR `id` = ?) ;");
+	$t->execute([$_SESSION["UserID"], $mid, $mid]);
+	$rt = $t->get_result();
+	return (bool)$rt->num_rows;
 }
 
 //Functions Gerais
@@ -354,7 +357,7 @@ function RolarMkII($dado_bruto, bool $dano = false, $margem = 20): array
 				$saida["soma"] += $quantidade;
 				$saida["resultado"] += $quantidade;
 				$saida["soma"] += $quantidade;
-				$saida["print"] .= (($quantidade <= -1) ?"": "+") . $quantidade;
+				$saida["print"] .= (($quantidade <= -1) ? "" : "+") . $quantidade;
 			}
 		}
 	}

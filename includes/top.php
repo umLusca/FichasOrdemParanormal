@@ -12,7 +12,7 @@ if (isset($_SESSION["UserID"])) {
 
     <nav class="navbar navbar-expand-md bg-body p-0 fixed-top border-bottom border-secondary font3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="/assets/img/Energia.webp" class="rounded" width="32px" alt="Inicio"/></a>
+            <a class="navbar-brand" href="/"><img src="/assets/img/Energia.webp" class="rounded" style="width: 32px; height: 32px;" alt="Inicio"/></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

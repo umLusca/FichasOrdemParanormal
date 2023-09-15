@@ -111,7 +111,7 @@ if (isset($_POST["reset"])) {
         </div>
         <div class="card-footer d-grid" id="rsfooter">
             <input type="hidden" name="reset" value="1">
-		    <?= $aviso ? '<a class="btn btn-outline-light" href="/">Inicio</a>' : '<button class="btn btn-outline-primary">Salvar</button>' ?>
+		    <?= $aviso ? '<a class="btn btn-outline-light" href="/">inicio</a>' : '<button class="btn btn-outline-primary">Salvar</button>' ?>
         </div>
     </form>
 </main>

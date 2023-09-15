@@ -139,12 +139,11 @@ require_once RootDir . "/sessao/personagem/ficha/aconfig_ficha.php";
             color: rgb(255, 193, 7);
         }
         .teste {
-            -webkit-mask-image: url('/assets/img/fundo3.webp');
-            mask-image: url('/assets/img/fundo3.webp');
-            -webkit-mask-size: 100%;
-            mask-size: 100%;
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
+
+        }
+        .background{
+            width: 100%;
+            height: 100%;
         }
         .breath {
             animation: breath 4s infinite;
@@ -269,6 +268,7 @@ require_once "./../includes/scripts.php";
                     </div>
                     <div className="personagem pri teste">
                         {(marca) ? <img src={marca}/> : ""}
+                        <img className="background" src={"/assets/img/osni_bg.png"}/>
                         <img className="breath" src={foto}/>
                     </div>
                     <div className="PE">

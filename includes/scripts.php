@@ -456,7 +456,7 @@
                         $("#login .btn").attr("disabled", true);
                         $("#login .return").html("<div class='alert alert-warning'><i class='fal fa-spin fa-spinner'></i> Aguarde enquanto fazemos um rolamento no login...</div>");
                     },
-                    url: "/",
+                    url: "",
                     data: form.serialize() + "&query=conta_login",
                     dataType: "JSON",
                     success: (data) => {
