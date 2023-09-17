@@ -165,6 +165,11 @@ if (isset($_SESSION["UserID"])) {
             $habdes = "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste.";
 			$atletismo = $acrobacia = 5;
             break;
+        case "Cientista Forense": // Chef
+            $habnam = "Investigação Científica (Origem)";
+            $habdes = "Uma vez por cena de investigação, você pode gastar uma ação livre para procurar pistas, usando Ciências no lugar da perícia que seria usada para tentar encontrar a pista em questão.";
+            $ciencia = $investigacao = 5;
+            break;
         case "Chef": // Chef
             $habnam = "Ingrediente Secreto (Origem)";
             $habdes = "Em cenas de interlúdio, você pode gastar uma ação para cozinhar um prato gostoso. Cada membro do grupo (incluindo você) que gastar uma ação para se alimentar recebe o benefício de dois pratos (caso o mesmo benefício seja escolhido duas vezes, seus efeitos se acumulam).";
@@ -190,6 +195,11 @@ if (isset($_SESSION["UserID"])) {
             $habdes = "Um item a sua escolha (exceto armas) conta como uma categoria abaixo (por exemplo, um item de categoria II conta como categoria I para você).";
             $profissao = $tecnologia = 5;
             break;
+        case "Escritor": //Executivo
+            $habnam = "Bagagem de leitura. (Origem)";
+            $habdes = "Por seu trabalho você já leu e aprendeu de tudo um pouco. Uma vez por cena, pode gastar 2 PE para se tornar treinado em uma perícia qualquer até o fim da cena.";
+            $artes = $atualidades = 5;
+            break;
         case "Executivo": //Executivo
             $habnam = "Processo Otimizado. (Origem)";
             $habdes = "Sempre que faz um teste de perícia durante um teste estendido, pode pagar 2 PE para receber +5 nesse teste.";
@@ -199,6 +209,11 @@ if (isset($_SESSION["UserID"])) {
             $habnam = "Faro para Pistas. (Origem)";
             $habdes = "Uma vez por cena, quando fizer um teste para procurar pistas, você pode gastar 1 PE para receber +5 nesse teste.";
             $investigacao = $percepcao = 5;
+            break;
+        case "Jornalista": //Inbestigador
+            $habnam = "Fontes Confiáveis. (Origem)";
+            $habdes = "Uma vez por sessão de jogo, você pode gastar 1 PE para contatar suas fontes, pessoas com acesso a informações nas quais você confia. Isso permite que você role novamente um teste já realizado para encontrar uma pista, com +5 de bônus, ou receba outra informação relevante (À critério do mestre).";
+            $investigacao = $atualidades = 5;
             break;
         case "Lutador": // Lutador
             $habnam = "Mão Pesada. (Origem)";
@@ -229,6 +244,11 @@ if (isset($_SESSION["UserID"])) {
             $habnam = "Patrulha (Origem)";
             $habdes = "Você recebe +2 em Defesa.";
             $percepcao = $pontaria = 5;
+            break;
+        case "Professor": // Policiaçl
+            $habnam = "Aula de campo (Origem)";
+            $habdes = "Você sabe estrair o melhor das pessoas. Uma vez por cena, pode gastar uma ação padrão e 2 PE para fornecer +1 em um atributo de outro personagem em alcance curto até o fim da cena.";
+            $ciencia = $intuicao = 5;
             break;
         case "Religioso": // Religioso
             $habnam = "Acalentar. (Origem)";
