@@ -22,23 +22,3 @@ if(!isset($_SESSION["UserID"])){
 	$token = filter_input(INPUT_COOKIE, 'remember_me');
 	logar(check_session($token));
 }
-
-$gclient = new Google_Client();
-
-
-$clientID = '209829554208-1d5agmucudbmmbu9c5r4pjcggpg1t975.apps.googleusercontent.com';
-$secret = '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';
-
-
-// Set the ClientID
-$gclient->setClientId($clientID);
-// Set the ClientSecret
-$gclient->setClientSecret($secret);
-// Set the Redirect URL after successful Login
-$gclient->setRedirectUri('https://fichasop.com/conta/google/');
-
-// Adding the Scopr
-$gclient->addScope('email');
-$gclient->addScope('profile');
-
-
