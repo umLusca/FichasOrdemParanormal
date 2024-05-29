@@ -4,7 +4,7 @@ function Echo_FichaNPC($fichas, $type): void
 	foreach ($fichas as $r) {
 		if ($r["categoria"] == $type) {
 			?>
-            <div class="col col-md-6 col-lg-4 col-xl-3 border-0 text-center" id="npc<?= $r["id"] ?>">
+            <div class="col col-12 col-md-6 col-lg-4 col-xl-3 border-0 text-center" id="npc<?= $r["id"] ?>">
                 <div class="card h-100">
                     <div class="card-header d-flex justify-content-between">
                         <div class="col-auto">

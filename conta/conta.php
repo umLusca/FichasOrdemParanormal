@@ -35,8 +35,6 @@
                             </label>
                         </div>
                     </div>
-
-
                 </div>
                 <div class="modal-footer footer">
                     <button type="submit" class="btn btn-success w-100">Entrar</button>

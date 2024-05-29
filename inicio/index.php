@@ -2,6 +2,35 @@
 
 
 require_once ".././config/includes.php";
+
+if ($_GET["logout"] === '1') {
+	session_start();
+	$user = $_SESSION["UserID"] ?: false;
+	$token = filter_input(INPUT_COOKIE, 'remember_me');
+	
+	
+	$_SESSION["UserID"] = '';
+	$_SESSION["UserLogin"] = '';
+	$_SESSION["UserName"] = '';
+	$_SESSION["UserEmail"] = '';
+	$_SESSION["UserElite"] = '';
+	$_SESSION["UserAdmin"] = '';
+	$_SESSION["UserMarca"] = '';
+	$_SESSION = array();
+	
+	$_COOKIE['remember_me'] = "";
+	unset($_COOKIE['remember_me']);
+	setcookie('remember_me', null, -1, '/');
+	
+	
+	$token = filter_input(INPUT_COOKIE, 'remember_me');
+	$validator = explode(":", $token);
+	
+	$q = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND selector = ? ;");
+	$q->execute([$user, $validator[0]]);
+	session_unset();
+	session_destroy();
+}
 header("X-Robots-Tag: all");
 if (isset($_POST["status"])) {
 	

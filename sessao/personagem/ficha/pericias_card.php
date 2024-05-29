@@ -77,7 +77,7 @@
 				$atrpericia["pontaria"] = "agi";
 				
 				$atrpericia["profissao"] = "int";
-				$atrpericia["reflexo"] = "agi";
+				$atrpericia["reflexos"] = "agi";
 				$atrpericia["religiao"] = "pre";
 				$atrpericia["sobrevivencia"] = "int";
 				$atrpericia["tatica"] = "int";

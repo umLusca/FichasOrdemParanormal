@@ -37,10 +37,6 @@
 
     }
 
-    
-    
-    
-    
     function deletar(id, nome, tipo) {
         confirmar("Tem certeza que deseja apagar " + nome + "?", "Essa ação não poderá ser desfeita.").then((r) => {
             if (r) {
@@ -263,44 +259,6 @@
         }
     })
     $(document).ready(function () {
-        
-        $("#card_habilidades button.addtab").on("click",()=>{
-            console.log("criar");
-            $("#habaddtab").modal("show");
-        })
-
-        var timeoutId = 0;
-
-        $('#card_habilidades button.habtab').on('mousedown', function(e) {
-            console.log("touchstart")
-            timeoutId = setTimeout(()=>{
-                e.preventDefault();
-                if ($(e.currentTarget).hasClass("noteditable")){
-                    alert("Não é editável.")
-                } else {
-                    $("#habedttab input[name=name]").val($(e.currentTarget).text());
-                    $("#habedttab input[name=token]").val($(e.currentTarget).attr("data-fop-token"));
-                    $("#habedttab").modal("show");
-                }
-                
-            }, 300);
-        }).on('mouseup mouseleave', function() {
-            console.log("not edit")
-            clearTimeout(timeoutId);
-        });
-        
-        $("#habedttab .deletehabtab").on("click",(e)=>{
-            confirmar("Tem certeza?","Ao deletar essa aba, as habilidades irão para a aba \"Habilidades\".\nNão será possível desfazer").then((r)=>{
-                if(r){
-                    $.ajax({
-                        method:"post",
-                        data:{token:"<?=$token?>",id:$("#habedttab input[name=token]").val(),query:"ficha_delete_habtab"}
-                    })
-                }
-            });
-        })
-        
-        
         $('#card_personagem textarea').on('keyup', function (e) {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(() => {
@@ -581,7 +539,7 @@
                     url: '?token=<?=$token?>',
                     data: $(this).serialize(),
                     complete: (d) => {
-                       // location.reload();
+                        location.reload();
                     },
                 })
             }

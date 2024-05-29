@@ -597,7 +597,7 @@ if (!empty($category)) {
 
                                 if (!empty($_DATA["nome"])) {
                                     $nome = cleanstring($_DATA["nome"]);
-                                    if (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙçÇ]*$/', $nome)) {
+                                    if (preg_match('/^[a-zA-Z áéíóúãõàèìòùÁÉÍÓÚÃÕÀÈÌÒÙçÇ"]*$/', $nome)) {
 
                                         $fotos = cleanstring($_DATA["fotourl"] ?: "https://fichasop.com/assets/img/Man.webp");
                                         $origem = cleanstring($_DATA["origem"], 50);
@@ -607,7 +607,7 @@ if (!empty($category)) {
                                         $idade = minmax($_DATA["idade"], 0, 150);
                                         $forca = minmax($_DATA["forca"], -25, 25);
                                         $agilidade = minmax($_DATA["agilidade"], -25, 25);
-                                        $intelecto = minmax($_DATA["intelecto"], -25, -25);
+                                        $intelecto = minmax($_DATA["intelecto"], -25, 25);
                                         $presenca = minmax($_DATA["presenca"], -25, 25);
                                         $vigor = minmax($_DATA["vigor"], -25, 25);
 
@@ -616,20 +616,20 @@ if (!empty($category)) {
                                         $san = minmax($_DATA["san"], 1, 999999);
                                         $pe = minmax($_DATA["pe"], 1, 999999);
 
-                                        $bpv = minmax($_DATA["bpv"], -10, 10);
-                                        $bsan = minmax($_DATA["bsan"], -10, 10);
-                                        $bpe = minmax($_DATA["bpe"], -10, 10);
+                                        $bpv = minmax($_DATA["bpv"], 1, 999999);
+                                        $bsan = minmax($_DATA["bsan"], 1, 999999);
+                                        $bpe = minmax($_DATA["bpe"], 1, 999999);
 
-                                        $spv = minmax($_DATA["somapv"], -999, 999);
-                                        $ssan = minmax($_DATA["somasan"], -999, 999);
-                                        $spe = minmax($_DATA["somape"], -999, 999);
+                                        $spv = minmax($_DATA["somapv"], 1, 999999);
+                                        $ssan = minmax($_DATA["somasan"], 1, 999999);
+                                        $spe = minmax($_DATA["somape"], 1, 999999);
 
                                         $ppv = minmax($_DATA["skippedpv"], 0, 20);
                                         $psan = minmax($_DATA["skippedsan"], 0, 20);
                                         $ppe = minmax($_DATA["skippedpe"], 0, 20);
 
 
-                                        $patente = minmax($_DATA["patente"], 0, 5);
+                                        $patente = cleanstring($_DATA["patente"], 50);
                                         $local = cleanstring($_DATA["local"] ?: '');
                                         $historia = cleanstring($_DATA["historia"] ?: '');
 
@@ -850,43 +850,42 @@ if (!empty($category)) {
 
                                         }
 
-                                        $vp = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `usuario` = ? AND `nome` = ?");
-                                        $vp->bind_param("is", $iduser, $nome);
-                                        $vp->execute();
-                                        $rvp = $vp->get_result();
-                                        if ($rvp->num_rows == 0) {
-                                            $vapo = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '$iduser' Limit 1;");
-                                            if(!empty($convite))
-                                            $vl = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario`='$iduser' AND `token` = '" . $convite . "' AND `id_ficha` is null;");
-
-                                            $qp = $con->prepare("INSERT INTO `fichas_personagem` (`id`, `token`, `public`, `usuario`, `nome`, `foto`, `origem`, `classe`, `trilha`, `nex`, `patente`, `idade`, `local`, `historia`, `forca`, `agilidade`, `inteligencia`, `presenca`, `vigor`, `pv`, `pva`, `san`, `sana`, `pe`, `pea`, `morrendo`, `enlouquecendo`, `passiva`, `bloqueio`, `esquiva`, `mental`, `sangue`, `morte`, `energia`, `conhecimento`, `fisica`, `balistica`,`acrobacias`,`adestramento`,`artes`,`atualidades`,`atletismo`,`ciencia`,`crime`,`diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,`ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,`vontade`)
+                                        if ($sucesso) {
+                                            $vp = $con->prepare("SELECT * FROM `fichas_personagem` WHERE `usuario` = ? AND `nome` = ?");
+                                            $vp->bind_param("is", $iduser, $nome);
+                                            $vp->execute();
+                                            $rvp = $vp->get_result();
+                                            if ($rvp->num_rows == 0) {
+                                                $vapo = $con->query("SELECT * FROM `fichas_personagem` WHERE `usuario` = '$iduser' Limit 1;");
+                                                $vl = $con->query("SELECT * FROM `ligacoes` WHERE `id_usuario`='$iduser' AND `token` = '" . $convite . "' AND `id_ficha` is null;");
+                                                $qp = $con->prepare("INSERT INTO `fichas_personagem` (`id`, `token`, `public`, `usuario`, `nome`, `foto`, `origem`, `classe`, `trilha`, `nex`, `patente`, `idade`, `local`, `historia`, `forca`, `agilidade`, `inteligencia`, `presenca`, `vigor`, `pv`, `pva`, `san`, `sana`, `pe`, `pea`, `morrendo`, `enlouquecendo`, `passiva`, `bloqueio`, `esquiva`, `mental`, `sangue`, `morte`, `energia`, `conhecimento`, `fisica`, `balistica`,`acrobacias`,`adestramento`,`artes`,`atualidades`,`atletismo`,`ciencia`,`crime`,`diplomacia`,`enganacao`,`fortitude`,`furtividade`,`iniciativa`,`intimidacao`,`intuicao`,`investigacao`,`luta`,`medicina`,`ocultismo`,`percepcao`,`pilotagem`,`pontaria`,`profissao`,`reflexos`,`religiao`,`sobrevivencia`,`tatica`,`tecnologia`,`vontade`)
                                                                     VALUES ('', UUID() ,'0', ? , ?, ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );");
-                                            $qp->bind_param("isssssiiissiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", $iduser, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $passiva, $bloqueio, $esquiva, $sanidade, $sangue, $morte, $energia, $conhecimento, $fisico, $balistico, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao, $reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade);
-                                            $sucesso = $qp->execute();
-                                            $id = mysqli_insert_id($con);
-                                            if (!empty($hcn)) {
-                                                $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn','$hcd','')");
-                                            }
-                                            if (!empty($hcn2)) {
-                                                $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn2','$hcd2','')");
-                                            }
-                                            if (!empty($habnam)) {
-                                                $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$habnam','$habdes','')");
-                                            }
-                                            if (isset($pt)) {
-                                                foreach ($pt as $i) {
-                                                    if (!empty($i)) {
-                                                        $p = $con->query("INSERT INTO `proeficiencias` (`nome`,`id_ficha`) VALUES ('" . $i . "','" . $id . "');");
+                                                $qp->bind_param("isssssiiissiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", $iduser, $nome, $foto, $origem, $classe, $trilha, $nex, $patente, $idade, $local, $historia, $forca, $agilidade, $intelecto, $presenca, $vigor, $pv, $pv, $san, $san, $pe, $pe, $passiva, $bloqueio, $esquiva, $sanidade, $sangue, $morte, $energia, $conhecimento, $fisico, $balistico, $acrobacia, $adestramento, $artes, $atualidades, $atletismo, $ciencia, $crime, $diplomacia, $enganacao, $fortitude, $furtividade, $iniciativa, $intimidacao, $intuicao, $investigacao, $luta, $medicina, $ocultismo, $percepcao, $pilotagem, $pontaria, $profissao, $reflexo, $religiao, $sobrevivencia, $tatica, $tecnologia, $vontade);
+                                                $sucesso = $qp->execute();
+                                                $id = mysqli_insert_id($con);
+                                                if (!empty($hcn)) {
+                                                    $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn','$hcd','')");
+                                                }
+                                                if (!empty($hcn2)) {
+                                                    $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$hcn2','$hcd2','')");
+                                                }
+                                                if (!empty($habnam)) {
+                                                    $dp = $con->query("INSERT INTO `habilidades`(`id_ficha`,`nome`,`descricao`,`id`) VALUES ('$id','$habnam','$habdes','')");
+                                                }
+                                                if (isset($pt)) {
+                                                    foreach ($pt as $i) {
+                                                        if (!empty($i)) {
+                                                            $p = $con->query("INSERT INTO `proeficiencias` (`nome`,`id_ficha`) VALUES ('" . $i . "','" . $id . "');");
+                                                        }
                                                     }
                                                 }
+                                                $al = $con->query("UPDATE `ligacoes` SET `id_ficha` = '" . $id . "' WHERE `ligacoes`.`token` = '" . $convite . "' AND `ligacoes`.`id_usuario` = '" . $iduser . "' LIMIT 1;");
+                                                $msg = $sucesso ? "Personagem Criado com sucesso!" : "Houve uma falha ao adicionar personagem na database, contate um administrador!";
+                                            } else {
+                                                $sucesso = false;
+                                                $msg = 'Já Existe um Personagem seu com esse mesmo nome!(Provavelmente houve duplicação ao salvar, então só ir para pagina do seu personagem.)';
                                             }
-                                            $al = $con->query("UPDATE `ligacoes` SET `id_ficha` = '" . $id . "' WHERE `ligacoes`.`token` = '" . $convite . "' AND `ligacoes`.`id_usuario` = '" . $iduser . "' LIMIT 1;");
-                                            $msg = $sucesso ? "Personagem Criado com sucesso!" : "Houve uma falha ao adicionar personagem na database, contate um administrador!";
-                                        } else {
-                                            $sucesso = false;
-                                            $msg = 'Já Existe um Personagem seu com esse mesmo nome!(Provavelmente houve duplicação ao salvar, então só ir para pagina do seu personagem.)';
                                         }
-
                                     } else {
                                         $sucesso = false;
                                         $msg = "Sua sessão expirou, faça login novamente.";
@@ -1096,7 +1095,6 @@ if (!empty($category)) {
                                                     }
                                                 }
                                             }
-
                                             if (isset($_DATA["dados"]["habilidades"]) && is_array($_DATA["dados"]["habilidades"])) {
                                                 foreach ($_DATA["dados"]["habilidades"] as $i => $hab) {
                                                     if (isset($hab["nome"]) && !empty($hab["nome"])) {
@@ -1153,8 +1151,6 @@ if (!empty($category)) {
                                                     }
                                                 }
                                             }
-
-
                                             if (isset($_DATA["dados"]["proficiencias"]) && is_array($_DATA["dados"]["proficiencias"])) {
                                                 foreach ($_DATA["dados"]["proficiencias"] as $i => $proficiencia) {
                                                     if (isset($proficiencia["nome"]) && !empty($proficiencia["nome"])) {
@@ -1413,13 +1409,7 @@ if (!empty($category)) {
                                         if (isset($_DATA["dados"]) && !empty($_DATA["dados"] && is_array($_DATA["dados"]))) {
                                             $return["success"] = false;
 
-                                            if (isset($_DATA["dados"]["dices"]) && is_array($_DATA["dados"]["dices"])) {
-                                                foreach ($_DATA["dados"]["dices"] as $dice) {
-                                                    $r = $con->prepare("DELETE FROM dados_customizados WHERE token = ? AND token_pai = ?");
-                                                    $r->execute([$dice["token"], $token]);
-                                                }
-                                                $return["success"] = true;
-                                            }
+
                                             if (isset($_DATA["dados"]["habilidades"]) && is_array($_DATA["dados"]["habilidades"])) {
                                                 foreach ($_DATA["dados"]["habilidades"] as $hab) {
                                                     $r = $con->prepare("DELETE FROM habilidades WHERE id = ? AND id_ficha in (SELECT id FROM fichas_personagem WHERE token =?)");
@@ -1520,6 +1510,48 @@ if (!empty($category)) {
                     break;
                 case "dices":
                     switch ($action) {
+                        case "create":
+                            $nome = cleanstring($_DATA["nome"], 20);
+                            $dado = cleanstring($_DATA["dado"], 50);
+                            $dano = minmax($_DATA["dano"], 0, 1);
+                            $global = minmax($_DATA["global"], 0, 1);
+                            $token = $global ? "" : cleanstring($_DATA["token"], 36);
+                            $user = checksession($session_id);
+
+
+                            if ($user) {
+                                $c = $con->query("SELECT uuid_short()");
+                                $c = mysqli_fetch_array($c);
+                                $d = $con->prepare("INSERT INTO dados_customizados (token, owner, nome, dado, foto, dano, token_pai) VALUES (?,?,?,?,5,?,?)");
+                                if ($d->execute([$c[0], $user, $nome, $dado, $dano, $token])) {
+                                    $return["success"] = true;
+                                    $return["msg"] = "Dado criado.";
+
+                                    $f = $con->prepare("SELECT * FROM dados_customizados WHERE token = ? ");
+                                    $f->execute([$c[0]]);
+                                    $f = $f->get_result();
+                                    $dados = [];
+                                    foreach ($f as $dado) {
+                                        unset($dado["owner"]);
+                                        $dados[] = $dado;
+                                    }
+                                    $return["dados"]["dices"] = $dados;
+                                    $return["msg"] = "Total: " . $f->num_rows;
+                                    $return["success"] = $f->num_rows ? 1 : 0;
+
+
+                                } else {
+                                    $return["success"] = false;
+                                    $return["msg"] = "Houve uma falha.";
+                                }
+                            } else {
+                                $return["success"] = false;
+                                $return["msg"] = "Sem permissão.";
+
+                            }
+
+
+                            break;
                         case "get":
                             $token = cleanstring($_DATA["token"]);
                             $user = checksession($session_id);
@@ -1530,6 +1562,7 @@ if (!empty($category)) {
                             if ($d->num_rows) {
                                 $dados = [];
                                 foreach ($d as $dado) {
+                                    unset($dado["owner"]);
                                     $dados[] = $dado;
                                 }
                                 $return["dados"]["dices"] = $dados;
@@ -1539,6 +1572,25 @@ if (!empty($category)) {
                                 $return["success"] = true;
                                 $return["dados"]["dices"] = [];
                                 $return["msg"] = "Nenhum dado encontrado.";
+                            }
+                            break;
+                        case "delete":
+
+                            $token = cleanstring($_DATA["token"]);
+                            $user = checksession($session_id);
+                            if ($user) {
+                                if (isset($_DATA["dados"]["dices"]) && is_array($_DATA["dados"]["dices"])) {
+                                    $return["success"] = false;
+                                    foreach ($_DATA["dados"]["dices"] as $dice) {
+                                        $r = $con->prepare("DELETE FROM dados_customizados WHERE owner = ? and token = ?");
+                                        $r->execute([$user, $dice["token"]]);
+                                        if ($r->affected_rows) $return["success"] = true;
+                                    }
+
+                                }
+                            } else {
+                                $return["success"] = false;
+                                $return["msg"] = "Sem permissão.";
                             }
                             break;
                         case "submit":

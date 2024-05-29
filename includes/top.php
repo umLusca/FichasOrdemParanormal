@@ -52,7 +52,7 @@ if (isset($_SESSION["UserID"])) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/encerrar"><i class="fat fa-user-xmark text-danger"></i> Sair</a>
+                            <a class="nav-link" href="/logout"><i class="fat fa-user-xmark text-danger"></i> Sair</a>
                         </li>
 					<?php } else { ?>
 

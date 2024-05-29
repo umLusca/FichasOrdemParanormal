@@ -1,4 +1,2 @@
 <?php
-
 header("Location: /inicio");
-?>

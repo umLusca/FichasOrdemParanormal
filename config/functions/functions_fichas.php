@@ -376,6 +376,3 @@ function TirarPorcento($Valor_Atual, $Valor_Maximo)
 
 
 
-
-
-

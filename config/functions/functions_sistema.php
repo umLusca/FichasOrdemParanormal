@@ -551,29 +551,6 @@ function cleanstring($data, $limit = 1000): string
 }
 
 
-function logout(int $user = null): void
-{
-	global $con;
-	
-	
-	if (isset($_COOKIE['remember_me'])) {
-		if($user === null) {
-			$user = (int)$_SESSION["UserID"];
-		}
-		
-		$token = filter_input(INPUT_COOKIE, 'remember_me');
-		$validator = explode(":",$token);
-		
-		$q = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND selector = ? ;");
-		$q->execute([$user, $validator[0]]);
-		
-		unset($_COOKIE['remember_me']);
-		setcookie('remember_me', null, -1);
-	}
-	
-	session_unset();
-	session_destroy();
-}
 
 function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
 {
