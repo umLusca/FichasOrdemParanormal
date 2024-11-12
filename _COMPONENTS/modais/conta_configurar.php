@@ -1,0 +1,201 @@
+<div class="modal fade" id="perfil" tabindex="-1" aria-label="Perfil Modal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-xl">
+        <div class="modal-content border-secondary">
+            <div class="modal-header">
+                <h1 class="fs-5 modal-title">Configurações</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" title="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row row-cols-1 row-cols-lg-2 g-2 m-3">
+                    <div class="col">
+                        <div class="card border-secondary h-100">
+                            <div class="card-header">
+                                <h1 class="fs-4 card-title">Personalizar</h1>
+                            </div>
+                            <div class="card-body">
+                                <label class="form-floating">
+                                    <select class="form-select" id="sitethemeselect" aria-label="Tema do site">
+                                        <?=Super_options("tema",$_COOKIE["theme"])?>
+                                        <option value="dark" disabled>Escuro > Claro ;)</option>
+                                    </select>
+                                    <label>Tema do site</label>
+                                </label>
+                                <div class="d-grid top-100 position-sticky m-2">
+                                    <button class="btn btn-lg btn-outline-warning d-grid" type="button" data-bs-toggle="modal" data-bs-target="#configconta">
+                                        Alterar informações da conta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card border-secondary h-100">
+                            <div class="card-header">
+                                <h1 class="fs-4 card-title">Missões e Fichas</h1>
+                            </div>
+                            <div class="card-body" id="addmarcadiv">
+                                <div class="return"></div>
+                                <div class="m-2" data-fop-initialize="Upload">
+                                    <div class="input-group">
+                                        <label class="form-floating border-secondary">
+                                            <input placeholder="URL da MARCA" value="<?= $_SESSION["UserMarca"] ?>" type="url" class="form-control"/>
+                                            <label>URL da marca</label>
+                                        </label>
+                                        <label class="btn btn-outline-secondary border-dashed">
+                                            <span class="msg">Enviar foto</span>
+                                            <span class="progress" style="display: none;"><span class="progress-bar" role="progressbar"></span></span>
+                                            <input type="file" accept=".png,.gif,.jpeg,.jpg,.webp"  hidden/>
+                                        </label>
+                                    </div>
+
+                                    <div class="preview d-flex justify-content-center m-2">
+                                        <img src="<?= $_SESSION["UserMarca"] ?>" style="width: 50%;  max-width: 200px;" alt="Marca">
+                                    </div>
+                                    <button class="btn btn-sm btn-success w-100 submit" type="button">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+<div id="updateforms">
+    <form class="modal fade" id="configconta" novalidate tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content border-success">
+                <div class="modal-header">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#perfil">
+                        <i class="fat fa-left"></i> Voltar
+                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center m-2">
+                        <h3>Alterar informações da conta</h3>
+                    </div>
+                    <div class="row g-4 row-cols-1 row-cols-md-2 m-2">
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-header">
+                                    <span class="fs-4 card-title">Alterar Username</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="text" class="form-control" value="<?= $_SESSION["UserLogin"] ?>" disabled placeholder="Username Atual">
+                                            <label>Username atual</label>
+                                        </label>
+                                    </div>
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="text" class="form-control" minlength="3" maxlength="16" name="username" placeholder="Novo username">
+                                            <span class="invalid-feedback">O username só pode conter letras, números e "_"</span>
+                                            <label>Novo username</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-header">
+                                    <span class="fs-4 card-title">Alterar nome</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="text" class="form-control" value="<?= $_SESSION["UserName"] ?>" disabled placeholder="Nome Atual">
+                                            <label>Nome atual</label>
+                                        </label>
+                                    </div>
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="text" class="form-control" minlength="2" name="nome" placeholder="Alterar Nome">
+                                            <span class="invalid-feedback">O nome só pode conter letras e espaços (2-)</span>
+                                            <label>Novo nome</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-header">
+                                    <span class="fs-4 card-title">Alterar E-mail</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input class="form-control" value="<?= $_SESSION["UserEmail"] ?>" disabled placeholder="E-mail Atual">
+                                            <label>E-mail atual</label>
+                                        </label>
+                                    </div>
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="email" class="form-control" minlength="5" maxlength="100" name="email" placeholder="Novo username">
+                                            <label>Novo E-mail</label>
+                                            <span class="invalid-feedback">Preencha o e-mail corretamente.</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-header">
+                                    <span class="fs-4 card-title">Alterar Senha</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="password" class="form-control senha" minlength="8" maxlength="50" name="nsenha" placeholder="nova senha">
+                                            <div class="invalid-feedback">Preencha sua senha conforme os requisitos:<br>
+                                                <ul>
+                                                    <li>Entre 8 e 50 Caracteres</li>
+                                                    <li>Precisa de ao menos 1 Número</li>
+                                                    <li>Precisa de ao menos 1 letra minúscula</li>
+                                                    <li>Precisa de ao menos 1 letra maiúscula</li>
+                                                </ul>
+                                            </div>
+                                            <label>Senha nova</label>
+                                        </label>
+                                    </div>
+                                    <div class="m-2">
+                                        <label class="form-floating w-100">
+                                            <input type="password" class="form-control csenha" minlength="8" maxlength="50" name="csenha" placeholder="Repetir nova senha">
+                                            <span class="invalid-feedback">As senhas não coincidem</span>
+                                            <label>Confirme a senha nova</label>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-1 m-3">
+                        <div class="card border-secondary">
+                            <div class="card-header">
+                                <span class="fs-4 card-title">Senha atual</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="m-2">
+                                    <label class="form-floating w-100">
+                                        <input type="password" class="form-control" minlength="8" maxlength="50" name="asenha" placeholder="senha atual" required>
+                                        <span class="invalid-feedback">Preencha com sua senha atual. (8-50 caracteres)</span>
+                                        <label>Senha atual</label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warning m-2"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-success w-100">Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

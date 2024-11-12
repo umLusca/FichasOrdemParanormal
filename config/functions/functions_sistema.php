@@ -43,11 +43,11 @@ const UploadKeys = ["ef02827bc6403b4028f3ebd4375163c9", "597d795ea0028f95a051c1d
  * </ul>
  * <h2>Caso String</h2>
  * Será o nome da tabela, que será alterado. Fazendo com que o $con Seja obrigatório para poder pegar as colunas dentro da mesma.
- * E fazendo assim, o includes automaticamente. Sendo limitado apenas ao $excludes.
+ * E fazendo assim, o componentes automaticamente. Sendo limitado apenas ao $excludes.
  * </p>
  * @param mysqli|null $con [Opcional|Obrigatório]
  * <p>
- * Obrigatória quando $includes for uma string. Será preciso para conseguir as colunas e apenas permitir a alteração das mesmas.
+ * Obrigatória quando $componentes for uma string. Será preciso para conseguir as colunas e apenas permitir a alteração das mesmas.
  * </p>
  * @return array
  * <p>
@@ -106,8 +106,8 @@ function get_stmt(array $array, array $excludes = null, array|string $includes =
 		$values[] = $valor;
 	}
 	return array(
-		"bind" => $bind,
-		"query" => $query,
+		"bind"   => $bind,
+		"query"  => $query,
 		"values" => $values
 	);
 }
@@ -159,10 +159,10 @@ function duplicate_row($row_infos, array $updates = null, array $excludes = null
 		}
 	}
 	return array(
-		"bind_types" => $bind_types,
+		"bind_types"    => $bind_types,
 		"query_columns" => $query_columns,
-		"query_values" => $query_values,
-		"bind_values" => $bind_values
+		"query_values"  => $query_values,
+		"bind_values"   => $bind_values
 	);
 }
 
@@ -329,7 +329,7 @@ function Convite($Destinatario): string
                                     </table>
                                     <p class="text-center" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="center">
                                       Ol&#225;, voc&#234; foi convidado para participar de uma miss&#227;o.
-                                      Continue e crie sua conta junto da ficha clicando abaixo.
+                                      Continue e crie sua conta junto da components clicando abaixo.
                                     </p>
                                     <table class="s-4 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                       <tbody>
@@ -542,22 +542,44 @@ function Confirmar_Conta($token): string
 
 function minmax($int, $min = 0, $max = 99, $float = 0)
 {
-	return $float ? min(max((int)$int, $min), $max) : min(max((float)$int, $min), $max);
+	return $float ? min(max((int) $int, $min), $max) : min(max((float) $int, $min), $max);
 }
 
 function cleanstring($data, $limit = 1000): string
 {
-	return substr(htmlspecialchars(stripslashes(trim($data?:""))), 0, $limit);
+	return substr(htmlspecialchars(stripslashes(trim($data ?: ""))), 0, $limit);
 }
 
 
+function logout(int $user = null): void
+{
+	if (isset($_COOKIE['remember_me'])) {
+//		var_dump($_COOKIE["remember_me"]);
+		$token = filter_input(INPUT_COOKIE, 'remember_me');
+		$validator = "";
+		if (!empty($token)) {
+			[$validator] = explode(":", $token);
+		}
+		$c = con_pdo();
+		$q = $c->prepare("DELETE FROM user_tokens WHERE user_id = ? OR selector = ? ;");
+		$q->execute([$user, $validator]);
+		
+		unset($_COOKIE['remember_me']);
+		setcookie('remember_me', null, -1);
+	}
+	
+	session_unset();
+	session_destroy();
+	session_abort();
+	
+	
+}
 
 function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
 {
-	$con = con();
-	$b = $con->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ? ");
-	$b->bind_param("is", $user_id, $type);
-	$b->execute();
+	$c = con_pdo();
+	$b = $c->prepare("DELETE FROM user_tokens WHERE user_id = ? AND type = ? ");
+	$b->execute([$user_id, $type]);
 	
 	
 	$selector = bin2hex(random_bytes(16));
@@ -572,37 +594,37 @@ function remember_me(int $user_id, int $day = 7, string $type = "UKN"): string
 	$hash_validator = password_hash($validator, PASSWORD_DEFAULT);
 	
 	
-	$a = $con->prepare("INSERT INTO `user_tokens` (`selector`, `hashed_validator`, `user_id`,`type`, `expiry`) VALUES ( ? , ? , ? , ? , ? );");
-	$a->bind_param("ssiss", $selector, $hash_validator, $user_id, $type, $expiry);
-	if ($a->execute()) {
-		setcookie('remember_me', $token, $expired_seconds);
-		
-		return $token;
-	}
+	$a = $c->prepare("INSERT INTO `user_tokens` (`selector`, `hashed_validator`, `user_id`,`type`, `expiry`) VALUES ( ? , ? , ? , ? , ? );");
+	$a->execute([$selector, $hash_validator, $user_id, $type, $expiry]);
 	
-	return "falha";
+	setcookie('remember_me', $token, $expired_seconds);
+	
+	return $token;
+	
+	
 }
 
-function check_session($token)
+function check_session(string $UserCookie = "")
 {
-	global $con;
-	$token = cleanstring($token);
-	
-	if (!empty($token)) {
-		[$string, $Secret] = explode(':', $token);
-		
-		$a = $con->prepare("SELECT id, selector, hashed_validator, user_id, expiry FROM user_tokens WHERE selector = ? AND expiry >= now() LIMIT 1;");
-		$a->execute([$string]);
-		$a = $a->get_result();
-		if ($a->num_rows) {
-			$dados = mysqli_fetch_assoc($a);
-			
-			if (password_verify($Secret, $dados['hashed_validator'])) {
-				return $dados["user_id"];
-			}
-		}
-		
+	$UserCookie = cleanstring($UserCookie);
+	if (empty($UserCookie)) {
+		return false;
 	}
+	[$hash, $Secret] = explode(':', $UserCookie);
+	
+	$c = con_pdo();
+	$a = $c->prepare("SELECT usuarios.*,hashed_validator FROM user_tokens ut INNER JOIN usuarios ON ut.user_id = usuarios.id WHERE selector = ? AND expiry >= now() LIMIT 1;");
+	$a->execute([$hash]);
+	
+	if ($a->rowCount()) {
+		$user = $a->fetch(2);
+		if (password_verify($Secret, $user['hashed_validator'])) {
+			
+			return $user["user_id"];
+		}
+	}
+	
+	
 	return false;
 	
 }
@@ -618,22 +640,24 @@ function generateRandomString($length = 16): string
 	return $randomString;
 }
 
-function logar(string|int $login): bool
+function logar(int|null|false $login): bool
 {
-	$con = con();
-	$q = $con->prepare("select * from `usuarios` WHERE `id` = ? LIMIT 1;");
-	$q->execute([$login]);
-	$rq = $q->get_result();
-	if ($rq->num_rows) {
-		$dados = mysqli_fetch_array($rq);
-		$_SESSION["UserID"] = $dados["id"];
-		$_SESSION["UserLogin"] = $dados["login"];
-		$_SESSION["UserName"] = $dados["nome"];
-		$_SESSION["UserEmail"] = $dados["email"];
-		$_SESSION["UserElite"] = $dados["elite"];
-		$_SESSION["UserAdmin"] = $dados["admin"];
-		$_SESSION["UserMarca"] = $dados["marca"];
-		return true;
+	if (!empty($login)){
+		$con = con_pdo();
+		$q = $con->prepare("select * from `usuarios` WHERE `id` = :id LIMIT 1;");
+		$q->execute([":id"=>$login]);
+		if ($q->rowCount()){
+			$dados = $q->fetch(PDO::FETCH_ASSOC);
+			$_SESSION["UserID"] = $dados["id"];
+			$_SESSION["UserLogin"] = $dados["login"];
+			$_SESSION["UserName"] = $dados["nome"];
+			$_SESSION["UserEmail"] = $dados["email"];
+			$_SESSION["UserElite"] = $dados["elite"];
+			$_SESSION["UserAdmin"] = $dados["admin"];
+			$_SESSION["UserMarca"] = $dados["marca"];
+			return true;
+		}
 	}
+	
 	return false;
 } //Inicia a sessão

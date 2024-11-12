@@ -173,6 +173,7 @@ function VerificarPermissaoFicha(string $token, int|null $user): bool
 {
 	$token = cleanstring($token);
 	global $con;
+	if ($_SESSION["UserAdmin"]) return true;
 	if (isset($user, $token) && !empty($user) && !empty($token)) {
 		$q = $con->prepare("Select * FROM `fichas_personagem` WHERE `token` = ?;");
 		$q->bind_param("s", $token);

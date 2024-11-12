@@ -792,7 +792,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
                                     </table>
                                     <p class="text-center" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="center">
                                       Ol&#225;, voc&#234; foi convidado para participar de uma miss&#227;o.
-                                      Continue e crie sua conta junto da ficha clicando abaixo.
+                                      Continue e crie sua conta junto da components clicando abaixo.
                                     </p>
                                     <table class="s-4 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                       <tbody>
@@ -1024,7 +1024,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 											);
 											break;
 										case 'npc':
-											$npc = (int)$_POST["ficha"];
+											$npc = (int)$_POST["components"];
 											
 											$ss = $con->prepare('SELECT * FROM fichas_npc WHERE id = ? AND missao in (SELECT id FROM missoes where token = ? AND mestre = ?);');
 											$ss->bind_param("isi", $npc, $token, $_SESSION["UserID"]);
@@ -1035,7 +1035,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 									break;
 							}
 							break;
-						case "ficha":
+						case "components":
 							switch ($conj[1]) {
 								default:
 									$data = array(
@@ -1589,7 +1589,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 			}
 			break;
 		case 'mestre_sync_fichasnpc':
-			$ficha_id = (int)$_POST["ficha"];
+			$ficha_id = (int)$_POST["components"];
 			
 			if ($data["pva"] >= $data["pv"] + 20) $data["pva"] = $data["pv"] + 20;
 			if ($data["pva"] < 0) $data["pva"] = 0;
@@ -1729,7 +1729,7 @@ if (isset($_POST["query"]) && !empty($_POST["query"])) {
 					$ret["dado"] = $data["dado"];
 					$ret["dado"]["nome"] = cleanstring($_POST["nome"]);
 					$ret["nome"] = $ficha["nome"];
-					$ret["ficha"] = $ficha["token"];
+					$ret["components"] = $ficha["token"];
 					$ret["foto"] = $ficha["foto"];
 					
 					
