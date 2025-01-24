@@ -4,7 +4,6 @@ assets/img/
 assets/users/
 assets/js/
 vendor/
-config/config.php
 config/local.config.php
 robots.txt
 local.*
