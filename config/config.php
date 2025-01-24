@@ -6,9 +6,6 @@ if(!defined("dbuser")){
 }
 
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
 
 include_once ROOT . "/vendor/autoload.php";
 require_once ROOT . "/config/fichas/limites.php";//Limites e Variaveis
