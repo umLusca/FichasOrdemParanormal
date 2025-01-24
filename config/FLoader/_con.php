@@ -12,7 +12,7 @@ function con()
 
 function con_pdo(): PDO
 {
-	$dsn = "mysql:host={dbhost};dbname={dbname};charset=UTF8";
+	$dsn = "mysql:host={$constant(dbhost)};dbname={$constant(dbname)};charset=UTF8";
 	try {
 		$c = new PDO($dsn, dbuser,dbpass);
 		$c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
