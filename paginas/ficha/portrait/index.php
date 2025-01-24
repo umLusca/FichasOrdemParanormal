@@ -132,8 +132,8 @@ require_once "./../components/aconfig_ficha.php";
             </div>
         </div>
     </main>
-    <?php require_once RootDir."includes/top.php";?>
-    <?php require_once RootDir . "includes/scripts.php"; ?>
+    <?php require_once ROOT."includes/top.php";?>
+    <?php require_once ROOT . "includes/scripts.php"; ?>
     <script>
 
         $("#cordesc").on("change",()=>{

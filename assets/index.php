@@ -24,7 +24,7 @@ if ($_GET["start"] == 1) {
     $b = $c->query("SELECT id,marca FROM usuarios");
 
     $c->close();
-    $dir = RootDir . "assets/users";
+    $dir = ROOT . "assets/users";
     //  $fotosfichas = $a->fetch_assoc();
     $fotosficha = $a->fetch_all(2);
     $fotosuser = $b->fetch_all(2);

@@ -5,10 +5,10 @@ require_once "./../../components/aconfig_ficha.php";
 <!DOCTYPE html>
 <html lang="br">
 <head>
-	<?php require_once RootDir . '_COMPONENTS/head.html'; ?>
+	<?php require_once ROOT . '_COMPONENTS/head.html'; ?>
     <meta charset="UTF-8">
     <title><?= $nome ?> - Portrait FichasOP</title>
-	<?php require_once RootDir . "_COMPONENTS/scripts.php"; ?>
+	<?php require_once ROOT . "_COMPONENTS/scripts.php"; ?>
     <style>
         .portrait {
             position: relative;
@@ -305,7 +305,7 @@ require_once "./../../components/aconfig_ficha.php";
 <body class="bg-transparent">
 <main id="portrait"></main>
 <?php
-require_once RootDir . "_COMPONENTS/scripts.php";
+require_once ROOT . "_COMPONENTS/scripts.php";
 require_once "./../includes/scripts.php";
 ?>
 <script type="text/babel">

@@ -1,14 +1,14 @@
 <?php
 require_once "./../../../../config/componentes.php";
-require_once RootDir . "/painel/personagem/components/aconfig_ficha.php";
+require_once ROOT . "/painel/personagem/components/aconfig_ficha.php";
 ?>
 <!DOCTYPE html>
 <html lang="br">
 <head>
-	<?php require_once RootDir . '/componentes/head.html'; ?>
+	<?php require_once ROOT . '/componentes/head.html'; ?>
     <meta charset="UTF-8">
     <title><?= $nome ?> - Portrait FichasOP</title>
-	<?php require_once RootDir . "/componentes/scripts_dice.php"; ?>
+	<?php require_once ROOT . "/componentes/scripts_dice.php"; ?>
     <style>
         .portrait {
             position: relative;
@@ -209,7 +209,7 @@ require_once RootDir . "/painel/personagem/components/aconfig_ficha.php";
 <body class="bg-transparent">
 <main id="portrait"></main>
 <?php
-require_once RootDir . "_COMPONENTS/scripts.php";
+require_once ROOT . "_COMPONENTS/scripts.php";
 require_once "./../includes/scripts.php";
 ?>
 

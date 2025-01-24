@@ -38,8 +38,3 @@ $gclient->addScope('email');
 $gclient->addScope('profile');
 */
 
-
-
-if (!defined('RootDir')) {
-	define("RootDir", ROOT);
-}
