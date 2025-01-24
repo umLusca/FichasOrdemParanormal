@@ -1,5 +1,5 @@
 <?php
-function con(): PDO
+function con_pdo(): PDO
 {
 	global $_CONFIG;
 	$dsn = "mysql:host={$_CONFIG["DBHost"]};dbname={$_CONFIG["DBName"]};charset=UTF8";
