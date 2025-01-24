@@ -12,7 +12,7 @@ function con()
 
 function con_pdo(): PDO
 {
-	var_dump(dbhost);
+	
 	$dsn = "mysql:host=".dbhost.";dbname=".dbname.";charset=UTF8";
 	try {
 		$c = new PDO($dsn, dbuser,dbpass);
