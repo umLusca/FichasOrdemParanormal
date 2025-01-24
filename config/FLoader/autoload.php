@@ -1,5 +1,5 @@
 <?php
-$directory = ROOT."API/functions/";
+$directory = dir(__FILE__).DIRECTORY_SEPARATOR;
 $_loadedFunctions = [];
 
 
