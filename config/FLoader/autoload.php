@@ -19,6 +19,6 @@ if (is_dir($directory)) {
 foreach ($_detectedFunctions as $name => $filepath) {
 	if (file_exists($filepath)) {
 		$_loadedFunctions[] = (string)$name;
-		include_once($filepath);
+		require_once($filepath);
 	}
 }
