@@ -1,6 +1,6 @@
 <?php
 header("X-Robots-Tag: none");
-require_once './../config/config.php';
+require_once ROOT.'/config/config.php';
 $error = $_GET["error"];
 switch ($_GET["error"]) {
 	case '400':
@@ -30,7 +30,7 @@ switch ($_GET["error"]) {
 <html lang="br">
 <head>
 	<?php
-	require_once './../componentes/head.html';
+	require_once  ROOT.'/_COMPONENTS/head.html';
 	?>
     <title><?= $error ?> - Fichas Ordem Paranormal</title>
 </head>
@@ -61,7 +61,7 @@ switch ($_GET["error"]) {
     </div>
 </main>
 <?php
-require_once './../componentes/scripts_dice.php';
+require_once  ROOT.'/_COMPONENTS/scripts_dice.php';
 ?>
 <script>
     let timeout;
