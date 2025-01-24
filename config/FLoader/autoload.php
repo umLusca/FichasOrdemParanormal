@@ -1,5 +1,5 @@
 <?php
-$directory = dir(__FILE__).DIRECTORY_SEPARATOR;
+$directory = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $_loadedFunctions = [];
 
 if (is_dir($directory)) {
