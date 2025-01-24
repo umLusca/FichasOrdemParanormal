@@ -73,7 +73,7 @@ try {
 
 			header('Content-Type: application/json');
 			$startSession = false;
-			$file = "/_api/index.php";
+			$file = "/_API/index.php";
 			break;
 	}
 
