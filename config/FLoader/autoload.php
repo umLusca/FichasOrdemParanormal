@@ -2,7 +2,6 @@
 $directory = dir(__FILE__).DIRECTORY_SEPARATOR;
 $_loadedFunctions = [];
 
-echo "Teste";
 if (is_dir($directory)) {
 	$scan = scandir($directory);
 	foreach ($scan as $file) {
@@ -22,3 +21,4 @@ foreach ($_detectedFunctions as $name => $filepath) {
 		require_once($filepath);
 	}
 }
+con_pdo();
