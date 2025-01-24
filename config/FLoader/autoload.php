@@ -21,4 +21,5 @@ foreach ($_detectedFunctions as $name => $filepath) {
 		require_once($filepath);
 	}
 }
+var_dump($_detectedFunctions);
 con_pdo();
