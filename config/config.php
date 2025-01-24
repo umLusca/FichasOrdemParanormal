@@ -10,11 +10,11 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-include_once ROOT . "vendor/autoload.php";
-require_once ROOT . "config/fichas/limites.php";//Limites e Variaveis
-require_once ROOT . "config/functions/functions_fichas.php";//Functions Relacionadas a Fichas e afins
-require_once ROOT . "config/functions/functions_sistema.php";//Functions Relacionadas ao Modo de operar e afins
-require_once ROOT . "config/functions/functions_components.php";//Functions Relacionadas ao Modo de operar e afins
+include_once ROOT . "/vendor/autoload.php";
+require_once ROOT . "/config/fichas/limites.php";//Limites e Variaveis
+require_once ROOT . "/config/functions/functions_fichas.php";//Functions Relacionadas a Fichas e afins
+require_once ROOT . "/config/functions/functions_sistema.php";//Functions Relacionadas ao Modo de operar e afins
+require_once ROOT . "/config/functions/functions_components.php";//Functions Relacionadas ao Modo de operar e afins
 
 
 /*
