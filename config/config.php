@@ -39,17 +39,6 @@ $gclient->addScope('profile');
 
 
 
-function save_image($image,$prefix = ""): string
-{
-	$file = uniqid($prefix,true).".".pathinfo($image['name'])["extension"];
-	$fileName = $image["name"];
-	move_uploaded_file($image["tmp_name"], "./$fileName");
-	rename("./$fileName", RootDir."assets/users/" . $file);
-	return "https://fichasop.com/assets/users/" . $file;
-}
-
-
-
 function cryptthis($string): string
 {
 	return md5(md5($string));
