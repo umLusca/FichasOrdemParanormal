@@ -1,0 +1,22 @@
+Options -Indexes
+SetEnv TZ America/Manaus
+
+php_flag log_errors on
+php_flag report_memleaks on
+php_flag track_errors on
+php_value error_log ./error.log
+php_value error_reporting -1
+php_value log_errors_max_len 0
+php_value max_input_vars 10000
+php_value memory_limit 4G
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)([^/])$        /$1$2/ [L,R=308]
+RewriteCond %{REQUEST_URI} !^/assets/
+RewriteCond %{REQUEST_URI} !^/index.php
+RewriteCond %{REQUEST_URI} !^/favicon.svg
+
+RewriteRule ^ /index.php [L]
+
