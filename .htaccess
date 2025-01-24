@@ -16,7 +16,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)([^/])$        /$1$2/ [L,R=308]
 RewriteCond %{REQUEST_URI} !^/assets/
 RewriteCond %{REQUEST_URI} !^/index.php
-RewriteCond %{REQUEST_URI} !^/favicon.svg
+RewriteCond %{REQUEST_URI} !^/favicon.*
 
 RewriteRule ^ /index.php [L]
 
