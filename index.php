@@ -1,5 +1,5 @@
 <?php
-define("ROOT",dirname(__FILE__));
+define("ROOT",dirname(__FILE__).DIRECTORY_SEPARATOR);
 ini_set('display_startup_errors', true);
 ini_set('display_errors', true);
 ini_set("error_reporting", E_ERROR | E_PARSE | E_COMPILE_ERROR | E_STRICT);
@@ -42,7 +42,7 @@ try {
 	switch ($pag = mb_strtolower($folders[0])) {
 		default:
 			header("X-Robots-Tag: none");
-			$file = "/pages/404.php";
+			$file = '/paginas/error/index.php';
 			break;
 		case "":
 
@@ -81,7 +81,7 @@ try {
 
 	$filepath = ROOT . $file;
 	if (!file_exists($filepath) || !include $filepath) {
-		require ROOT . '/pages/404.php';
+		require ROOT . '/paginas/error/index.php';
 	}
 	exit();
 } catch (Exception $e) {
