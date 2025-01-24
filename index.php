@@ -1,5 +1,5 @@
 <?php
-define("ROOT",dirname(__FILE__).DIRECTORY_SEPARATOR);
+define("ROOT",dirname(__FILE__));
 ini_set('display_startup_errors', true);
 ini_set('display_errors', true);
 ini_set("error_reporting", E_ERROR | E_PARSE | E_COMPILE_ERROR | E_STRICT);
