@@ -4,6 +4,7 @@ $_loadedFunctions = [];
 
 if (is_dir($directory)) {
 	$scan = scandir($directory);
+	var_dump($directory);
 	foreach ($scan as $file) {
 		$filepath = realpath($directory . $file);
 		if (file_exists($filepath) && str_starts_with($file, "_") && str_ends_with($file, ".php")) {
@@ -21,5 +22,4 @@ foreach ($_detectedFunctions as $name => $filepath) {
 		require_once($filepath);
 	}
 }
-var_dump($_detectedFunctions);
 con_pdo();
