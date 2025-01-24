@@ -1,10 +1,20 @@
 <?php
+
+
+function con()
+{
+	$con = new mysqli(dbhost, dbuser, dbpass, dbname);
+	if ($con->connect_error) {
+		die("Connection failed: " . $con->connect_error);
+	}
+	return $con;
+}
+
 function con_pdo(): PDO
 {
-	global $_CONFIG;
-	$dsn = "mysql:host={$_CONFIG["DBHost"]};dbname={$_CONFIG["DBName"]};charset=UTF8";
+	$dsn = "mysql:host={dbhost};dbname={dbname};charset=UTF8";
 	try {
-		$c = new PDO($dsn, $_CONFIG["DBUser"], $_CONFIG["DBPass"]);
+		$c = new PDO($dsn, dbuser,dbpass);
 		$c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$c->query("SET time_zone = '-04:00'");
 		return $c;
