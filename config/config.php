@@ -9,7 +9,6 @@ if(!defined("dbuser")){
 
 include_once ROOT . "/vendor/autoload.php";
 require_once ROOT . "/config/FLoader/autoload.php";
-_loadAllFunctions();
 require_once ROOT . "/config/fichas/limites.php";//Limites e Variaveis
 require_once ROOT . "/config/functions/functions_fichas.php";//Functions Relacionadas a Fichas e afins
 require_once ROOT . "/config/functions/functions_sistema.php";//Functions Relacionadas ao Modo de operar e afins
